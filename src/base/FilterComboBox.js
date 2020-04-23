@@ -39,9 +39,9 @@ class FilterComboBox extends Base {
       });
     }
 
-    if (changed.filter || changed.selectedIndex) {
-      const { filter, selectedIndex } = this[internal.state];
-      if (filter === "" || selectedIndex === -1) {
+    if (changed.filter || changed.currentIndex) {
+      const { filter, currentIndex } = this[internal.state];
+      if (filter === "" || currentIndex === -1) {
         const list = /** @type {any} */ (this[internal.ids].list);
         if ("filter" in list) {
           list.filter = filter;

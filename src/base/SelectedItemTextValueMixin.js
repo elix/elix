@@ -11,11 +11,11 @@ import * as internal from "./internal.js";
  * the `items` collection that has the requested `textContent`. If the indicated
  * text is not found in `items`, the selection is cleared.
  *
- * This mixin expects a component to provide an `items` array of all elements
- * in the list. A standard way to do that with is
- * [ContentItemsMixin](ContentItemsMixin). This also expects the definition
- * of `selectedIndex` and `selectedItem` properties, which can be obtained
- * from [SingleSelectionMixin](SingleSelectionMixin).
+ * This mixin expects a component to provide an `items` array of all elements in
+ * the list. A standard way to do that with is
+ * [ContentItemsMixin](ContentItemsMixin). This also expects the definition of a
+ * `currentIndex` state, which can be obtained from
+ * [ItemCursorMixin](ItemCursorMixin).
  *
  * @module SelectedItemTextValueMixin
  * @param {Constructor<ReactiveElement>} Base
@@ -27,11 +27,14 @@ export default function SelectedItemTextValueMixin(Base) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
       }
+
+      // If we have a pending value to apply and now have items, apply the
+      // value.
       const { items, pendingValue } = this[internal.state];
       if (pendingValue && items) {
         const index = indexOfItemWithText(items, pendingValue);
         this[internal.setState]({
-          selectedIndex: index,
+          currentIndex: index,
           pendingValue: null,
         });
       }
@@ -60,8 +63,8 @@ export default function SelectedItemTextValueMixin(Base) {
         });
       } else {
         // Select the index of the indicate text, if found.
-        const selectedIndex = indexOfItemWithText(items, text);
-        this[internal.setState]({ selectedIndex });
+        const currentIndex = indexOfItemWithText(items, text);
+        this[internal.setState]({ currentIndex });
       }
     }
   }

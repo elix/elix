@@ -25,7 +25,7 @@ export default function SelectionInViewMixin(Base) {
         super[internal.rendered](changed);
       }
 
-      if (changed.currentIndex) {
+      if (changed.currentItem) {
         this.scrollCurrentItemIntoView();
       }
     }

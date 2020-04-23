@@ -35,9 +35,9 @@ export default function DelegateItemsMixin(Base) {
         /** @type {any} */
         const cast = event;
         const delegateSelectedIndex = cast.detail.selectedIndex;
-        if (this[internal.state].selectedIndex !== delegateSelectedIndex) {
+        if (this[internal.state].currentIndex !== delegateSelectedIndex) {
           this[internal.setState]({
-            selectedIndex: delegateSelectedIndex,
+            currentIndex: delegateSelectedIndex,
           });
         }
       };
@@ -62,13 +62,13 @@ export default function DelegateItemsMixin(Base) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
-      if (changed.selectedIndex) {
+      if (changed.currentIndex) {
         const itemsDelegate = this[internal.itemsDelegate];
         if (typeof itemsDelegate === "undefined") {
           throw `To use DelegateItemsMixin, ${this.constructor.name} must define a getter for [internal.itemsDelegate].`;
         }
         if ("selectedIndex" in itemsDelegate) {
-          itemsDelegate.selectedIndex = this[internal.state].selectedIndex;
+          itemsDelegate.selectedIndex = this[internal.state].currentIndex;
         }
       }
     }

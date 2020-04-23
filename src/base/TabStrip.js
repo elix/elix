@@ -5,6 +5,7 @@ import { defaultAriaRole } from "./accessibility.js";
 import AriaListMixin from "./AriaListMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import * as internal from "./internal.js";
+import ItemCursorMixin from "./ItemCursorMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
@@ -13,12 +14,14 @@ import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapSelectionMixin from "./TapSelectionMixin.js";
 
 const Base = AriaListMixin(
-  TapSelectionMixin(
-    DirectionSelectionMixin(
-      KeyboardDirectionMixin(
-        KeyboardMixin(
-          LanguageDirectionMixin(
-            SingleSelectionMixin(SlotItemsMixin(ReactiveElement))
+  ItemCursorMixin(
+    TapSelectionMixin(
+      DirectionSelectionMixin(
+        KeyboardDirectionMixin(
+          KeyboardMixin(
+            LanguageDirectionMixin(
+              SingleSelectionMixin(SlotItemsMixin(ReactiveElement))
+            )
           )
         )
       )
@@ -63,13 +66,13 @@ const Base = AriaListMixin(
 class TabStrip extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
+      currentItemRequired: true,
       orientation: "horizontal",
+      position: "top",
       role: "tablist",
-      selectionRequired: true,
       tabAlign: "start",
       tabButtonRole: "tab",
       tabIndex: -1,
-      position: "top",
     });
   }
 
@@ -81,13 +84,13 @@ class TabStrip extends Base {
       /* eslint-disable no-case-declarations */
       case " ":
       case "Enter":
-        const { items, selectedIndex } = this[internal.state];
+        const { items, currentIndex } = this[internal.state];
         if (event.target instanceof HTMLElement) {
           const newIndex = items && items.indexOf(event.target);
           this[internal.setState]({
-            selectedIndex: newIndex,
+            currentIndex: newIndex,
           });
-          handled = newIndex !== selectedIndex;
+          handled = newIndex !== currentIndex;
         }
         break;
     }
@@ -144,11 +147,11 @@ class TabStrip extends Base {
       });
     }
 
-    if ((changed.items || changed.selectedIndex) && items) {
+    if ((changed.items || changed.currentIndex) && items) {
       // Apply `selected` style to the selected item only.
-      const { selectedIndex } = this[internal.state];
+      const { currentIndex } = this[internal.state];
       items.forEach((item, index) => {
-        item.toggleAttribute("selected", index === selectedIndex);
+        item.toggleAttribute("selected", index === currentIndex);
       });
     }
 

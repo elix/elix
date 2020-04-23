@@ -19,8 +19,8 @@ export default function TimerSelectionMixin(Base) {
   class TimerSelection extends Base {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
+        currentIndexForTimer: null,
         playing: true,
-        selectedIndexForTimer: null,
         selectionTimerDuration: 1000,
         timerTimeout: null,
       });
@@ -122,7 +122,7 @@ function restartTimer(/** @type {ReactiveElement} */ element) {
 
     // Set the timer as state, also noting which slide we're currently on.
     element[internal.setState]({
-      selectedIndexForTimer: element[internal.state].selectedIndex,
+      currentIndexForTimer: element[internal.state].currentIndex,
       timerTimeout,
     });
   }
@@ -131,15 +131,15 @@ function restartTimer(/** @type {ReactiveElement} */ element) {
 // Update the timer to match the element's `playing` state.
 function updateTimer(/** @type {ReactiveElement} */ element) {
   // If the element is playing and we haven't started a timer yet, do so now.
-  // Also, if the element's selectedIndex changed for any reason, restart the
+  // Also, if the element's currentIndex changed for any reason, restart the
   // timer. This ensures that the timer restarts no matter why the selection
   // changes: it could have been us moving to the next slide because the timer
   // elapsed, or the user might have directly manipulated the selection, etc.
   if (
     element[internal.state].playing &&
     (!element[internal.state].timerTimeout ||
-      element[internal.state].selectedIndex !==
-        element[internal.state].selectedIndexForTimer)
+      element[internal.state].currentIndex !==
+        element[internal.state].currentIndexForTimer)
   ) {
     restartTimer(element);
   } else if (

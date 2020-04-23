@@ -53,7 +53,6 @@ class Drawer extends Base {
       openedRenderedFraction: 0,
       persistent: true,
       role: "landmark",
-      selectedIndex: 0,
       showTransition: false,
       tabIndex: -1,
     });

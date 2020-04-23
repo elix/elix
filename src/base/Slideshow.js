@@ -24,9 +24,9 @@ const Base = TimerSelectionMixin(CrossfadeStage);
 class Slideshow extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
+      cursorOperationsWrap: true,
       playing: true,
       selectionTimerDuration: 3000,
-      selectionWraps: true,
       transitionDuration: 1000,
     });
   }

@@ -18,12 +18,12 @@ import * as internal from "./internal.js";
  * display a context menu.
  *
  * This mixin expects the component to provide an `state.items` member. It also
- * expects the component to define a `state.selectedIndex` member; you can
+ * expects the component to define a `state.currentIndex` member; you can
  * provide that yourself, or use [SingleSelectionMixin](SingleSelectionMixin).
  *
  * If the component receives an event that doesn't correspond to an item (e.g.,
  * the user taps on the element background visible between items), the selection
- * will be removed. However, if the component sets `state.selectionRequired` to
+ * will be removed. However, if the component sets `state.currentItemRequired` to
  * true, a background tap will *not* remove the selection.
  *
  * @module TapSelectionMixin

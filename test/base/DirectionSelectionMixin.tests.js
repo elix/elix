@@ -3,10 +3,10 @@ import * as internal from "../../src/base/internal.js";
 import { assert, sinon } from "../testHelpers.js";
 
 class DirectionSelectionTest extends DirectionSelectionMixin(HTMLElement) {
-  selectFirst() {}
-  selectLast() {}
-  selectNext() {}
-  selectPrevious() {}
+  [internal.goFirst]() {}
+  [internal.goLast]() {}
+  [internal.goNext]() {}
+  [internal.goPrevious]() {}
 }
 customElements.define("direction-selection-test", DirectionSelectionTest);
 
@@ -14,22 +14,22 @@ describe("DirectionSelectionMixin", () => {
   it("maps direction method calls to selection method calls", () => {
     const fixture = new DirectionSelectionTest();
 
-    const selectFirstSpy = sinon.spy(fixture, "selectFirst");
+    const goFirstSpy = sinon.spy(fixture, internal.goFirst);
     fixture[internal.goStart]();
-    assert(selectFirstSpy.calledOnce);
+    assert(goFirstSpy.calledOnce);
 
-    const selectLastSpy = sinon.spy(fixture, "selectLast");
+    const goLastSpy = sinon.spy(fixture, internal.goLast);
     fixture[internal.goEnd]();
-    assert(selectLastSpy.calledOnce);
+    assert(goLastSpy.calledOnce);
 
-    const selectNextSpy = sinon.spy(fixture, "selectNext");
+    const goNextSpy = sinon.spy(fixture, internal.goNext);
     fixture[internal.goRight]();
     fixture[internal.goDown]();
-    assert.equal(selectNextSpy.callCount, 2);
+    assert.equal(goNextSpy.callCount, 2);
 
-    const selectPreviousSpy = sinon.spy(fixture, "selectPrevious");
+    const goPreviousSpy = sinon.spy(fixture, internal.goPrevious);
     fixture[internal.goLeft]();
     fixture[internal.goUp]();
-    assert.equal(selectPreviousSpy.callCount, 2);
+    assert.equal(goPreviousSpy.callCount, 2);
   });
 });

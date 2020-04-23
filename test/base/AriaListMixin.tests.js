@@ -44,18 +44,18 @@ describe("AriaListMixin", () => {
     assert.equal(item2.getAttribute("role"), "option"); // default role
   });
 
-  it("indicates the selection state on both the list and the item", async () => {
+  it("indicates the current item on both the list and the item", async () => {
     const fixture = new AriaListTest();
     const item1 = document.createElement("div");
     fixture.appendChild(item1);
     const item2 = document.createElement("div");
     fixture.appendChild(item2);
     container.appendChild(fixture);
-    await fixture[internal.setState]({ selectedIndex: 0 });
+    await fixture[internal.setState]({ currentIndex: 0 });
     assert.equal(fixture.getAttribute("aria-activedescendant"), item1.id);
     assert.equal(item1.getAttribute("aria-selected"), "true");
     assert.equal(item2.getAttribute("aria-selected"), "false");
-    await fixture[internal.setState]({ selectedIndex: 1 });
+    await fixture[internal.setState]({ currentIndex: 1 });
     assert.equal(fixture.getAttribute("aria-activedescendant"), item2.id);
     assert.equal(item1.getAttribute("aria-selected"), "false");
     assert.equal(item2.getAttribute("aria-selected"), "true");

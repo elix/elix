@@ -3,12 +3,17 @@ import * as template from "../core/template.js";
 import EffectMixin from "./EffectMixin.js";
 import * as fractionalSelection from "./fractionalSelection.js";
 import * as internal from "./internal.js";
+import ItemCursorMixin from "./ItemCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
-const Base = EffectMixin(
-  LanguageDirectionMixin(SingleSelectionMixin(SlotItemsMixin(ReactiveElement)))
+const Base = ItemCursorMixin(
+  EffectMixin(
+    LanguageDirectionMixin(
+      SingleSelectionMixin(SlotItemsMixin(ReactiveElement))
+    )
+  )
 );
 
 /**
@@ -28,8 +33,8 @@ const Base = EffectMixin(
 class SlidingStage extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
+      currentItemRequired: true,
       orientation: "horizontal",
-      selectionRequired: true,
     });
   }
 
@@ -43,12 +48,12 @@ class SlidingStage extends Base {
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (
+      changed.currentIndex ||
       changed.enableEffects ||
       changed.orientation ||
-      changed.selectedIndex ||
       changed.swipeFraction
     ) {
-      const { orientation, rightToLeft, selectedIndex, items } = this[
+      const { orientation, rightToLeft, currentIndex, items } = this[
         internal.state
       ];
       const vertical = orientation === "vertical";
@@ -56,8 +61,8 @@ class SlidingStage extends Base {
       const swiping = this[internal.state].swipeFraction != null;
       const swipeFraction = this[internal.state].swipeFraction || 0;
       let translation;
-      if (selectedIndex >= 0) {
-        const selectionFraction = selectedIndex + sign * swipeFraction;
+      if (currentIndex >= 0) {
+        const selectionFraction = currentIndex + sign * swipeFraction;
         const count = items ? items.length : 0;
         const dampedSelection = fractionalSelection.dampenListSelection(
           selectionFraction,

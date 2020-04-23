@@ -33,8 +33,8 @@ const Base = EffectMixin(
 class CenteredStrip extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
+      currentItemRequired: true,
       orientation: "horizontal",
-      selectionRequired: true,
     });
   }
 
@@ -51,14 +51,14 @@ class CenteredStrip extends Base {
       changed.clientWidth ||
       changed.enableEffects ||
       changed.rightToLeft ||
-      changed.selectedIndex ||
+      changed.currentIndex ||
       changed.swipeFraction
     ) {
-      const { orientation, rightToLeft, selectedIndex } = this[internal.state];
+      const { orientation, rightToLeft, currentIndex } = this[internal.state];
       const sign = rightToLeft ? 1 : -1;
       const swiping = this[internal.state].swipeFraction != null;
       const swipeFraction = this[internal.state].swipeFraction || 0;
-      const selectionFraction = selectedIndex + sign * swipeFraction;
+      const selectionFraction = currentIndex + sign * swipeFraction;
 
       const vertical = orientation === "vertical";
       const leadingEdge = vertical ? "offsetTop" : "offsetLeft";
@@ -138,12 +138,12 @@ class CenteredStrip extends Base {
         this[internal.ids].stripContainer.style.justifyContent = justifyContent;
       }
     }
-    if (changed.items || changed.selectedIndex) {
+    if (changed.items || changed.currentIndex) {
       // Apply `selected` style to the selected item only.
-      const { selectedIndex, items } = this[internal.state];
+      const { currentIndex, items } = this[internal.state];
       if (items) {
         items.forEach((item, index) => {
-          item.toggleAttribute("selected", index === selectedIndex);
+          item.toggleAttribute("selected", index === currentIndex);
         });
       }
     }

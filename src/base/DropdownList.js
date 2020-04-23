@@ -3,13 +3,16 @@ import html from "../core/html.js";
 import * as template from "../core/template.js";
 import FormElementMixin from "./FormElementMixin.js";
 import * as internal from "./internal.js";
+import ItemCursorMixin from "./ItemCursorMixin.js";
 import MenuButton from "./MenuButton.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
 const Base = FormElementMixin(
-  SelectedItemTextValueMixin(SingleSelectionMixin(SlotItemsMixin(MenuButton)))
+  ItemCursorMixin(
+    SelectedItemTextValueMixin(SingleSelectionMixin(SlotItemsMixin(MenuButton)))
+  )
 );
 
 /**
@@ -26,13 +29,13 @@ class DropdownList extends Base {
   // By default, opening the menu re-selects the component item that's currently
   // selected.
   get defaultMenuSelectedIndex() {
-    return this[internal.state].selectedIndex;
+    return this[internal.state].currentIndex;
   }
 
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
+      currentItemRequired: true,
       itemRole: "menuitemradio",
-      selectionRequired: true,
       valuePartType: "div",
     });
   }
@@ -50,9 +53,9 @@ class DropdownList extends Base {
       }
     }
 
-    if (changed.selectedIndex) {
+    if (changed.currentIndex) {
       const items = this[internal.state].items || [];
-      const selectedItem = items[this[internal.state].selectedIndex];
+      const selectedItem = items[this[internal.state].currentIndex];
       const clone = selectedItem ? selectedItem.cloneNode(true) : null;
       const childNodes = clone ? clone.childNodes : [];
       updateChildNodes(this[internal.ids].value, childNodes);
@@ -66,8 +69,8 @@ class DropdownList extends Base {
     if (changed.opened) {
       const { closeResult, items, opened } = state;
       if (!opened && items && closeResult !== undefined) {
-        const selectedIndex = items.indexOf(closeResult);
-        Object.assign(effects, { selectedIndex });
+        const currentIndex = items.indexOf(closeResult);
+        Object.assign(effects, { currentIndex });
       }
     }
 

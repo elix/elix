@@ -1,10 +1,13 @@
 import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import * as internal from "./internal.js";
+import ItemCursorMixin from "./ItemCursorMixin.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
-const Base = SingleSelectionMixin(SlotItemsMixin(ReactiveElement));
+const Base = ItemCursorMixin(
+  SingleSelectionMixin(SlotItemsMixin(ReactiveElement))
+);
 
 /**
  * Shows a single panel at a time
@@ -24,17 +27,17 @@ const Base = SingleSelectionMixin(SlotItemsMixin(ReactiveElement));
 class Modes extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      selectionRequired: true,
+      currentItemRequired: true,
     });
   }
 
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
-    if (changed.items || changed.selectedIndex) {
-      const { selectedIndex, items } = this[internal.state];
+    if (changed.items || changed.currentIndex) {
+      const { currentIndex, items } = this[internal.state];
       if (items) {
         items.forEach((item, index) => {
-          const selected = index === selectedIndex;
+          const selected = index === currentIndex;
           item.style.display = selected ? "" : "none";
         });
       }

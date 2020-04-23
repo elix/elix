@@ -10,6 +10,7 @@ import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import FilterListBox from "./FilterListBox.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import * as internal from "./internal.js";
+import ItemCursorMixin from "./ItemCursorMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
@@ -21,9 +22,11 @@ const Base = ComposedFocusMixin(
         DelegateItemsMixin(
           DirectionSelectionMixin(
             FocusVisibleMixin(
-              KeyboardMixin(
-                SelectedItemTextValueMixin(
-                  SingleSelectionMixin(ReactiveElement)
+              ItemCursorMixin(
+                KeyboardMixin(
+                  SelectedItemTextValueMixin(
+                    SingleSelectionMixin(ReactiveElement)
+                  )
                 )
               )
             )
@@ -114,12 +117,12 @@ class ListWithSearch extends Base {
       // Forward Page Down/Page Up to the list element.
       //
       // This gets a little more complex than we'd like. The pageUp/pageDown
-      // methods may update the list's selectedIndex, which in turn will
-      // eventually update the selectedIndex of this component. In the meantime,
+      // methods may update the list's currentIndex, which in turn will
+      // eventually update the currentIndex of this component. In the meantime,
       // other keydown processing can set state, which will trigger a render.
       // When this component is asked for updates, it'll return the current
-      // (i.e. old) selectedIndex value, and overwrite the list's own, newer
-      // selectedIndex. To avoid this, we wait for the component to finish
+      // (i.e. old) currentIndex value, and overwrite the list's own, newer
+      // currentIndex. To avoid this, we wait for the component to finish
       // processing the keydown using timeout timing, then invoke
       // pageUp/pageDown.
       //
@@ -131,14 +134,14 @@ class ListWithSearch extends Base {
           setTimeout(() => list.pageDown());
           const items = this.items;
           if (items) {
-            handled = this.selectedIndex < items.length - 1;
+            handled = this.currentIndex < items.length - 1;
           }
         }
         break;
       case "PageUp":
         if (list.pageUp) {
           setTimeout(() => list.pageUp());
-          handled = this.selectedIndex > 0;
+          handled = this.currentIndex > 0;
         }
         break;
     }

@@ -26,19 +26,19 @@ class PlainCenteredStripOpacity extends CenteredStrip {
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (
+      changed.currentIndex ||
       changed.enableEffects ||
       changed.items ||
       changed.rightToLeft ||
-      changed.selectedIndex ||
       changed.swipeFraction ||
       changed.transitionDuration
     ) {
-      // Apply opacity based on selection state.
+      // Apply opacity based on which item is current.
       const {
+        currentIndex,
         enableEffects,
         items,
         rightToLeft,
-        selectedIndex,
         swipeFraction,
         transitionDuration,
       } = this[internal.state];
@@ -59,7 +59,7 @@ class PlainCenteredStripOpacity extends CenteredStrip {
           );
           const opacity = opacityForItemWithIndex(
             index,
-            selectedIndex,
+            currentIndex,
             selectionFraction
           );
           Object.assign(item.style, {
@@ -96,12 +96,12 @@ class PlainCenteredStripOpacity extends CenteredStrip {
 /**
  * @private
  * @param {number} index
- * @param {number} selectedIndex
+ * @param {number} currentIndex
  * @param {number} selectionFraction
  */
-function opacityForItemWithIndex(index, selectedIndex, selectionFraction) {
+function opacityForItemWithIndex(index, currentIndex, selectionFraction) {
   const opacityRange = opacityMaximum - opacityMinimum;
-  const fractionalIndex = selectedIndex + selectionFraction;
+  const fractionalIndex = currentIndex + selectionFraction;
   const leftIndex = Math.floor(fractionalIndex);
   const rightIndex = Math.ceil(fractionalIndex);
   let awayIndex = selectionFraction >= 0 ? leftIndex : rightIndex;

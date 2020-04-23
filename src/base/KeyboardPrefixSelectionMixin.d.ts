@@ -6,7 +6,6 @@
 declare const KeyboardPrefixSelectionMixin: Mixin<
   {},
   {
-    selectedIndex: number;
     selectItemWithTextPrefix(prefix: string): boolean;
   }
 >;

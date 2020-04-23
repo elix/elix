@@ -20,11 +20,11 @@ function PageNumbersMixin(Base) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
-      if (changed.selectedIndex) {
-        const { items, selectedIndex } = this[internal.state];
+      if (changed.currentIndex) {
+        const { items, currentIndex } = this[internal.state];
         const textContent =
-          selectedIndex >= 0 && items
-            ? `${selectedIndex + 1} / ${items.length}`
+          currentIndex >= 0 && items
+            ? `${currentIndex + 1} / ${items.length}`
             : "";
         this[internal.ids].pageNumber.textContent = textContent;
       }

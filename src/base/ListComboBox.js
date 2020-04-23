@@ -5,12 +5,13 @@ import ComboBox from "./ComboBox.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import * as internal from "./internal.js";
+import ItemCursorMixin from "./ItemCursorMixin.js";
 import { getItemText } from "./ItemsTextMixin.js";
 import ListBox from "./ListBox.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 
 const Base = DelegateItemsMixin(
-  DirectionSelectionMixin(SingleSelectionMixin(ComboBox))
+  DirectionSelectionMixin(ItemCursorMixin(SingleSelectionMixin(ComboBox)))
 );
 
 /**
@@ -25,9 +26,9 @@ const Base = DelegateItemsMixin(
 class ListComboBox extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
+      currentIndex: -1,
       horizontalAlign: "stretch",
       listPartType: ListBox,
-      selectedIndex: -1,
     });
   }
 
@@ -155,7 +156,7 @@ class ListComboBox extends Base {
           if (this[internal.state].selectedIndex !== listSelectedIndex) {
             this[internal.raiseChangeEvents] = true;
             this[internal.setState]({
-              selectedIndex: listSelectedIndex,
+              currentIndex: listSelectedIndex,
             });
             this[internal.raiseChangeEvents] = false;
           }
@@ -163,10 +164,10 @@ class ListComboBox extends Base {
       );
     }
 
-    if (changed.selectedIndex) {
+    if (changed.currentIndex) {
       const list = /** @type {any} */ (this[internal.ids].list);
       if ("selectedIndex" in list) {
-        list.selectedIndex = this[internal.state].selectedIndex;
+        list.selectedIndex = this[internal.state].currentIndex;
       }
     }
   }
@@ -181,34 +182,34 @@ class ListComboBox extends Base {
       /** @type {ListItemElement[]} */ const items = state.items;
       if (items && value != null) {
         const searchText = value.toLowerCase();
-        const selectedIndex = items.findIndex((item) => {
+        const currentIndex = items.findIndex((item) => {
           const itemText = getItemText(item);
           return itemText.toLowerCase() === searchText;
         });
-        Object.assign(effects, { selectedIndex });
+        Object.assign(effects, { currentIndex });
       }
     }
 
     // If user selects a new item, or combo is closing, make selected item the
     // value.
-    if (changed.opened || changed.selectedIndex) {
-      const { closeResult, items, opened, selectedIndex, value } = state;
+    if (changed.opened || changed.currentIndex) {
+      const { closeResult, items, opened, currentIndex, value } = state;
       const closing = changed.opened && !opened;
       const canceled = closeResult && closeResult.canceled;
       if (
-        selectedIndex >= 0 &&
-        (changed.selectedIndex || (closing && !canceled))
+        currentIndex >= 0 &&
+        (changed.currentIndex || (closing && !canceled))
       ) {
-        const selectedItem = items[selectedIndex];
-        if (selectedItem) {
-          const selectedItemText = getItemText(selectedItem);
+        const currentItem = items[currentIndex];
+        if (currentItem) {
+          const currentItemText = getItemText(currentItem);
           // See notes on mobile at ComboBox.defaultState.
           const probablyMobile = matchMedia("(pointer: coarse)").matches;
           const selectText = !probablyMobile;
-          if (value !== selectedItemText) {
+          if (value !== currentItemText) {
             Object.assign(effects, {
               selectText,
-              value: selectedItemText,
+              value: currentItemText,
             });
           }
         }

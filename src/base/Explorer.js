@@ -2,6 +2,7 @@ import { updateChildNodes } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import * as internal from "./internal.js";
+import ItemCursorMixin from "./ItemCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import ListBox from "./ListBox.js";
 import Modes from "./Modes.js";
@@ -17,8 +18,8 @@ const lateralPositions = {
   start: true,
 };
 
-const Base = LanguageDirectionMixin(
-  SingleSelectionMixin(SlotItemsMixin(ReactiveElement))
+const Base = ItemCursorMixin(
+  LanguageDirectionMixin(SingleSelectionMixin(SlotItemsMixin(ReactiveElement)))
 );
 
 /**
@@ -47,13 +48,13 @@ class Explorer extends Base {
 
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
+      currentItemRequired: true,
       proxies: [],
       proxiesAssigned: false,
-      proxyPartType: "div",
       proxyListOverlap: false,
-      proxyListPosition: "top",
       proxyListPartType: ListBox,
-      selectionRequired: true,
+      proxyListPosition: "top",
+      proxyPartType: "div",
       stagePartType: Modes,
     });
   }
@@ -201,21 +202,21 @@ class Explorer extends Base {
       });
     }
 
-    if (changed.selectedIndex || changed.proxyListPartType) {
+    if (changed.currentIndex || changed.proxyListPartType) {
       if ("selectedIndex" in proxyList) {
-        const { selectedIndex } = this[internal.state];
-        /** @type {any} */ (proxyList).selectedIndex = selectedIndex;
+        const { currentIndex } = this[internal.state];
+        /** @type {any} */ (proxyList).selectedIndex = currentIndex;
       }
     }
 
-    if (changed.selectedIndex || changed.stagePartType) {
+    if (changed.currentIndex || changed.stagePartType) {
       if ("selectedIndex" in stage) {
-        const { selectedIndex } = this[internal.state];
-        /** @type {any} */ (stage).selectedIndex = selectedIndex;
+        const { currentIndex } = this[internal.state];
+        /** @type {any} */ (stage).selectedIndex = currentIndex;
       }
     }
 
-    if (changed.selectionRequired || changed.proxyListPartType) {
+    if (changed.currentItemRequired || changed.proxyListPartType) {
       if ("selectionRequired" in proxyList) {
         const { selectionRequired } = this[internal.state];
         /** @type {any} */ (proxyList).selectionRequired = selectionRequired;

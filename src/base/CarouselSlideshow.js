@@ -21,9 +21,9 @@ const Base = TimerSelectionMixin(Carousel);
 class CarouselSlideshow extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
+      cursorOperationsWrap: true,
       playing: true,
       selectionTimerDuration: 3000,
-      selectionWraps: true,
       stagePartType: CrossfadeStage,
       transitionDuration: 1000,
     });

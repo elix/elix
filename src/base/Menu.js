@@ -4,6 +4,7 @@ import AriaMenuMixin from "./AriaMenuMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import * as internal from "./internal.js";
+import ItemCursorMixin from "./ItemCursorMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
@@ -19,16 +20,18 @@ import TapSelectionMixin from "./TapSelectionMixin.js";
 const Base = AriaMenuMixin(
   DelegateFocusMixin(
     DirectionSelectionMixin(
-      ItemsTextMixin(
-        KeyboardDirectionMixin(
-          KeyboardMixin(
-            KeyboardPagedSelectionMixin(
-              KeyboardPrefixSelectionMixin(
-                LanguageDirectionMixin(
-                  SelectedItemTextValueMixin(
-                    SelectionInViewMixin(
-                      SingleSelectionMixin(
-                        SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+      ItemCursorMixin(
+        ItemsTextMixin(
+          KeyboardDirectionMixin(
+            KeyboardMixin(
+              KeyboardPagedSelectionMixin(
+                KeyboardPrefixSelectionMixin(
+                  LanguageDirectionMixin(
+                    SelectedItemTextValueMixin(
+                      SelectionInViewMixin(
+                        SingleSelectionMixin(
+                          SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+                        )
                       )
                     )
                   )
@@ -126,17 +129,17 @@ class Menu extends Base {
       this.removeAttribute("tabindex");
     }
 
-    const { selectedIndex, items } = this[internal.state];
-    if ((changed.items || changed.selectedIndex) && items) {
+    const { currentIndex, items } = this[internal.state];
+    if ((changed.items || changed.currentIndex) && items) {
       // Reflect the selection state to the item.
       items.forEach((item, index) => {
-        item.toggleAttribute("selected", index === selectedIndex);
+        item.toggleAttribute("selected", index === currentIndex);
       });
     }
 
     if (
       (changed.items ||
-        changed.selectedIndex ||
+        changed.currentIndex ||
         changed.selectionFocused ||
         changed.focusVisible) &&
       items
@@ -155,8 +158,8 @@ class Menu extends Base {
       // the new item has been focused, remove the tabindex from any
       // previously-selected item.
       items.forEach((item, index) => {
-        const selected = index === selectedIndex;
-        const isDefaultFocusableItem = selectedIndex < 0 && index === 0;
+        const selected = index === currentIndex;
+        const isDefaultFocusableItem = currentIndex < 0 && index === 0;
         if (!this[internal.state].selectionFocused) {
           // Phase 1: Add tabindex to newly-selected item.
           if (selected || isDefaultFocusableItem) {
@@ -176,7 +179,7 @@ class Menu extends Base {
     super[internal.rendered](changed);
     if (
       !this[internal.firstRender] &&
-      changed.selectedIndex &&
+      changed.currentIndex &&
       !this[internal.state].selectionFocused
     ) {
       // The selected item needs the focus, but this is complicated. See notes
@@ -201,7 +204,7 @@ class Menu extends Base {
     const effects = super[internal.stateEffects](state, changed);
 
     // When selection changes, we'll need to focus on it in rendered.
-    if (changed.selectedIndex) {
+    if (changed.currentIndex) {
       Object.assign(effects, {
         selectionFocused: false,
       });
