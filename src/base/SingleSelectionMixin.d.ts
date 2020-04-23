@@ -18,11 +18,7 @@ declare const SingleSelectionMixin: StateMixin<
     selectNext(): boolean;
     selectPrevious(): boolean;
   },
-  {
-    selectedIndex: number;
-    selectionRequired: boolean;
-    selectionWraps: boolean;
-  }
+  {}
 >;
 
 export default SingleSelectionMixin;

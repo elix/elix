@@ -76,15 +76,15 @@ export default function TapSelectionMixin(Base) {
       // Find which item was clicked on and, if found, select it. For elements
       // which don't require a selection, a background click will determine
       // the item was null, in which we case we'll remove the selection.
-      const { items, selectedIndex, selectionRequired } = this[internal.state];
+      const { items, currentIndex, currentItemRequired } = this[internal.state];
       if (items && target instanceof Node) {
         const targetIndex = indexOfItemContainingTarget(items, target);
         if (
           targetIndex >= 0 ||
-          (!selectionRequired && selectedIndex !== targetIndex)
+          (!currentItemRequired && currentIndex !== targetIndex)
         ) {
           this[internal.setState]({
-            selectedIndex: targetIndex,
+            currentIndex: targetIndex,
           });
           event.stopPropagation();
         }

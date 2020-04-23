@@ -57,7 +57,7 @@ export default function AriaListMixin(Base) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
-      const { selectedIndex, itemRole } = this[internal.state];
+      const { currentIndex, itemRole } = this[internal.state];
       /** @type {ListItemElement[]} */ const items = this[internal.state].items;
       if (changed.items && items) {
         // Give each item an ID.
@@ -77,22 +77,22 @@ export default function AriaListMixin(Base) {
           }
         });
       }
-      if (changed.items || changed.selectedIndex) {
-        // Reflect the selection state to each item.
+      if (changed.items || changed.currentIndex) {
+        // Reflect the current state to each item.
         if (items) {
           items.forEach((item, index) => {
-            const selected = index === selectedIndex;
+            const selected = index === currentIndex;
             item.setAttribute("aria-selected", selected.toString());
           });
         }
-        // Point the top element at the selected item.
-        const selectedItem =
-          selectedIndex >= 0 && items ? items[selectedIndex] : null;
-        if (selectedItem) {
-          if (!selectedItem.id) {
-            selectedItem.id = ensureId(selectedItem);
+        // Point the top element at the current item.
+        const currentItem =
+          currentIndex >= 0 && items ? items[currentIndex] : null;
+        if (currentItem) {
+          if (!currentItem.id) {
+            currentItem.id = ensureId(currentItem);
           }
-          this.setAttribute("aria-activedescendant", selectedItem.id);
+          this.setAttribute("aria-activedescendant", currentItem.id);
         } else {
           this.removeAttribute("aria-activedescendant");
         }

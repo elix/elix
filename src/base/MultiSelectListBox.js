@@ -8,6 +8,7 @@ import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import * as internal from "./internal.js";
+import ItemCursorMixin from "./ItemCursorMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
@@ -27,17 +28,19 @@ const Base = AriaListMixin(
     DirectionSelectionMixin(
       FocusVisibleMixin(
         //         FormElementMixin(
-        ItemsTextMixin(
-          KeyboardDirectionMixin(
-            KeyboardMixin(
-              KeyboardPagedSelectionMixin(
-                KeyboardPrefixSelectionMixin(
-                  LanguageDirectionMixin(
-                    //                       SelectedItemTextValueMixin(
-                    SelectionInViewMixin(
-                      MultiSelectionMixin(
-                        SingleSelectionMixin(
-                          SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+        ItemCursorMixin(
+          ItemsTextMixin(
+            KeyboardDirectionMixin(
+              KeyboardMixin(
+                KeyboardPagedSelectionMixin(
+                  KeyboardPrefixSelectionMixin(
+                    LanguageDirectionMixin(
+                      //                       SelectedItemTextValueMixin(
+                      SelectionInViewMixin(
+                        MultiSelectionMixin(
+                          SingleSelectionMixin(
+                            SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+                          )
                         )
                       )
                     )
@@ -91,9 +94,9 @@ class MultiSelectListBox extends Base {
     let handled;
     switch (event.key) {
       case " ": {
-        const { selectedIndex } = this[internal.state];
-        if (selectedIndex >= 0) {
-          toggleItemSelection(this, selectedIndex);
+        const { currentIndex } = this[internal.state];
+        if (currentIndex >= 0) {
+          toggleItemSelection(this, currentIndex);
         }
         break;
       }
@@ -120,12 +123,12 @@ class MultiSelectListBox extends Base {
       this.setAttribute("aria-multiselectable", "true");
     }
 
-    // Apply `active` style to the selected item only.
-    if (changed.items || changed.selectedIndex) {
-      const { selectedIndex, items } = this[internal.state];
+    // Apply `active` style to the current item only.
+    if (changed.items || changed.currentIndex) {
+      const { currentIndex, items } = this[internal.state];
       if (items) {
         items.forEach((item, index) => {
-          item.toggleAttribute("active", index === selectedIndex);
+          item.toggleAttribute("active", index === currentIndex);
         });
       }
     }

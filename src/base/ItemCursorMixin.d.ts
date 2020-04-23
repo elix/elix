@@ -3,6 +3,18 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-declare const ItemCursorMixin: StateMixin<{}, {}, {}, {}>;
+declare const ItemCursorMixin: StateMixin<
+  {},
+  {},
+  {},
+  {
+    canGoNext: boolean;
+    canGoPrevious: boolean;
+    currentIndex: number;
+    currentItem: Element | null;
+    currentItemRequired: boolean;
+    cursorOperationsWrap: boolean;
+  }
+>;
 
 export default ItemCursorMixin;

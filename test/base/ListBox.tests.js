@@ -1,5 +1,4 @@
 import ListBox from "../../define/ListBox.js";
-import * as internal from "../../src/base/internal.js";
 import * as mockInteractions from "../mockInteractions.js";
 import { assert } from "../testHelpers.js";
 
@@ -19,11 +18,11 @@ describe("ListBox", () => {
     container.appendChild(fixture);
     // Wait for initial content.
     await Promise.resolve();
-    assert.equal(fixture[internal.state].selectedIndex, -1);
+    assert.equal(fixture.selectedIndex, -1);
     const item = fixture.items[0];
     const eventPromise = new Promise((resolve) => {
       fixture.addEventListener("selected-index-changed", () => {
-        assert.equal(fixture[internal.state].selectedIndex, 0);
+        assert.equal(fixture.selectedIndex, 0);
         resolve();
       });
     });

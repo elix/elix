@@ -10,9 +10,9 @@ import { defaultScrollTarget } from "./scrolling.js";
  *
  * This mixin expects an `items` collection, such as that provided by
  * [ContentItemsMixin](ContentItemsMixin). It also expects a
- * `state.selectedIndex` member indicating which item is curently selected. You
+ * `state.currentItem` member indicating which item is curently selected. You
  * can supply that yourself, or use
- * [SingleSelectionMixin](SingleSelectionMixin).
+ * [ItemCursorMixin](ItemCursorMixin).
  *
  * @module SelectionInViewMixin
  * @param {Constructor<ReactiveElement>} Base
@@ -25,14 +25,14 @@ export default function SelectionInViewMixin(Base) {
         super[internal.rendered](changed);
       }
 
-      if (changed.selectedIndex) {
-        this.scrollSelectionIntoView();
+      if (changed.currentIndex) {
+        this.scrollCurrentItemIntoView();
       }
     }
 
     /**
-     * Scroll the selected item element completely into view, minimizing the
-     * degree of scrolling performed.
+     * Scroll the current item completely into view, minimizing the degree of
+     * scrolling performed.
      *
      * Blink has a `scrollIntoViewIfNeeded()` function that does something
      * similar, but unfortunately it's non-standard, and in any event often ends
@@ -41,19 +41,14 @@ export default function SelectionInViewMixin(Base) {
      * This scrolls the containing element defined by the `scrollTarget`
      * property. By default, it will scroll the element itself.
      */
-    scrollSelectionIntoView() {
-      if (super.scrollSelectionIntoView) {
-        super.scrollSelectionIntoView();
+    scrollCurrentItemIntoView() {
+      if (super.scrollCurrentItemIntoView) {
+        super.scrollCurrentItemIntoView();
       }
 
       const scrollTarget = this[internal.scrollTarget];
-      const { selectedIndex, items } = this[internal.state];
-      if (selectedIndex < 0 || !items) {
-        return;
-      }
-
-      const selectedItem = items[selectedIndex];
-      if (!selectedItem) {
+      const { currentItem, items } = this[internal.state];
+      if (!currentItem || !items) {
         return;
       }
 
@@ -61,7 +56,7 @@ export default function SelectionInViewMixin(Base) {
       // getBoundingClientRect instead of .offsetTop, etc., because the latter
       // round values, and we want to handle fractional values.
       const scrollTargetRect = scrollTarget.getBoundingClientRect();
-      const itemRect = selectedItem.getBoundingClientRect();
+      const itemRect = currentItem.getBoundingClientRect();
 
       // Determine how far the item is outside the viewport.
       const bottomDelta = itemRect.bottom - scrollTargetRect.bottom;

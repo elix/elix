@@ -100,13 +100,13 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       // Find item that begins with the prefix. Ignore case.
       const searchText = prefix.toLowerCase();
       /** @type {string[]} */ const texts = this[internal.state].texts;
-      const selectedIndex = texts.findIndex(
+      const index = texts.findIndex(
         (text) => text.substr(0, prefix.length).toLowerCase() === searchText
       );
-      if (selectedIndex >= 0) {
-        const previousIndex = this.selectedIndex;
-        this[internal.setState]({ selectedIndex });
-        return this.selectedIndex !== previousIndex;
+      if (index >= 0) {
+        const previousIndex = this[internal.state].currentIndex;
+        this[internal.setState]({ currentIndex: index });
+        return this[internal.state].currentIndex !== previousIndex;
       } else {
         return false;
       }

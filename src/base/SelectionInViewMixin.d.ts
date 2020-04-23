@@ -8,7 +8,7 @@ import * as internal from "./internal.js";
 declare const SelectionInViewMixin: Mixin<
   {},
   {
-    scrollItemIntoView(item: Element): void;
+    scrollCurrentItemIntoView(): void;
     readonly [internal.scrollTarget]: Element;
   }
 >;

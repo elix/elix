@@ -13,15 +13,8 @@ class TapSelectionTest extends TapSelectionMixin(
     const items = Array.prototype.slice.call(this.children);
     this[internal.setState]({
       items,
-      selectedIndex: -1,
+      currentIndex: -1,
     });
-  }
-
-  get selectedIndex() {
-    return this[internal.state].selectedIndex;
-  }
-  set selectedIndex(selectedIndex) {
-    this[internal.state].selectedIndex = selectedIndex;
   }
 }
 customElements.define("tap-selection-test", TapSelectionTest);
@@ -40,10 +33,10 @@ describe("TapSelectionMixin", function () {
   it("sets the tapped item as the selected item", (done) => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    assert.equal(fixture[internal.state].selectedIndex, -1);
+    assert.equal(fixture[internal.state].currentIndex, -1);
     const item = fixture[internal.state].items[0];
     fixture.addEventListener("mousedown", () => {
-      assert.equal(fixture[internal.state].selectedIndex, 0);
+      assert.equal(fixture[internal.state].currentIndex, 0);
       done();
     });
     mockInteractions.dispatchSyntheticMouseEvent(item, "mousedown");
@@ -52,11 +45,11 @@ describe("TapSelectionMixin", function () {
   it("ignores right clicks", (done) => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    assert.equal(fixture[internal.state].selectedIndex, -1);
+    assert.equal(fixture[internal.state].currentIndex, -1);
     const item = fixture[internal.state].items[0];
     fixture.addEventListener("mousedown", () => {
       assert.equal(
-        fixture[internal.state].selectedIndex,
+        fixture[internal.state].currentIndex,
         -1,
         "handled mousedown even when right button was pressed"
       );

@@ -1,5 +1,5 @@
-import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
 
 /**
  * Adds mutiple-selection semantics to a list-like element.
@@ -32,12 +32,6 @@ export default function MultiSelectionMixin(Base) {
 
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
-        // canSelectNext: null,
-        // canSelectPrevious: null,
-        // selectedIndex: -1,
-        // selectionRequired: false,
-        // selectionWraps: false,
-        // trackSelectedItem: true
         selectedIndices: [],
       });
     }
@@ -273,57 +267,4 @@ export default function MultiSelectionMixin(Base) {
   }
 
   return MultiSelection;
-}
-
-/**
- * Validate the given selected index and, if that's not the element's current
- * selected index, update it.
- *
- * @private
- * @param {ReactiveElement} element
- * @param {number} selectedIndex
- */
-function updateSelectedIndex(element, selectedIndex) {
-  const validatedIndex = validateIndex(
-    selectedIndex,
-    element[internal.state].items.length,
-    element[internal.state].selectionRequired,
-    element[internal.state].selectionWraps
-  );
-  const changed = element[internal.state].selectedIndex !== validatedIndex;
-  if (changed) {
-    element[internal.setState]({
-      selectedIndex: validatedIndex,
-    });
-  }
-  return changed;
-}
-
-/**
- * Force the indicated index to be between -1 and count - 1.
- *
- * @private
- * @param {number} index
- * @param {number} count
- * @param {boolean} selectionRequired
- * @param {boolean} selectionWraps
- */
-function validateIndex(index, count, selectionRequired, selectionWraps) {
-  let validatedIndex;
-  if (index === -1 && selectionRequired && count > 0) {
-    // Ensure there's a selection.
-    validatedIndex = 0;
-  } else if (selectionWraps && count > 0) {
-    // Wrap the index.
-    // JavaScript mod doesn't handle negative numbers the way we want to wrap.
-    // See http://stackoverflow.com/a/18618250/76472
-    validatedIndex = ((index % count) + count) % count;
-  } else {
-    // Force index within bounds of -1 (no selection) to array length-1.
-    // This logic also handles the case where there are no items
-    // (count=0), which will produce a validated index of -1 (no
-    // selection) regardless of what selectedIndex was asked for.
-    validatedIndex = Math.max(Math.min(index, count - 1), -1);
-  }
-  return validatedIndex;
 }

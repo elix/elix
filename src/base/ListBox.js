@@ -6,6 +6,7 @@ import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import * as internal from "./internal.js";
+import ItemCursorMixin from "./ItemCursorMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
@@ -23,16 +24,18 @@ const Base = AriaListMixin(
     DirectionSelectionMixin(
       FocusVisibleMixin(
         FormElementMixin(
-          ItemsTextMixin(
-            KeyboardDirectionMixin(
-              KeyboardMixin(
-                KeyboardPagedSelectionMixin(
-                  KeyboardPrefixSelectionMixin(
-                    LanguageDirectionMixin(
-                      SelectedItemTextValueMixin(
-                        SelectionInViewMixin(
-                          SingleSelectionMixin(
-                            SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+          ItemCursorMixin(
+            ItemsTextMixin(
+              KeyboardDirectionMixin(
+                KeyboardMixin(
+                  KeyboardPagedSelectionMixin(
+                    KeyboardPrefixSelectionMixin(
+                      LanguageDirectionMixin(
+                        SelectedItemTextValueMixin(
+                          SelectionInViewMixin(
+                            SingleSelectionMixin(
+                              SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+                            )
                           )
                         )
                       )
@@ -91,12 +94,12 @@ class ListBox extends Base {
 
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
-    if (changed.items || changed.selectedIndex) {
+    if (changed.items || changed.currentIndex) {
       // Apply `selected` style to the selected item only.
-      const { selectedIndex, items } = this[internal.state];
+      const { currentIndex, items } = this[internal.state];
       if (items) {
         items.forEach((item, index) => {
-          item.toggleAttribute("selected", index === selectedIndex);
+          item.toggleAttribute("selected", index === currentIndex);
         });
       }
     }

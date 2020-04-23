@@ -25,7 +25,7 @@ import { defaultScrollTarget } from "./scrolling.js";
  * * A `[internal.keydown]` method invoked when a key is pressed. You can use
  *   [KeyboardMixin](KeyboardMixin) for that purpose, or wire up your own
  *   keyboard handling and call `[internal.keydown]` yourself.
- * * A `selectedIndex` state member updatable via [internal.setState]`.
+ * * A `currentIndex` state member updatable via [internal.setState]`.
  *
  * @module KeyboardPagedSelectionMixin
  * @param {Constructor<ReactiveElement>} Base
@@ -174,7 +174,7 @@ function getIndexOfItemAtY(items, y, downward) {
 function scrollOnePage(element, downward) {
   const scrollTarget = element[internal.scrollTarget];
   const items = element[internal.state].items;
-  const selectedIndex = element[internal.state].selectedIndex;
+  const currentIndex = element[internal.state].currentIndex;
 
   // Determine the item visible just at the edge of direction we're heading.
   // We'll select that item if it's not already selected.
@@ -183,11 +183,11 @@ function scrollOnePage(element, downward) {
   const indexOfItemAtEdge = getIndexOfItemAtY(items, edge, downward);
 
   let newIndex;
-  if (indexOfItemAtEdge && selectedIndex === indexOfItemAtEdge) {
+  if (indexOfItemAtEdge && currentIndex === indexOfItemAtEdge) {
     // The item at the edge was already selected, so scroll in the indicated
     // direction by one page, measuring from the bounds of the currently
     // selected item. Leave the new item at that edge selected.
-    const selectedItem = items[selectedIndex];
+    const selectedItem = items[currentIndex];
     const selectedRect = selectedItem.getBoundingClientRect();
     const pageHeight = scrollTarget.clientHeight;
     const y = downward
@@ -208,17 +208,17 @@ function scrollOnePage(element, downward) {
   }
 
   // If external code causes an operation that scrolls the page, it's impossible
-  // for it to predict where the selectedIndex is going to end up. Accordingly,
+  // for it to predict where the currentIndex is going to end up. Accordingly,
   // we raise change events.
   const saveRaiseChangesEvents = element[internal.raiseChangeEvents];
   element[internal.raiseChangeEvents] = true;
 
   element[internal.setState]({
-    selectedIndex: newIndex,
+    currentIndex: newIndex,
   });
 
   element[internal.raiseChangeEvents] = saveRaiseChangesEvents;
 
-  const changed = element[internal.state].selectedIndex !== selectedIndex;
+  const changed = element[internal.state].currentIndex !== currentIndex;
   return changed;
 }
