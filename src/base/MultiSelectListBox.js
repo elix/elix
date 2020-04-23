@@ -93,7 +93,7 @@ class MultiSelectListBox extends Base {
       case " ": {
         const { selectedIndex } = this[internal.state];
         if (selectedIndex >= 0) {
-          this.toggleItemSelection(selectedIndex);
+          toggleItemSelection(this, selectedIndex);
         }
         break;
       }
@@ -174,7 +174,6 @@ class MultiSelectListBox extends Base {
     // will be the component, not the item that was clicked on. Instead of
     // using the event target, we get the first node in the event's composed
     // path.
-    // @ts-ignore
     const target = event.composedPath ? event.composedPath()[0] : event.target;
 
     // Find which item was clicked on and, if found, select it. For elements
@@ -184,8 +183,7 @@ class MultiSelectListBox extends Base {
     if (items && target instanceof Node) {
       const targetIndex = indexOfItemContainingTarget(items, target);
       if (targetIndex >= 0) {
-        this.toggleItemSelection(targetIndex);
-        event.stopPropagation();
+        toggleItemSelection(this, targetIndex);
       }
     }
   }
@@ -214,15 +212,14 @@ class MultiSelectListBox extends Base {
     `);
     return result;
   }
-
-  toggleItemSelection(itemIndex) {
-    const { selectedIndices } = this[internal.state];
-    const newIndices = [...selectedIndices];
-    newIndices[itemIndex] = !newIndices[itemIndex];
-    this[internal.setState]({
-      selectedIndices: newIndices,
-    });
-  }
 }
 
+function toggleItemSelection(element, itemIndex) {
+  const { selectedIndices } = element[internal.state];
+  const newIndices = [...selectedIndices];
+  newIndices[itemIndex] = !newIndices[itemIndex];
+  element[internal.setState]({
+    selectedIndices: newIndices,
+  });
+}
 export default MultiSelectListBox;
