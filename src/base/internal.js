@@ -157,6 +157,20 @@ export const goDown = Symbol("goDown");
 export const goEnd = Symbol("goEnd");
 
 /**
+ * Symbol for the `goFirst` method.
+ *
+ * This method is invoked when the user wants to go to the first item in a list.
+ */
+export const goFirst = Symbol("goFirst");
+
+/**
+ * Symbol for the `goLast` method.
+ *
+ * This method is invoked when the user wants to go to the last item in a list.
+ */
+export const goLast = Symbol("goLast");
+
+/**
  * Symbol for the `goLeft` method.
  *
  * This method is invoked when the user wants to go/navigate left. Mixins that

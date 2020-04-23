@@ -17,16 +17,6 @@ class ItemCursorTest extends ItemCursorMixin(ReactiveMixin(HTMLElement)) {
 customElements.define("current-item-test", ItemCursorTest);
 
 describe("ItemCursorMixin", () => {
-  let container;
-
-  before(() => {
-    container = document.getElementById("container");
-  });
-
-  afterEach(() => {
-    container.innerHTML = "";
-  });
-
   it("has currentIndex initially -1", () => {
     const fixture = new ItemCursorTest();
     assert.equal(fixture[internal.state].currentIndex, -1);
@@ -127,81 +117,43 @@ describe("ItemCursorMixin", () => {
     assert.equal(fixture[internal.state].currentIndex, -1);
   });
 
-  // it("sets canSelectNext/canSelectPrevious with no wrapping", async () => {
-  //   const fixture = new ItemCursorTest();
-  //   assert(!fixture.selectionWraps);
+  it("sets canGoNext/canGoPrevious with no wrapping", () => {
+    const fixture = new ItemCursorTest();
+    assert(!fixture[internal.state].cursorOperationsWrap);
 
-  //   // No selection yet
-  //   assert.equal(fixture[internal.state].selectedIndex, -1);
-  //   assert(fixture[internal.state].canSelectNext);
-  //   assert(fixture[internal.state].canSelectPrevious);
+    // No current item yet
+    assert.equal(fixture[internal.state].currentIndex, -1);
+    assert(fixture[internal.state].canGoNext);
+    assert(fixture[internal.state].canGoPrevious);
 
-  //   // Start of list
-  //   fixture.selectFirst();
-  //   assert(fixture[internal.state].canSelectNext);
-  //   assert(!fixture[internal.state].canSelectPrevious);
+    // Start of list
+    fixture[internal.goFirst]();
+    assert(fixture[internal.state].canGoNext);
+    assert(!fixture[internal.state].canGoPrevious);
 
-  //   // Middle of list
-  //   fixture.selectNext();
-  //   assert(fixture[internal.state].canSelectNext);
-  //   assert(fixture[internal.state].canSelectPrevious);
+    // Middle of list
+    fixture[internal.goNext]();
+    assert(fixture[internal.state].canGoNext);
+    assert(fixture[internal.state].canGoPrevious);
 
-  //   // End of list
-  //   fixture.selectLast();
-  //   assert(!fixture[internal.state].canSelectNext);
-  //   assert(fixture[internal.state].canSelectPrevious);
+    // End of list
+    fixture[internal.goLast]();
+    assert(!fixture[internal.state].canGoNext);
+    assert(fixture[internal.state].canGoPrevious);
+  });
 
-  //   await Promise.resolve();
-  // });
+  it("sets canGoNext/canGoPrevious with wrapping", () => {
+    const fixture = new ItemCursorTest();
+    fixture[internal.setState]({ cursorOperationsWrap: true });
 
-  // it("sets canSelectNext/canSelectPrevious with wrapping", async () => {
-  //   const fixture = new ItemCursorTest();
-  //   fixture.selectionWraps = true;
+    // Start of list
+    fixture[internal.goFirst]();
+    assert(fixture[internal.state].canGoNext);
+    assert(fixture[internal.state].canGoPrevious);
 
-  //   // Start of list
-  //   fixture.selectFirst();
-  //   assert(fixture[internal.state].canSelectNext);
-  //   assert(fixture[internal.state].canSelectPrevious);
-
-  //   // End of list
-  //   fixture.selectLast();
-  //   assert(fixture[internal.state].canSelectNext);
-  //   assert(fixture[internal.state].canSelectPrevious);
-
-  //   await Promise.resolve();
-  // });
-
-  // it("changing selection through (simulated) user interaction raises the selected-index-changed event", (done) => {
-  //   const fixture = new ItemCursorTest();
-  //   fixture.addEventListener("selected-index-changed", () => {
-  //     done();
-  //   });
-  //   container.appendChild(fixture);
-
-  //   fixture[internal.raiseChangeEvents] = true; // Simulate user interaction
-  //   fixture.selectedIndex = 1;
-  //   fixture[internal.raiseChangeEvents] = false;
-  // });
-
-  // it("changing selection programmatically does not raise the selected-index-changed event", (done) => {
-  //   const fixture = new ItemCursorTest();
-  //   fixture.addEventListener("selected-index-changed", () => {
-  //     assert.fail(
-  //       null,
-  //       null,
-  //       "selected-index-changed event should not have been raised in response to programmatic property change"
-  //     );
-  //   });
-  //   container.appendChild(fixture);
-  //   fixture.selectedIndex = 1; // This should not trigger events.
-  //   // Give event handler a chance to run (but it shouldn't).
-  //   setTimeout(done);
-  // });
-
-  // it("ignores a selectedIndex that's not a number", () => {
-  //   const fixture = new ItemCursorTest();
-  //   // @ts-ignore
-  //   fixture.selectedIndex = "foo";
-  //   assert.equal(fixture.selectedIndex, -1);
-  // });
+    // End of list
+    fixture[internal.goLast]();
+    assert(fixture[internal.state].canGoNext);
+    assert(fixture[internal.state].canGoPrevious);
+  });
 });

@@ -26,6 +26,8 @@ export const focusTarget: "_focusTarget";
 export const getItemText: "_getItemText";
 export const goDown: "_goDown";
 export const goEnd: "_goEnd";
+export const goFirst: "_goFirst";
+export const goLast: "_goLast";
 export const goLeft: "_goLeft";
 export const goNext: "_goNext";
 export const goPrevious: "_goPrevious";

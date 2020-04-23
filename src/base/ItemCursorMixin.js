@@ -10,29 +10,10 @@ import * as internal from "./internal.js";
 export default function ItemCursorMixin(Base) {
   // The class prototype added by the mixin.
   class ItemCursor extends Base {
-    // /**
-    //  * True if the selection can be moved to the next item, false if not (the
-    //  * selected item is the last item in the list).
-    //  *
-    //  * @type {boolean}
-    //  */
-    // get canSelectNext() {
-    //   return this[internal.state].canSelectNext;
-    // }
-    // /**
-    //  * True if the selection can be moved to the previous item, false if not
-    //  * (the selected item is the first one in the list).
-    //  *
-    //  * @type {boolean}
-    //  */
-    // get canSelectPrevious() {
-    //   return this[internal.state].canSelectPrevious;
-    // }
-
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
-        // canSelectNext: null,
-        // canSelectPrevious: null,
+        canGoNext: false,
+        canGoPrevious: false,
         currentIndex: -1,
         currentItem: null,
         currentItemRequired: false,
@@ -40,109 +21,29 @@ export default function ItemCursorMixin(Base) {
       });
     }
 
-    // [internal.rendered](/** @type {ChangedFlags} */ changed) {
-    //   if (super[internal.rendered]) {
-    //     super[internal.rendered](changed);
-    //   }
-    //   if (changed.selectedIndex && this[internal.raiseChangeEvents]) {
-    //     const selectedIndex = this[internal.state].selectedIndex;
-    //     /**
-    //      * Raised when the `selectedIndex` property changes.
-    //      *
-    //      * @event selected-index-changed
-    //      */
-    //     const event = new CustomEvent("selected-index-changed", {
-    //       detail: { selectedIndex },
-    //     });
-    //     this.dispatchEvent(event);
-    //   }
-    // }
-    // /**
-    //  * Select the first item in the list.
-    //  *
-    //  * @returns {Boolean} True if the selection changed, false if not.
-    //  */
-    // selectFirst() {
-    //   if (super.selectFirst) {
-    //     super.selectFirst();
-    //   }
-    //   return updateSelectedIndex(this, 0);
-    // }
-    // /**
-    //  * The index of the currently-selected item, or -1 if no item is selected.
-    //  *
-    //  * @type {number}
-    //  */
-    // get selectedIndex() {
-    //   const { items, selectedIndex } = this[internal.state];
-    //   return items && items.length > 0 ? selectedIndex : -1;
-    // }
-    // set selectedIndex(selectedIndex) {
-    //   const parsed = Number(selectedIndex);
-    //   if (!isNaN(parsed)) {
-    //     this[internal.setState]({
-    //       selectedIndex: parsed,
-    //     });
-    //   }
-    // }
-    // /**
-    //  * The currently-selected item, or null if no item is selected.
-    //  *
-    //  * @type {Element}
-    //  */
-    // get selectedItem() {
-    //   const { items, selectedIndex } = this[internal.state];
-    //   return items && items[selectedIndex];
-    // }
-    // set selectedItem(selectedItem) {
-    //   const { items } = this[internal.state];
-    //   if (!items) {
-    //     return;
-    //   }
-    //   const selectedIndex = items.indexOf(selectedItem);
-    //   if (selectedIndex >= 0) {
-    //     this[internal.setState]({ selectedIndex });
-    //   }
-    // }
-    // /**
-    //  * True if the list should always have a selection (if it has items).
-    //  *
-    //  * @type {boolean}
-    //  * @default false
-    //  */
-    // get selectionRequired() {
-    //   return this[internal.state].selectionRequired;
-    // }
-    // set selectionRequired(selectionRequired) {
-    //   this[internal.setState]({
-    //     selectionRequired: String(selectionRequired) === "true",
-    //   });
-    // }
-    // /**
-    //  * True if selection navigations wrap from last to first, and vice versa.
-    //  *
-    //  * @type {boolean}
-    //  * @default false
-    //  */
-    // get selectionWraps() {
-    //   return this[internal.state].selectionWraps;
-    // }
-    // set selectionWraps(selectionWraps) {
-    //   this[internal.setState]({
-    //     selectionWraps: String(selectionWraps) === "true",
-    //   });
-    // }
-    // /**
-    //  * Select the last item in the list.
-    //  *
-    //  * @returns {Boolean} True if the selection changed, false if not.
-    //  */
-    // selectLast() {
-    //   if (super.selectLast) {
-    //     super.selectLast();
-    //   }
-    //   return updateSelectedIndex(this, this[internal.state].items.length - 1);
-    // }
+    /**
+     * Move to the first item in the set.
+     *
+     * @returns {Boolean} True if the selection changed, false if not.
+     */
+    [internal.goFirst]() {
+      if (super[internal.goFirst]) {
+        super[internal.goFirst]();
+      }
+      return moveToIndex(this, 0);
+    }
+
+    /**
+     * Move to the last item in the set.
+     *
+     * @returns {Boolean} True if the selection changed, false if not.
+     */
+    [internal.goLast]() {
+      if (super[internal.goLast]) {
+        super[internal.goLast]();
+      }
+      return moveToIndex(this, this[internal.state].items.length - 1);
+    }
 
     /**
      * Move to the next item in the set.
@@ -155,7 +56,7 @@ export default function ItemCursorMixin(Base) {
       if (super[internal.goNext]) {
         super[internal.goNext]();
       }
-      let newIndex;
+      let index;
       const { items, currentIndex, cursorOperationsWrap } = this[
         internal.state
       ];
@@ -165,19 +66,15 @@ export default function ItemCursorMixin(Base) {
       ) {
         // No item is current, or we're on the last item and cursor operations
         // wrap. Move to the first item.
-        newIndex = 0;
+        index = 0;
       } else if (currentIndex < items.length - 1) {
         // Move to the next item.
-        newIndex = currentIndex + 1;
+        index = currentIndex + 1;
       } else {
         // Already on last item, can't go next.
         return false;
       }
-      const changed = this[internal.state].currentIndex !== newIndex;
-      if (changed) {
-        this[internal.setState]({ currentIndex: newIndex });
-      }
-      return changed;
+      return moveToIndex(this, index);
     }
 
     /**
@@ -191,7 +88,7 @@ export default function ItemCursorMixin(Base) {
       if (super[internal.goPrevious]) {
         super[internal.goPrevious]();
       }
-      let newIndex;
+      let index;
       const { items, currentIndex, cursorOperationsWrap } = this[
         internal.state
       ];
@@ -201,19 +98,15 @@ export default function ItemCursorMixin(Base) {
       ) {
         // No item is current, or we're on the first item and cursor operations
         // wrap. Move to the last item.
-        newIndex = items.length - 1;
+        index = items.length - 1;
       } else if (currentIndex > 0) {
         // Move to the previous item.
-        newIndex = currentIndex - 1;
+        index = currentIndex - 1;
       } else {
         // Already on first item, can't go previous.
         return false;
       }
-      const changed = this[internal.state].currentIndex !== newIndex;
-      if (changed) {
-        this[internal.setState]({ currentIndex: newIndex });
-      }
-      return changed;
+      return moveToIndex(this, index);
     }
 
     [internal.stateEffects](state, changed) {
@@ -256,7 +149,7 @@ export default function ItemCursorMixin(Base) {
           // Force index within bounds of -1 (no selection) to array length-1.
           // This logic also handles the case where there are no items
           // (count=0), which will produce a validated index of -1 (no
-          // selection) regardless of what selectedIndex was asked for.
+          // selection) regardless of what currentIndex was asked for.
           newIndex = Math.max(Math.min(newIndex, count - 1), -1);
         }
 
@@ -267,31 +160,39 @@ export default function ItemCursorMixin(Base) {
         });
       }
 
-      // // Update computed state members canSelectNext/canSelectPrevious.
-      // if (changed.items || changed.selectedIndex || changed.selectionWraps) {
-      //   const { items, selectedIndex, selectionWraps } = state;
-      //   if (items) {
-      //     const count = items.length;
-      //     const canSelectNext =
-      //       count === 0
-      //         ? false
-      //         : selectionWraps ||
-      //           selectedIndex < 0 ||
-      //           selectedIndex < count - 1;
-      //     const canSelectPrevious =
-      //       count === 0
-      //         ? false
-      //         : selectionWraps || selectedIndex < 0 || selectedIndex > 0;
-      //     Object.assign(effects, {
-      //       canSelectNext,
-      //       canSelectPrevious,
-      //     });
-      //   }
-      // }
+      // Update computed state members canGoNext/canGoPrevious.
+      if (
+        changed.currentIndex ||
+        changed.cursorOperationsWrap ||
+        changed.items
+      ) {
+        const { items, currentIndex, cursorOperationsWrap } = state;
+        if (items) {
+          const count = items.length;
+          const canGoNext =
+            count === 0
+              ? false
+              : cursorOperationsWrap || currentIndex !== count - 1;
+          const canGoPrevious =
+            count === 0 ? false : cursorOperationsWrap || currentIndex !== 0;
+          Object.assign(effects, {
+            canGoNext,
+            canGoPrevious,
+          });
+        }
+      }
 
       return effects;
     }
   }
 
   return ItemCursor;
+}
+
+function moveToIndex(element, index) {
+  const changed = element[internal.state].currentIndex !== index;
+  if (changed) {
+    element[internal.setState]({ currentIndex: index });
+  }
+  return changed;
 }
