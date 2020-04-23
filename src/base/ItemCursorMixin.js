@@ -136,7 +136,7 @@ export default function ItemCursorMixin(Base) {
           }
         }
 
-        const count = items.length;
+        const count = items ? items.length : 0;
         if (items === null) {
           // If items are null, we haven't received items yet. Leave the index
           // alone, as it may be set later through markup; we'll want to

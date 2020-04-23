@@ -28,7 +28,7 @@ export default function SingleSelectionMixin(Base) {
      * @type {boolean}
      */
     get canSelectNext() {
-      return this[internal.state].canSelectNext;
+      return this[internal.state].canGoNext;
     }
 
     /**
@@ -38,26 +38,15 @@ export default function SingleSelectionMixin(Base) {
      * @type {boolean}
      */
     get canSelectPrevious() {
-      return this[internal.state].canSelectPrevious;
-    }
-
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
-        canSelectNext: null,
-        canSelectPrevious: null,
-        selectedIndex: -1,
-        selectionRequired: false,
-        selectionWraps: false,
-        trackSelectedItem: true,
-      });
+      return this[internal.state].canGoPrevious;
     }
 
     [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
       }
-      if (changed.selectedIndex && this[internal.raiseChangeEvents]) {
-        const selectedIndex = this[internal.state].selectedIndex;
+      if (changed.currentIndex && this[internal.raiseChangeEvents]) {
+        const selectedIndex = this[internal.state].currentIndex;
         /**
          * Raised when the `selectedIndex` property changes.
          *
@@ -79,7 +68,7 @@ export default function SingleSelectionMixin(Base) {
       if (super.selectFirst) {
         super.selectFirst();
       }
-      return updateSelectedIndex(this, 0);
+      return this[internal.goFirst]();
     }
 
     /**
@@ -88,14 +77,14 @@ export default function SingleSelectionMixin(Base) {
      * @type {number}
      */
     get selectedIndex() {
-      const { items, selectedIndex } = this[internal.state];
-      return items && items.length > 0 ? selectedIndex : -1;
+      const { items, currentIndex } = this[internal.state];
+      return items && items.length > 0 ? currentIndex : -1;
     }
     set selectedIndex(selectedIndex) {
       const parsed = Number(selectedIndex);
       if (!isNaN(parsed)) {
         this[internal.setState]({
-          selectedIndex: parsed,
+          currentIndex: parsed,
         });
       }
     }
@@ -106,17 +95,17 @@ export default function SingleSelectionMixin(Base) {
      * @type {Element}
      */
     get selectedItem() {
-      const { items, selectedIndex } = this[internal.state];
-      return items && items[selectedIndex];
+      const { items, currentIndex } = this[internal.state];
+      return items && items[currentIndex];
     }
     set selectedItem(selectedItem) {
       const { items } = this[internal.state];
       if (!items) {
         return;
       }
-      const selectedIndex = items.indexOf(selectedItem);
-      if (selectedIndex >= 0) {
-        this[internal.setState]({ selectedIndex });
+      const index = items.indexOf(selectedItem);
+      if (index >= 0) {
+        this[internal.setState]({ currentIndex: index });
       }
     }
 
@@ -127,11 +116,11 @@ export default function SingleSelectionMixin(Base) {
      * @default false
      */
     get selectionRequired() {
-      return this[internal.state].selectionRequired;
+      return this[internal.state].currentItemRequired;
     }
     set selectionRequired(selectionRequired) {
       this[internal.setState]({
-        selectionRequired: String(selectionRequired) === "true",
+        currentItemRequired: String(selectionRequired) === "true",
       });
     }
 
@@ -142,11 +131,11 @@ export default function SingleSelectionMixin(Base) {
      * @default false
      */
     get selectionWraps() {
-      return this[internal.state].selectionWraps;
+      return this[internal.state].cursorOperationsWrap;
     }
     set selectionWraps(selectionWraps) {
       this[internal.setState]({
-        selectionWraps: String(selectionWraps) === "true",
+        cursorOperationsWrap: String(selectionWraps) === "true",
       });
     }
 
@@ -159,7 +148,7 @@ export default function SingleSelectionMixin(Base) {
       if (super.selectLast) {
         super.selectLast();
       }
-      return updateSelectedIndex(this, this[internal.state].items.length - 1);
+      return this[internal.goLast]();
     }
 
     /**
@@ -173,7 +162,7 @@ export default function SingleSelectionMixin(Base) {
       if (super.selectNext) {
         super.selectNext();
       }
-      return updateSelectedIndex(this, this[internal.state].selectedIndex + 1);
+      return this[internal.goNext]();
     }
 
     /**
@@ -187,153 +176,9 @@ export default function SingleSelectionMixin(Base) {
       if (super.selectPrevious) {
         super.selectPrevious();
       }
-      let newIndex;
-      const { items, selectedIndex, selectionWraps } = this[internal.state];
-      if (
-        (items && selectedIndex < 0) ||
-        (selectionWraps && selectedIndex === 0)
-      ) {
-        // No selection yet, or we're on the first item, and selection wraps.
-        // In either case, select the last item.
-        newIndex = items.length - 1;
-      } else if (selectedIndex > 0) {
-        // Select the previous item.
-        newIndex = selectedIndex - 1;
-      } else {
-        // Already on first item, can't go previous.
-        return false;
-      }
-      return updateSelectedIndex(this, newIndex);
-    }
-
-    [internal.stateEffects](state, changed) {
-      const effects = super[internal.stateEffects]
-        ? super[internal.stateEffects](state, changed)
-        : {};
-
-      // Ensure selectedIndex is valid.
-      if (changed.items || changed.selectedIndex || changed.selectionRequired) {
-        const {
-          items,
-          selectedIndex,
-          selectionRequired,
-          selectionWraps,
-        } = state;
-
-        let adjustedIndex = selectedIndex;
-        if (
-          changed.items &&
-          items &&
-          !changed.selectedIndex &&
-          state.trackSelectedItem
-        ) {
-          // The index stayed the same, but the item may have moved.
-          const selectedItem = this.selectedItem;
-          if (items[selectedIndex] !== selectedItem) {
-            // The item moved or was removed. See if we can find the item
-            // again in the list of items.
-            const currentIndex = items.indexOf(selectedItem);
-            if (currentIndex >= 0) {
-              // Found the item again. Update the index to match.
-              adjustedIndex = currentIndex;
-            }
-          }
-        }
-
-        // If items are null, we haven't received items yet. Don't validate the
-        // selected index, as it may be set through markup; we'll want to validate
-        // it only after we have items.
-        if (items) {
-          const validatedIndex = validateIndex(
-            adjustedIndex,
-            items.length,
-            selectionRequired,
-            selectionWraps
-          );
-          Object.assign(effects, {
-            selectedIndex: validatedIndex,
-          });
-        }
-      }
-
-      // Update computed state members canSelectNext/canSelectPrevious.
-      if (changed.items || changed.selectedIndex || changed.selectionWraps) {
-        const { items, selectedIndex, selectionWraps } = state;
-        if (items) {
-          const count = items.length;
-          const canSelectNext =
-            count === 0
-              ? false
-              : selectionWraps ||
-                selectedIndex < 0 ||
-                selectedIndex < count - 1;
-          const canSelectPrevious =
-            count === 0
-              ? false
-              : selectionWraps || selectedIndex < 0 || selectedIndex > 0;
-          Object.assign(effects, {
-            canSelectNext,
-            canSelectPrevious,
-          });
-        }
-      }
-
-      return effects;
+      return this[internal.goPrevious]();
     }
   }
 
   return SingleSelection;
-}
-
-/**
- * Validate the given selected index and, if that's not the element's current
- * selected index, update it.
- *
- * @private
- * @param {ReactiveElement} element
- * @param {number} selectedIndex
- */
-function updateSelectedIndex(element, selectedIndex) {
-  const validatedIndex = validateIndex(
-    selectedIndex,
-    element[internal.state].items.length,
-    element[internal.state].selectionRequired,
-    element[internal.state].selectionWraps
-  );
-  const changed = element[internal.state].selectedIndex !== validatedIndex;
-  if (changed) {
-    element[internal.setState]({
-      selectedIndex: validatedIndex,
-    });
-  }
-  return changed;
-}
-
-/**
- * Force the indicated index to be between -1 and count - 1.
- *
- * @private
- * @param {number} index
- * @param {number} count
- * @param {boolean} selectionRequired
- * @param {boolean} selectionWraps
- */
-function validateIndex(index, count, selectionRequired, selectionWraps) {
-  let validatedIndex;
-  if (index === -1 && selectionRequired && count > 0) {
-    // Ensure there's a selection.
-    validatedIndex = 0;
-  } else if (selectionWraps && count > 0) {
-    // Wrap the index.
-    // JavaScript mod doesn't handle negative numbers the way we want to wrap.
-    // See http://stackoverflow.com/a/18618250/76472
-    validatedIndex = ((index % count) + count) % count;
-  } else {
-    // Force index within bounds of -1 (no selection) to array length-1.
-    // This logic also handles the case where there are no items
-    // (count=0), which will produce a validated index of -1 (no
-    // selection) regardless of what selectedIndex was asked for.
-    validatedIndex = Math.max(Math.min(index, count - 1), -1);
-  }
-  return validatedIndex;
 }

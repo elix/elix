@@ -1,10 +1,11 @@
 import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
 import * as internal from "../../src/base/internal.js";
+import ItemCursorMixin from "../../src/base/ItemCursorMixin.js";
 import SingleSelectionMixin from "../../src/base/SingleSelectionMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 
 const Base = ContentItemsMixin(
-  ReactiveMixin(SingleSelectionMixin(HTMLElement))
+  ItemCursorMixin(ReactiveMixin(SingleSelectionMixin(HTMLElement)))
 );
 
 /*
@@ -46,11 +47,12 @@ class SingleSelectionDemo extends Base {
   // Map item selection to a `selected` CSS class.
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    const { selectedIndex, items } = this[internal.state];
-    if (changed.items || (changed.selectedIndex && items)) {
-      // Apply a `selected` attribute to the selected item only.
+
+    // Apply a `selected` attribute to the selected item only.
+    const { currentIndex, items } = this[internal.state];
+    if (changed.items || (changed.currentIndex && items)) {
       items.forEach((item, index) => {
-        item.toggleAttribute("selected", index === selectedIndex);
+        item.toggleAttribute("selected", index === currentIndex);
       });
     }
   }
