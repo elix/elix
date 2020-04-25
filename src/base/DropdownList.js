@@ -71,6 +71,18 @@ class DropdownList extends Base {
       }
     }
 
+    // MenuButton sets menuSelectedIndex to -1 if the user isn't hovering
+    // over the menu, but for the dropdown list pattern, we'd prefer to
+    // default to showing the selected item.
+    if (changed.menuSelectedIndex) {
+      const { menuSelectedIndex, selectedIndex } = state;
+      if (menuSelectedIndex === -1 && selectedIndex >= 0) {
+        Object.assign(effects, {
+          menuSelectedIndex: selectedIndex,
+        });
+      }
+    }
+
     return effects;
   }
 
