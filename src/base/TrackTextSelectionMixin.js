@@ -2,11 +2,10 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 import * as internal from "./internal.js";
 
 /**
- * Track the selection state of an inner input-like element (including input
- * or textarea).
+ * Track the selection state of an inner input-like element
  *
  * This mixin is an adjunct to [WrappedStandardElement](WrappedStandardElement),
- * intended to be used with a wrapped input-like element. The inner input or
+ * intended to be used with a wrapped input or textarea. The inner input or
  * textarea will have selection properties `selectionStart` and `selectionEnd`
  * that we would like to track as state members. Doing so is challenging,
  * because the browser provides no standard event tracking a change in

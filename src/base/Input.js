@@ -22,6 +22,7 @@ const Base = DelegateInputLabelMixin(
  *
  * @inherits WrappedStandardElement
  * @mixes FormElementMixin
+ * @mixes TrackTextSelectionMixin
  */
 class Input extends Base {
   get [internal.inputDelegate]() {

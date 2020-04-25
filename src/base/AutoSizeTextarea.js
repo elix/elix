@@ -28,6 +28,7 @@ const Base = FormElementMixin(
  * @inherits WrappedStandardElement
  * @mixes FormElementMixin
  * @mixes SlotContentMixin
+ * @mixes TrackTextSelectionMixin
  */
 class AutoSizeTextarea extends Base {
   get [internal.defaultState]() {
