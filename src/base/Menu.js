@@ -233,6 +233,7 @@ class Menu extends Base {
         
         ::slotted(*) {
           flex-shrink: 0;
+          outline: none;
           touch-action: manipulation;
         }
 
