@@ -14,7 +14,7 @@ const propertyNamesToAttributes = {
 };
 
 /**
- * Sets properties when corresponding attributes change.
+ * Sets properties when the corresponding attributes change
  *
  * If your component exposes a setter for a property, it's generally a good
  * idea to let devs using your component be able to set that property in HTML
@@ -65,10 +65,13 @@ export default function AttributeMarshallingMixin(Base) {
       if (super.attributeChangedCallback) {
         super.attributeChangedCallback(attributeName, oldValue, newValue);
       }
-      // Sometimes there's not actually any change.
-      // We also skip setting properties if we're rendering. A component
-      // may want to reflect property values to attributes during rendering,
-      // but such attribute changes shouldn't trigger property updates.
+
+      // Sometimes this callback is invoked when there's not actually any
+      // change, in which we skip invoking the property setter.
+      //
+      // We also skip setting properties if we're rendering. A component may
+      // want to reflect property values to attributes during rendering, but
+      // such attribute changes shouldn't trigger property updates.
       if (newValue !== oldValue && !this[internal.rendering]) {
         const propertyName = attributeToPropertyName(attributeName);
         // If the attribute name corresponds to a property name, set the property.
@@ -90,8 +93,8 @@ export default function AttributeMarshallingMixin(Base) {
     // example, if you have a system that can statically analyze which
     // properties are available to your component, you could hand-author or
     // programmatically generate a definition for `observedAttributes` that
-    // avoids the minor run-time performance cost of determining your
-    // component's public properties.
+    // avoids the minor run-time performance cost of inspecting the component
+    // prototype to determine your component's public properties.
     static get observedAttributes() {
       return attributesForClass(this);
     }
@@ -103,19 +106,24 @@ export default function AttributeMarshallingMixin(Base) {
 /**
  * Return the custom attributes for the given class.
  *
+ * E.g., if the supplied class defines a `fooBar` property, then the resulting
+ * array of attribute names will include the "foo-bar" attribute.
+ *
  * @private
  * @param {Constructor<HTMLElement>} classFn
  * @returns {string[]}
  */
 function attributesForClass(classFn) {
   // We treat the HTMLElement base class as if it has no attributes, since we
-  // don't want to receive attributeChangedCallback for it.
+  // don't want to receive attributeChangedCallback for it (or anything further
+  // up the protoype chain).
   if (classFn === HTMLElement) {
     return [];
   }
 
   // Get attributes for parent class.
   const baseClass = Object.getPrototypeOf(classFn.prototype).constructor;
+
   // See if parent class defines observedAttributes manually.
   let baseAttributes = baseClass.observedAttributes;
   if (!baseAttributes) {
@@ -123,7 +131,7 @@ function attributesForClass(classFn) {
     baseAttributes = attributesForClass(baseClass);
   }
 
-  // Get attributes for this class.
+  // Get the properties for this particular class.
   const propertyNames = Object.getOwnPropertyNames(classFn.prototype);
   const setterNames = propertyNames.filter((propertyName) => {
     const descriptor = Object.getOwnPropertyDescriptor(
@@ -132,11 +140,13 @@ function attributesForClass(classFn) {
     );
     return descriptor && typeof descriptor.set === "function";
   });
+
+  // Map the property names to attribute names.
   const attributes = setterNames.map((setterName) =>
     propertyNameToAttribute(setterName)
   );
 
-  // Merge.
+  // Merge the attribute for this class and its base class.
   const diff = attributes.filter(
     (attribute) => baseAttributes.indexOf(attribute) < 0
   );

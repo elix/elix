@@ -17,6 +17,10 @@ const changedSinceLastRenderKey = Symbol("changedSinceLastRender");
  * use with web components. Applying this mixin to a component will give it
  * FRP behavior comparable to React's.
  *
+ * This model is very basic. It's key aspects are:
+ * * an immutable `state` property updated via `setState` calls.
+ * * a `render` method that will be invoked asynchronously when state changes.
+ *
  * @module ReactiveMixin
  * @param {Constructor<CustomElement>} Base
  */
@@ -24,13 +28,38 @@ export default function ReactiveMixin(Base) {
   class Reactive extends Base {
     constructor() {
       super();
+
+      // Components can inspect internal.firstRender during rendering to do
+      // special work the first time (like wire up event handlers). Until the
+      // first render actually happens, we set that flag to be undefined so we
+      // have a way of distinguishing between a component that has never
+      // rendered and one that is being rendered for the nth time.
       this[internal.firstRender] = undefined;
+
+      // We want to support the standard HTML pattern of only raising events in
+      // response to direct user interactions. For a detailed discussion of this
+      // point, see the Gold Standard checklist item for [Propery Change
+      // Events](https://github.com/webcomponents/gold-standard/wiki/Property%20Change%20Events).
+      //
+      // To support this pattern, we define a flag indicating whether change
+      // events should be raised. By default, we want the flag to be false. In
+      // UI event handlers, a component can temporarily set the flag to true. If
+      // a setState call is made while the flag is true, then that fact will be
+      // remembered and passed the subsequent render/rendered methods. That will
+      // let the methods know whether they should raise property change events.
+      this[internal.raiseChangeEvents] = false;
+
+      // The renderChanges method wants to know what changes have been applied
+      // to a component's state since the last render. On startup, that set of
+      // changes is empty by definition.
       this[changedSinceLastRenderKey] = {};
+
       // Set the initial state from the default state defined by the component
-      // and its mixins.
+      // and its mixins/base classes.
       this[internal.setState](this[internal.defaultState]);
     }
 
+    // DEPRECATED -- will be removed in the next major release
     [internal.componentDidMount]() {
       if (super[internal.componentDidMount]) {
         super[internal.componentDidMount]();
@@ -47,6 +76,7 @@ export default function ReactiveMixin(Base) {
       }
     }
 
+    // DEPRECATED -- will be removed in the next major release
     [internal.componentDidUpdate](changed) {
       if (super[internal.componentDidUpdate]) {
         super[internal.componentDidUpdate](changed);
@@ -63,12 +93,19 @@ export default function ReactiveMixin(Base) {
       }
     }
 
+    // When the component is attached to the document (or upgraded), we will
+    // generally render the component for the first time. That operation will
+    // include rendering of the default state and any state changes that
+    // happened between constructor time and this connectedCallback.
     connectedCallback() {
       if (super.connectedCallback) {
         super.connectedCallback();
       }
-      // Render the component. If the component was forced to render before this
-      // point, and the state hasn't changed, this call will be a no-op.
+
+      // Render the component.
+      //
+      // If the component was forced to render before this point, and the state
+      // hasn't changed, this call will be a no-op.
       this[internal.renderChanges]();
     }
 
@@ -122,12 +159,12 @@ export default function ReactiveMixin(Base) {
         changedSinceLastRenderKey
       ];
 
-      if (typeof this[internal.firstRender] === "undefined") {
+      if (this[internal.firstRender] === undefined) {
         // First render.
         this[internal.firstRender] = true;
       }
 
-      // We only render if the component's never been rendered before, or is
+      // We only render if the component's never been rendered before, or if
       // something's actually changed since the last render. Consecutive
       // synchronous[internal.setState] calls will queue up corresponding async render
       // calls. By the time the first render call actually happens, the complete
@@ -135,10 +172,11 @@ export default function ReactiveMixin(Base) {
       // render calls happen, they will see that the complete state has already
       // been rendered, and skip doing any work.
       if (this[internal.firstRender] || Object.keys(changed).length > 0) {
-        // If at least one of the[internal.setState] calls was made in response to user
-        // interaction or some other component-internal event, set the
-        // raiseChangeEvents flag so that componentDidMount/componentDidUpdate
-        // know whether to raise property change events.
+        // If at least one of the[internal.setState] calls was made in response
+        // to user interaction or some other component-internal event, set the
+        // raiseChangeEvents flag so that render/rendered methods know whether
+        // to raise property change events. See the comments in the component
+        // constructor where we initialize this flag for details.
         const saveRaiseChangeEvents = this[internal.raiseChangeEvents];
         this[internal.raiseChangeEvents] = this[
           raiseChangeEventsInNextRenderKey
@@ -222,14 +260,17 @@ export default function ReactiveMixin(Base) {
         );
       }
 
-      const firstSetState = this[stateKey] === undefined;
-
-      // Apply the changes to the component's state to produce a new state
-      // and a dictionary of flags indicating which fields actually changed.
+      // Apply the changes to a copy of the component's current state to produce
+      // a new, updated state and a dictionary of flags indicating which fields
+      // actually changed.
       const { state, changed } = copyStateWithChanges(this, changes);
 
-      const renderWorthy = firstSetState || Object.keys(changed).length > 0;
-      if (!renderWorthy) {
+      // We only need to apply the changes to the component state if: a) this is
+      // the first time setState has been called, or b) the supplied changes
+      // parameter actaully contain substantive changes.
+      const firstSetState = this[stateKey] === undefined;
+      const substantiveChanges = Object.keys(changed).length > 0;
+      if (!(firstSetState || substantiveChanges)) {
         // No need to update state.
         return;
       }
@@ -241,27 +282,33 @@ export default function ReactiveMixin(Base) {
       // Set this as the component's new state.
       this[stateKey] = state;
 
-      // Add this round of changed fields to the complete set that have
-      // changed since the component was last rendered.
+      // Add this round of changed fields to the complete set that have changed
+      // since the component was last rendered. renderChanges will inspect this
+      // to determine whether a render is actually necessary and, if so, the
+      // complete set of changes that should be passed to the render/rendered
+      // callbacks.
       Object.assign(this[changedSinceLastRenderKey], changed);
 
+      // If we're not in the document yet, there's no need to render.
       if (!this.isConnected) {
-        // Not in document, so no need to render.
         return;
       }
 
       // Remember whether we're supposed to raise property change events.
+      // See the comments in the component constructor for details.
       if (this[internal.raiseChangeEvents]) {
         this[raiseChangeEventsInNextRenderKey] = true;
       }
 
       // Yield with promise timing. This lets any *synchronous* setState calls
-      // that happen after the current setState call complete first. Their
-      // effects on the state will be batched up before the render call below
-      // actually happens.
+      // that happen after this current setState call complete first. Their
+      // effects on the state will be batched up, and accumulate in the change
+      // set stored under this[changedSinceLastRenderKey]. By the time the
+      // render call below actually is reached, the complete set of batched
+      // changes can be applied in the render call.
       await Promise.resolve();
 
-      // Render the component.
+      // Now that the above promise has resolved, render the component.
       this[internal.renderChanges]();
     }
 
@@ -273,9 +320,9 @@ export default function ReactiveMixin(Base) {
      *
      * It's extremely useful to be able to inspect component state while
      * debugging. If you append `?elixdebug=true` to a page's URL, then
-     * ReactiveMixin will conditionally expose a public `state` property
-     * that returns the component's state. You can then access the state
-     * in your browser's debug console.
+     * ReactiveMixin will conditionally expose a public `state` property that
+     * returns the component's state. You can then access the state in your
+     * browser's debug console.
      *
      * @type {PlainObject}
      */
@@ -384,7 +431,7 @@ function equal(value1, value2) {
 
 /**
  * Return a dictionary of flags indicating which of the indicated changes to the
- * state are actually changes.
+ * state are actually substantive changes.
  *
  * @private
  * @param {PlainObject} state

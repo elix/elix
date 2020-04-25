@@ -6,19 +6,6 @@ import * as internal from "./internal.js";
  * @module dom
  */
 
-/** @type {IndexedObject<boolean>} */
-export const standardBooleanAttributes = {
-  checked: true,
-  defer: true,
-  disabled: true,
-  hidden: true,
-  ismap: true,
-  multiple: true,
-  noresize: true,
-  readonly: true,
-  selected: true,
-};
-
 const mousedownListenerKey = Symbol("mousedownListener");
 
 /**
@@ -313,6 +300,19 @@ export function setInternalState(element, name, value) {
     element[internal.nativeInternals].states.toggle(name, value);
   }
 }
+
+/** @type {IndexedObject<boolean>} */
+export const standardBooleanAttributes = {
+  checked: true,
+  defer: true,
+  disabled: true,
+  hidden: true,
+  ismap: true,
+  multiple: true,
+  noresize: true,
+  readonly: true,
+  selected: true,
+};
 
 /**
  * Walk the composed tree at the root for elements that pass the given filter.

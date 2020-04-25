@@ -4,20 +4,27 @@ import * as internal from "./internal.js";
 const classTemplateMap = new Map();
 
 // A Proxy that maps shadow element IDs to shadow elements.
+// This will be return as the element's `this[internal.ids]` property;
+// see comments in that property below.
 /** @type {any} */
 const shadowIdProxyKey = Symbol("shadowIdProxy");
 
-// Reference stored on the proxy target to get to the actual element.
+// A reference stored on the shadow element proxy target to get to the actual
+// element. We use a Symbol here instead of a string name to avoid naming
+// conflicts with the element's internal shadow element IDs.
 const proxyElementKey = Symbol("proxyElement");
 
 // A handler used for the shadow element ID proxy.
 const shadowIdProxyHandler = {
-  get(target, property) {
+  get(target, id) {
+    // From this proxy, obtain a reference to the original component.
     const element = target[proxyElementKey];
+
+    // Get a reference to the component's open or closed shadow root.
     const root = element[internal.shadowRoot];
-    return root && typeof property === "string"
-      ? root.getElementById(property)
-      : null;
+
+    // Look for a shadow element with the indicated ID.
+    return root && typeof id === "string" ? root.getElementById(id) : null;
   },
 };
 
@@ -84,26 +91,36 @@ export default function ShadowTemplateMixin(Base) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
-      if (this[internal.shadowRoot]) {
-        // Already rendered
-        return;
-      }
 
-      // If this type of element defines a template, prepare it for use.
-      const template = getTemplate(this);
-      if (template) {
-        // Stamp the template into a new shadow root.
-        const delegatesFocus = this[internal.delegatesFocus];
-        const mode = this[internal.shadowRootMode];
-        const root = this.attachShadow({ delegatesFocus, mode });
-        const clone = document.importNode(template.content, true);
-        root.append(clone);
-        this[internal.shadowRoot] = root;
+      // We only need to render the shadow root the first time the component is
+      // rendered.
+      const firstRender =
+        this[internal.firstRender] === undefined || this[internal.firstRender];
+      if (firstRender) {
+        // If this type of element defines a template, prepare it for use.
+        const template = getTemplate(this);
+
+        if (template) {
+          // Stamp the template into a new shadow root.
+          const delegatesFocus = this[internal.delegatesFocus];
+          const mode = this[internal.shadowRootMode];
+          const root = this.attachShadow({ delegatesFocus, mode });
+          const clone = document.importNode(template.content, true);
+          root.append(clone);
+
+          // After this call, we won' be able to rely on being able to access
+          // the shadow root via `this.shadowRoot`, because the component may
+          // have asked for a closed shadow root. We save a reference to the
+          // shadow root now so that the component always has a consistent means
+          // to reference its own shadow root.
+          this[internal.shadowRoot] = root;
+        }
       }
     }
 
     /**
      * @type {ShadowRootMode}
+     * @default "open"
      */
     get [internal.shadowRootMode]() {
       return "open";
