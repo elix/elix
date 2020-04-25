@@ -14,8 +14,8 @@ export default function PlainButtonMixin(Base) {
       const result = super[internal.template];
       result.content.append(html`
         <style>
-          :host([disabled]) {
-            color: gray;
+          :host([disabled]) ::slotted(*) {
+            opacity: 0.5;
           }
 
           [part~="inner"] {

@@ -51,10 +51,6 @@ class PlainOpenCloseToggle extends UpDownToggle {
             padding: 2px;
           }
 
-          :host([disabled]) {
-            opacity: 0.5;
-          }
-
           :host(:not([disabled])):hover {
             background: #eee;
           }
