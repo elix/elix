@@ -129,6 +129,7 @@ export { default as TapSelectionMixin } from "../src/base/TapSelectionMixin.js";
 export { default as TimerSelectionMixin } from "../src/base/TimerSelectionMixin.js";
 export { default as Toast } from "./Toast.js";
 export { default as TouchSwipeMixin } from "../src/base/TouchSwipeMixin.js";
+export { default as TrackTextSelectionMixin } from "../src/base/TrackTextSelectionMixin.js";
 export { default as TrackpadSwipeMixin } from "../src/base/TrackpadSwipeMixin.js";
 export { default as TransitionEffectMixin } from "../src/base/TransitionEffectMixin.js";
 export { default as UpDownToggle } from "../src/base/UpDownToggle.js";
