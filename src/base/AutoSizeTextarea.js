@@ -2,10 +2,13 @@ import * as template from "../core/template.js";
 import FormElementMixin from "./FormElementMixin.js";
 import * as internal from "./internal.js";
 import SlotContentMixin from "./SlotContentMixin.js";
+import TrackTextSelectionMixin from "./TrackTextSelectionMixin.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
 
 const Base = FormElementMixin(
-  SlotContentMixin(WrappedStandardElement.wrap("textarea"))
+  SlotContentMixin(
+    TrackTextSelectionMixin(WrappedStandardElement.wrap("textarea"))
+  )
 );
 
 /**

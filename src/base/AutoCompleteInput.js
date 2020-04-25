@@ -74,7 +74,7 @@ class AutoCompleteInput extends Input {
       // typed) selected.
       this[internal.setState]({
         autoCompleteSelect: false,
-        selectionEnd: this.value.length,
+        selectionEnd: this[internal.state].value.length,
         selectionStart: originalText.length,
       });
 

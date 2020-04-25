@@ -3,10 +3,15 @@ import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import * as internal from "./internal.js";
+import TrackTextSelectionMixin from "./TrackTextSelectionMixin.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
 
 const Base = DelegateInputLabelMixin(
-  FocusVisibleMixin(FormElementMixin(WrappedStandardElement.wrap("input")))
+  FocusVisibleMixin(
+    FormElementMixin(
+      TrackTextSelectionMixin(WrappedStandardElement.wrap("input"))
+    )
+  )
 );
 
 /**
@@ -61,24 +66,6 @@ class Input extends Base {
       </style>
     `);
     return result;
-  }
-
-  // Updating the value can also update the selectionStart and selectionEnd
-  // properties, so we have to update our state to match.
-  get value() {
-    // @ts-ignore
-    return super.value;
-  }
-  set value(value) {
-    // @ts-ignore
-    super.value = value;
-    if (this[internal.shadowRoot]) {
-      /** @type {any} */ const inner = this.inner;
-      this[internal.setState]({
-        selectionStart: inner.selectionStart,
-        selectionEnd: inner.selectionEnd,
-      });
-    }
   }
 }
 

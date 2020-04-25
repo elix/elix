@@ -367,21 +367,24 @@ class WrappedStandardElement extends Base {
     // Forward delegated properties to the inner element.
     this.constructor[delegatedPropertySettersKey].forEach((property) => {
       if (changed[property]) {
-        inner[property] = this[internal.state][property];
+        const value = this[internal.state][property];
+
+        // Inner selection properties needed to be handled specially.
+        // See TrackTextSelectionMixin.
+        const specialCase =
+          (property === "selectionEnd" || property === "selectionStart") &&
+          value === null;
+        if (!specialCase) {
+          inner[property] = value;
+        }
       }
     });
-
-    // Special case: if we change the value, we should also reapply
-    // selectionStart/End.
-    if (changed.value) {
-      const { selectionStart, selectionEnd } = this[internal.state];
-      /** @type {any} */ (inner).selectionStart = selectionStart;
-      /** @type {any} */ (inner).selectionEnd = selectionEnd;
-    }
   }
 
   [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
+
+    // Apply disabled state.
     if (changed.disabled) {
       const { disabled } = this[internal.state];
       if (disabled !== undefined) {
