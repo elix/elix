@@ -1,26 +1,23 @@
-import AutoCompleteInput from "./AutoCompleteInput.js";
+import AutoCompleteComboBox from "./AutoCompleteComboBox.js";
 import { substantiveElements } from "./content.js";
 import FilterListBox from "./FilterListBox.js";
 import * as internal from "./internal.js";
 import { getTextsFromItems } from "./ItemsTextMixin.js";
-import ListComboBox from "./ListComboBox.js";
 import SlotContentMixin from "./SlotContentMixin.js";
 
-const Base = SlotContentMixin(ListComboBox);
+const Base = SlotContentMixin(AutoCompleteComboBox);
 
 /**
  * A combo box which applies its text input as a filter on its list items
  *
- * @inherits ListComboBox
+ * @inherits AutoCompleteComboBox
  * @mixes SlotContentMixin
- * @part {AutoCompleteInput} input
  * @part {FilterListBox} list
  */
 class FilterComboBox extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       filter: "",
-      inputPartType: AutoCompleteInput,
       listPartType: FilterListBox,
       texts: null,
     });
@@ -28,6 +25,7 @@ class FilterComboBox extends Base {
 
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
+
     if (changed.inputPartType) {
       this[internal.ids].input.addEventListener("input", (event) => {
         this[internal.raiseChangeEvents] = true;
@@ -40,6 +38,7 @@ class FilterComboBox extends Base {
         this[internal.raiseChangeEvents] = false;
       });
     }
+
     if (changed.filter || changed.selectedIndex) {
       const { filter, selectedIndex } = this[internal.state];
       if (filter === "" || selectedIndex === -1) {
@@ -47,12 +46,6 @@ class FilterComboBox extends Base {
         if ("filter" in list) {
           list.filter = filter;
         }
-      }
-    }
-    if (changed.texts) {
-      const input = /** @type {any} */ (this[internal.ids].input);
-      if ("texts" in input) {
-        input.texts = this[internal.state].texts;
       }
     }
   }
