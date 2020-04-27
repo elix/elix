@@ -178,6 +178,7 @@ class CenteredStrip extends Base {
         #stripContainer {
           display: flex;
           flex: 1;
+          justify-content: center;
           overflow: hidden;
           position: relative;
         }
