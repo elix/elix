@@ -20,17 +20,20 @@ export default function PlainListBoxMixin(Base) {
               box-sizing: border-box;
             }
 
-            ::slotted(*) {
+            ::slotted(*),
+            #slot > * {
               padding: 0.25em;
             }
 
-            ::slotted([selected]) {
+            ::slotted([selected]),
+            #slot > [selected] {
               background: highlight;
               color: highlighttext;
             }
 
             @media (pointer: coarse) {
-              ::slotted(*) {
+              ::slotted(*),
+              #slot > * {
                 padding: 1em;
               }
             }

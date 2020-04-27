@@ -1,7 +1,6 @@
-import * as dom from "../../src/core/dom.js";
 import * as internal from "../../src/base/internal.js";
+import * as dom from "../../src/core/dom.js";
 import * as template from "../../src/core/template.js";
-import html from "../../src/core/html.js";
 import PlainListBox from "../../src/plain/PlainListBox.js";
 
 class DataListBox extends PlainListBox {
@@ -24,10 +23,10 @@ class DataListBox extends PlainListBox {
     super[internal.render](changed);
 
     if (changed.items) {
-      const container = this[internal.ids].container;
-      if (container) {
+      const slot = this[internal.ids].slot;
+      if (slot) {
         const items = this[internal.state].items || [];
-        dom.updateChildNodes(container, items);
+        dom.updateChildNodes(slot, items);
       }
     }
   }
@@ -56,27 +55,25 @@ class DataListBox extends PlainListBox {
   get [internal.template]() {
     const result = super[internal.template];
 
-    result.content.append(html`
-      <style>
-        #container > * {
-          padding: 0.25em;
-        }
-
-        #container > [selected] {
-          background: highlight;
-          color: highlighttext;
-        }
-
-        @media (pointer: coarse) {
-          #container > * {
-            padding: 1em;
-          }
-        }
-      </style>
-    `);
+    const defaultSlot = result.content.querySelector("slot:not([name])");
+    if (defaultSlot) {
+      defaultSlot.id = "slot";
+      defaultSlot.name = uuidv4();
+    }
 
     return result;
   }
+}
+
+// Generate a UUID
+// https://stackoverflow.com/a/2117523/76472
+function uuidv4() {
+  return `${1e7}-${1e3}-${4e3}-${8e3}-${1e11}`.replace(/[018]/g, (c) =>
+    (
+      c ^
+      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+    ).toString(16)
+  );
 }
 
 export default DataListBox;

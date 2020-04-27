@@ -157,7 +157,7 @@ class ListBox extends Base {
         }
       </style>
       <div id="container" role="none">
-        <slot></slot>
+        <slot id="slot"></slot>
       </div>
     `);
     return result;
