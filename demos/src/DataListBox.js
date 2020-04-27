@@ -11,9 +11,17 @@ class DataListBox extends PlainListBox {
     this[internal.setState]({ data });
   }
 
+  get dataItemAdapter() {
+    return this[internal.state].dataItemAdapter;
+  }
+  set dataItemAdapter(dataItemAdapter) {
+    this[internal.setState]({ dataItemAdapter });
+  }
+
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       data: null,
+      dataItemAdapter: defaultDataItemAdapter,
       itemPartType: "div",
       items: null,
     });
@@ -36,14 +44,14 @@ class DataListBox extends PlainListBox {
       ? super[internal.stateEffects](state, changed)
       : {};
 
-    if (changed.data) {
-      const { data, itemPartType } = state;
+    if (changed.data || changed.dataItemAdapter || changed.itemPartType) {
+      const { data, dataItemAdapter, itemPartType } = state;
       const items =
         data == null
           ? null
-          : data.map((obj) => {
+          : data.map((entry) => {
               const element = template.createElement(itemPartType);
-              element.textContent = obj;
+              dataItemAdapter(entry, element);
               return element;
             });
       Object.assign(effects, { items });
@@ -63,6 +71,10 @@ class DataListBox extends PlainListBox {
 
     return result;
   }
+}
+
+function defaultDataItemAdapter(data, item) {
+  item.textContent = data.toString();
 }
 
 // Generate a UUID
