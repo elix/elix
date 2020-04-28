@@ -4,10 +4,6 @@ import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import { assert } from "../testHelpers.js";
 
 class ContentItemsTest extends ContentItemsMixin(ReactiveMixin(HTMLElement)) {
-  connectedCallback() {
-    this.updateContent();
-  }
-
   // Force an update of state.
   // Normally this would be handled automatically, e.g., via SlotContentMixin.
   updateContent() {
@@ -43,16 +39,15 @@ describe("ContentItemsMixin", () => {
     assert.equal(items[1].textContent, "2");
   });
 
-  it("raises items-changed event", (done) => {
+  it("raises items-changed event", async () => {
     const fixture = new ContentItemsTest();
-    fixture.addEventListener("items-changed", () => {
-      done();
-    });
-    // Arrange for raising of change events.
-    fixture[internal.raiseChangeEvents] = true;
     container.appendChild(fixture);
-    // Wait for first render.
-    setTimeout(() => {
+    await new Promise((resolve) => {
+      fixture.addEventListener("items-changed", () => {
+        resolve();
+      });
+      // Arrange for raising of change events.
+      fixture[internal.raiseChangeEvents] = true;
       fixture.innerHTML = `
         <div>1</div>
         <div>2</div>
