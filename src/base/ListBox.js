@@ -6,7 +6,7 @@ import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import * as internal from "./internal.js";
-import ItemCursorMixin from "./ItemCursorMixin.js";
+import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
@@ -24,7 +24,7 @@ const Base = AriaListMixin(
     DirectionSelectionMixin(
       FocusVisibleMixin(
         FormElementMixin(
-          ItemCursorMixin(
+          ItemsCursorMixin(
             ItemsTextMixin(
               KeyboardDirectionMixin(
                 KeyboardMixin(

@@ -5,13 +5,13 @@ import ComboBox from "./ComboBox.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import * as internal from "./internal.js";
-import ItemCursorMixin from "./ItemCursorMixin.js";
+import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import { getItemText } from "./ItemsTextMixin.js";
 import ListBox from "./ListBox.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 
 const Base = DelegateItemsMixin(
-  DirectionSelectionMixin(ItemCursorMixin(SingleSelectionMixin(ComboBox)))
+  DirectionSelectionMixin(ItemsCursorMixin(SingleSelectionMixin(ComboBox)))
 );
 
 /**

@@ -1,10 +1,10 @@
 import * as internal from "../../src/base/internal.js";
-import ItemCursorMixin from "../../src/base/ItemCursorMixin.js";
+import ItemsCursorMixin from "../../src/base/ItemsCursorMixin.js";
 import SingleSelectionMixin from "../../src/base/SingleSelectionMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import { assert } from "../testHelpers.js";
 
-class SingleSelectionTest extends ItemCursorMixin(
+class SingleSelectionTest extends ItemsCursorMixin(
   SingleSelectionMixin(ReactiveMixin(HTMLElement))
 ) {
   get [internal.defaultState]() {

@@ -1,10 +1,10 @@
 import { defaultState, setState, state } from "../../src/base/internal.js";
-import ItemCursorMixin from "../../src/base/ItemCursorMixin.js";
+import ItemsCursorMixin from "../../src/base/ItemsCursorMixin.js";
 import ItemsMultiSelectMixin from "../../src/base/ItemsMultiSelectMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import { assert } from "../testHelpers.js";
 
-class MultiSelectionTest extends ItemCursorMixin(
+class MultiSelectionTest extends ItemsCursorMixin(
   ItemsMultiSelectMixin(ReactiveMixin(HTMLElement))
 ) {
   get [defaultState]() {

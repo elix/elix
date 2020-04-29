@@ -4,7 +4,7 @@ import AriaMenuMixin from "./AriaMenuMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import * as internal from "./internal.js";
-import ItemCursorMixin from "./ItemCursorMixin.js";
+import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
@@ -20,7 +20,7 @@ import TapSelectionMixin from "./TapSelectionMixin.js";
 const Base = AriaMenuMixin(
   DelegateFocusMixin(
     DirectionSelectionMixin(
-      ItemCursorMixin(
+      ItemsCursorMixin(
         ItemsTextMixin(
           KeyboardDirectionMixin(
             KeyboardMixin(

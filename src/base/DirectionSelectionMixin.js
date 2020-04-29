@@ -10,7 +10,7 @@ import * as internal from "./internal.js";
  * This mixin can be used in conjunction with
  * [KeyboardDirectionMixin](KeyboardDirectionMixin) (which maps keyboard events
  * to directions) and a mixin that handles cursor operations like
- * [ItemCursorMixin](ItemCursorMixin).
+ * [ItemsCursorMixin](ItemsCursorMixin).
  *
  * @module DirectionSelectionMixin
  * @param {Constructor<ReactiveElement>} Base

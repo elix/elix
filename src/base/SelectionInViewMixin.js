@@ -12,7 +12,7 @@ import { defaultScrollTarget } from "./scrolling.js";
  * [ContentItemsMixin](ContentItemsMixin). It also expects a
  * `state.currentItem` member indicating which item is curently selected. You
  * can supply that yourself, or use
- * [ItemCursorMixin](ItemCursorMixin).
+ * [ItemsCursorMixin](ItemsCursorMixin).
  *
  * @module SelectionInViewMixin
  * @param {Constructor<ReactiveElement>} Base

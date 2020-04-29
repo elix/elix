@@ -2,14 +2,14 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 import * as internal from "./internal.js";
 
 /**
- * Tracks which of a set of items is the current item
+ * Tracks and navigates the current item in a set of items
  *
- * @module ItemCursorMixin
+ * @module ItemsCursorMixin
  * @param {Constructor<ReactiveElement>} Base
  */
-export default function ItemCursorMixin(Base) {
+export default function ItemsCursorMixin(Base) {
   // The class prototype added by the mixin.
-  class ItemCursor extends Base {
+  class ItemsCursor extends Base {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
         canGoNext: false,
@@ -186,7 +186,7 @@ export default function ItemCursorMixin(Base) {
     }
   }
 
-  return ItemCursor;
+  return ItemsCursor;
 }
 
 /**

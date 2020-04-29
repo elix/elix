@@ -1,25 +1,25 @@
 import * as internal from "../../src/base/internal.js";
-import ItemCursorMixin from "../../src/base/ItemCursorMixin.js";
+import ItemsCursorMixin from "../../src/base/ItemsCursorMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import { assert } from "../testHelpers.js";
 
-class ItemCursorTest extends ItemCursorMixin(ReactiveMixin(HTMLElement)) {
+class ItemsCursorTest extends ItemsCursorMixin(ReactiveMixin(HTMLElement)) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       items: ["Zero", "One", "Two"],
     });
   }
 }
-customElements.define("current-item-test", ItemCursorTest);
+customElements.define("items-cursor-test", ItemsCursorTest);
 
-describe("ItemCursorMixin", () => {
+describe("ItemsCursorMixin", () => {
   it("has currentIndex initially -1", () => {
-    const fixture = new ItemCursorTest();
+    const fixture = new ItemsCursorTest();
     assert.equal(fixture[internal.state].currentIndex, -1);
   });
 
   it("can move to the next item", () => {
-    const fixture = new ItemCursorTest();
+    const fixture = new ItemsCursorTest();
     assert.equal(fixture[internal.state].currentIndex, -1);
     const changed0 = fixture[internal.goNext]();
     assert.equal(fixture[internal.state].currentIndex, 0);
@@ -35,7 +35,7 @@ describe("ItemCursorMixin", () => {
   });
 
   it("can move to the previous item", () => {
-    const fixture = new ItemCursorTest();
+    const fixture = new ItemsCursorTest();
     const changed0 = fixture[internal.goPrevious]();
     assert.equal(fixture[internal.state].currentIndex, 2); // last item
     assert(changed0);
@@ -49,7 +49,7 @@ describe("ItemCursorMixin", () => {
   });
 
   it("can wrap from the last to the first item", () => {
-    const fixture = new ItemCursorTest();
+    const fixture = new ItemsCursorTest();
     fixture[internal.setState]({
       cursorOperationsWrap: true,
       currentIndex: 2,
@@ -59,7 +59,7 @@ describe("ItemCursorMixin", () => {
   });
 
   it("can wrap from the first to the last item", () => {
-    const fixture = new ItemCursorTest();
+    const fixture = new ItemsCursorTest();
     fixture[internal.setState]({
       cursorOperationsWrap: true,
       currentIndex: 0,
@@ -69,14 +69,14 @@ describe("ItemCursorMixin", () => {
   });
 
   it("makes first item when current item is required and no item is curren", () => {
-    const fixture = new ItemCursorTest();
+    const fixture = new ItemsCursorTest();
     assert.equal(fixture[internal.state].currentIndex, -1);
     fixture[internal.setState]({ currentItemRequired: true });
     assert.equal(fixture[internal.state].currentIndex, 0);
   });
 
   it("preserves the current item when items change and old item exists in new set", () => {
-    const fixture = new ItemCursorTest();
+    const fixture = new ItemsCursorTest();
     fixture[internal.setState]({ currentIndex: 1 });
     assert.equal(fixture[internal.state].currentIndex, 1);
     fixture[internal.setState]({
@@ -86,7 +86,7 @@ describe("ItemCursorMixin", () => {
   });
 
   it("clamps current index to fall within item bounds", () => {
-    const fixture = new ItemCursorTest();
+    const fixture = new ItemsCursorTest();
     fixture[internal.setState]({ currentIndex: -2 });
     // -1 (no selection) is lowest possible value.
     assert.equal(fixture[internal.state].currentIndex, -1);
@@ -96,7 +96,7 @@ describe("ItemCursorMixin", () => {
   });
 
   it("makes nearest item current when item in last place is removed", () => {
-    const fixture = new ItemCursorTest();
+    const fixture = new ItemsCursorTest();
     fixture[internal.setState]({
       items: ["Zero", "One"],
       currentIndex: 2,
@@ -105,7 +105,7 @@ describe("ItemCursorMixin", () => {
   });
 
   it("drops selection when the last item is removed", () => {
-    const fixture = new ItemCursorTest();
+    const fixture = new ItemsCursorTest();
     fixture[internal.setState]({
       items: [],
       currentIndex: 0,
@@ -114,7 +114,7 @@ describe("ItemCursorMixin", () => {
   });
 
   it("sets canGoNext/canGoPrevious with no wrapping", () => {
-    const fixture = new ItemCursorTest();
+    const fixture = new ItemsCursorTest();
     assert(!fixture[internal.state].cursorOperationsWrap);
 
     // No current item yet
@@ -139,7 +139,7 @@ describe("ItemCursorMixin", () => {
   });
 
   it("sets canGoNext/canGoPrevious with wrapping", () => {
-    const fixture = new ItemCursorTest();
+    const fixture = new ItemsCursorTest();
     fixture[internal.setState]({ cursorOperationsWrap: true });
 
     // Start of list

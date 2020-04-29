@@ -1,11 +1,11 @@
 import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
 import * as internal from "../../src/base/internal.js";
-import ItemCursorMixin from "../../src/base/ItemCursorMixin.js";
+import ItemsCursorMixin from "../../src/base/ItemsCursorMixin.js";
 import SingleSelectionMixin from "../../src/base/SingleSelectionMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 
 const Base = ContentItemsMixin(
-  ItemCursorMixin(ReactiveMixin(SingleSelectionMixin(HTMLElement)))
+  ItemsCursorMixin(ReactiveMixin(SingleSelectionMixin(HTMLElement)))
 );
 
 /*

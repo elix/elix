@@ -15,7 +15,7 @@ import * as internal from "./internal.js";
  * the list. A standard way to do that with is
  * [ContentItemsMixin](ContentItemsMixin). This also expects the definition of a
  * `currentIndex` state, which can be obtained from
- * [ItemCursorMixin](ItemCursorMixin).
+ * [ItemsCursorMixin](ItemsCursorMixin).
  *
  * @module SelectedItemTextValueMixin
  * @param {Constructor<ReactiveElement>} Base

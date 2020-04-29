@@ -3,7 +3,7 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-declare const ItemCursorMixin: StateMixin<
+declare const ItemsCursorMixin: StateMixin<
   {},
   {},
   {},
@@ -17,4 +17,4 @@ declare const ItemCursorMixin: StateMixin<
   }
 >;
 
-export default ItemCursorMixin;
+export default ItemsCursorMixin;

@@ -10,7 +10,7 @@ import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import FilterListBox from "./FilterListBox.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import * as internal from "./internal.js";
-import ItemCursorMixin from "./ItemCursorMixin.js";
+import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
@@ -22,7 +22,7 @@ const Base = ComposedFocusMixin(
         DelegateItemsMixin(
           DirectionSelectionMixin(
             FocusVisibleMixin(
-              ItemCursorMixin(
+              ItemsCursorMixin(
                 KeyboardMixin(
                   SelectedItemTextValueMixin(
                     SingleSelectionMixin(ReactiveElement)

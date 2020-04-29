@@ -3,14 +3,14 @@ import html from "../core/html.js";
 import * as template from "../core/template.js";
 import FormElementMixin from "./FormElementMixin.js";
 import * as internal from "./internal.js";
-import ItemCursorMixin from "./ItemCursorMixin.js";
+import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import MenuButton from "./MenuButton.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
 const Base = FormElementMixin(
-  ItemCursorMixin(
+  ItemsCursorMixin(
     SelectedItemTextValueMixin(SingleSelectionMixin(SlotItemsMixin(MenuButton)))
   )
 );
