@@ -7,7 +7,8 @@ declare const MultiSelectionMixin: StateMixin<
   {},
   {},
   {
-    selectedIndices: boolean[];
+    selected: boolean[];
+    selectedItems: ListItemElement[];
   },
   {}
 >;

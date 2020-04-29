@@ -2,6 +2,7 @@ import * as internal from "../../src/base/internal.js";
 import ItemCursorMixin from "../../src/base/ItemCursorMixin.js";
 import MultiSelectionMixin from "../../src/base/MultiSelectionMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
+import { assert } from "../testHelpers.js";
 
 class MultiSelectionTest extends ItemCursorMixin(
   MultiSelectionMixin(ReactiveMixin(HTMLElement))
@@ -10,13 +11,6 @@ class MultiSelectionTest extends ItemCursorMixin(
     return Object.assign(super[internal.defaultState], {
       items: ["Zero", "One", "Two"],
     });
-  }
-
-  get items() {
-    return this[internal.state].items;
-  }
-  set items(items) {
-    this[internal.setState]({ items });
   }
 }
 customElements.define("multi-selection-test", MultiSelectionTest);
@@ -32,8 +26,26 @@ describe("MultiSelectionMixin", () => {
     container.innerHTML = "";
   });
 
-  // it("has selectedIndices initially all false", () => {
-  //   const fixture = new MultiSelectionTest();
-  //   assert.deepEqual(fixture.selectedIndices, [false, false, false]);
-  // });
+  it("has selected flags initially all false", () => {
+    const fixture = new MultiSelectionTest();
+    assert.deepEqual(fixture.selected, [false, false, false]);
+  });
+
+  it("refreshes selected flags when items change", () => {
+    const fixture = new MultiSelectionTest();
+    fixture[internal.setState]({
+      selected: [true, false, true],
+    });
+    fixture[internal.setState]({
+      items: ["a", "Zero", "b", "c", "Two", "d"],
+    });
+    assert.deepEqual(fixture.selected, [
+      false,
+      true,
+      false,
+      false,
+      true,
+      false,
+    ]);
+  });
 });

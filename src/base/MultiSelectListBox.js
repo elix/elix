@@ -134,12 +134,11 @@ class MultiSelectListBox extends Base {
     }
 
     // Apply `selected` style to the selected items.
-    if (changed.items || changed.selectedIndices) {
-      const { items, selectedIndices } = this[internal.state];
-      if (items) {
+    if (changed.items || changed.selected) {
+      const { items, selected } = this[internal.state];
+      if (items && selected) {
         items.forEach((item, index) => {
-          const selected = !!selectedIndices[index];
-          item.toggleAttribute("selected", selected);
+          item.toggleAttribute("selected", selected[index]);
         });
       }
     }
@@ -218,11 +217,11 @@ class MultiSelectListBox extends Base {
 }
 
 function toggleItemSelection(element, itemIndex) {
-  const { selectedIndices } = element[internal.state];
-  const newIndices = [...selectedIndices];
-  newIndices[itemIndex] = !newIndices[itemIndex];
+  const { selected } = element[internal.state];
+  const newSelected = [...selected];
+  newSelected[itemIndex] = !newSelected[itemIndex];
   element[internal.setState]({
-    selectedIndices: newIndices,
+    selected: newSelected,
   });
 }
 export default MultiSelectListBox;
