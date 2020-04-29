@@ -34,9 +34,13 @@ describe("ItemsMultiSelectMixin", () => {
   it("ensures selectedFlags is same length as items", () => {
     const fixture = new MultiSelectionTest();
     fixture[setState]({
-      selectedFlags: [true],
+      selectedFlags: [true], // Too short
     });
     assert.deepEqual(fixture[state].selectedFlags, [true, false, false]);
+    fixture[setState]({
+      selectedFlags: [false, true, false, true], // Too long
+    });
+    assert.deepEqual(fixture[state].selectedFlags, [false, true, false]);
   });
 
   it("refreshes selectedFlags when items change", () => {

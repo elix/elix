@@ -28,30 +28,38 @@ export default function ItemsMultiSelectMixin(Base) {
         ? super[stateEffects](state, changed)
         : {};
 
-      let updatedSelectedFlags = false;
+      if (changed.selectedFlags && state.items && state.selectedFlags) {
+        const { items, selectedFlags } = state;
 
-      // If items change, try to (re)initialize selectedFlags using the latest
-      // set of selectedItems.
-      if (changed.items) {
+        // If new selectedFlags array size doesn't match that of items array,
+        // create a new selectedFlags array that matches size.
+        if (selectedFlags.length !== items.length) {
+          const newSelectedFlags =
+            selectedFlags.length > items.length
+              ? // Trim to fit
+                selectedFlags.slice(0, items.length)
+              : // Stretch to fit
+                [
+                  ...selectedFlags,
+                  ...Array(items.length - selectedFlags.length).fill(false),
+                ];
+          Object.assign(effects, {
+            selectedFlags: newSelectedFlags,
+          });
+        } else {
+          // Size of selectedFlags matches items array. Reflect the new
+          // selection in selectedItems.
+          const selectedItems = items.filter(
+            (item, index) => selectedFlags[index]
+          );
+          Object.assign(effects, { selectedItems });
+        }
+      } else if (changed.items && state.items) {
+        // If items change but selectedFlags doesn't, try to (re)initialize
+        // selectedFlags using the latest set of selectedItems.
         const { items, selectedItems } = state;
         const selectedFlags = selectedItemsToFlags(items, selectedItems);
         Object.assign(effects, { selectedFlags });
-        updatedSelectedFlags = true;
-      }
-
-      // If selectedFlags flags change (directly, or as a result of the above),
-      // update selectedItems.
-      if (changed.selectedFlags || updatedSelectedFlags) {
-        const { items, selectedFlags } = state;
-        const selectedItems = [];
-        if (selectedFlags) {
-          selectedFlags.forEach((value, index) => {
-            if (value) {
-              selectedItems.push(items[index]);
-            }
-          });
-        }
-        Object.assign(effects, { selectedItems });
       }
 
       return effects;
@@ -81,17 +89,7 @@ export default function ItemsMultiSelectMixin(Base) {
 // Given a complete set of items and a subset of selected items, return an array
 // of booleans indicating which items are selected.
 export function selectedItemsToFlags(items, selectedItems) {
-  const count = items ? items.length : 0;
-  const selectedFlags = Array(count).fill(false);
-
-  if (selectedItems && items) {
-    selectedItems.forEach((item) => {
-      const index = items.indexOf(item);
-      if (index >= 0) {
-        selectedFlags[index] = true;
-      }
-    });
-  }
-
-  return selectedFlags;
+  return items.map((item) =>
+    selectedItems ? selectedItems.indexOf(item) >= 0 : false
+  );
 }
