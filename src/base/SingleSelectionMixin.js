@@ -2,18 +2,20 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 import * as internal from "./internal.js";
 
 /**
- * Adds single-selection semantics to a list-like element.
+ * Exposes a public API for single selection on a list-like element
  *
- * This mixin expects a component to provide an `items` Array or NodeList of
- * all elements in the list.
+ * This mixin expects a component to provide an `items` Array of all elements in
+ * the list. This mixin also expects the component to apply
+ * [ItemsCursorMixin](ItemsCursorMixin) or otherwise define a compatible
+ * `currentIndex` state and other state members for navigating the current item.
  *
- * This mixin tracks a single selected item in the list, and provides means to
- * get and set that state by item position (`selectedIndex`) or item identity
- * (`selectedItem`). The selection can be moved in the list via the methods
- * `selectFirst`, `selectLast`, `selectNext`, and `selectPrevious`.
+ * Given the above, this mixin exposes a consistent public API for reading and
+ * manipulating the current item as a selection. This includes public members
+ * `selectedIndex` and `selectedItem`, selection navigation methods, and a
+ * `selected-index-changed` event.
  *
- * This mixin does not produce any user-visible effects to represent
- * selection.
+ * This mixin does not produce any user-visible effects to represent selection;
+ * that is up to the component to provide.
  *
  * @module SingleSelectionMixin
  * @param {Constructor<ReactiveElement>} Base

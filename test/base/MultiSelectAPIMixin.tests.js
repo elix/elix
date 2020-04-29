@@ -1,4 +1,8 @@
-import { defaultState, state } from "../../src/base/internal.js";
+import {
+  defaultState,
+  raiseChangeEvents,
+  state,
+} from "../../src/base/internal.js";
 import ItemsMultiSelectMixin from "../../src/base/ItemsMultiSelectMixin.js";
 import MultiSelectAPIMixin from "../../src/base/MultiSelectAPIMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
@@ -47,5 +51,18 @@ describe("MultiSelectAPIMixin", () => {
     assert(fixture.selectedFlags[0]);
     fixture.toggleSelectedFlag(0, false);
     assert(!fixture.selectedFlags[0]);
+  });
+
+  it("raises the selected-flags-changed event when selection changes", async () => {
+    const fixture = new MultiSelectAPITest();
+    container.appendChild(fixture);
+    await new Promise((resolve) => {
+      fixture.addEventListener("selected-flags-changed", () => {
+        resolve();
+      });
+      // Simulate user interaction.
+      fixture[raiseChangeEvents] = true;
+      fixture.selectedFlags = [true, false, true];
+    });
   });
 });
