@@ -68,4 +68,5 @@ export const swipeUp: "_swipeUp";
 export const swipeUpComplete: "_swipeUpComplete";
 export const tap: "_tap";
 export const template: "_template";
+export const toggleSelectedFlag: "_toggleSelectedFlag";
 export const update: "_update";

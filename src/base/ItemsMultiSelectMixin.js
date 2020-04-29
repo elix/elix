@@ -1,36 +1,26 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import { defaultState, setState, state, stateEffects } from "./internal.js";
+import {
+  defaultState,
+  setState,
+  state,
+  stateEffects,
+  toggleSelectedFlag,
+} from "./internal.js";
 
 /**
- * Adds mutiple-selection semantics to a list-like element.
+ * Tracks multiple selection state for a list-like element.
  *
- * @module MultiSelectionMixin
+ * @module ItemsMultiSelectMixin
  * @param {Constructor<ReactiveElement>} Base
  */
-export default function MultiSelectionMixin(Base) {
+export default function ItemsMultiSelectMixin(Base) {
   // The class prototype added by the mixin.
-  class MultiSelection extends Base {
+  class ItemsMultiSelect extends Base {
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         selectedFlags: null,
         selectedItems: null,
       });
-    }
-
-    get selectedFlags() {
-      return this[state].selectedFlags;
-    }
-    set selectedFlags(selectedFlags) {
-      this[setState]({ selectedFlags });
-    }
-
-    get selectedItems() {
-      return this[state].selectedItems;
-    }
-    set selectedItems(selectedItems) {
-      const items = this[state].items;
-      const selectedFlags = selectedItemsToFlags(items, selectedItems);
-      this[setState]({ selectedFlags });
     }
 
     [stateEffects](state, changed) {
@@ -40,7 +30,8 @@ export default function MultiSelectionMixin(Base) {
 
       let updatedSelectedFlags = false;
 
-      // If items change, (re)initialize selectedFlags.
+      // If items change, try to (re)initialize selectedFlags using the latest
+      // set of selectedItems.
       if (changed.items) {
         const { items, selectedItems } = state;
         const selectedFlags = selectedItemsToFlags(items, selectedItems);
@@ -48,7 +39,8 @@ export default function MultiSelectionMixin(Base) {
         updatedSelectedFlags = true;
       }
 
-      // If selectedFlags flags change, update selectedItems.
+      // If selectedFlags flags change (directly, or as a result of the above),
+      // update selectedItems.
       if (changed.selectedFlags || updatedSelectedFlags) {
         const { items, selectedFlags } = state;
         const selectedItems = [];
@@ -65,27 +57,33 @@ export default function MultiSelectionMixin(Base) {
       return effects;
     }
 
-    toggleSelectedFlag(index, toggle) {
-      const { selectedFlags } = this[state];
-      const value = toggle !== undefined ? toggle : !selectedFlags[index];
-      const newSelectedFlags = [...selectedFlags];
-      newSelectedFlags[index] = value;
+    [toggleSelectedFlag](index, toggle) {
+      if (super[toggleSelectedFlag]) {
+        super[toggleSelectedFlag](index, toggle);
+      }
+
+      // Create a new copy of selectedFlags
+      const newSelectedFlags = [...this[state].selectedFlags];
+
+      // Apply the toggle. If undefined, flip the current value.
+      newSelectedFlags[index] =
+        toggle !== undefined ? toggle : !newSelectedFlags[index];
+
       this[setState]({
         selectedFlags: newSelectedFlags,
       });
     }
   }
 
-  return MultiSelection;
+  return ItemsMultiSelect;
 }
 
 // Given a complete set of items and a subset of selected items, return an array
 // of booleans indicating which items are selected.
-function selectedItemsToFlags(items, selectedItems) {
+export function selectedItemsToFlags(items, selectedItems) {
   const count = items ? items.length : 0;
   const selectedFlags = Array(count).fill(false);
 
-  // Try to reacquire previously selectedFlags items.
   if (selectedItems && items) {
     selectedItems.forEach((item) => {
       const index = items.indexOf(item);

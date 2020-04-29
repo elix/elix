@@ -3,14 +3,13 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-declare const MultiSelectionMixin: StateMixin<
-  {},
+declare const MultiSelectAPIMixin: Mixin<
   {},
   {
     selectedFlags: boolean[];
     selectedItems: ListItemElement[];
-  },
-  {}
+    toggleSelectedFlag(index: number, toggle?: boolean): void;
+  }
 >;
 
-export default MultiSelectionMixin;
+export default MultiSelectAPIMixin;

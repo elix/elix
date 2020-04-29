@@ -581,6 +581,15 @@ export const tap = Symbol("tap");
  */
 export const template = coreInternal.template;
 
+/**
+ * Symbol for the `toggleSelectedFlag` method.
+ *
+ * [ItemsMultiSelectMixin](ItemsMultiSelectMixin) exposes this method to let
+ * other mixins like [MultiSelectAPIMixin](MultiSelectAPIMixin) toggle the
+ * selected state of an individual item.
+ */
+export const toggleSelectedFlag = Symbol("toggleSelectedFlag");
+
 // Expose internals as a global when debugging.
 const elixdebug = new URLSearchParams(location.search).get("elixdebug");
 if (elixdebug === "true") {

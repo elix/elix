@@ -1,5 +1,4 @@
 import { indexOfItemContainingTarget } from "../core/dom.js";
-// import FormElementMixin from "./FormElementMixin.js";
 import html from "../core/html.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
@@ -9,37 +8,36 @@ import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import * as internal from "./internal.js";
 import ItemCursorMixin from "./ItemCursorMixin.js";
+import ItemsMultiSelectMixin from "./ItemsMultiSelectMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import KeyboardPagedSelectionMixin from "./KeyboardPagedSelectionMixin.js";
 import KeyboardPrefixSelectionMixin from "./KeyboardPrefixSelectionMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
-import MultiSelectionMixin from "./MultiSelectionMixin.js";
-// import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
+import MultiSelectAPIMixin from "./MultiSelectAPIMixin.js";
 import SelectionInViewMixin from "./SelectionInViewMixin.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapSelectionMixin from "./TapSelectionMixin.js";
-// import TapToggleMixin from "./TapToggleMixin.js";
 
 const Base = AriaListMixin(
   ComposedFocusMixin(
     DirectionSelectionMixin(
       FocusVisibleMixin(
-        //         FormElementMixin(
         ItemCursorMixin(
-          ItemsTextMixin(
-            KeyboardDirectionMixin(
-              KeyboardMixin(
-                KeyboardPagedSelectionMixin(
-                  KeyboardPrefixSelectionMixin(
-                    LanguageDirectionMixin(
-                      //                       SelectedItemTextValueMixin(
-                      SelectionInViewMixin(
-                        MultiSelectionMixin(
-                          SingleSelectionMixin(
-                            SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+          ItemsMultiSelectMixin(
+            ItemsTextMixin(
+              KeyboardDirectionMixin(
+                KeyboardMixin(
+                  KeyboardPagedSelectionMixin(
+                    KeyboardPrefixSelectionMixin(
+                      LanguageDirectionMixin(
+                        SelectionInViewMixin(
+                          MultiSelectAPIMixin(
+                            SingleSelectionMixin(
+                              SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+                            )
                           )
                         )
                       )
