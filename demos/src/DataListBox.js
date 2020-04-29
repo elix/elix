@@ -1,5 +1,6 @@
 import * as internal from "../../src/base/internal.js";
 import * as dom from "../../src/core/dom.js";
+import html from "../../src/core/html.js";
 import * as template from "../../src/core/template.js";
 import PlainListBox from "../../src/plain/PlainListBox.js";
 
@@ -65,9 +66,16 @@ class DataListBox extends PlainListBox {
 
     const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
-      defaultSlot.id = "slot";
-      defaultSlot.name = uuidv4();
+      defaultSlot.replaceWith(html`<div id="slot"></div>`);
     }
+
+    result.content.append(html`
+      <style>
+        #slot {
+          display: contents;
+        }
+      </style>
+    `);
 
     return result;
   }
@@ -75,17 +83,6 @@ class DataListBox extends PlainListBox {
 
 function defaultDataItemAdapter(data, item) {
   item.textContent = data.toString();
-}
-
-// Generate a UUID
-// https://stackoverflow.com/a/2117523/76472
-function uuidv4() {
-  return `${1e7}-${1e3}-${4e3}-${8e3}-${1e11}`.replace(/[018]/g, (c) =>
-    (
-      c ^
-      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
-    ).toString(16)
-  );
 }
 
 export default DataListBox;
