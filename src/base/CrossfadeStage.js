@@ -3,13 +3,13 @@ import * as template from "../core/template.js";
 import EffectMixin from "./EffectMixin.js";
 import * as internal from "./internal.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
-import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TransitionEffectMixin from "./TransitionEffectMixin.js";
 
 const Base = EffectMixin(
   ItemsCursorMixin(
-    SingleSelectionMixin(SlotItemsMixin(TransitionEffectMixin(ReactiveElement)))
+    SingleSelectAPIMixin(SlotItemsMixin(TransitionEffectMixin(ReactiveElement)))
   )
 );
 

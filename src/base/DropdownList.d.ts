@@ -4,11 +4,11 @@
 import FormElementMixin from "./FormElementMixin.js";
 import MenuButton from "./MenuButton.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
-import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
 export default class PlainDropdownList extends FormElementMixin(
-  SelectedItemTextValueMixin(SingleSelectionMixin(SlotItemsMixin(MenuButton)))
+  SelectedItemTextValueMixin(SingleSelectAPIMixin(SlotItemsMixin(MenuButton)))
 ) {
   defaultMenuSelectedIndex: number;
   valuePartType: PartDescriptor;

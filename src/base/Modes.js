@@ -2,11 +2,11 @@ import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import * as internal from "./internal.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
-import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
 const Base = ItemsCursorMixin(
-  SingleSelectionMixin(SlotItemsMixin(ReactiveElement))
+  SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
 );
 
 /**
@@ -21,7 +21,7 @@ const Base = ItemsCursorMixin(
  * implemented by the [Tabs](Tabs) component.
  *
  * @inherits ReactiveElement
- * @mixes SingleSelectionMixin
+ * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
  */
 class Modes extends Base {

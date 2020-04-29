@@ -1,10 +1,10 @@
 import SelectedItemTextValueMixin from "../../src/base/SelectedItemTextValueMixin.js";
-import SingleSelectionMixin from "../../src/base/SingleSelectionMixin.js";
+import SingleSelectAPIMixin from "../../src/base/SingleSelectAPIMixin.js";
 import { assert } from "../testHelpers.js";
 
 /* Element that exposes a value property */
 class ElementWithValue extends SelectedItemTextValueMixin(
-  SingleSelectionMixin(HTMLElement)
+  SingleSelectAPIMixin(HTMLElement)
 ) {
   get items() {
     if (!this._items) {

@@ -15,7 +15,7 @@ import KeyboardPrefixSelectionMixin from "./KeyboardPrefixSelectionMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SelectionInViewMixin from "./SelectionInViewMixin.js";
-import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapSelectionMixin from "./TapSelectionMixin.js";
 
@@ -33,7 +33,7 @@ const Base = AriaListMixin(
                       LanguageDirectionMixin(
                         SelectedItemTextValueMixin(
                           SelectionInViewMixin(
-                            SingleSelectionMixin(
+                            SingleSelectAPIMixin(
                               SlotItemsMixin(TapSelectionMixin(ReactiveElement))
                             )
                           )
@@ -74,7 +74,7 @@ const Base = AriaListMixin(
  * @mixes LanguageDirectionMixin
  * @mixes SelectedItemTextValueMixin
  * @mixes SelectionInViewMixin
- * @mixes SingleSelectionMixin
+ * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
  * @mixes TapSelectionMixin
  */

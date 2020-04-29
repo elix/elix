@@ -5,13 +5,13 @@ import * as fractionalSelection from "./fractionalSelection.js";
 import * as internal from "./internal.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
-import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
 const Base = ItemsCursorMixin(
   EffectMixin(
     LanguageDirectionMixin(
-      SingleSelectionMixin(SlotItemsMixin(ReactiveElement))
+      SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
     )
   )
 );
@@ -27,7 +27,7 @@ const Base = ItemsCursorMixin(
  * @inherits ReactiveElement
  * @mixes EffectMixin
  * @mixes LanguageDirectionMixin
- * @mixes SingleSelectionMixin
+ * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
  */
 class SlidingStage extends Base {

@@ -1,11 +1,11 @@
 import * as internal from "../../src/base/internal.js";
 import ItemsCursorMixin from "../../src/base/ItemsCursorMixin.js";
-import SingleSelectionMixin from "../../src/base/SingleSelectionMixin.js";
+import SingleSelectAPIMixin from "../../src/base/SingleSelectAPIMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import { assert } from "../testHelpers.js";
 
-class SingleSelectionTest extends ItemsCursorMixin(
-  SingleSelectionMixin(ReactiveMixin(HTMLElement))
+class SingleSelectAPITest extends ItemsCursorMixin(
+  SingleSelectAPIMixin(ReactiveMixin(HTMLElement))
 ) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
@@ -20,9 +20,9 @@ class SingleSelectionTest extends ItemsCursorMixin(
     this[internal.setState]({ items });
   }
 }
-customElements.define("single-selection-test", SingleSelectionTest);
+customElements.define("single-select-api-test", SingleSelectAPITest);
 
-describe("SingleSelectionMixin", () => {
+describe("SingleSelectAPIMixin", () => {
   let container;
 
   before(() => {
@@ -34,12 +34,12 @@ describe("SingleSelectionMixin", () => {
   });
 
   it("has selectedIndex initially -1", () => {
-    const fixture = new SingleSelectionTest();
+    const fixture = new SingleSelectAPITest();
     assert.equal(fixture.selectedIndex, -1);
   });
 
   it("can advance the selection to the next item", () => {
-    const fixture = new SingleSelectionTest();
+    const fixture = new SingleSelectAPITest();
     assert.equal(fixture.selectedIndex, -1);
     const selectionChanged0 = fixture.selectNext();
     assert.equal(fixture.selectedIndex, 0);
@@ -55,7 +55,7 @@ describe("SingleSelectionMixin", () => {
   });
 
   it("can move the selection to the previous item", () => {
-    const fixture = new SingleSelectionTest();
+    const fixture = new SingleSelectAPITest();
     container.appendChild(fixture);
     fixture.selectPrevious();
     assert.equal(fixture.selectedIndex, 2); // last item
@@ -64,7 +64,7 @@ describe("SingleSelectionMixin", () => {
   });
 
   it("can wrap the selection from the last to the first item", () => {
-    const fixture = new SingleSelectionTest();
+    const fixture = new SingleSelectAPITest();
     fixture.selectionWraps = true;
     fixture[internal.setState]({ selectedIndex: 2 });
     fixture.selectNext();
@@ -72,7 +72,7 @@ describe("SingleSelectionMixin", () => {
   });
 
   it("can wrap the selection from the first to the last item", () => {
-    const fixture = new SingleSelectionTest();
+    const fixture = new SingleSelectAPITest();
     fixture.selectionWraps = true;
     fixture[internal.setState]({ selectedIndex: 0 });
     fixture.selectPrevious();
@@ -80,14 +80,14 @@ describe("SingleSelectionMixin", () => {
   });
 
   it("selects first item when selection is required and no item is currently selected", () => {
-    const fixture = new SingleSelectionTest();
+    const fixture = new SingleSelectAPITest();
     assert.equal(fixture.selectedIndex, -1);
     fixture.selectionRequired = true;
     assert.equal(fixture.selectedIndex, 0);
   });
 
   it("preserves selected item when items change and old selection exists in new set", () => {
-    const fixture = new SingleSelectionTest();
+    const fixture = new SingleSelectAPITest();
     fixture.selectedIndex = 1;
     assert.equal(fixture.selectedIndex, 1);
     fixture.items = fixture.items.slice(1); // Removes item 0
@@ -95,7 +95,7 @@ describe("SingleSelectionMixin", () => {
   });
 
   it("selects nearest item when item in last place is removed", () => {
-    const fixture = new SingleSelectionTest();
+    const fixture = new SingleSelectAPITest();
     fixture.selectedIndex = 2;
     const items = fixture.items.slice();
     items.splice(2, 1);
@@ -104,14 +104,14 @@ describe("SingleSelectionMixin", () => {
   });
 
   it("drops selection when the last item is removed", () => {
-    const fixture = new SingleSelectionTest();
+    const fixture = new SingleSelectAPITest();
     fixture.selectedIndex = 0;
     fixture.items = [];
     assert.equal(fixture.selectedIndex, -1);
   });
 
   it("sets canSelectNext/canSelectPrevious with no wrapping", () => {
-    const fixture = new SingleSelectionTest();
+    const fixture = new SingleSelectAPITest();
     assert(!fixture.selectionWraps);
 
     // No selection yet
@@ -136,7 +136,7 @@ describe("SingleSelectionMixin", () => {
   });
 
   it("sets canSelectNext/canSelectPrevious with wrapping", () => {
-    const fixture = new SingleSelectionTest();
+    const fixture = new SingleSelectAPITest();
     fixture.selectionWraps = true;
 
     // Start of list
@@ -151,7 +151,7 @@ describe("SingleSelectionMixin", () => {
   });
 
   it("changing selection through (simulated) user interaction raises the selected-index-changed event", (done) => {
-    const fixture = new SingleSelectionTest();
+    const fixture = new SingleSelectAPITest();
     fixture.addEventListener("selected-index-changed", () => {
       done();
     });
@@ -163,7 +163,7 @@ describe("SingleSelectionMixin", () => {
   });
 
   it("changing selection programmatically does not raise the selected-index-changed event", (done) => {
-    const fixture = new SingleSelectionTest();
+    const fixture = new SingleSelectAPITest();
     fixture.addEventListener("selected-index-changed", () => {
       assert.fail(
         null,
@@ -178,7 +178,7 @@ describe("SingleSelectionMixin", () => {
   });
 
   it("ignores a selectedIndex that's not a number", () => {
-    const fixture = new SingleSelectionTest();
+    const fixture = new SingleSelectAPITest();
     // @ts-ignore
     fixture.selectedIndex = "foo";
     assert.equal(fixture.selectedIndex, -1);

@@ -26,7 +26,7 @@ import "./base/NumberSpinBox.tests.js";
 import "./base/OpenCloseMixin.tests.js";
 import "./base/OverlayMixin.tests.js";
 import "./base/SelectionInViewMixin.tests.js";
-import "./base/SingleSelectionMixin.tests.js";
+import "./base/SingleSelectAPIMixin.tests.js";
 import "./base/SlotContentMixin.tests.js";
 import "./base/TapSelectionMixin.tests.js";
 import "./base/TransitionEffectMixin.tests.js";

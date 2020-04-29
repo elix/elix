@@ -17,12 +17,12 @@ import * as internal from "./internal.js";
  * This mixin does not produce any user-visible effects to represent selection;
  * that is up to the component to provide.
  *
- * @module SingleSelectionMixin
+ * @module SingleSelectAPIMixin
  * @param {Constructor<ReactiveElement>} Base
  */
-export default function SingleSelectionMixin(Base) {
+export default function SingleSelectAPIMixin(Base) {
   // The class prototype added by the mixin.
-  class SingleSelection extends Base {
+  class SingleSelectAPI extends Base {
     /**
      * True if the selection can be moved to the next item, false if not (the
      * selected item is the last item in the list).
@@ -191,5 +191,5 @@ export default function SingleSelectionMixin(Base) {
     }
   }
 
-  return SingleSelection;
+  return SingleSelectAPI;
 }

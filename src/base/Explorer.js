@@ -6,7 +6,7 @@ import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import ListBox from "./ListBox.js";
 import Modes from "./Modes.js";
-import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
 // Does a list position imply a lateral arrangement of list and stage?
@@ -19,7 +19,7 @@ const lateralPositions = {
 };
 
 const Base = ItemsCursorMixin(
-  LanguageDirectionMixin(SingleSelectionMixin(SlotItemsMixin(ReactiveElement)))
+  LanguageDirectionMixin(SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement)))
 );
 
 /**
@@ -27,7 +27,7 @@ const Base = ItemsCursorMixin(
  *
  * @inherits ReactiveElement
  * @mixes LanguageDirectionMixin
- * @mixes SingleSelectionMixin
+ * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
  * @part {div} proxy - an element representing an item in the list
  * @part {ListBox} proxy-list - the container for the list of proxies

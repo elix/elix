@@ -1,18 +1,18 @@
 import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
 import * as internal from "../../src/base/internal.js";
 import ItemsCursorMixin from "../../src/base/ItemsCursorMixin.js";
-import SingleSelectionMixin from "../../src/base/SingleSelectionMixin.js";
+import SingleSelectAPIMixin from "../../src/base/SingleSelectAPIMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 
 const Base = ContentItemsMixin(
-  ItemsCursorMixin(ReactiveMixin(SingleSelectionMixin(HTMLElement)))
+  ItemsCursorMixin(ReactiveMixin(SingleSelectAPIMixin(HTMLElement)))
 );
 
 /*
- * A very simple component to show the application of SingleSelectionMixin
+ * A very simple component to show the application of SingleSelectAPIMixin
  * and ContentItemsMixin.
  *
- * For a more complete demo using SingleSelectionMixin, see the ListBox demo.
+ * For a more complete demo using SingleSelectAPIMixin, see the ListBox demo.
  *
  */
 class SingleSelectionDemo extends Base {

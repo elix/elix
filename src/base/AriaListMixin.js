@@ -30,7 +30,7 @@ import * as internal from "./internal.js";
  * This mixin expects a set of members that manage the state of the selection:
  * `[internal.itemSelected]`, `[internal.itemAdded]`, and `selectedItem`. You can
  * supply these yourself, or do so via
- * [SingleSelectionMixin](SingleSelectionMixin).
+ * [SingleSelectAPIMixin](SingleSelectAPIMixin).
  *
  * @module AriaListMixin
  * @param {Constructor<ReactiveElement>} Base

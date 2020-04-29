@@ -8,10 +8,10 @@ import * as internal from "./internal.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import { getItemText } from "./ItemsTextMixin.js";
 import ListBox from "./ListBox.js";
-import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 const Base = DelegateItemsMixin(
-  DirectionSelectionMixin(ItemsCursorMixin(SingleSelectionMixin(ComboBox)))
+  DirectionSelectionMixin(ItemsCursorMixin(SingleSelectAPIMixin(ComboBox)))
 );
 
 /**
@@ -20,7 +20,7 @@ const Base = DelegateItemsMixin(
  * @inherits ComboBox
  * @mixes DelegateItemsMixin
  * @mixes DirectionSelectionMixin
- * @mixes SingleSelectionMixin
+ * @mixes SingleSelectAPIMixin
  * @part {ListBox} list - the list of choices
  */
 class ListComboBox extends Base {

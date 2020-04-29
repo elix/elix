@@ -9,7 +9,7 @@ import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
-import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 export default class ListWithSearch extends ComposedFocusMixin(
   DelegateFocusMixin(
@@ -17,7 +17,7 @@ export default class ListWithSearch extends ComposedFocusMixin(
       DelegateItemsMixin(
         DirectionSelectionMixin(
           KeyboardMixin(
-            SelectedItemTextValueMixin(SingleSelectionMixin(ReactiveElement))
+            SelectedItemTextValueMixin(SingleSelectAPIMixin(ReactiveElement))
           )
         )
       )

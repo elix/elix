@@ -19,7 +19,7 @@ import * as internal from "./internal.js";
  *
  * This mixin expects the component to provide an `state.items` member. It also
  * expects the component to define a `state.currentIndex` member; you can
- * provide that yourself, or use [SingleSelectionMixin](SingleSelectionMixin).
+ * provide that yourself, or use [SingleSelectAPIMixin](SingleSelectAPIMixin).
  *
  * If the component receives an event that doesn't correspond to an item (e.g.,
  * the user taps on the element background visible between items), the selection

@@ -13,7 +13,7 @@ import * as internal from "./internal.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
-import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 const Base = ComposedFocusMixin(
   DelegateFocusMixin(
@@ -25,7 +25,7 @@ const Base = ComposedFocusMixin(
               ItemsCursorMixin(
                 KeyboardMixin(
                   SelectedItemTextValueMixin(
-                    SingleSelectionMixin(ReactiveElement)
+                    SingleSelectAPIMixin(ReactiveElement)
                   )
                 )
               )
@@ -49,7 +49,7 @@ const Base = ComposedFocusMixin(
  * @mixes DirectionSelectionMixin
  * @mixes KeyboardMixin
  * @mixes SelectedItemTextValueMixin
- * @mixes SingleSelectionMixin
+ * @mixes SingleSelectAPIMixin
  * @part {AutoCompleteInput} input - the input element for search terms
  * @part {FilterListBox} list - the searchable list of items
  */

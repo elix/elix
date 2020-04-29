@@ -7,7 +7,7 @@ import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
-import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapSelectionMixin from "./TapSelectionMixin.js";
 
@@ -17,7 +17,7 @@ export default class TabStrip extends AriaListMixin(
       KeyboardDirectionMixin(
         KeyboardMixin(
           LanguageDirectionMixin(
-            SingleSelectionMixin(SlotItemsMixin(ReactiveElement))
+            SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
           )
         )
       )

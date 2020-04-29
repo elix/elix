@@ -6,12 +6,12 @@ import * as internal from "./internal.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import MenuButton from "./MenuButton.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
-import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
 const Base = FormElementMixin(
   ItemsCursorMixin(
-    SelectedItemTextValueMixin(SingleSelectionMixin(SlotItemsMixin(MenuButton)))
+    SelectedItemTextValueMixin(SingleSelectAPIMixin(SlotItemsMixin(MenuButton)))
   )
 );
 
@@ -21,7 +21,7 @@ const Base = FormElementMixin(
  * @inherits MenuButton
  * @mixes FormElementMixin
  * @mixes SelectedItemTextValueMixin
- * @mixes SingleSelectionMixin
+ * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
  * @part {div} value - region inside the toggle button showing the value of the current selection
  */

@@ -4,14 +4,14 @@ import EffectMixin from "./EffectMixin.js";
 import * as internal from "./internal.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import ResizeMixin from "./ResizeMixin.js";
-import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapSelectionMixin from "./TapSelectionMixin.js";
 
 const Base = EffectMixin(
   LanguageDirectionMixin(
     ResizeMixin(
-      SingleSelectionMixin(SlotItemsMixin(TapSelectionMixin(ReactiveElement)))
+      SingleSelectAPIMixin(SlotItemsMixin(TapSelectionMixin(ReactiveElement)))
     )
   )
 );
@@ -26,7 +26,7 @@ const Base = EffectMixin(
  * @mixes EffectMixin
  * @mixes LanguageDirectionMixin
  * @mixes ResizeMixin
- * @mixes SingleSelectionMixin
+ * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
  * @mixes TapSelectionMixin
  */

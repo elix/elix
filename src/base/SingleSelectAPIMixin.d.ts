@@ -3,7 +3,7 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-declare const SingleSelectionMixin: StateMixin<
+declare const SingleSelectAPIMixin: StateMixin<
   {},
   {},
   {
@@ -22,4 +22,4 @@ declare const SingleSelectionMixin: StateMixin<
   {}
 >;
 
-export default SingleSelectionMixin;
+export default SingleSelectAPIMixin;
