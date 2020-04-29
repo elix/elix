@@ -9,10 +9,6 @@ class ItemCursorTest extends ItemCursorMixin(ReactiveMixin(HTMLElement)) {
       items: ["Zero", "One", "Two"],
     });
   }
-
-  get items() {
-    return this[internal.state].items;
-  }
 }
 customElements.define("current-item-test", ItemCursorTest);
 

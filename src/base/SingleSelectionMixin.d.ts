@@ -9,6 +9,7 @@ declare const SingleSelectionMixin: StateMixin<
   {
     canSelectNext: boolean;
     canSelectPrevious: boolean;
+    readonly items: ListItemElement[];
     selectedIndex: number;
     selectedItem: Element | null;
     selectFirst(): boolean;

@@ -49,15 +49,6 @@ export default function ContentItemsMixin(Base) {
       return base && isSubstantiveElement(item);
     }
 
-    /**
-     * The current set of items drawn from the element's current state.
-     *
-     * @type {ListItemElement[]|null} the element's current items
-     */
-    get items() {
-      return this[internal.state] ? this[internal.state].items : null;
-    }
-
     [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);

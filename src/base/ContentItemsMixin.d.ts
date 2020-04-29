@@ -9,7 +9,6 @@ declare const ContentItemsMixin: StateMixin<
   {},
   {},
   {
-    readonly items: ListItemElement[];
     [internal.itemMatchesState](
       item: ListItemElement,
       state: PlainObject

@@ -20,6 +20,7 @@ import "./base/KeyboardPagedSelectionMixin.tests.js";
 import "./base/KeyboardPrefixSelectionMixin.tests.js";
 import "./base/LanguageDirectionMixin.tests.js";
 import "./base/ListBox.tests.js";
+import "./base/MultiSelectionMixin.tests.js";
 import "./base/NumberSpinBox.tests.js";
 import "./base/OpenCloseMixin.tests.js";
 import "./base/OverlayMixin.tests.js";

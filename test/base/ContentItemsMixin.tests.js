@@ -25,7 +25,7 @@ describe("ContentItemsMixin", () => {
     container.innerHTML = "";
   });
 
-  it("returns substantive content elements as items", () => {
+  it("defines items as substantive content elements", () => {
     const fixture = new ContentItemsTest();
     fixture.innerHTML = `
       <style></style>
@@ -33,7 +33,7 @@ describe("ContentItemsMixin", () => {
       <div>2</div>
     `;
     fixture.updateContent();
-    const items = fixture.items;
+    const items = fixture[internal.state].items;
     assert.equal(items.length, 2);
     assert.equal(items[0].textContent, "1");
     assert.equal(items[1].textContent, "2");
