@@ -55,4 +55,15 @@ describe("MultiSelectionMixin", () => {
     fixture.selectedItems = [items[0], items[2]];
     assert.deepEqual(fixture.selectedFlags, [true, false, true]);
   });
+
+  it("can toggle selected state of an individual items", () => {
+    const fixture = new MultiSelectionTest();
+    assert(!fixture.selectedFlags[0]);
+    fixture.toggleSelectedFlag(0);
+    assert(fixture.selectedFlags[0]);
+    fixture.toggleSelectedFlag(0, true);
+    assert(fixture.selectedFlags[0]);
+    fixture.toggleSelectedFlag(0, false);
+    assert(!fixture.selectedFlags[0]);
+  });
 });

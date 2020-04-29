@@ -96,7 +96,7 @@ class MultiSelectListBox extends Base {
       case " ": {
         const { currentIndex } = this[internal.state];
         if (currentIndex >= 0) {
-          toggleItemSelection(this, currentIndex);
+          this.toggleSelectedFlag(currentIndex);
         }
         break;
       }
@@ -134,11 +134,11 @@ class MultiSelectListBox extends Base {
     }
 
     // Apply `selected` style to the selected items.
-    if (changed.items || changed.selected) {
-      const { items, selected } = this[internal.state];
-      if (items && selected) {
+    if (changed.items || changed.selectedFlags) {
+      const { items, selectedFlags } = this[internal.state];
+      if (items && selectedFlags) {
         items.forEach((item, index) => {
-          item.toggleAttribute("selected", selected[index]);
+          item.toggleAttribute("selected", selectedFlags[index]);
         });
       }
     }
@@ -185,7 +185,7 @@ class MultiSelectListBox extends Base {
     if (items && target instanceof Node) {
       const targetIndex = indexOfItemContainingTarget(items, target);
       if (targetIndex >= 0) {
-        toggleItemSelection(this, targetIndex);
+        this.toggleSelectedFlag(targetIndex);
       }
     }
   }
@@ -216,12 +216,4 @@ class MultiSelectListBox extends Base {
   }
 }
 
-function toggleItemSelection(element, itemIndex) {
-  const { selected } = element[internal.state];
-  const newSelected = [...selected];
-  newSelected[itemIndex] = !newSelected[itemIndex];
-  element[internal.setState]({
-    selected: newSelected,
-  });
-}
 export default MultiSelectListBox;

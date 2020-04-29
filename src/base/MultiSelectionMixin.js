@@ -64,6 +64,16 @@ export default function MultiSelectionMixin(Base) {
 
       return effects;
     }
+
+    toggleSelectedFlag(index, toggle) {
+      const { selectedFlags } = this[state];
+      const value = toggle !== undefined ? toggle : !selectedFlags[index];
+      const newSelectedFlags = [...selectedFlags];
+      newSelectedFlags[index] = value;
+      this[setState]({
+        selectedFlags: newSelectedFlags,
+      });
+    }
   }
 
   return MultiSelection;
