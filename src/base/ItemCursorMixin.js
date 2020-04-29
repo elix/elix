@@ -189,7 +189,17 @@ export default function ItemCursorMixin(Base) {
   return ItemCursor;
 }
 
+/**
+ * Update currentIndex and return true if it changed.
+ *
+ * @private
+ * @param {Element} element
+ * @param {number} index
+ */
 function moveToIndex(element, index) {
+  // Normally we don't check to see if state is going to change before setting
+  // state, but the methods defined by this mixin want to be able to return true
+  // if the index is actually going to change.
   const changed = element[internal.state].currentIndex !== index;
   if (changed) {
     element[internal.setState]({ currentIndex: index });

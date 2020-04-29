@@ -48,4 +48,11 @@ describe("MultiSelectionMixin", () => {
       false,
     ]);
   });
+
+  it("lets the selectedItems be set as an array", () => {
+    const fixture = new MultiSelectionTest();
+    const items = fixture[internal.state].items;
+    fixture.selectedItems = [items[0], items[2]];
+    assert.deepEqual(fixture.selected, [true, false, true]);
+  });
 });

@@ -27,9 +27,11 @@ export default function MultiSelectionMixin(Base) {
     get selectedItems() {
       return this[state].selectedItems;
     }
-    // set selectedItems(selectedItems) {
-    //   this[setState]({ selectedItems });
-    // }
+    set selectedItems(selectedItems) {
+      const items = this[state].items;
+      const selected = itemsToSelected(items, selectedItems);
+      this[setState]({ selected });
+    }
 
     [stateEffects](state, changed) {
       const effects = super[stateEffects]
@@ -41,19 +43,7 @@ export default function MultiSelectionMixin(Base) {
       // If items change, (re)initialize selected.
       if (changed.items) {
         const { items, selectedItems } = state;
-        const count = items ? items.length : 0;
-        const selected = Array(count).fill(false);
-
-        // Try to reacquire previously selected items.
-        if (selectedItems && items) {
-          selectedItems.forEach((item) => {
-            const index = items.indexOf(item);
-            if (index >= 0) {
-              selected[index] = true;
-            }
-          });
-        }
-
+        const selected = itemsToSelected(items, selectedItems);
         Object.assign(effects, { selected });
         updatedSelected = true;
       }
@@ -77,4 +67,23 @@ export default function MultiSelectionMixin(Base) {
   }
 
   return MultiSelection;
+}
+
+// Given a complete set of items and a subset of selected items, return an array
+// of booleans indicating which items are selected.
+function itemsToSelected(items, selectedItems) {
+  const count = items ? items.length : 0;
+  const selected = Array(count).fill(false);
+
+  // Try to reacquire previously selected items.
+  if (selectedItems && items) {
+    selectedItems.forEach((item) => {
+      const index = items.indexOf(item);
+      if (index >= 0) {
+        selected[index] = true;
+      }
+    });
+  }
+
+  return selected;
 }

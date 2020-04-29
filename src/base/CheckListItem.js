@@ -22,7 +22,8 @@ class CheckListItem extends ReactiveElement {
     // Render selected state as checked.
     if (changed.selected) {
       const { selected } = this[internal.state];
-      this[internal.ids].checkbox.checked = selected;
+      /** @type {any} */ const checkbox = this[internal.ids].checkbox;
+      checkbox.checked = selected;
     }
   }
 
