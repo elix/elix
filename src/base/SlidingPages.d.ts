@@ -2,7 +2,7 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import AriaListMixin from "./AriaListMixin.js";
-import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
@@ -12,7 +12,7 @@ import TouchSwipeMixin from "./TouchSwipeMixin.js";
 import TrackpadSwipeMixin from "./TrackpadSwipeMixin.js";
 
 export default class SlidingPages extends AriaListMixin(
-  DirectionSelectionMixin(
+  DirectionCursorMixin(
     FocusVisibleMixin(
       KeyboardDirectionMixin(
         KeyboardMixin(

@@ -2,7 +2,7 @@ import { forwardFocus } from "../core/dom.js";
 import html from "../core/html.js";
 import AriaListMixin from "./AriaListMixin.js";
 import ArrowDirectionMixin from "./ArrowDirectionMixin.js";
-import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import Explorer from "./Explorer.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import * as internal from "./internal.js";
@@ -15,7 +15,7 @@ import TrackpadSwipeMixin from "./TrackpadSwipeMixin.js";
 
 const Base = AriaListMixin(
   ArrowDirectionMixin(
-    DirectionSelectionMixin(
+    DirectionCursorMixin(
       FocusVisibleMixin(
         KeyboardDirectionMixin(
           KeyboardMixin(
@@ -37,7 +37,7 @@ const Base = AriaListMixin(
  * @inherits Explorer
  * @mixes AriaListMixin
  * @mixes ArrowDirectionMixin
- * @mixes DirectionSelectionMixin
+ * @mixes DirectionCursorMixin
  * @mixes FocusVisibleMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin

@@ -1,18 +1,18 @@
-import DirectionSelectionMixin from "../../src/base/DirectionSelectionMixin.js";
+import DirectionCursorMixin from "../../src/base/DirectionCursorMixin.js";
 import * as internal from "../../src/base/internal.js";
 import { assert, sinon } from "../testHelpers.js";
 
-class DirectionSelectionTest extends DirectionSelectionMixin(HTMLElement) {
+class DirectionCursorTest extends DirectionCursorMixin(HTMLElement) {
   [internal.goFirst]() {}
   [internal.goLast]() {}
   [internal.goNext]() {}
   [internal.goPrevious]() {}
 }
-customElements.define("direction-selection-test", DirectionSelectionTest);
+customElements.define("direction-cursor-test", DirectionCursorTest);
 
-describe("DirectionSelectionMixin", () => {
-  it("maps direction method calls to selection method calls", () => {
-    const fixture = new DirectionSelectionTest();
+describe("DirectionCursorMixin", () => {
+  it("maps direction method calls to cursor method calls", () => {
+    const fixture = new DirectionCursorTest();
 
     const goFirstSpy = sinon.spy(fixture, internal.goFirst);
     fixture[internal.goStart]();

@@ -15,7 +15,7 @@ import * as internal from "./internal.js";
  * This mixin calls methods such as `goLeft` and `goRight`. You can define
  * what that means by implementing those methods yourself. If you want to use
  * direction keys to navigate a selection, use this mixin with
- * [DirectionSelectionMixin](DirectionSelectionMixin).
+ * [DirectionCursorMixin](DirectionCursorMixin).
  *
  * If the component defines a property called `orientation`, the value of that
  * property will constrain navigation to the horizontal or vertical axis.

@@ -4,7 +4,7 @@
 import ReactiveElement from "../core/ReactiveElement.js";
 import AriaMenuMixin from "./AriaMenuMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
-import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
@@ -19,7 +19,7 @@ import TapSelectionMixin from "./TapSelectionMixin.js";
 
 export default class MenuBase extends AriaMenuMixin(
   DelegateFocusMixin(
-    DirectionSelectionMixin(
+    DirectionCursorMixin(
       ItemsTextMixin(
         KeyboardDirectionMixin(
           KeyboardMixin(

@@ -42,7 +42,7 @@ export { default as DelegateInputSelectionMixin } from "../src/base/DelegateInpu
 export { default as DelegateItemsMixin } from "../src/base/DelegateItemsMixin.js";
 export { default as Dialog } from "./Dialog.js";
 export { default as DialogModalityMixin } from "../src/base/DialogModalityMixin.js";
-export { default as DirectionSelectionMixin } from "../src/base/DirectionSelectionMixin.js";
+export { default as DirectionCursorMixin } from "../src/base/DirectionCursorMixin.js";
 export { default as DisabledMixin } from "../src/base/DisabledMixin.js";
 export { default as Drawer } from "./Drawer.js";
 export { default as DrawerWithGrip } from "./DrawerWithGrip.js";

@@ -2,7 +2,7 @@ import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import AriaMenuMixin from "./AriaMenuMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
-import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import * as internal from "./internal.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
@@ -19,7 +19,7 @@ import TapSelectionMixin from "./TapSelectionMixin.js";
 
 const Base = AriaMenuMixin(
   DelegateFocusMixin(
-    DirectionSelectionMixin(
+    DirectionCursorMixin(
       ItemsCursorMixin(
         ItemsTextMixin(
           KeyboardDirectionMixin(
@@ -54,7 +54,7 @@ const Base = AriaMenuMixin(
  * @inherits ReactiveElement
  * @mixes AriaMenuMixin
  * @mixes DelegateFocusMixin
- * @mixes DirectionSelectionMixin
+ * @mixes DirectionCursorMixin
  * @mixes ItemsTextMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin

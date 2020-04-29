@@ -10,7 +10,7 @@ import "./base/ContentItemsMixin.tests.js";
 import "./base/DarkModeMixin.tests.js";
 import "./base/DateComboBox.tests.js";
 import "./base/DelegateFocusMixin.tests.js";
-import "./base/DirectionSelectionMixin.tests.js";
+import "./base/DirectionCursorMixin.tests.js";
 import "./base/Explorer.tests.js";
 import "./base/FormElementMixin.tests.js";
 import "./base/ItemsCursorMixin.tests.js";

@@ -3,11 +3,11 @@
 
 import ComboBox from "./ComboBox.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
-import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 export default class ListComboBox extends DelegateItemsMixin(
-  DirectionSelectionMixin(SingleSelectAPIMixin(ComboBox))
+  DirectionCursorMixin(SingleSelectAPIMixin(ComboBox))
 ) {
   listPartType: PartDescriptor;
 }

@@ -12,12 +12,12 @@ import * as internal from "./internal.js";
  * to directions) and a mixin that handles cursor operations like
  * [ItemsCursorMixin](ItemsCursorMixin).
  *
- * @module DirectionSelectionMixin
+ * @module DirectionCursorMixin
  * @param {Constructor<ReactiveElement>} Base
  */
-export default function DirectionSelectionMixin(Base) {
+export default function DirectionCursorMixin(Base) {
   // The class prototype added by the mixin.
-  class DirectionSelection extends Base {
+  class DirectionCursor extends Base {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
         canGoDown: null,
@@ -139,5 +139,5 @@ export default function DirectionSelectionMixin(Base) {
     }
   }
 
-  return DirectionSelection;
+  return DirectionCursor;
 }

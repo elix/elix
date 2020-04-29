@@ -4,7 +4,7 @@
 
 import AriaListMixin from "../../src/base/AriaListMixin.js";
 import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
-import DirectionSelectionMixin from "../../src/base/DirectionSelectionMixin.js";
+import DirectionCursorMixin from "../../src/base/DirectionCursorMixin.js";
 import * as internal from "../../src/base/internal.js";
 import ItemsTextMixin from "../../src/base/ItemsTextMixin.js";
 import KeyboardDirectionMixin from "../../src/base/KeyboardDirectionMixin.js";
@@ -21,7 +21,7 @@ import * as template from "../../src/core/template.js";
 
 const Base = AriaListMixin(
   ContentItemsMixin(
-    DirectionSelectionMixin(
+    DirectionCursorMixin(
       ItemsTextMixin(
         KeyboardDirectionMixin(
           KeyboardMixin(

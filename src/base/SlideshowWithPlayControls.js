@@ -1,5 +1,5 @@
 import AriaListMixin from "./AriaListMixin.js";
-import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import * as internal from "./internal.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
@@ -12,7 +12,7 @@ import TouchSwipeMixin from "./TouchSwipeMixin.js";
 import TrackpadSwipeMixin from "./TrackpadSwipeMixin.js";
 
 const Base = AriaListMixin(
-  DirectionSelectionMixin(
+  DirectionCursorMixin(
     FocusVisibleMixin(
       KeyboardDirectionMixin(
         KeyboardMixin(
@@ -44,7 +44,7 @@ const Base = AriaListMixin(
  *
  * @inherits Slideshow
  * @mixes AriaListMixin
- * @mixes DirectionSelectionMixin
+ * @mixes DirectionCursorMixin
  * @mixes FocusVisibleMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin

@@ -6,7 +6,7 @@ import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
-import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
@@ -15,7 +15,7 @@ export default class ListWithSearch extends ComposedFocusMixin(
   DelegateFocusMixin(
     DelegateInputSelectionMixin(
       DelegateItemsMixin(
-        DirectionSelectionMixin(
+        DirectionCursorMixin(
           KeyboardMixin(
             SelectedItemTextValueMixin(SingleSelectAPIMixin(ReactiveElement))
           )

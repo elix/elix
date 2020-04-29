@@ -4,7 +4,7 @@
 import ReactiveElement from "../core/ReactiveElement.js";
 import AriaListMixin from "./AriaListMixin.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
-import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
@@ -21,7 +21,7 @@ import TapSelectionMixin from "./TapSelectionMixin.js";
 
 export default class ListBox extends AriaListMixin(
   ComposedFocusMixin(
-    DirectionSelectionMixin(
+    DirectionCursorMixin(
       FocusVisibleMixin(
         FormElementMixin(
           ItemsTextMixin(

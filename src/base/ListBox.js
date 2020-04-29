@@ -2,7 +2,7 @@ import html from "../core/html.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import AriaListMixin from "./AriaListMixin.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
-import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import * as internal from "./internal.js";
@@ -21,7 +21,7 @@ import TapSelectionMixin from "./TapSelectionMixin.js";
 
 const Base = AriaListMixin(
   ComposedFocusMixin(
-    DirectionSelectionMixin(
+    DirectionCursorMixin(
       FocusVisibleMixin(
         FormElementMixin(
           ItemsCursorMixin(
@@ -63,7 +63,7 @@ const Base = AriaListMixin(
  * @inherits ReactiveElement
  * @mixes AriaListMixin
  * @mixes ComposedFocusMixin
- * @mixes DirectionSelectionMixin
+ * @mixes DirectionCursorMixin
  * @mixes FocusVisibleMixin
  * @mixes FormElementMixin
  * @mixes ItemsTextMixin

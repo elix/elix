@@ -3,7 +3,7 @@
 
 import AriaListMixin from "./AriaListMixin.js";
 import ArrowDirectionMixin from "./ArrowDirectionMixin.js";
-import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import Explorer from "./Explorer.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
@@ -14,7 +14,7 @@ import TrackpadSwipeMixin from "./TrackpadSwipeMixin.js";
 
 export default class Carousel extends AriaListMixin(
   ArrowDirectionMixin(
-    DirectionSelectionMixin(
+    DirectionCursorMixin(
       FocusVisibleMixin(
         KeyboardDirectionMixin(
           KeyboardMixin(

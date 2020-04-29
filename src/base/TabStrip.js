@@ -3,7 +3,7 @@ import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import { defaultAriaRole } from "./accessibility.js";
 import AriaListMixin from "./AriaListMixin.js";
-import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import * as internal from "./internal.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
@@ -16,7 +16,7 @@ import TapSelectionMixin from "./TapSelectionMixin.js";
 const Base = AriaListMixin(
   ItemsCursorMixin(
     TapSelectionMixin(
-      DirectionSelectionMixin(
+      DirectionCursorMixin(
         KeyboardDirectionMixin(
           KeyboardMixin(
             LanguageDirectionMixin(
@@ -55,7 +55,7 @@ const Base = AriaListMixin(
  *
  * @inherits ReactiveElement
  * @mixes AriaListMixin
- * @mixes DirectionSelectionMixin
+ * @mixes DirectionCursorMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
  * @mixes LanguageDirectionMixin

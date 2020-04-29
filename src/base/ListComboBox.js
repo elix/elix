@@ -3,7 +3,7 @@ import html from "../core/html.js";
 import * as template from "../core/template.js";
 import ComboBox from "./ComboBox.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
-import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import * as internal from "./internal.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import { getItemText } from "./ItemsTextMixin.js";
@@ -11,7 +11,7 @@ import ListBox from "./ListBox.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 const Base = DelegateItemsMixin(
-  DirectionSelectionMixin(ItemsCursorMixin(SingleSelectAPIMixin(ComboBox)))
+  DirectionCursorMixin(ItemsCursorMixin(SingleSelectAPIMixin(ComboBox)))
 );
 
 /**
@@ -19,7 +19,7 @@ const Base = DelegateItemsMixin(
  *
  * @inherits ComboBox
  * @mixes DelegateItemsMixin
- * @mixes DirectionSelectionMixin
+ * @mixes DirectionCursorMixin
  * @mixes SingleSelectAPIMixin
  * @part {ListBox} list - the list of choices
  */

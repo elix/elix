@@ -25,7 +25,7 @@ export { default as DelegateInputLabelMixin } from "./base/DelegateInputLabelMix
 export { default as DelegateInputSelectionMixin } from "./base/DelegateInputSelectionMixin.js";
 export { default as DelegateItemsMixin } from "./base/DelegateItemsMixin.js";
 export { default as DialogModalityMixin } from "./base/DialogModalityMixin.js";
-export { default as DirectionSelectionMixin } from "./base/DirectionSelectionMixin.js";
+export { default as DirectionCursorMixin } from "./base/DirectionCursorMixin.js";
 export { default as DisabledMixin } from "./base/DisabledMixin.js";
 export { default as EffectMixin } from "./base/EffectMixin.js";
 export { default as FocusCaptureMixin } from "./base/FocusCaptureMixin.js";

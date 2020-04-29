@@ -5,7 +5,7 @@
 
 import * as internal from "./internal.js";
 
-declare const DirectionSelectionMixin: Mixin<
+declare const DirectionCursorMixin: Mixin<
   {},
   {
     [internal.goDown](): boolean;
@@ -17,4 +17,4 @@ declare const DirectionSelectionMixin: Mixin<
   }
 >;
 
-export default DirectionSelectionMixin;
+export default DirectionCursorMixin;

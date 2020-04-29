@@ -6,7 +6,7 @@ import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
-import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FilterListBox from "./FilterListBox.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import * as internal from "./internal.js";
@@ -20,7 +20,7 @@ const Base = ComposedFocusMixin(
     DelegateInputLabelMixin(
       DelegateInputSelectionMixin(
         DelegateItemsMixin(
-          DirectionSelectionMixin(
+          DirectionCursorMixin(
             FocusVisibleMixin(
               ItemsCursorMixin(
                 KeyboardMixin(
@@ -46,7 +46,7 @@ const Base = ComposedFocusMixin(
  * @mixes DelegateInputLabelMixin
  * @mixes DelegateInputSelectionMixin
  * @mixes DelegateItemsMixin
- * @mixes DirectionSelectionMixin
+ * @mixes DirectionCursorMixin
  * @mixes KeyboardMixin
  * @mixes SelectedItemTextValueMixin
  * @mixes SingleSelectAPIMixin
