@@ -1,5 +1,14 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  goFirst,
+  goLast,
+  goNext,
+  goPrevious,
+  setState,
+  state,
+  stateEffects,
+} from "./internal.js";
 
 /**
  * Tracks and navigates the current item in a set of items
@@ -10,11 +19,12 @@ import * as internal from "./internal.js";
 export default function ItemsCursorMixin(Base) {
   // The class prototype added by the mixin.
   class ItemsCursor extends Base {
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         canGoNext: false,
         canGoPrevious: false,
         currentIndex: -1,
+        currentIndexPending: null,
         currentItem: null,
         currentItemRequired: false,
         cursorOperationsWrap: false,
@@ -26,9 +36,9 @@ export default function ItemsCursorMixin(Base) {
      *
      * @returns {Boolean} True if the selection changed, false if not.
      */
-    [internal.goFirst]() {
-      if (super[internal.goFirst]) {
-        super[internal.goFirst]();
+    [goFirst]() {
+      if (super[goFirst]) {
+        super[goFirst]();
       }
       return moveToIndex(this, 0);
     }
@@ -38,11 +48,11 @@ export default function ItemsCursorMixin(Base) {
      *
      * @returns {Boolean} True if the selection changed, false if not.
      */
-    [internal.goLast]() {
-      if (super[internal.goLast]) {
-        super[internal.goLast]();
+    [goLast]() {
+      if (super[goLast]) {
+        super[goLast]();
       }
-      return moveToIndex(this, this[internal.state].items.length - 1);
+      return moveToIndex(this, this[state].items.length - 1);
     }
 
     /**
@@ -52,14 +62,12 @@ export default function ItemsCursorMixin(Base) {
      *
      * @returns {Boolean} True if the current item changed, false if not.
      */
-    [internal.goNext]() {
-      if (super[internal.goNext]) {
-        super[internal.goNext]();
+    [goNext]() {
+      if (super[goNext]) {
+        super[goNext]();
       }
       let index;
-      const { items, currentIndex, cursorOperationsWrap } = this[
-        internal.state
-      ];
+      const { items, currentIndex, cursorOperationsWrap } = this[state];
       if (
         (items && currentIndex === -1) ||
         (cursorOperationsWrap && currentIndex === items.length - 1)
@@ -84,14 +92,12 @@ export default function ItemsCursorMixin(Base) {
      *
      * @returns {Boolean} True if the current item changed, false if not.
      */
-    [internal.goPrevious]() {
-      if (super[internal.goPrevious]) {
-        super[internal.goPrevious]();
+    [goPrevious]() {
+      if (super[goPrevious]) {
+        super[goPrevious]();
       }
       let index;
-      const { items, currentIndex, cursorOperationsWrap } = this[
-        internal.state
-      ];
+      const { items, currentIndex, cursorOperationsWrap } = this[state];
       if (
         (items && currentIndex === -1) ||
         (cursorOperationsWrap && currentIndex === 0)
@@ -109,9 +115,9 @@ export default function ItemsCursorMixin(Base) {
       return moveToIndex(this, index);
     }
 
-    [internal.stateEffects](state, changed) {
-      const effects = super[internal.stateEffects]
-        ? super[internal.stateEffects](state, changed)
+    [stateEffects](state, changed) {
+      const effects = super[stateEffects]
+        ? super[stateEffects](state, changed)
         : {};
 
       // Ensure currentIndex is valid.
@@ -120,9 +126,15 @@ export default function ItemsCursorMixin(Base) {
         changed.currentIndex ||
         changed.currentItemRequired
       ) {
-        const { items, currentIndex, currentItem, currentItemRequired } = state;
-        let newIndex = currentIndex;
+        const {
+          items,
+          currentIndex,
+          currentIndexPending,
+          currentItem,
+          currentItemRequired,
+        } = state;
 
+        let newIndex = currentIndex;
         if (changed.items && items && !changed.currentIndex) {
           // The index stayed the same, but the item may have moved.
           if (items[currentIndex] !== currentItem) {
@@ -137,25 +149,40 @@ export default function ItemsCursorMixin(Base) {
         }
 
         const count = items ? items.length : 0;
-        if (items === null) {
-          // If items are null, we haven't received items yet. Leave the index
-          // alone, as it may be set later through markup; we'll want to
-          // validate it only after we have items.
+        let newIndexPending = currentIndexPending;
+        if (newIndex >= count) {
+          // The requested index is beyond the bounds of the items array -- but
+          // the items array may increase in size later. We remember which index
+          // was requested as a pending index.
+          newIndexPending = newIndex;
+          // For now, force the index to be within bounds. If items array is
+          // null or empty, this will be -1 (no selection).
+          newIndex = count - 1;
+        } else if (
+          currentIndexPending !== null &&
+          currentIndexPending < count
+        ) {
+          // The items array has increased in size to the point where a pending
+          // index can be applied.
+          newIndex = currentIndexPending;
+          newIndexPending = null;
         } else if (newIndex === -1 && currentItemRequired && count > 0) {
           // We require a current item, don't have one yet, but do have items.
           // Take the 0th item as the current item.
           newIndex = 0;
+        } else if (newIndex >= 0 && newIndex < count - 1) {
+          // If a requested index is in bounds and not the last index, that
+          // request supercedes any pending index.
+          newIndexPending = null;
         } else {
-          // Force index within bounds of -1 (no selection) to array length-1.
-          // This logic also handles the case where there are no items
-          // (count=0), which will produce a validated index of -1 (no
-          // selection) regardless of what currentIndex was asked for.
-          newIndex = Math.max(Math.min(newIndex, count - 1), -1);
+          // Ensure index is at least -1 (no selection).
+          newIndex = Math.max(newIndex, -1);
         }
 
         const newItem = items ? items[newIndex] : null;
         Object.assign(effects, {
           currentIndex: newIndex,
+          currentIndexPending: newIndexPending,
           currentItem: newItem,
         });
       }
@@ -200,9 +227,9 @@ function moveToIndex(element, index) {
   // Normally we don't check to see if state is going to change before setting
   // state, but the methods defined by this mixin want to be able to return true
   // if the index is actually going to change.
-  const changed = element[internal.state].currentIndex !== index;
+  const changed = element[state].currentIndex !== index;
   if (changed) {
-    element[internal.setState]({ currentIndex: index });
+    element[setState]({ currentIndex: index });
   }
   return changed;
 }

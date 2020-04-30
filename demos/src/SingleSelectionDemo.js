@@ -1,18 +1,15 @@
 import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
 import * as internal from "../../src/base/internal.js";
 import ItemsCursorMixin from "../../src/base/ItemsCursorMixin.js";
-import SingleSelectAPIMixin from "../../src/base/SingleSelectAPIMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 
-const Base = ContentItemsMixin(
-  ItemsCursorMixin(ReactiveMixin(SingleSelectAPIMixin(HTMLElement)))
-);
+const Base = ContentItemsMixin(ItemsCursorMixin(ReactiveMixin(HTMLElement)));
 
 /*
- * A very simple component to show the application of SingleSelectAPIMixin
- * and ContentItemsMixin.
+ * A very simple component to show the application of ItemsCursorMixin and
+ * ContentItemsMixin to support single selection.
  *
- * For a more complete demo using SingleSelectAPIMixin, see the ListBox demo.
+ * For a complete list box implementation, see the ListBox component.
  *
  */
 class SingleSelectionDemo extends Base {
@@ -22,7 +19,9 @@ class SingleSelectionDemo extends Base {
     this.addEventListener("mousedown", (event) => {
       if (event.target instanceof Element) {
         this[internal.raiseChangeEvents] = true;
-        this.selectedItem = event.target;
+        const item = event.target;
+        const currentIndex = this[internal.state].content.indexOf(item);
+        this[internal.setState]({ currentIndex });
         event.stopPropagation();
         this[internal.raiseChangeEvents] = false;
       }
