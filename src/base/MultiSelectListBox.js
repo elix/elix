@@ -2,6 +2,7 @@ import html from "../core/html.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import AriaListMixin from "./AriaListMixin.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
+import CurrentItemInViewMixin from "./CurrentItemInViewMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import {
@@ -24,7 +25,6 @@ import KeyboardPrefixSelectionMixin from "./KeyboardPrefixSelectionMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import MultiSelectAPIMixin from "./MultiSelectAPIMixin.js";
 import MultiSelectToggleMixin from "./MultiSelectToggleMixin.js";
-import SelectionInViewMixin from "./SelectionInViewMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
@@ -40,7 +40,7 @@ const Base = AriaListMixin(
                   KeyboardPagedSelectionMixin(
                     KeyboardPrefixSelectionMixin(
                       LanguageDirectionMixin(
-                        SelectionInViewMixin(
+                        CurrentItemInViewMixin(
                           MultiSelectAPIMixin(
                             MultiSelectToggleMixin(
                               SingleSelectAPIMixin(
@@ -84,7 +84,7 @@ const Base = AriaListMixin(
  * @mixes KeyboardPrefixSelectionMixin
  * @mixes LanguageDirectionMixin
  * @mixes SelectedItemTextValueMixin
- * @mixes SelectionInViewMixin
+ * @mixes CurrentItemInViewMixin
  * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
  * @mixes TapSelectionMixin

@@ -416,7 +416,7 @@ export const rendering = coreInternal.rendering;
  * Symbol for the `scrollTarget` property.
  *
  * This property indicates which element in a component's shadow subtree
- * should be scrolled. [SelectionInViewMixin](SelectionInViewMixin) can use
+ * should be scrolled. [CurrentItemInViewMixin](CurrentItemInViewMixin) can use
  * this property to determine which element should be scrolled to keep the
  * selected item in view.
  */

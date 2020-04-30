@@ -5,7 +5,7 @@
 
 import * as internal from "./internal.js";
 
-declare const SelectionInViewMixin: Mixin<
+declare const CurrentItemInViewMixin: Mixin<
   {},
   {
     scrollCurrentItemIntoView(): void;
@@ -13,4 +13,4 @@ declare const SelectionInViewMixin: Mixin<
   }
 >;
 
-export default SelectionInViewMixin;
+export default CurrentItemInViewMixin;

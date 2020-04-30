@@ -3,23 +3,23 @@ import * as internal from "./internal.js";
 import { defaultScrollTarget } from "./scrolling.js";
 
 /**
- * Scrolls to ensure the selected item is visible
+ * Scrolls to ensure the current item is visible
  *
- * When the selected item in a list-like component changes, the selected item
+ * When the current item in a list-like component changes, the current item
  * should be brought into view so that the user can confirm their selection.
  *
  * This mixin expects an `items` collection, such as that provided by
  * [ContentItemsMixin](ContentItemsMixin). It also expects a
- * `state.currentItem` member indicating which item is curently selected. You
+ * `state.currentItem` member indicating which item is current. You
  * can supply that yourself, or use
  * [ItemsCursorMixin](ItemsCursorMixin).
  *
- * @module SelectionInViewMixin
+ * @module CurrentItemInViewMixin
  * @param {Constructor<ReactiveElement>} Base
  */
-export default function SelectionInViewMixin(Base) {
+export default function CurrentItemInViewMixin(Base) {
   // The class prototype added by the mixin.
-  class SelectionInView extends Base {
+  class CurrentItemInView extends Base {
     [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
@@ -101,5 +101,5 @@ export default function SelectionInViewMixin(Base) {
     }
   }
 
-  return SelectionInView;
+  return CurrentItemInView;
 }

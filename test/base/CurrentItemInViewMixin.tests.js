@@ -1,12 +1,12 @@
+import CurrentItemInViewMixin from "../../src/base/CurrentItemInViewMixin.js";
 import * as internal from "../../src/base/internal.js";
-import SelectionInViewMixin from "../../src/base/SelectionInViewMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import ShadowTemplateMixin from "../../src/core/ShadowTemplateMixin.js";
 import { assert } from "../testHelpers.js";
 
 const itemHeight = 100;
 
-class SelectionInViewTest extends SelectionInViewMixin(
+class CurrentItemInViewTest extends CurrentItemInViewMixin(
   ReactiveMixin(ShadowTemplateMixin(HTMLElement))
 ) {
   connectedCallback() {
@@ -22,9 +22,9 @@ class SelectionInViewTest extends SelectionInViewMixin(
     return this[internal.state].items;
   }
 }
-customElements.define("selection-in-view-test", SelectionInViewTest);
+customElements.define("current-item-in-view-test", CurrentItemInViewTest);
 
-describe("SelectionInViewMixin", function () {
+describe("CurrentItemInViewMixin", function () {
   let container;
 
   before(() => {
@@ -70,7 +70,7 @@ describe("SelectionInViewMixin", function () {
 });
 
 function createSampleElement() {
-  const fixture = new SelectionInViewTest();
+  const fixture = new CurrentItemInViewTest();
 
   // Force scroll: make element only tall enough to show 1.5 items at a time.
   const itemsToShow = 1.5;

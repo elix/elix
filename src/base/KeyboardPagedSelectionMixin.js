@@ -18,7 +18,7 @@ import { defaultScrollTarget } from "./scrolling.js";
  *   the selected item visible.
  *
  * To ensure the selected item is in view following use of Page Up/Down, use
- * the related [SelectionInViewMixin](SelectionInViewMixin).
+ * the related [CurrentItemInViewMixin](CurrentItemInViewMixin).
  *
  * This mixin expects the component to provide:
  *

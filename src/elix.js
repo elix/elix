@@ -19,6 +19,7 @@ export { default as AttributeMarshallingMixin } from "./core/AttributeMarshallin
 export { default as CalendarElementMixin } from "./base/CalendarElementMixin.js";
 export { default as ComposedFocusMixin } from "./base/ComposedFocusMixin.js";
 export { default as ContentItemsMixin } from "./base/ContentItemsMixin.js";
+export { default as CurrentItemInViewMixin } from "./base/CurrentItemInViewMixin.js";
 export { default as DarkModeMixin } from "./base/DarkModeMixin.js";
 export { default as DelegateFocusMixin } from "./base/DelegateFocusMixin.js";
 export { default as DelegateInputLabelMixin } from "./base/DelegateInputLabelMixin.js";
@@ -133,7 +134,6 @@ export { default as RepeatMousedownMixin } from "./base/RepeatMousedownMixin.js"
 export { default as ResizeMixin } from "./base/ResizeMixin.js";
 export { default as SelectableMixin } from "./base/SelectableMixin.js";
 export { default as SelectedItemTextValueMixin } from "./base/SelectedItemTextValueMixin.js";
-export { default as SelectionInViewMixin } from "./base/SelectionInViewMixin.js";
 export { default as ShadowTemplateMixin } from "./core/ShadowTemplateMixin.js";
 export { default as SingleSelectAPIMixin } from "./base/SingleSelectAPIMixin.js";
 export { default as SlotContentMixin } from "./base/SlotContentMixin.js";
