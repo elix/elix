@@ -3,6 +3,7 @@ import html from "../core/html.js";
 import * as template from "../core/template.js";
 import FormElementMixin from "./FormElementMixin.js";
 import * as internal from "./internal.js";
+import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import MenuButton from "./MenuButton.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
@@ -10,8 +11,12 @@ import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
 const Base = FormElementMixin(
-  ItemsCursorMixin(
-    SelectedItemTextValueMixin(SingleSelectAPIMixin(SlotItemsMixin(MenuButton)))
+  ItemsAPIMixin(
+    ItemsCursorMixin(
+      SelectedItemTextValueMixin(
+        SingleSelectAPIMixin(SlotItemsMixin(MenuButton))
+      )
+    )
   )
 );
 

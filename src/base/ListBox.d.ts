@@ -8,6 +8,7 @@ import CurrentItemInViewMixin from "./CurrentItemInViewMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
+import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
@@ -24,16 +25,18 @@ export default class ListBox extends AriaListMixin(
     DirectionCursorMixin(
       FocusVisibleMixin(
         FormElementMixin(
-          ItemsTextMixin(
-            KeyboardDirectionMixin(
-              KeyboardMixin(
-                KeyboardPagedSelectionMixin(
-                  KeyboardPrefixSelectionMixin(
-                    LanguageDirectionMixin(
-                      SelectedItemTextValueMixin(
-                        CurrentItemInViewMixin(
-                          SingleSelectAPIMixin(
-                            SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+          ItemsAPIMixin(
+            ItemsTextMixin(
+              KeyboardDirectionMixin(
+                KeyboardMixin(
+                  KeyboardPagedSelectionMixin(
+                    KeyboardPrefixSelectionMixin(
+                      LanguageDirectionMixin(
+                        SelectedItemTextValueMixin(
+                          CurrentItemInViewMixin(
+                            SingleSelectAPIMixin(
+                              SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+                            )
                           )
                         )
                       )

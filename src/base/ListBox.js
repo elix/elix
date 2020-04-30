@@ -7,6 +7,7 @@ import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import * as internal from "./internal.js";
+import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
@@ -24,17 +25,21 @@ const Base = AriaListMixin(
     DirectionCursorMixin(
       FocusVisibleMixin(
         FormElementMixin(
-          ItemsCursorMixin(
-            ItemsTextMixin(
-              KeyboardDirectionMixin(
-                KeyboardMixin(
-                  KeyboardPagedSelectionMixin(
-                    KeyboardPrefixSelectionMixin(
-                      LanguageDirectionMixin(
-                        SelectedItemTextValueMixin(
-                          CurrentItemInViewMixin(
-                            SingleSelectAPIMixin(
-                              SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+          ItemsAPIMixin(
+            ItemsCursorMixin(
+              ItemsTextMixin(
+                KeyboardDirectionMixin(
+                  KeyboardMixin(
+                    KeyboardPagedSelectionMixin(
+                      KeyboardPrefixSelectionMixin(
+                        LanguageDirectionMixin(
+                          SelectedItemTextValueMixin(
+                            CurrentItemInViewMixin(
+                              SingleSelectAPIMixin(
+                                SlotItemsMixin(
+                                  TapSelectionMixin(ReactiveElement)
+                                )
+                              )
                             )
                           )
                         )

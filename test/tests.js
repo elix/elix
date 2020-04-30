@@ -14,6 +14,7 @@ import "./base/DelegateFocusMixin.tests.js";
 import "./base/DirectionCursorMixin.tests.js";
 import "./base/Explorer.tests.js";
 import "./base/FormElementMixin.tests.js";
+import "./base/ItemsAPIMixin.tests.js";
 import "./base/ItemsCursorMixin.tests.js";
 import "./base/ItemsMultiSelectMixin.tests.js";
 import "./base/KeyboardDirectionMixin.tests.js";

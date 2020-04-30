@@ -6,6 +6,7 @@ import AriaMenuMixin from "./AriaMenuMixin.js";
 import CurrentItemInViewMixin from "./CurrentItemInViewMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
+import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
@@ -20,16 +21,18 @@ import TapSelectionMixin from "./TapSelectionMixin.js";
 export default class MenuBase extends AriaMenuMixin(
   DelegateFocusMixin(
     DirectionCursorMixin(
-      ItemsTextMixin(
-        KeyboardDirectionMixin(
-          KeyboardMixin(
-            KeyboardPagedSelectionMixin(
-              KeyboardPrefixSelectionMixin(
-                LanguageDirectionMixin(
-                  SelectedItemTextValueMixin(
-                    CurrentItemInViewMixin(
-                      SingleSelectAPIMixin(
-                        SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+      ItemsAPIMixin(
+        ItemsTextMixin(
+          KeyboardDirectionMixin(
+            KeyboardMixin(
+              KeyboardPagedSelectionMixin(
+                KeyboardPrefixSelectionMixin(
+                  LanguageDirectionMixin(
+                    SelectedItemTextValueMixin(
+                      CurrentItemInViewMixin(
+                        SingleSelectAPIMixin(
+                          SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+                        )
                       )
                     )
                   )

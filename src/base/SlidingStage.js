@@ -3,15 +3,18 @@ import * as template from "../core/template.js";
 import EffectMixin from "./EffectMixin.js";
 import * as fractionalSelection from "./fractionalSelection.js";
 import * as internal from "./internal.js";
+import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
-const Base = ItemsCursorMixin(
-  EffectMixin(
-    LanguageDirectionMixin(
-      SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+const Base = ItemsAPIMixin(
+  ItemsCursorMixin(
+    EffectMixin(
+      LanguageDirectionMixin(
+        SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+      )
     )
   )
 );

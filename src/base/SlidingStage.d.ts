@@ -3,10 +3,15 @@
 
 import ReactiveElement from "../core/ReactiveElement.js";
 import EffectMixin from "./EffectMixin.js";
+import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
 export default class SlidingStage extends EffectMixin(
-  LanguageDirectionMixin(SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement)))
+  ItemsAPIMixin(
+    LanguageDirectionMixin(
+      SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+    )
+  )
 ) {}

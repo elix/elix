@@ -2,6 +2,7 @@ import { updateChildNodes } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import * as internal from "./internal.js";
+import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import ListBox from "./ListBox.js";
@@ -18,8 +19,12 @@ const lateralPositions = {
   start: true,
 };
 
-const Base = ItemsCursorMixin(
-  LanguageDirectionMixin(SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement)))
+const Base = ItemsAPIMixin(
+  ItemsCursorMixin(
+    LanguageDirectionMixin(
+      SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+    )
+  )
 );
 
 /**

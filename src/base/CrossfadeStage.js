@@ -2,14 +2,19 @@ import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import EffectMixin from "./EffectMixin.js";
 import * as internal from "./internal.js";
+import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TransitionEffectMixin from "./TransitionEffectMixin.js";
 
 const Base = EffectMixin(
-  ItemsCursorMixin(
-    SingleSelectAPIMixin(SlotItemsMixin(TransitionEffectMixin(ReactiveElement)))
+  ItemsAPIMixin(
+    ItemsCursorMixin(
+      SingleSelectAPIMixin(
+        SlotItemsMixin(TransitionEffectMixin(ReactiveElement))
+      )
+    )
   )
 );
 

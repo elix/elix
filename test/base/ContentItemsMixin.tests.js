@@ -38,22 +38,4 @@ describe("ContentItemsMixin", () => {
     assert.equal(items[0].textContent, "1");
     assert.equal(items[1].textContent, "2");
   });
-
-  it("raises items-changed event", async () => {
-    const fixture = new ContentItemsTest();
-    container.appendChild(fixture);
-    await new Promise((resolve) => {
-      fixture.addEventListener("items-changed", () => {
-        resolve();
-      });
-      // Arrange for raising of change events.
-      fixture[internal.raiseChangeEvents] = true;
-      fixture.innerHTML = `
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
-      `;
-      fixture.updateContent();
-    });
-  });
 });

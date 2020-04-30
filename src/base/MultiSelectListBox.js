@@ -15,6 +15,7 @@ import {
   state,
   template,
 } from "./internal.js";
+import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import ItemsMultiSelectMixin from "./ItemsMultiSelectMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
@@ -32,19 +33,21 @@ const Base = AriaListMixin(
   ComposedFocusMixin(
     DirectionCursorMixin(
       FocusVisibleMixin(
-        ItemsCursorMixin(
-          ItemsMultiSelectMixin(
-            ItemsTextMixin(
-              KeyboardDirectionMixin(
-                KeyboardMixin(
-                  KeyboardPagedSelectionMixin(
-                    KeyboardPrefixSelectionMixin(
-                      LanguageDirectionMixin(
-                        CurrentItemInViewMixin(
-                          MultiSelectAPIMixin(
-                            MultiSelectToggleMixin(
-                              SingleSelectAPIMixin(
-                                SlotItemsMixin(ReactiveElement)
+        ItemsAPIMixin(
+          ItemsCursorMixin(
+            ItemsMultiSelectMixin(
+              ItemsTextMixin(
+                KeyboardDirectionMixin(
+                  KeyboardMixin(
+                    KeyboardPagedSelectionMixin(
+                      KeyboardPrefixSelectionMixin(
+                        LanguageDirectionMixin(
+                          CurrentItemInViewMixin(
+                            MultiSelectAPIMixin(
+                              MultiSelectToggleMixin(
+                                SingleSelectAPIMixin(
+                                  SlotItemsMixin(ReactiveElement)
+                                )
                               )
                             )
                           )

@@ -3,12 +3,13 @@
 
 import ReactiveElement from "../core/ReactiveElement.js";
 import * as internal from "./internal.js";
+import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
-export default class Explorer extends LanguageDirectionMixin(
-  SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+export default class Explorer extends ItemsAPIMixin(
+  LanguageDirectionMixin(SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement)))
 ) {
   [internal.checkSize](): void;
   readonly proxies: Element[];

@@ -5,6 +5,7 @@ import { defaultAriaRole } from "./accessibility.js";
 import AriaListMixin from "./AriaListMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import * as internal from "./internal.js";
+import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
@@ -14,13 +15,15 @@ import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapSelectionMixin from "./TapSelectionMixin.js";
 
 const Base = AriaListMixin(
-  ItemsCursorMixin(
-    TapSelectionMixin(
-      DirectionCursorMixin(
-        KeyboardDirectionMixin(
-          KeyboardMixin(
-            LanguageDirectionMixin(
-              SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+  ItemsAPIMixin(
+    ItemsCursorMixin(
+      TapSelectionMixin(
+        DirectionCursorMixin(
+          KeyboardDirectionMixin(
+            KeyboardMixin(
+              LanguageDirectionMixin(
+                SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+              )
             )
           )
         )

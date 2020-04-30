@@ -3,13 +3,11 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-declare const SingleSelectAPIMixin: StateMixin<
-  {},
+declare const SingleSelectAPIMixin: Mixin<
   {},
   {
     canSelectNext: boolean;
     canSelectPrevious: boolean;
-    readonly items: ListItemElement[];
     selectedIndex: number;
     selectedItem: Element | null;
     selectFirst(): boolean;
@@ -18,8 +16,7 @@ declare const SingleSelectAPIMixin: StateMixin<
     selectionWraps: boolean;
     selectNext(): boolean;
     selectPrevious(): boolean;
-  },
-  {}
+  }
 >;
 
 export default SingleSelectAPIMixin;
