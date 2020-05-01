@@ -39,7 +39,6 @@ class CheckListItem extends ReactiveElement {
       <style>
         :host {
           display: grid;
-          grid-gap: 0.25em;
           grid-template-columns: auto 1fr;
         }
       </style>
