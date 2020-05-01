@@ -158,14 +158,16 @@ export default function ItemsCursorMixin(Base) {
           // For now, force the index to be within bounds. If items array is
           // null or empty, this will be -1 (no selection).
           newIndex = count - 1;
-        } else if (
-          currentIndexPending !== null &&
-          currentIndexPending < count
-        ) {
-          // The items array has increased in size to the point where a pending
-          // index can be applied.
-          newIndex = currentIndexPending;
-          newIndexPending = null;
+        } else if (currentIndexPending !== null) {
+          if (currentIndexPending < count) {
+            // The items array has increased in size to the point where a pending
+            // index can be applied and then discarded.
+            newIndex = currentIndexPending;
+            newIndexPending = null;
+          } else {
+            // Pick last index -- as close to pending index as we can get now.
+            newIndex = count - 1;
+          }
         } else if (newIndex === -1 && currentItemRequired && count > 0) {
           // We require a current item, don't have one yet, but do have items.
           // Take the 0th item as the current item.

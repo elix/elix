@@ -112,17 +112,23 @@ describe("ItemsCursorMixin", () => {
     assert.equal(fixture[state].currentIndex, 1);
   });
 
-  it("applies a desired current index once items is increased to allow it", () => {
+  it("tries to get close to a desired current index as new items are added", () => {
     const fixture = new ItemsCursorTest();
     assert.equal(fixture[state].currentIndexPending, null);
     fixture[setState]({
-      currentIndex: 3,
+      currentIndex: 4,
     });
     assert.equal(fixture[state].currentIndex, 2);
-    assert.equal(fixture[state].currentIndexPending, 3);
-    const items = [...fixture[state].items, "Three", "Four"];
-    fixture[setState]({ items });
+    assert.equal(fixture[state].currentIndexPending, 4);
+    fixture[setState]({
+      items: [...fixture[state].items, "Three"],
+    });
     assert.equal(fixture[state].currentIndex, 3);
+    assert.equal(fixture[state].currentIndexPending, 4);
+    fixture[setState]({
+      items: [...fixture[state].items, "Four", "Five"],
+    });
+    assert.equal(fixture[state].currentIndex, 4);
     assert.equal(fixture[state].currentIndexPending, null);
   });
 
