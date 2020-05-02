@@ -67,6 +67,14 @@ class Explorer extends Base {
     });
   }
 
+  [internal.parseAttribute](name, value) {
+    return name === "proxy-list-overlap"
+      ? String(value) === "true"
+      : super[internal.parseAttribute]
+      ? super[internal.parseAttribute](name, value)
+      : value;
+  }
+
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
@@ -269,10 +277,7 @@ class Explorer extends Base {
     return this[internal.state].proxyListOverlap;
   }
   set proxyListOverlap(proxyListOverlap) {
-    const parsed = String(proxyListOverlap) === "true";
-    this[internal.setState]({
-      proxyListOverlap: parsed,
-    });
+    this[internal.setState]({ proxyListOverlap });
   }
 
   /**

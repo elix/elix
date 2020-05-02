@@ -49,10 +49,7 @@ export default function CursorAPIMixin(Base) {
       return items && items.length > 0 ? currentIndex : -1;
     }
     set currentIndex(currentIndex) {
-      const parsed = Number(currentIndex);
-      if (!isNaN(parsed)) {
-        this[internal.setState]({ currentIndex });
-      }
+      this[internal.setState]({ currentIndex });
     }
 
     /**
@@ -85,13 +82,7 @@ export default function CursorAPIMixin(Base) {
       return this[internal.state].currentItemRequired;
     }
     set currentItemRequired(currentItemRequired) {
-      const parsed = booleanAttributeValue(
-        "current-item-required",
-        currentItemRequired
-      );
-      this[internal.setState]({
-        currentItemRequired: parsed,
-      });
+      this[internal.setState]({ currentItemRequired });
     }
 
     /**
@@ -104,13 +95,7 @@ export default function CursorAPIMixin(Base) {
       return this[internal.state].cursorOperationsWrap;
     }
     set cursorOperationsWrap(cursorOperationsWrap) {
-      const parsed = booleanAttributeValue(
-        "cursor-operations-wrap",
-        cursorOperationsWrap
-      );
-      this[internal.setState]({
-        cursorOperationsWrap: parsed,
-      });
+      this[internal.setState]({ cursorOperationsWrap });
     }
 
     /**
@@ -163,6 +148,22 @@ export default function CursorAPIMixin(Base) {
         super.goPrevious();
       }
       return this[internal.goPrevious]();
+    }
+
+    [internal.parseAttribute](name, value) {
+      const parsers = {
+        "current-index": (s) => Number(s),
+        "current-item-required": (s) =>
+          booleanAttributeValue("current-item-required", value),
+        "cursor-operations-wrap": (s) =>
+          booleanAttributeValue("cursor-operations-wrap", value),
+      };
+      const parser = parsers[name];
+      return parser
+        ? parser(value)
+        : super[internal.parseAttribute]
+        ? super[internal.parseAttribute](name, value)
+        : value;
     }
 
     [internal.rendered](/** @type {ChangedFlags} */ changed) {

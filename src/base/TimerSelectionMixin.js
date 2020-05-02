@@ -17,11 +17,25 @@ import * as internal from "./internal.js";
 export default function TimerSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class TimerSelection extends Base {
+    /**
+     * The time in milliseconds that will elapse after the cursor advances
+     * before the cursor will be advanced to the next item in the list.
+     *
+     * @type {number} - Time in milliseconds
+     * @default 1000 (1 second)
+     */
+    get cursorTimerDuration() {
+      return this[internal.state].cursorTimerDuration;
+    }
+    set cursorTimerDuration(cursorTimerDuration) {
+      this[internal.setState]({ cursorTimerDuration });
+    }
+
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
         currentIndexForTimer: null,
+        cursorTimerDuration: 1000,
         playing: true,
-        selectionTimerDuration: 1000,
         timerTimeout: null,
       });
     }
@@ -31,7 +45,7 @@ export default function TimerSelectionMixin(Base) {
      */
     play() {
       if (!this.playing) {
-        this.selectNext();
+        this[internal.goNext]();
         this[internal.setState]({
           playing: true,
         });
@@ -57,14 +71,27 @@ export default function TimerSelectionMixin(Base) {
       return this[internal.state].playing;
     }
     set playing(playing) {
-      const parsed = booleanAttributeValue("playing", playing);
-      if (parsed !== this[internal.state].playing) {
-        if (parsed) {
+      if (playing !== this[internal.state].playing) {
+        if (playing) {
           this.play();
         } else {
           this.pause();
         }
       }
+    }
+
+    [internal.parseAttribute](name, value) {
+      const parsers = {
+        "cursor-timer-duration": (s) =>
+          booleanAttributeValue("cursor-timer-duration", s),
+        playing: (s) => booleanAttributeValue("playing", s),
+      };
+      const parser = parsers[name];
+      return parser
+        ? parser(value)
+        : super[internal.parseAttribute]
+        ? super[internal.parseAttribute](name, value)
+        : value;
     }
 
     [internal.rendered](/** @type {ChangedFlags} */ changed) {
@@ -73,25 +100,6 @@ export default function TimerSelectionMixin(Base) {
       }
 
       updateTimer(this);
-    }
-
-    /**
-     * The time in milliseconds that will elapse after the selection changes
-     * before the selection will be advanced to the next item in the list.
-     *
-     * @type {number} - Time in milliseconds
-     * @default 1000 (1 second)
-     */
-    get selectionTimerDuration() {
-      return this[internal.state].selectionTimerDuration;
-    }
-    set selectionTimerDuration(selectionTimerDuration) {
-      const parsed = Number(selectionTimerDuration);
-      if (!isNaN(parsed)) {
-        this[internal.setState]({
-          selectionTimerDuration: parsed,
-        });
-      }
     }
   }
 
@@ -117,8 +125,8 @@ function restartTimer(/** @type {ReactiveElement} */ element) {
     // change in selection, and invoke restartTimer again to start a new timer
     // for the next slide.
     const timerTimeout = setTimeout(() => {
-      element.selectNext();
-    }, element.selectionTimerDuration);
+      element[internal.goNext]();
+    }, element.cursorTimerDuration);
 
     // Set the timer as state, also noting which slide we're currently on.
     element[internal.setState]({

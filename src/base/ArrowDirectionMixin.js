@@ -30,10 +30,7 @@ function ArrowDirectionMixin(Base) {
       return this[internal.state].arrowButtonOverlap;
     }
     set arrowButtonOverlap(arrowButtonOverlap) {
-      const parsed = String(arrowButtonOverlap) === "true";
-      this[internal.setState]({
-        arrowButtonOverlap: parsed,
-      });
+      this[internal.setState]({ arrowButtonOverlap });
     }
 
     /**
@@ -73,6 +70,14 @@ function ArrowDirectionMixin(Base) {
         orientation: "horizontal",
         showArrowButtons: true,
       });
+    }
+
+    [internal.parseAttribute](name, value) {
+      return ["arrow-button-overlap", "show-arrow-buttons"].includes(name)
+        ? String(value) === "true"
+        : super[internal.parseAttribute]
+        ? super[internal.parseAttribute](name, value)
+        : value;
     }
 
     [internal.render](/** @type {ChangedFlags} */ changed) {
@@ -235,10 +240,7 @@ function ArrowDirectionMixin(Base) {
       return this[internal.state].showArrowButtons;
     }
     set showArrowButtons(showArrowButtons) {
-      const parsed = String(showArrowButtons) === "true";
-      this[internal.setState]({
-        showArrowButtons: parsed,
-      });
+      this[internal.setState]({ showArrowButtons });
     }
 
     /**

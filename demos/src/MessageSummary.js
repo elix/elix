@@ -23,10 +23,15 @@ export default class MessageSummary extends ReactiveElement {
     return this[internal.state].read;
   }
   set read(read) {
-    const parsed = String(read) === "true";
-    this[internal.setState]({
-      read: parsed,
-    });
+    this[internal.setState]({ read });
+  }
+
+  [internal.parseAttribute](name, value) {
+    return name === "read"
+      ? String(value) === "true"
+      : super[internal.parseAttribute]
+      ? super[internal.parseAttribute](name, value)
+      : value;
   }
 
   [internal.render](changed) {

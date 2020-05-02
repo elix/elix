@@ -51,6 +51,14 @@ class SlidingStage extends Base {
     this[internal.setState]({ orientation });
   }
 
+  [internal.parseAttribute](name, value) {
+    return name === "swipe-fraction"
+      ? parseFloat(value)
+      : super[internal.parseAttribute]
+      ? super[internal.parseAttribute](name, value)
+      : value;
+  }
+
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (
@@ -101,10 +109,7 @@ class SlidingStage extends Base {
     return this[internal.state].swipeFraction;
   }
   set swipeFraction(swipeFraction) {
-    const parsed = swipeFraction && parseFloat(swipeFraction);
-    this[internal.setState]({
-      swipeFraction: parsed,
-    });
+    this[internal.setState]({ swipeFraction });
   }
 
   get [internal.template]() {

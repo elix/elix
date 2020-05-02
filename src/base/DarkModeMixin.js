@@ -39,10 +39,7 @@ export default function DarkModeMixin(Base) {
       return this[internal.state].dark;
     }
     set dark(dark) {
-      const parsed = booleanAttributeValue("dark", dark);
-      this[internal.setState]({
-        dark: parsed,
-      });
+      this[internal.setState]({ dark });
     }
 
     get [internal.defaultState]() {
@@ -66,6 +63,14 @@ export default function DarkModeMixin(Base) {
       if (detectDarkMode === "auto" || detectDarkMode === "off") {
         this[internal.setState]({ detectDarkMode });
       }
+    }
+
+    [internal.parseAttribute](name, value) {
+      return name === "dark"
+        ? booleanAttributeValue(name, value)
+        : super[internal.parseAttribute]
+        ? super[internal.parseAttribute](name, value)
+        : value;
     }
 
     [internal.render](changed) {

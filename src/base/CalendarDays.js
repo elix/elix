@@ -86,6 +86,14 @@ class CalendarDays extends Base {
     });
   }
 
+  [internal.parseAttribute](name, value) {
+    return name === "start-date"
+      ? new Date(value)
+      : super[internal.parseAttribute]
+      ? super[internal.parseAttribute](name, value)
+      : value;
+  }
+
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (changed.days) {
@@ -152,12 +160,8 @@ class CalendarDays extends Base {
     return this[internal.state].startDate;
   }
   set startDate(startDate) {
-    const parsed =
-      typeof startDate === "string" ? new Date(startDate) : startDate;
-    if (!calendar.datesEqual(this[internal.state].startDate, parsed)) {
-      this[internal.setState]({
-        startDate: parsed,
-      });
+    if (!calendar.datesEqual(this[internal.state].startDate, startDate)) {
+      this[internal.setState]({ startDate });
     }
   }
 

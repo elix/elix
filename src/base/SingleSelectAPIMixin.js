@@ -41,6 +41,14 @@ export default function SingleSelectAPIMixin(Base) {
       }
     }
 
+    [internal.parseAttribute](name, value) {
+      return name === "selected-index"
+        ? Number(value)
+        : super[internal.parseAttribute]
+        ? super[internal.parseAttribute](name, value)
+        : value;
+    }
+
     /**
      * The index of the currently-selected item, or -1 if no item is selected.
      *
@@ -51,12 +59,9 @@ export default function SingleSelectAPIMixin(Base) {
       return items && items.length > 0 ? currentIndex : -1;
     }
     set selectedIndex(selectedIndex) {
-      const parsed = Number(selectedIndex);
-      if (!isNaN(parsed)) {
-        this[internal.setState]({
-          currentIndex: parsed,
-        });
-      }
+      this[internal.setState]({
+        currentIndex: selectedIndex,
+      });
     }
 
     /**

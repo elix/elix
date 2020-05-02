@@ -104,15 +104,23 @@ export default function OpenCloseMixin(Base) {
      *
      * This property can be set as a boolean attribute
      *
-     * @type {boolean|string}
+     * @type {boolean}
+     * @default false
      */
     get opened() {
       return this[internal.state] && this[internal.state].opened;
     }
     set opened(opened) {
-      const parsed = booleanAttributeValue("opened", opened);
       this[internal.setState]({ closeResult: undefined });
-      this.toggle(parsed);
+      this.toggle(opened);
+    }
+
+    [internal.parseAttribute](name, value) {
+      return name === "opened"
+        ? booleanAttributeValue(name, value)
+        : super[internal.parseAttribute]
+        ? super[internal.parseAttribute](name, value)
+        : value;
     }
 
     [internal.rendered](/** @type {ChangedFlags} */ changed) {

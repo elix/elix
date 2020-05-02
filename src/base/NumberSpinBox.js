@@ -38,8 +38,7 @@ class NumberSpinBox extends SpinBox {
     return this[internal.state].max;
   }
   set max(max) {
-    const parsed = typeof max === "string" ? parseFloat(max) : max;
-    this[internal.setState]({ max: parsed });
+    this[internal.setState]({ max });
   }
 
   /**
@@ -52,8 +51,15 @@ class NumberSpinBox extends SpinBox {
     return this[internal.state].min;
   }
   set min(min) {
-    const parsed = typeof min === "string" ? parseFloat(min) : min;
-    this[internal.setState]({ min: parsed });
+    this[internal.setState]({ min });
+  }
+
+  [internal.parseAttribute](name, value) {
+    return ["max", "min"].includes(name)
+      ? parseFloat(value)
+      : super[internal.parseAttribute]
+      ? super[internal.parseAttribute](name, value)
+      : value;
   }
 
   /**

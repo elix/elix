@@ -26,18 +26,15 @@ export default function CalendarElementMixin(Base) {
      *
      * If not specified, the default `date` value is the current date.
      *
-     * @type {Date|string}
+     * @type {Date}
      */
     get date() {
       return this[internal.state].date;
     }
     set date(date) {
-      const parsed = typeof date === "string" ? new Date(date) : date;
       // Only update state if actual date value differs from current state.
-      if (!calendar.datesEqual(parsed, this[internal.state].date)) {
-        this[internal.setState]({
-          date: parsed,
-        });
+      if (!calendar.datesEqual(date, this[internal.state].date)) {
+        this[internal.setState]({ date });
       }
     }
 
@@ -69,6 +66,14 @@ export default function CalendarElementMixin(Base) {
     }
     set locale(locale) {
       this[internal.setState]({ locale });
+    }
+
+    [internal.parseAttribute](name, value) {
+      return name === "date"
+        ? new Date(value)
+        : super[internal.parseAttribute]
+        ? super[internal.parseAttribute](name, value)
+        : value;
     }
 
     [internal.rendered](/** @type {ChangedFlags} */ changed) {
