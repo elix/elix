@@ -3,20 +3,20 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 import * as internal from "./internal.js";
 
 /**
- * Automatically updates selection on a timer.
+ * Automatically advances an item cursor on a timer
  *
- * [SlideshowWithPlayControls uses TimerSelectionMixin for its timer](/demos/slideshowWithPlayControls.html)
+ * [SlideshowWithPlayControls uses TimerCursorMixin for its timer](/demos/slideshowWithPlayControls.html)
  *
- * If the user changes the selection, or the selection changes for any other reason,
- * the timer resets. This ensures the user has a chance to look at the item they want
- * before the timer advances the selection.
+ * If the user moves the cursor, or the cursor moves for any other reason, the
+ * timer resets. This ensures the user has a chance to look at the item they
+ * want before the timer advances the cursor.
  *
- * @module TimerSelectionMixin
+ * @module TimerCursorMixin
  * @param {Constructor<ReactiveElement>} Base
  */
-export default function TimerSelectionMixin(Base) {
+export default function TimerCursorMixin(Base) {
   // The class prototype added by the mixin.
-  class TimerSelection extends Base {
+  class TimerCursor extends Base {
     attributeChangedCallback(name, oldValue, newValue) {
       if (name === "cursor-timer-duration") {
         this.cursorTimerDuration = Number(newValue);
@@ -56,7 +56,7 @@ export default function TimerSelectionMixin(Base) {
     }
 
     /**
-     * Begin automatic progression of the selection.
+     * Begin automatic progression of the cursor.
      */
     play() {
       if (!this.playing) {
@@ -68,7 +68,7 @@ export default function TimerSelectionMixin(Base) {
     }
 
     /**
-     * Pause automatic progression of the selection.
+     * Pause automatic progression of the cursor.
      */
     pause() {
       this[internal.setState]({
@@ -104,7 +104,7 @@ export default function TimerSelectionMixin(Base) {
     }
   }
 
-  return TimerSelection;
+  return TimerCursor;
 }
 
 function clearTimer(/** @type {ReactiveElement} */ element) {
@@ -123,7 +123,7 @@ function restartTimer(/** @type {ReactiveElement} */ element) {
   if (element.items && element.items.length > 0) {
     // When the timer times out, all we need to do is move to the next slide.
     // When the component updates, the updateTimer function will notice the
-    // change in selection, and invoke restartTimer again to start a new timer
+    // cursor has moved, and invoke restartTimer again to start a new timer
     // for the next slide.
     const timerTimeout = setTimeout(() => {
       element[internal.goNext]();
@@ -141,9 +141,9 @@ function restartTimer(/** @type {ReactiveElement} */ element) {
 function updateTimer(/** @type {ReactiveElement} */ element) {
   // If the element is playing and we haven't started a timer yet, do so now.
   // Also, if the element's currentIndex changed for any reason, restart the
-  // timer. This ensures that the timer restarts no matter why the selection
-  // changes: it could have been us moving to the next slide because the timer
-  // elapsed, or the user might have directly manipulated the selection, etc.
+  // timer. This ensures that the timer restarts no matter why the cursor moves:
+  // it could have been us moving to the next slide because the timer elapsed,
+  // or the user might have directly moved the cursor, etc.
   if (
     element[internal.state].playing &&
     (!element[internal.state].timerTimeout ||

@@ -2,6 +2,6 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import CrossfadeStage from "./CrossfadeStage.js";
-import TimerSelectionMixin from "./TimerSelectionMixin.js";
+import TimerCursorMixin from "./TimerCursorMixin.js";
 
-export default class Slideshow extends TimerSelectionMixin(CrossfadeStage) {}
+export default class Slideshow extends TimerCursorMixin(CrossfadeStage) {}

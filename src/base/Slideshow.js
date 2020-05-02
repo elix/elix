@@ -1,8 +1,8 @@
 import CrossfadeStage from "./CrossfadeStage.js";
 import * as internal from "./internal.js";
-import TimerSelectionMixin from "./TimerSelectionMixin.js";
+import TimerCursorMixin from "./TimerCursorMixin.js";
 
-const Base = TimerSelectionMixin(CrossfadeStage);
+const Base = TimerCursorMixin(CrossfadeStage);
 
 /**
  * Slideshow with a simple crossfade transition
@@ -16,10 +16,10 @@ const Base = TimerSelectionMixin(CrossfadeStage);
  * version, see [SlideshowWithPlayControls](SlideshowWithPlayControls) or
  * [CarouselSlideshow](CarouselSlideshow). To incorporate slideshow behavior
  * into a component of your own, apply
- * [TimerSelectionMixin](TimerSelectionMixin).
+ * [TimerCursorMixin](TimerCursorMixin).
  *
  * @inherits CrossfadeStage
- * @mixes TimerSelectionMixin
+ * @mixes TimerCursorMixin
  */
 class Slideshow extends Base {
   get [internal.defaultState]() {

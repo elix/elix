@@ -3,7 +3,7 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-declare const TimerSelectionMixin: Mixin<
+declare const TimerCursorMixin: Mixin<
   {},
   {
     pause(): void;
@@ -13,4 +13,4 @@ declare const TimerSelectionMixin: Mixin<
   }
 >;
 
-export default TimerSelectionMixin;
+export default TimerCursorMixin;

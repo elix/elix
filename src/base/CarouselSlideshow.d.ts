@@ -2,8 +2,8 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import Carousel from "./Carousel.js";
-import TimerSelectionMixin from "./TimerSelectionMixin.js";
+import TimerCursorMixin from "./TimerCursorMixin.js";
 
-export default class CarouselSlideshow extends TimerSelectionMixin(Carousel) {
+export default class CarouselSlideshow extends TimerCursorMixin(Carousel) {
   transitionDuration: number;
 }

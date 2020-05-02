@@ -1,9 +1,9 @@
 import Carousel from "./Carousel.js";
 import CrossfadeStage from "./CrossfadeStage.js";
 import * as internal from "./internal.js";
-import TimerSelectionMixin from "./TimerSelectionMixin.js";
+import TimerCursorMixin from "./TimerCursorMixin.js";
 
-const Base = TimerSelectionMixin(Carousel);
+const Base = TimerCursorMixin(Carousel);
 
 /**
  * Slideshow with carousel controls
@@ -15,7 +15,7 @@ const Base = TimerSelectionMixin(Carousel);
  * variation with no controls, see [Slideshow](Slideshow).
  *
  * @inherits Carousel
- * @mixes TimerSelectionMixin
+ * @mixes TimerCursorMixin
  * @part {CrossfadeStage} stage
  */
 class CarouselSlideshow extends Base {
