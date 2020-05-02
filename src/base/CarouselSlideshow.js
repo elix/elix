@@ -22,8 +22,8 @@ class CarouselSlideshow extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       cursorOperationsWrap: true,
+      cursorTimerDuration: 3000,
       playing: true,
-      selectionTimerDuration: 3000,
       stagePartType: CrossfadeStage,
       transitionDuration: 1000,
     });

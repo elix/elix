@@ -6,10 +6,10 @@
 declare const TimerCursorMixin: Mixin<
   {},
   {
+    cursorTimerDuration: number;
     pause(): void;
     play(): void;
     playing: boolean;
-    selectionTimerDuration: number;
   }
 >;
 

@@ -87,7 +87,7 @@ export default function PlayControlsMixin(Base) {
       if (changed.controlButtonPartType) {
         const { nextButton, playButton, previousButton } = this[internal.ids];
         previousButton.addEventListener("click", (event) => {
-          this.selectPrevious();
+          this[internal.goPrevious]();
           event.stopPropagation();
         });
         playButton.addEventListener("click", (event) => {
@@ -99,7 +99,7 @@ export default function PlayControlsMixin(Base) {
           event.stopPropagation();
         });
         nextButton.addEventListener("click", (event) => {
-          this.selectNext();
+          this[internal.goNext]();
           event.stopPropagation();
         });
 
@@ -132,12 +132,7 @@ export default function PlayControlsMixin(Base) {
           }
 
           #playControlsContainer {
-            display: flex;
-            flex: 1;
-          }
-
-          #playControlsContainer ::slotted(*) {
-            flex: 1;
+            display: grid;
           }
         </style>
 
