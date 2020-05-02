@@ -5,14 +5,17 @@ import ReactiveElement from "../core/ReactiveElement.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import * as internal from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
+import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
 export default class Explorer extends CursorAPIMixin(
   ItemsAPIMixin(
-    LanguageDirectionMixin(
-      SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+    ItemsCursorMixin(
+      LanguageDirectionMixin(
+        SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+      )
     )
   )
 ) {

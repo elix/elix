@@ -10,6 +10,7 @@ import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
+import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
@@ -23,21 +24,25 @@ import TapCursorMixin from "./TapCursorMixin.js";
 
 export default class ListBox extends AriaListMixin(
   ComposedFocusMixin(
-    CursorAPIMixin(
-      DirectionCursorMixin(
-        FocusVisibleMixin(
-          FormElementMixin(
-            ItemsAPIMixin(
-              ItemsTextMixin(
-                KeyboardDirectionMixin(
-                  KeyboardMixin(
-                    KeyboardPagedCursorMixin(
-                      KeyboardPrefixCursorMixin(
-                        LanguageDirectionMixin(
-                          SelectedItemTextValueMixin(
-                            CurrentItemInViewMixin(
-                              SingleSelectAPIMixin(
-                                SlotItemsMixin(TapCursorMixin(ReactiveElement))
+    CurrentItemInViewMixin(
+      CursorAPIMixin(
+        DirectionCursorMixin(
+          FocusVisibleMixin(
+            FormElementMixin(
+              ItemsAPIMixin(
+                ItemsCursorMixin(
+                  ItemsTextMixin(
+                    KeyboardDirectionMixin(
+                      KeyboardMixin(
+                        KeyboardPagedCursorMixin(
+                          KeyboardPrefixCursorMixin(
+                            LanguageDirectionMixin(
+                              SelectedItemTextValueMixin(
+                                SingleSelectAPIMixin(
+                                  SlotItemsMixin(
+                                    TapCursorMixin(ReactiveElement)
+                                  )
+                                )
                               )
                             )
                           )

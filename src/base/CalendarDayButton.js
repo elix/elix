@@ -12,6 +12,7 @@ const Base = CalendarElementMixin(SelectableButton);
  * A selectable day button in an interactive calendar.
  *
  * @inherits SelectableButton
+ * @mixes CalendarElementMixin
  * @part {CalendarDay} day - the day shown in the button
  */
 class CalendarDayButton extends Base {

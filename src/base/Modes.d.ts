@@ -4,9 +4,12 @@
 import ReactiveElement from "../core/ReactiveElement.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
+import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
 export default class Modes extends CursorAPIMixin(
-  ItemsAPIMixin(SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement)))
+  ItemsAPIMixin(
+    ItemsCursorMixin(SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement)))
+  )
 ) {}

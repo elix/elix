@@ -2,15 +2,24 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import Dialog from "./Dialog.js";
+import DialogModalityMixin from "./DialogModalityMixin.js";
 import EffectMixin from "./EffectMixin.js";
+import FocusCaptureMixin from "./FocusCaptureMixin.js";
+import KeyboardMixin from "./KeyboardMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import TouchSwipeMixin from "./TouchSwipeMixin.js";
 import TrackpadSwipeMixin from "./TrackpadSwipeMixin.js";
 import TransitionEffectMixin from "./TransitionEffectMixin.js";
 
-export default class Drawer extends LanguageDirectionMixin(
-  TouchSwipeMixin(
-    TrackpadSwipeMixin(EffectMixin(TransitionEffectMixin(Dialog)))
+export default class Drawer extends DialogModalityMixin(
+  EffectMixin(
+    FocusCaptureMixin(
+      KeyboardMixin(
+        LanguageDirectionMixin(
+          TouchSwipeMixin(TrackpadSwipeMixin(TransitionEffectMixin(Dialog)))
+        )
+      )
+    )
   )
 ) {
   fromEdge: "bottom" | "end" | "left" | "right" | "start" | "top";

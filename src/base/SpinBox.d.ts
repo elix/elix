@@ -3,16 +3,24 @@
 
 import ReactiveElement from "../core/ReactiveElement.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
+import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
+import DisabledMixin from "./DisabledMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 
 export default class SpinBox extends DelegateFocusMixin(
-  DelegateInputSelectionMixin(
-    FocusVisibleMixin(
-      FormElementMixin(KeyboardMixin(KeyboardDirectionMixin(ReactiveElement)))
+  DelegateInputLabelMixin(
+    DelegateInputSelectionMixin(
+      DisabledMixin(
+        FocusVisibleMixin(
+          FormElementMixin(
+            KeyboardDirectionMixin(KeyboardMixin(ReactiveElement))
+          )
+        )
+      )
     )
   )
 ) {

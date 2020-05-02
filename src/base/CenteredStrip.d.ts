@@ -5,6 +5,7 @@ import ReactiveElement from "../core/ReactiveElement.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import EffectMixin from "./EffectMixin.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
+import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import ResizeMixin from "./ResizeMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
@@ -14,9 +15,13 @@ import TapCursorMixin from "./TapCursorMixin.js";
 export default class CenteredStrip extends CursorAPIMixin(
   EffectMixin(
     ItemsAPIMixin(
-      LanguageDirectionMixin(
-        ResizeMixin(
-          SingleSelectAPIMixin(SlotItemsMixin(TapCursorMixin(ReactiveElement)))
+      ItemsCursorMixin(
+        LanguageDirectionMixin(
+          ResizeMixin(
+            SingleSelectAPIMixin(
+              SlotItemsMixin(TapCursorMixin(ReactiveElement))
+            )
+          )
         )
       )
     )

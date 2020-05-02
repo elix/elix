@@ -2,6 +2,7 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import ReactiveElement from "../core/ReactiveElement.js";
-import SelectableMixin from "./SelectableMixin.js";
 
-export default class MenuItem extends SelectableMixin(ReactiveElement) {}
+export default class CheckListItem extends ReactiveElement {
+  selected: boolean;
+}
