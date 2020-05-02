@@ -61,6 +61,23 @@ describe("AriaListMixin", () => {
     assert.equal(item2.getAttribute("aria-selected"), "true");
   });
 
+  it("can indicate the selection of multiple items in a multi-select list", async () => {
+    const fixture = new AriaListTest();
+    fixture.append(
+      document.createElement("div"),
+      document.createElement("div"),
+      document.createElement("div")
+    );
+    container.appendChild(fixture);
+    await fixture[internal.setState]({
+      selectedFlags: [true, false, true],
+    });
+    const items = fixture[internal.state].items;
+    assert.equal(items[0].getAttribute("aria-selected"), "true");
+    assert.equal(items[1].getAttribute("aria-selected"), "false");
+    assert.equal(items[2].getAttribute("aria-selected"), "true");
+  });
+
   it("assigns a default role of 'listbox'", () => {
     const fixture = new AriaListTest();
     fixture[internal.renderChanges]();

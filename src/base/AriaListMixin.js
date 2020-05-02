@@ -9,11 +9,11 @@ import * as internal from "./internal.js";
  *
  * * The items in the list need to be indicated as possible items via an ARIA
  *   `role` attribute value such as "option".
- * * The selected item need to be marked as selected by setting the item's
+ * * The selected item(s) need to be marked as selected by setting the item's
  *   `aria-selected` attribute to true *and* the other items need be marked as
  *   *not* selected by setting `aria-selected` to false.
  * * The outermost element with the keyboard focus needs to have attributes
- *   set on it so that the selection is knowable at the list level via the
+ *   set on it so that the current item is knowable at the list level via the
  *   `aria-activedescendant` attribute.
  * * Use of `aria-activedescendant` in turn requires that all items in the
  *   list have ID attributes assigned to them.
@@ -27,10 +27,11 @@ import * as internal from "./internal.js";
  * explicit role. Similarly, this mixin will apply a default role of "option"
  * to any list item that does not already have a role specified.
  *
- * This mixin expects a set of members that manage the state of the selection:
- * `[internal.itemSelected]`, `[internal.itemAdded]`, and `selectedItem`. You can
- * supply these yourself, or do so via
- * [SingleSelectAPIMixin](SingleSelectAPIMixin).
+ * This mixin expects the component to define a `currentIndex` state member to
+ * indicate the current item. You can supply that yourself, or do so via
+ * [ItemsCursorMixin](ItemsCursorMixin). For a multi-select list, you must also
+ * define a `selectedFlags` state member, available via
+ * [ItemsMultiSelectMixin](ItemsMultiSelectMixin).
  *
  * @module AriaListMixin
  * @param {Constructor<ReactiveElement>} Base
@@ -57,18 +58,21 @@ export default function AriaListMixin(Base) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
+
       const { currentIndex, itemRole } = this[internal.state];
       /** @type {ListItemElement[]} */ const items = this[internal.state].items;
+
+      // Give each item an ID.
       if (changed.items && items) {
-        // Give each item an ID.
         items.forEach((item) => {
           if (!item.id) {
             item.id = ensureId(item);
           }
         });
       }
+
+      // Give each item a role.
       if ((changed.items || changed.itemRole) && items) {
-        // Give each item a role.
         items.forEach((item) => {
           if (itemRole === defaultAriaRole[item.localName]) {
             item.removeAttribute("role");
@@ -77,15 +81,23 @@ export default function AriaListMixin(Base) {
           }
         });
       }
-      if (changed.items || changed.currentIndex) {
-        // Reflect the current state to each item.
+
+      // Reflect the selected state to each item.
+      if (changed.items || changed.currentIndex || changed.selectedFlags) {
+        // Does the list support multi-selection?
+        const { selectedFlags } = this[internal.state];
         if (items) {
           items.forEach((item, index) => {
-            const selected = index === currentIndex;
+            const selected = selectedFlags
+              ? selectedFlags[index] // Multi-select
+              : index === currentIndex; // Single-select
             item.setAttribute("aria-selected", selected.toString());
           });
         }
-        // Point the top element at the current item.
+      }
+
+      // Indicate on the host that the current item is active.
+      if (changed.items || changed.currentIndex) {
         const currentItem =
           currentIndex >= 0 && items ? items[currentIndex] : null;
         if (currentItem) {
@@ -97,12 +109,15 @@ export default function AriaListMixin(Base) {
           this.removeAttribute("aria-activedescendant");
         }
       }
+
+      // Let ARIA know list orientation.
       if (changed.orientation) {
         const { orientation } = this[internal.state];
         this.setAttribute("aria-orientation", orientation);
       }
+
+      // Apply top-level role.
       if (changed.role) {
-        // Apply top-level role.
         const { role } = this[internal.state];
         this.setAttribute("role", role);
       }
