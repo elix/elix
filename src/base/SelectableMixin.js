@@ -38,6 +38,7 @@ export default function SelectableMixin(Base) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
       }
+
       // TODO: How do we know whether to raise this if selection is set by Menu? */
       if (changed.selected /* && this[internal.raiseChangeEvents] */) {
         const { selected } = this[internal.state];

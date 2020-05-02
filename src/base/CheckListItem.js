@@ -1,14 +1,15 @@
 import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import * as internal from "./internal.js";
+import SelectableMixin from "./SelectableMixin.js";
 
-class CheckListItem extends ReactiveElement {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
-      selected: false,
-    });
-  }
-
+/**
+ * A checkable item in a list
+ *
+ * @inherits ReactiveElement
+ * @mixes SelectableMixin
+ */
+class CheckListItem extends SelectableMixin(ReactiveElement) {
   [internal.render](changed) {
     super[internal.render](changed);
 
@@ -25,13 +26,6 @@ class CheckListItem extends ReactiveElement {
       /** @type {any} */ const checkbox = this[internal.ids].checkbox;
       checkbox.checked = selected;
     }
-  }
-
-  get selected() {
-    return this[internal.state].selected;
-  }
-  set selected(selected) {
-    this[internal.setState]({ selected });
   }
 
   get [internal.template]() {
