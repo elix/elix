@@ -3,6 +3,6 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-declare const TapSelectionMixin: Mixin<{}, {}>;
+declare const TapCursorMixin: Mixin<{}, {}>;
 
-export default TapSelectionMixin;
+export default TapCursorMixin;

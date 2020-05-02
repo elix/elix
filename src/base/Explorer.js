@@ -34,6 +34,8 @@ const Base = CursorAPIMixin(
  * Combines a list with an area focusing on a single selected item.
  *
  * @inherits ReactiveElement
+ * @mixes CursorAPIMixin
+ * @mixes ItemsCursorMixin
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin

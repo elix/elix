@@ -1,11 +1,11 @@
 import * as internal from "../../src/base/internal.js";
-import TapSelectionMixin from "../../src/base/TapSelectionMixin.js";
+import TapCursorMixin from "../../src/base/TapCursorMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import ShadowTemplateMixin from "../../src/core/ShadowTemplateMixin.js";
 import * as mockInteractions from "../mockInteractions.js";
 import { assert } from "../testHelpers.js";
 
-class TapSelectionTest extends TapSelectionMixin(
+class TapCursorTest extends TapCursorMixin(
   ReactiveMixin(ShadowTemplateMixin(HTMLElement))
 ) {
   connectedCallback() {
@@ -17,9 +17,9 @@ class TapSelectionTest extends TapSelectionMixin(
     });
   }
 }
-customElements.define("tap-selection-test", TapSelectionTest);
+customElements.define("tap-selection-test", TapCursorTest);
 
-describe("TapSelectionMixin", function () {
+describe("TapCursorMixin", function () {
   let container;
 
   before(() => {
@@ -62,7 +62,7 @@ describe("TapSelectionMixin", function () {
 });
 
 function createSampleElement() {
-  const fixture = new TapSelectionTest();
+  const fixture = new TapCursorTest();
   ["Zero", "One", "Two"].forEach((text) => {
     const div = document.createElement("div");
     div.textContent = text;

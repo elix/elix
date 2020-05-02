@@ -17,6 +17,7 @@ const Base = DialogModalityMixin(FocusCaptureMixin(KeyboardMixin(Overlay)));
  *
  * @inherits Overlay
  * @mixes DialogModalityMixin
+ * @mixes FocusCaptureMixin
  * @mixes KeyboardMixin
  * @part {ModalBackdrop} backdrop
  */

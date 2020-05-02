@@ -560,7 +560,7 @@ export const swipeTarget = Symbol("swipeTarget");
  * Symbol for the `tap` method.
  *
  * This method is invoked when an element receives an operation that should
- * be interpreted as a tap. [TapSelectionMixin](TapSelectionMixin)
+ * be interpreted as a tap. [TapCursorMixin](TapCursorMixin)
  * invokes this when the element receives a `mousedown` event, for example.
  */
 export const tap = Symbol("tap");

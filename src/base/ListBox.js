@@ -19,27 +19,27 @@ import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
-import TapSelectionMixin from "./TapSelectionMixin.js";
+import TapCursorMixin from "./TapCursorMixin.js";
 
 const Base = AriaListMixin(
   ComposedFocusMixin(
-    CursorAPIMixin(
-      DirectionCursorMixin(
-        FocusVisibleMixin(
-          FormElementMixin(
-            ItemsAPIMixin(
-              ItemsCursorMixin(
-                ItemsTextMixin(
-                  KeyboardDirectionMixin(
-                    KeyboardMixin(
-                      KeyboardPagedCursorMixin(
-                        KeyboardPrefixCursorMixin(
-                          LanguageDirectionMixin(
-                            SelectedItemTextValueMixin(
-                              CurrentItemInViewMixin(
+    CurrentItemInViewMixin(
+      CursorAPIMixin(
+        DirectionCursorMixin(
+          FocusVisibleMixin(
+            FormElementMixin(
+              ItemsAPIMixin(
+                ItemsCursorMixin(
+                  ItemsTextMixin(
+                    KeyboardDirectionMixin(
+                      KeyboardMixin(
+                        KeyboardPagedCursorMixin(
+                          KeyboardPrefixCursorMixin(
+                            LanguageDirectionMixin(
+                              SelectedItemTextValueMixin(
                                 SingleSelectAPIMixin(
                                   SlotItemsMixin(
-                                    TapSelectionMixin(ReactiveElement)
+                                    TapCursorMixin(ReactiveElement)
                                   )
                                 )
                               )
@@ -71,9 +71,13 @@ const Base = AriaListMixin(
  * @inherits ReactiveElement
  * @mixes AriaListMixin
  * @mixes ComposedFocusMixin
+ * @mixes CurrentItemInViewMixin
+ * @mixes CursorAPIMixin
  * @mixes DirectionCursorMixin
  * @mixes FocusVisibleMixin
  * @mixes FormElementMixin
+ * @mixes ItemsAPIMixin
+ * @mixes ItemsCursorMixin
  * @mixes ItemsTextMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
@@ -81,10 +85,9 @@ const Base = AriaListMixin(
  * @mixes KeyboardPrefixCursorMixin
  * @mixes LanguageDirectionMixin
  * @mixes SelectedItemTextValueMixin
- * @mixes CurrentItemInViewMixin
  * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
- * @mixes TapSelectionMixin
+ * @mixes TapCursorMixin
  */
 class ListBox extends Base {
   get [internal.defaultState]() {

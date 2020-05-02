@@ -4,19 +4,22 @@ import CursorAPIMixin from "./CursorAPIMixin.js";
 import EffectMixin from "./EffectMixin.js";
 import * as internal from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
+import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import ResizeMixin from "./ResizeMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
-import TapSelectionMixin from "./TapSelectionMixin.js";
+import TapCursorMixin from "./TapCursorMixin.js";
 
 const Base = CursorAPIMixin(
   EffectMixin(
     ItemsAPIMixin(
-      LanguageDirectionMixin(
-        ResizeMixin(
-          SingleSelectAPIMixin(
-            SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+      ItemsCursorMixin(
+        LanguageDirectionMixin(
+          ResizeMixin(
+            SingleSelectAPIMixin(
+              SlotItemsMixin(TapCursorMixin(ReactiveElement))
+            )
           )
         )
       )
@@ -31,12 +34,15 @@ const Base = CursorAPIMixin(
  * the list.
  *
  * @inherits ReactiveElement
+ * @mixes CursorAPIMixin
  * @mixes EffectMixin
+ * @mixes ItemsAPIMixin
+ * @mixes ItemsCursorMixin
  * @mixes LanguageDirectionMixin
  * @mixes ResizeMixin
  * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
- * @mixes TapSelectionMixin
+ * @mixes TapCursorMixin
  */
 class CenteredStrip extends Base {
   get [internal.defaultState]() {

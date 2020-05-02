@@ -3,7 +3,7 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 import * as internal from "./internal.js";
 
 /**
- * Maps a tap/mousedown on a list item to selection of that item
+ * A tap/mousedown on a list item makes that item current
  *
  * This simple mixin is useful in list-like elements like [ListBox](ListBox),
  * where a tap/mousedown on a list item implicitly selects it.
@@ -19,19 +19,19 @@ import * as internal from "./internal.js";
  *
  * This mixin expects the component to provide an `state.items` member. It also
  * expects the component to define a `state.currentIndex` member; you can
- * provide that yourself, or use [SingleSelectAPIMixin](SingleSelectAPIMixin).
+ * provide that yourself, or use [ItemsCursorMixin](ItemsCursorMixin).
  *
  * If the component receives an event that doesn't correspond to an item (e.g.,
- * the user taps on the element background visible between items), the selection
+ * the user taps on the element background visible between items), the cursor
  * will be removed. However, if the component sets `state.currentItemRequired` to
- * true, a background tap will *not* remove the selection.
+ * true, a background tap will *not* remove the cursor.
  *
- * @module TapSelectionMixin
+ * @module TapCursorMixin
  * @param {Constructor<ReactiveElement>} Base
  */
-export default function TapSelectionMixin(Base) {
+export default function TapCursorMixin(Base) {
   // The class prototype added by the mixin.
-  return class TapSelection extends Base {
+  return class TapCursor extends Base {
     constructor() {
       // @ts-ignore
       super();
@@ -73,9 +73,9 @@ export default function TapSelectionMixin(Base) {
         ? event.composedPath()[0]
         : event.target;
 
-      // Find which item was clicked on and, if found, select it. For elements
-      // which don't require a selection, a background click will determine
-      // the item was null, in which we case we'll remove the selection.
+      // Find which item was clicked on and, if found, make it current. For
+      // elements which don't require a cursor, a background click will
+      // determine the item was null, in which we case we'll remove the cursor.
       const { items, currentIndex, currentItemRequired } = this[internal.state];
       if (items && target instanceof Node) {
         const targetIndex = indexOfItemContainingTarget(items, target);

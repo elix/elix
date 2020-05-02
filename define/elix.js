@@ -133,7 +133,7 @@ export { default as SwipeDirectionMixin } from "../src/base/SwipeDirectionMixin.
 export { default as TabButton } from "./TabButton.js";
 export { default as TabStrip } from "./TabStrip.js";
 export { default as Tabs } from "./Tabs.js";
-export { default as TapSelectionMixin } from "../src/base/TapSelectionMixin.js";
+export { default as TapCursorMixin } from "../src/base/TapCursorMixin.js";
 export { default as TimerCursorMixin } from "../src/base/TimerCursorMixin.js";
 export { default as Toast } from "./Toast.js";
 export { default as TouchSwipeMixin } from "../src/base/TouchSwipeMixin.js";

@@ -17,7 +17,7 @@ import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
-import TapSelectionMixin from "./TapSelectionMixin.js";
+import TapCursorMixin from "./TapCursorMixin.js";
 
 const Base = AriaMenuMixin(
   CursorAPIMixin(
@@ -34,7 +34,7 @@ const Base = AriaMenuMixin(
                         SelectedItemTextValueMixin(
                           CurrentItemInViewMixin(
                             SingleSelectAPIMixin(
-                              SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+                              SlotItemsMixin(TapCursorMixin(ReactiveElement))
                             )
                           )
                         )
@@ -59,8 +59,11 @@ const Base = AriaMenuMixin(
  *
  * @inherits ReactiveElement
  * @mixes AriaMenuMixin
+ * @mixes CursorAPIMixin
  * @mixes DelegateFocusMixin
  * @mixes DirectionCursorMixin
+ * @mixes ItemsAPIMixin
+ * @mixes ItemsCursorMixin
  * @mixes ItemsTextMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
@@ -71,7 +74,7 @@ const Base = AriaMenuMixin(
  * @mixes CurrentItemInViewMixin
  * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
- * @mixes TapSelectionMixin
+ * @mixes TapCursorMixin
  */
 class Menu extends Base {
   get [internal.defaultState]() {

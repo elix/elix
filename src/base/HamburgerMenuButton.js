@@ -22,6 +22,7 @@ const Base = DelegateFocusMixin(
  * [A hamburger menu used to present navigation commands](/demos/hamburgerMenuButton.html)
  *
  * @inherits ReactiveElement
+ * @mixes DelegateFocusMixin
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
  * @mixes OpenCloseMixin

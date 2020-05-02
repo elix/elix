@@ -17,7 +17,7 @@ import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
-import TapSelectionMixin from "./TapSelectionMixin.js";
+import TapCursorMixin from "./TapCursorMixin.js";
 
 export default class MenuBase extends AriaMenuMixin(
   CursorAPIMixin(
@@ -33,7 +33,7 @@ export default class MenuBase extends AriaMenuMixin(
                       SelectedItemTextValueMixin(
                         CurrentItemInViewMixin(
                           SingleSelectAPIMixin(
-                            SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+                            SlotItemsMixin(TapCursorMixin(ReactiveElement))
                           )
                         )
                       )

@@ -19,7 +19,7 @@ import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
-import TapSelectionMixin from "./TapSelectionMixin.js";
+import TapCursorMixin from "./TapCursorMixin.js";
 
 export default class ListBox extends AriaListMixin(
   ComposedFocusMixin(
@@ -37,9 +37,7 @@ export default class ListBox extends AriaListMixin(
                           SelectedItemTextValueMixin(
                             CurrentItemInViewMixin(
                               SingleSelectAPIMixin(
-                                SlotItemsMixin(
-                                  TapSelectionMixin(ReactiveElement)
-                                )
+                                SlotItemsMixin(TapCursorMixin(ReactiveElement))
                               )
                             )
                           )

@@ -11,9 +11,9 @@ import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
 const Base = CursorAPIMixin(
-  ItemsAPIMixin(
-    ItemsCursorMixin(
-      EffectMixin(
+  EffectMixin(
+    ItemsAPIMixin(
+      ItemsCursorMixin(
         LanguageDirectionMixin(
           SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
         )
@@ -31,7 +31,10 @@ const Base = CursorAPIMixin(
  * This component is used as the main stage for a [Carousel](Carousel).
  *
  * @inherits ReactiveElement
+ * @mixes CursorAPIMixin
  * @mixes EffectMixin
+ * @mixes ItemsAPIMixin
+ * @mixes ItemsCursorMixin
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin

@@ -25,6 +25,9 @@ const Base = CursorAPIMixin(
  * implemented by the [Tabs](Tabs) component.
  *
  * @inherits ReactiveElement
+ * @mixes CursorAPIMixin
+ * @mixes ItemsAPIMixin
+ * @mixes ItemsCursorMixin
  * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
  */

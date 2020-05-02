@@ -21,6 +21,8 @@ const Base = DelegateInputLabelMixin(
  * and behavior while ensuring standard keyboard and focus behavior.
  *
  * @inherits WrappedStandardElement
+ * @mixes DelegateInputLabelMixin
+ * @mixes FocusVisibleMixin
  * @mixes FormElementMixin
  * @mixes TrackTextSelectionMixin
  */

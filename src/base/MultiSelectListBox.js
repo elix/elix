@@ -32,19 +32,19 @@ import SlotItemsMixin from "./SlotItemsMixin.js";
 
 const Base = AriaListMixin(
   ComposedFocusMixin(
-    CursorAPIMixin(
-      DirectionCursorMixin(
-        FocusVisibleMixin(
-          ItemsAPIMixin(
-            ItemsCursorMixin(
-              ItemsMultiSelectMixin(
-                ItemsTextMixin(
-                  KeyboardDirectionMixin(
-                    KeyboardMixin(
-                      KeyboardPagedCursorMixin(
-                        KeyboardPrefixCursorMixin(
-                          LanguageDirectionMixin(
-                            CurrentItemInViewMixin(
+    CurrentItemInViewMixin(
+      CursorAPIMixin(
+        DirectionCursorMixin(
+          FocusVisibleMixin(
+            ItemsAPIMixin(
+              ItemsCursorMixin(
+                ItemsMultiSelectMixin(
+                  ItemsTextMixin(
+                    KeyboardDirectionMixin(
+                      KeyboardMixin(
+                        KeyboardPagedCursorMixin(
+                          KeyboardPrefixCursorMixin(
+                            LanguageDirectionMixin(
                               MultiSelectAPIMixin(
                                 MultiSelectToggleMixin(
                                   SingleSelectAPIMixin(
@@ -80,20 +80,23 @@ const Base = AriaListMixin(
  * @inherits ReactiveElement
  * @mixes AriaListMixin
  * @mixes ComposedFocusMixin
+ * @mixes CurrentItemInViewMixin
+ * @mixes CursorAPIMixin
  * @mixes DirectionCursorMixin
  * @mixes FocusVisibleMixin
- * @mixes FormElementMixin
+ * @mixes ItemsAPIMixin
+ * @mixes ItemsCursorMixin
+ * @mixes ItemsMultiSelectMixin
  * @mixes ItemsTextMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
  * @mixes KeyboardPagedCursorMixin
  * @mixes KeyboardPrefixCursorMixin
  * @mixes LanguageDirectionMixin
- * @mixes SelectedItemTextValueMixin
- * @mixes CurrentItemInViewMixin
+ * @mixes MultiSelectAPIMixin
+ * @mixes MultiSelectToggleMixin
  * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
- * @mixes TapSelectionMixin
  */
 class MultiSelectListBox extends Base {
   get [defaultState]() {

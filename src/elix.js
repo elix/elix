@@ -142,7 +142,7 @@ export { default as SlotContentMixin } from "./base/SlotContentMixin.js";
 export { default as SlotItemsMixin } from "./base/SlotItemsMixin.js";
 export { default as SwipeCommandsMixin } from "./base/SwipeCommandsMixin.js";
 export { default as SwipeDirectionMixin } from "./base/SwipeDirectionMixin.js";
-export { default as TapSelectionMixin } from "./base/TapSelectionMixin.js";
+export { default as TapCursorMixin } from "./base/TapCursorMixin.js";
 export { default as TimerCursorMixin } from "./base/TimerCursorMixin.js";
 export { default as TouchSwipeMixin } from "./base/TouchSwipeMixin.js";
 export { default as TrackTextSelectionMixin } from "./base/TrackTextSelectionMixin.js";

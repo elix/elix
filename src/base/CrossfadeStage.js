@@ -28,7 +28,13 @@ const Base = CursorAPIMixin(
  * adds a crossfade effect when transitioning between items.
  *
  * @inherits Modes
+ * @mixes CursorAPIMixin
  * @mixes EffectMixin
+ * @mixes ItemsAPIMixin
+ * @mixes ItemsCursorMixin
+ * @mixes SingleSelectAPIMixin
+ * @mixes SlotItemsMixin
+ * @mixes TransitionEffectMixin
  */
 class CrossfadeStage extends Base {
   get [internal.defaultState]() {

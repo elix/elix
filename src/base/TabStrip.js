@@ -13,18 +13,18 @@ import KeyboardMixin from "./KeyboardMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
-import TapSelectionMixin from "./TapSelectionMixin.js";
+import TapCursorMixin from "./TapCursorMixin.js";
 
 const Base = AriaListMixin(
   CursorAPIMixin(
-    ItemsAPIMixin(
-      ItemsCursorMixin(
-        TapSelectionMixin(
-          DirectionCursorMixin(
-            KeyboardDirectionMixin(
-              KeyboardMixin(
-                LanguageDirectionMixin(
-                  SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+    DirectionCursorMixin(
+      ItemsAPIMixin(
+        ItemsCursorMixin(
+          KeyboardDirectionMixin(
+            KeyboardMixin(
+              LanguageDirectionMixin(
+                SingleSelectAPIMixin(
+                  SlotItemsMixin(TapCursorMixin(ReactiveElement))
                 )
               )
             )
@@ -61,13 +61,16 @@ const Base = AriaListMixin(
  *
  * @inherits ReactiveElement
  * @mixes AriaListMixin
+ * @mixes CursorAPIMixin
  * @mixes DirectionCursorMixin
+ * @mixes ItemsAPIMixin
+ * @mixes ItemsCursorMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
- * @mixes TapSelectionMixin
+ * @mixes TapCursorMixin
  */
 class TabStrip extends Base {
   get [internal.defaultState]() {

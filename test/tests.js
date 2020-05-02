@@ -30,7 +30,7 @@ import "./base/OpenCloseMixin.tests.js";
 import "./base/OverlayMixin.tests.js";
 import "./base/SingleSelectAPIMixin.tests.js";
 import "./base/SlotContentMixin.tests.js";
-import "./base/TapSelectionMixin.tests.js";
+import "./base/TapCursorMixin.tests.js";
 import "./base/TransitionEffectMixin.tests.js";
 import "./base/WrappedStandardElement.tests.js";
 import "./core/AttributeMarshallingMixin.tests.js";
