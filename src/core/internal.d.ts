@@ -12,8 +12,6 @@
  * Symbol objects to be used at runtime as desired.
  */
 
-export const componentDidMount: "_componentDidMount";
-export const componentDidUpdate: "_componentDidUpdate";
 export const defaultState: "_defaultState";
 export const delegatesFocus: "_delegatesFocus";
 export const firstRender: "_firstRender";

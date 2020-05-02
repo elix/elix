@@ -8,8 +8,6 @@ import * as internal from "./internal.js";
 declare const ReactiveMixin: Mixin<
   {},
   {
-    [internal.componentDidMount](): void;
-    [internal.componentDidUpdate](changed: ChangedFlags): void;
     connectedCallback(): void;
     readonly [internal.defaultState]: PlainObject;
     [internal.raiseChangeEvents]: boolean;

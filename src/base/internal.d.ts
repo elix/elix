@@ -13,8 +13,6 @@
  */
 
 export const checkSize: "_checkSize";
-export const componentDidMount: "_componentDidMount";
-export const componentDidUpdate: "_componentDidUpdate";
 export const contentSlot: "_contentSlot";
 export const defaultState: "_defaultState";
 export const defaultTabIndex: "_defaultTabIndex";

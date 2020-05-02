@@ -32,27 +32,6 @@
  */
 
 /**
- * Symbol for the `componentDidMount` method.
- *
- * A component using [ReactiveMixin](ReactiveMixin) will have this method
- * invoked the first time the component is rendered in the DOM.
- *
- * This method has been deprecated; use `rendered` instead.
- */
-export const componentDidMount = Symbol("componentDidMount");
-
-/**
- * Symbol for the `componentDidUpdate` method.
- *
- * A component using [ReactiveMixin](ReactiveMixin) will have this method
- * invoked a component already in the DOM has finished a subsequent render
- * operation.
- *
- * This method has been deprecated; use `rendered` instead.
- */
-export const componentDidUpdate = Symbol("componentDidUpdate");
-
-/**
  * Symbol for the default state for this element.
  */
 export const defaultState = Symbol("defaultState");

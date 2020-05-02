@@ -58,40 +58,6 @@ export default function ReactiveMixin(Base) {
       this[internal.setState](this[internal.defaultState]);
     }
 
-    // DEPRECATED -- will be removed in the next major release
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
-      }
-      if (
-        super[internal.componentDidMount] ||
-        this[internal.componentDidMount] !==
-          Reactive.prototype[internal.componentDidMount]
-      ) {
-        /* eslint-disable no-console */
-        console.warn(
-          "Deprecation warning: componentDidMount is being replaced with the internal.rendered method and the internal.firstRender flag. See https://elix.org/documentation/ReactiveMixin#lifecycle-methods."
-        );
-      }
-    }
-
-    // DEPRECATED -- will be removed in the next major release
-    [internal.componentDidUpdate](changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
-      }
-      if (
-        super[internal.componentDidUpdate] ||
-        this[internal.componentDidUpdate] !==
-          Reactive.prototype[internal.componentDidUpdate]
-      ) {
-        /* eslint-disable no-console */
-        console.warn(
-          "Deprecation warning: componentDidUpdate is being replaced with the internal.rendered method and the internal.firstRender flag. See https://elix.org/documentation/ReactiveMixin#lifecycle-methods."
-        );
-      }
-    }
-
     // When the component is attached to the document (or upgraded), we will
     // generally render the component for the first time. That operation will
     // include rendering of the default state and any state changes that
@@ -192,17 +158,6 @@ export default function ReactiveMixin(Base) {
 
         // Let the component know it was rendered.
         this[internal.rendered](changed);
-
-        // DEPRECATED: First time is consider mounting; subsequent times are updates.
-        if (this[internal.firstRender]) {
-          if (this[internal.componentDidMount]) {
-            this[internal.componentDidMount]();
-          }
-        } else {
-          if (this[internal.componentDidUpdate]) {
-            this[internal.componentDidUpdate](changed);
-          }
-        }
 
         // We've now rendered for the first time.
         this[internal.firstRender] = false;

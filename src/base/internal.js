@@ -50,23 +50,6 @@ import * as coreInternal from "../core/internal.js";
 export const checkSize = Symbol("checkSize");
 
 /**
- * Symbol for the `componentDidMount` method.
- *
- * A component using [ReactiveMixin](ReactiveMixin) will have this method
- * invoked the first time the component is rendered in the DOM.
- */
-export const componentDidMount = coreInternal.componentDidMount;
-
-/**
- * Symbol for the `componentDidUpdate` method.
- *
- * A component using [ReactiveMixin](ReactiveMixin) will have this method
- * invoked a component already in the DOM has finished a subsequent render
- * operation.
- */
-export const componentDidUpdate = coreInternal.componentDidUpdate;
-
-/**
  * Symbol for the `contentSlot` property.
  *
  * [SlotContentMixin](SlotContentMixin) uses this to identify which slot
@@ -605,8 +588,6 @@ if (elixdebug === "true") {
   /** @type {any} */ (window).elix = {
     internal: {
       checkSize,
-      componentDidMount,
-      componentDidUpdate,
       contentSlot,
       defaultState,
       defaultTabIndex,
