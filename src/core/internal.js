@@ -118,6 +118,14 @@ export const ids = Symbol("ids");
 export const nativeInternals = Symbol("nativeInternals");
 
 /**
+ * Symbol for an internal method to parse a string attribute value.
+ *
+ * [AttributeMarshallingMixin](AttributeMarshallingMixin) invokes this
+ * method to give a component a chance to perform custom parsing.
+ */
+export const parseAttribute = Symbol("parseAttribute");
+
+/**
  * Symbol for the `raiseChangeEvents` property.
  *
  * This property is used by mixins to determine whether they should raise

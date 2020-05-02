@@ -21,6 +21,7 @@ export const focusTarget: "_focusTarget";
 export const hasDynamicTemplate: "_hasDynamicTemplate";
 export const ids: "_ids";
 export const nativeInternals: "_nativeInternals";
+export const parseAttribute: "_parseAttribute";
 export const raiseChangeEvents: "_raiseChangeEvents";
 export const render: "_render";
 export const renderChanges: "_renderChanges";

@@ -76,10 +76,8 @@ export default function AttributeMarshallingMixin(Base) {
         const propertyName = attributeToPropertyName(attributeName);
         // If the attribute name corresponds to a property name, set the property.
         if (propertyName in this) {
-          this[propertyName] = castPotentialBooleanAttribute(
-            attributeName,
-            newValue
-          );
+          const parsed = this[internal.parseAttribute](attributeName, newValue);
+          this[propertyName] = parsed;
         }
       }
     }
@@ -97,6 +95,25 @@ export default function AttributeMarshallingMixin(Base) {
     // prototype to determine your component's public properties.
     static get observedAttributes() {
       return attributesForClass(this);
+    }
+
+    /**
+     * Parse the given attribute name and string value.
+     *
+     * The default implementation of this method looks to see if the attribute
+     * is the name of a standard HTML boolean attribute (e.g., "disabled") and,
+     * if so, parses it as a boolean attribute. Otherwise it returns the value
+     * as is.
+     *
+     * @param {string} name - the name of the attribute being parsed
+     * @param {string} value - the attribute value being parsed
+     */
+    [internal.parseAttribute](name, value) {
+      return standardBooleanAttributes[name]
+        ? booleanAttributeValue(name, value)
+        : super[internal.parseAttribute]
+        ? super[internal.parseAttribute](name, value)
+        : value;
     }
   }
 
@@ -172,20 +189,6 @@ function attributeToPropertyName(attributeName) {
     attributeToPropertyNames[attributeName] = propertyName;
   }
   return propertyName;
-}
-
-/**
- * If the given attribute name corresponds to a standard boolean attribute, map
- * the supplied string value to a boolean. Otherwise return as is.
- *
- * @private
- * @param {string} name
- * @param {string} value
- */
-function castPotentialBooleanAttribute(name, value) {
-  return standardBooleanAttributes[name]
-    ? booleanAttributeValue(name, value)
-    : value;
 }
 
 /**
