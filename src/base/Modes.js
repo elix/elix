@@ -1,13 +1,16 @@
 import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
+import CursorAPIMixin from "./CursorAPIMixin.js";
 import * as internal from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
-const Base = ItemsAPIMixin(
-  ItemsCursorMixin(SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement)))
+const Base = CursorAPIMixin(
+  ItemsAPIMixin(
+    ItemsCursorMixin(SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement)))
+  )
 );
 
 /**

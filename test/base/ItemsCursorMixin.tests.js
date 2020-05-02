@@ -132,7 +132,7 @@ describe("ItemsCursorMixin", () => {
     assert.equal(fixture[state].currentIndexPending, null);
   });
 
-  it("drops selection when the last item is removed", () => {
+  it("drops cursor when the last item is removed", () => {
     const fixture = new ItemsCursorTest();
     fixture[setState]({
       items: [],

@@ -1,5 +1,6 @@
 import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
+import CursorAPIMixin from "./CursorAPIMixin.js";
 import EffectMixin from "./EffectMixin.js";
 import * as fractionalSelection from "./fractionalSelection.js";
 import * as internal from "./internal.js";
@@ -9,11 +10,13 @@ import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
-const Base = ItemsAPIMixin(
-  ItemsCursorMixin(
-    EffectMixin(
-      LanguageDirectionMixin(
-        SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+const Base = CursorAPIMixin(
+  ItemsAPIMixin(
+    ItemsCursorMixin(
+      EffectMixin(
+        LanguageDirectionMixin(
+          SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+        )
       )
     )
   )

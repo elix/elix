@@ -2,6 +2,7 @@ import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import AriaMenuMixin from "./AriaMenuMixin.js";
 import CurrentItemInViewMixin from "./CurrentItemInViewMixin.js";
+import CursorAPIMixin from "./CursorAPIMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import * as internal from "./internal.js";
@@ -19,20 +20,22 @@ import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapSelectionMixin from "./TapSelectionMixin.js";
 
 const Base = AriaMenuMixin(
-  DelegateFocusMixin(
-    DirectionCursorMixin(
-      ItemsAPIMixin(
-        ItemsCursorMixin(
-          ItemsTextMixin(
-            KeyboardDirectionMixin(
-              KeyboardMixin(
-                KeyboardPagedSelectionMixin(
-                  KeyboardPrefixSelectionMixin(
-                    LanguageDirectionMixin(
-                      SelectedItemTextValueMixin(
-                        CurrentItemInViewMixin(
-                          SingleSelectAPIMixin(
-                            SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+  CursorAPIMixin(
+    DelegateFocusMixin(
+      DirectionCursorMixin(
+        ItemsAPIMixin(
+          ItemsCursorMixin(
+            ItemsTextMixin(
+              KeyboardDirectionMixin(
+                KeyboardMixin(
+                  KeyboardPagedSelectionMixin(
+                    KeyboardPrefixSelectionMixin(
+                      LanguageDirectionMixin(
+                        SelectedItemTextValueMixin(
+                          CurrentItemInViewMixin(
+                            SingleSelectAPIMixin(
+                              SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+                            )
                           )
                         )
                       )

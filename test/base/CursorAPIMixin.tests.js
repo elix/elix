@@ -86,30 +86,6 @@ describe("CursorAPIMixin", () => {
     assert.equal(fixture.currentIndex, 0);
   });
 
-  it("preserves current item when items change and old current item exists in new set", () => {
-    const fixture = new CursorAPITest();
-    fixture.currentIndex = 1;
-    assert.equal(fixture.currentIndex, 1);
-    fixture.items = fixture.items.slice(1); // Removes item 0
-    assert.equal(fixture.currentIndex, 0);
-  });
-
-  it("moves to nearest item when item in last place is removed", () => {
-    const fixture = new CursorAPITest();
-    fixture.currentIndex = 2;
-    const items = fixture.items.slice();
-    items.splice(2, 1);
-    fixture.items = items;
-    assert.equal(fixture.currentIndex, 1);
-  });
-
-  it("drops cursor when the last item is removed", () => {
-    const fixture = new CursorAPITest();
-    fixture.currentIndex = 0;
-    fixture.items = [];
-    assert.equal(fixture.currentIndex, -1);
-  });
-
   it("sets canGoNext/canGoPrevious with no wrapping", () => {
     const fixture = new CursorAPITest();
     assert(!fixture.cursorOperationsWrap);

@@ -23,26 +23,6 @@ import * as internal from "./internal.js";
 export default function SingleSelectAPIMixin(Base) {
   // The class prototype added by the mixin.
   class SingleSelectAPI extends Base {
-    /**
-     * True if the selection can be moved to the next item, false if not (the
-     * selected item is the last item in the list).
-     *
-     * @type {boolean}
-     */
-    get canSelectNext() {
-      return this[internal.state].canGoNext;
-    }
-
-    /**
-     * True if the selection can be moved to the previous item, false if not
-     * (the selected item is the first one in the list).
-     *
-     * @type {boolean}
-     */
-    get canSelectPrevious() {
-      return this[internal.state].canGoPrevious;
-    }
-
     [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
@@ -59,18 +39,6 @@ export default function SingleSelectAPIMixin(Base) {
         });
         this.dispatchEvent(event);
       }
-    }
-
-    /**
-     * Select the first item in the list.
-     *
-     * @returns {Boolean} True if the selection changed, false if not.
-     */
-    selectFirst() {
-      if (super.selectFirst) {
-        super.selectFirst();
-      }
-      return this[internal.goFirst]();
     }
 
     /**
@@ -124,61 +92,6 @@ export default function SingleSelectAPIMixin(Base) {
       this[internal.setState]({
         currentItemRequired: String(selectionRequired) === "true",
       });
-    }
-
-    /**
-     * True if selection navigations wrap from last to first, and vice versa.
-     *
-     * @type {boolean}
-     * @default false
-     */
-    get selectionWraps() {
-      return this[internal.state].cursorOperationsWrap;
-    }
-    set selectionWraps(selectionWraps) {
-      this[internal.setState]({
-        cursorOperationsWrap: String(selectionWraps) === "true",
-      });
-    }
-
-    /**
-     * Select the last item in the list.
-     *
-     * @returns {Boolean} True if the selection changed, false if not.
-     */
-    selectLast() {
-      if (super.selectLast) {
-        super.selectLast();
-      }
-      return this[internal.goLast]();
-    }
-
-    /**
-     * Select the next item in the list.
-     *
-     * If the list has no selection, the first item will be selected.
-     *
-     * @returns {Boolean} True if the selection changed, false if not.
-     */
-    selectNext() {
-      if (super.selectNext) {
-        super.selectNext();
-      }
-      return this[internal.goNext]();
-    }
-
-    /**
-     * Select the previous item in the list.
-     *
-     * If the list has no selection, the last item will be selected.
-     *
-     * @returns {Boolean} True if the selection changed, false if not.
-     */
-    selectPrevious() {
-      if (super.selectPrevious) {
-        super.selectPrevious();
-      }
-      return this[internal.goPrevious]();
     }
   }
 

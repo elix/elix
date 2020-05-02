@@ -3,6 +3,7 @@ import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import { defaultAriaRole } from "./accessibility.js";
 import AriaListMixin from "./AriaListMixin.js";
+import CursorAPIMixin from "./CursorAPIMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import * as internal from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
@@ -15,14 +16,16 @@ import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapSelectionMixin from "./TapSelectionMixin.js";
 
 const Base = AriaListMixin(
-  ItemsAPIMixin(
-    ItemsCursorMixin(
-      TapSelectionMixin(
-        DirectionCursorMixin(
-          KeyboardDirectionMixin(
-            KeyboardMixin(
-              LanguageDirectionMixin(
-                SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+  CursorAPIMixin(
+    ItemsAPIMixin(
+      ItemsCursorMixin(
+        TapSelectionMixin(
+          DirectionCursorMixin(
+            KeyboardDirectionMixin(
+              KeyboardMixin(
+                LanguageDirectionMixin(
+                  SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+                )
               )
             )
           )

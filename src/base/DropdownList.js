@@ -1,6 +1,7 @@
 import { updateChildNodes } from "../core/dom.js";
 import html from "../core/html.js";
 import * as template from "../core/template.js";
+import CursorAPIMixin from "./CursorAPIMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import * as internal from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
@@ -10,11 +11,13 @@ import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
-const Base = FormElementMixin(
-  ItemsAPIMixin(
-    ItemsCursorMixin(
-      SelectedItemTextValueMixin(
-        SingleSelectAPIMixin(SlotItemsMixin(MenuButton))
+const Base = CursorAPIMixin(
+  FormElementMixin(
+    ItemsAPIMixin(
+      ItemsCursorMixin(
+        SelectedItemTextValueMixin(
+          SingleSelectAPIMixin(SlotItemsMixin(MenuButton))
+        )
       )
     )
   )

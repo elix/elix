@@ -5,6 +5,7 @@
 import AriaListMixin from "../../src/base/AriaListMixin.js";
 import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
 import CurrentItemInViewMixin from "../../src/base/CurrentItemInViewMixin.js";
+import CursorAPIMixin from "../../src/base/CursorAPIMixin.js";
 import DirectionCursorMixin from "../../src/base/DirectionCursorMixin.js";
 import * as internal from "../../src/base/internal.js";
 import ItemsAPIMixin from "../../src/base/ItemsAPIMixin.js";
@@ -22,17 +23,21 @@ import * as template from "../../src/core/template.js";
 
 const Base = AriaListMixin(
   ContentItemsMixin(
-    DirectionCursorMixin(
-      ItemsAPIMixin(
-        ItemsTextMixin(
-          KeyboardDirectionMixin(
-            KeyboardMixin(
-              KeyboardPagedSelectionMixin(
-                KeyboardPrefixSelectionMixin(
-                  LanguageDirectionMixin(
-                    SelectedItemTextValueMixin(
-                      CurrentItemInViewMixin(
-                        SingleSelectAPIMixin(TapSelectionMixin(ReactiveElement))
+    CursorAPIMixin(
+      DirectionCursorMixin(
+        ItemsAPIMixin(
+          ItemsTextMixin(
+            KeyboardDirectionMixin(
+              KeyboardMixin(
+                KeyboardPagedSelectionMixin(
+                  KeyboardPrefixSelectionMixin(
+                    LanguageDirectionMixin(
+                      SelectedItemTextValueMixin(
+                        CurrentItemInViewMixin(
+                          SingleSelectAPIMixin(
+                            TapSelectionMixin(ReactiveElement)
+                          )
+                        )
                       )
                     )
                   )

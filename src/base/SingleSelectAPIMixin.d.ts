@@ -6,16 +6,9 @@
 declare const SingleSelectAPIMixin: Mixin<
   {},
   {
-    canSelectNext: boolean;
-    canSelectPrevious: boolean;
     selectedIndex: number;
     selectedItem: Element | null;
-    selectFirst(): boolean;
-    selectLast(): boolean;
     selectionRequired: boolean;
-    selectionWraps: boolean;
-    selectNext(): boolean;
-    selectPrevious(): boolean;
   }
 >;
 

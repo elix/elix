@@ -2,6 +2,7 @@ import html from "../core/html.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
+import CursorAPIMixin from "./CursorAPIMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
@@ -16,16 +17,18 @@ import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 const Base = ComposedFocusMixin(
-  DelegateFocusMixin(
-    DelegateInputLabelMixin(
-      DelegateInputSelectionMixin(
-        DelegateItemsMixin(
-          DirectionCursorMixin(
-            FocusVisibleMixin(
-              ItemsCursorMixin(
-                KeyboardMixin(
-                  SelectedItemTextValueMixin(
-                    SingleSelectAPIMixin(ReactiveElement)
+  CursorAPIMixin(
+    DelegateFocusMixin(
+      DelegateInputLabelMixin(
+        DelegateInputSelectionMixin(
+          DelegateItemsMixin(
+            DirectionCursorMixin(
+              FocusVisibleMixin(
+                ItemsCursorMixin(
+                  KeyboardMixin(
+                    SelectedItemTextValueMixin(
+                      SingleSelectAPIMixin(ReactiveElement)
+                    )
                   )
                 )
               )

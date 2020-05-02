@@ -2,12 +2,13 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import ComboBox from "./ComboBox.js";
+import CursorAPIMixin from "./CursorAPIMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
-export default class ListComboBox extends DelegateItemsMixin(
-  DirectionCursorMixin(SingleSelectAPIMixin(ComboBox))
+export default class ListComboBox extends CursorAPIMixin(
+  DelegateItemsMixin(DirectionCursorMixin(SingleSelectAPIMixin(ComboBox)))
 ) {
   listPartType: PartDescriptor;
 }

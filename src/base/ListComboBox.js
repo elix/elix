@@ -2,6 +2,7 @@ import { forwardFocus, indexOfItemContainingTarget } from "../core/dom.js";
 import html from "../core/html.js";
 import * as template from "../core/template.js";
 import ComboBox from "./ComboBox.js";
+import CursorAPIMixin from "./CursorAPIMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import * as internal from "./internal.js";
@@ -10,8 +11,10 @@ import { getItemText } from "./ItemsTextMixin.js";
 import ListBox from "./ListBox.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
-const Base = DelegateItemsMixin(
-  DirectionCursorMixin(ItemsCursorMixin(SingleSelectAPIMixin(ComboBox)))
+const Base = CursorAPIMixin(
+  DelegateItemsMixin(
+    DirectionCursorMixin(ItemsCursorMixin(SingleSelectAPIMixin(ComboBox)))
+  )
 );
 
 /**

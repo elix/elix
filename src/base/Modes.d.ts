@@ -2,10 +2,11 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import ReactiveElement from "../core/ReactiveElement.js";
+import CursorAPIMixin from "./CursorAPIMixin.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
-export default class Modes extends ItemsAPIMixin(
-  SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+export default class Modes extends CursorAPIMixin(
+  ItemsAPIMixin(SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement)))
 ) {}
