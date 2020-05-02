@@ -17,6 +17,16 @@ import * as internal from "./internal.js";
 export default function TimerSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class TimerSelection extends Base {
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (name === "cursor-timer-duration") {
+        this.cursorTimerDuration = Number(newValue);
+      } else if (name === "playing") {
+        this.playing = booleanAttributeValue("playing", newValue);
+      } else {
+        super.attributeChangedCallback(name, oldValue, newValue);
+      }
+    }
+
     /**
      * The time in milliseconds that will elapse after the cursor advances
      * before the cursor will be advanced to the next item in the list.
@@ -78,20 +88,6 @@ export default function TimerSelectionMixin(Base) {
           this.pause();
         }
       }
-    }
-
-    [internal.parseAttribute](name, value) {
-      const parsers = {
-        "cursor-timer-duration": (s) =>
-          booleanAttributeValue("cursor-timer-duration", s),
-        playing: (s) => booleanAttributeValue("playing", s),
-      };
-      const parser = parsers[name];
-      return parser
-        ? parser(value)
-        : super[internal.parseAttribute]
-        ? super[internal.parseAttribute](name, value)
-        : value;
     }
 
     [internal.rendered](/** @type {ChangedFlags} */ changed) {

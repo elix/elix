@@ -7,6 +7,16 @@ import SpinBox from "./SpinBox.js";
  * @inherits SpinBox
  */
 class NumberSpinBox extends SpinBox {
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "max") {
+      this.max = parseFloat(newValue);
+    } else if (name === "min") {
+      this.min = parseFloat(newValue);
+    } else {
+      super.attributeChangedCallback(name, oldValue, newValue);
+    }
+  }
+
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       max: null,
@@ -52,14 +62,6 @@ class NumberSpinBox extends SpinBox {
   }
   set min(min) {
     this[internal.setState]({ min });
-  }
-
-  [internal.parseAttribute](name, value) {
-    return ["max", "min"].includes(name)
-      ? parseFloat(value)
-      : super[internal.parseAttribute]
-      ? super[internal.parseAttribute](name, value)
-      : value;
   }
 
   /**

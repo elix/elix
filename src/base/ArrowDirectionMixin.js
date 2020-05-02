@@ -63,6 +63,16 @@ function ArrowDirectionMixin(Base) {
       }
     }
 
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (name === "arrow-button-overlap") {
+        this.arrowButtonOverlap = String(newValue) === "true";
+      } else if (name === "show-arrow-buttons") {
+        this.showArrowButtons = String(newValue) === "true";
+      } else {
+        super.attributeChangedCallback(name, oldValue, newValue);
+      }
+    }
+
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
         arrowButtonOverlap: true,
@@ -70,14 +80,6 @@ function ArrowDirectionMixin(Base) {
         orientation: "horizontal",
         showArrowButtons: true,
       });
-    }
-
-    [internal.parseAttribute](name, value) {
-      return ["arrow-button-overlap", "show-arrow-buttons"].includes(name)
-        ? String(value) === "true"
-        : super[internal.parseAttribute]
-        ? super[internal.parseAttribute](name, value)
-        : value;
     }
 
     [internal.render](/** @type {ChangedFlags} */ changed) {

@@ -43,7 +43,6 @@ export const keydown: "_keydown";
 export const mouseenter: "_mouseenter";
 export const mouseleave: "_mouseleave";
 export const nativeInternals: "_nativeInternals";
-export const parseAttribute: "_parseAttribute";
 export const populate: "_populate";
 export const raiseChangeEvents: "_raiseChangeEvents";
 export const render: "_render";

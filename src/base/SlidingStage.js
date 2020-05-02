@@ -37,6 +37,14 @@ const Base = CursorAPIMixin(
  * @mixes SlotItemsMixin
  */
 class SlidingStage extends Base {
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "swipe-fraction") {
+      this.swipeFraction = parseFloat(newValue);
+    } else {
+      super.attributeChangedCallback(name, oldValue, newValue);
+    }
+  }
+
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       currentItemRequired: true,
@@ -49,14 +57,6 @@ class SlidingStage extends Base {
   }
   set orientation(orientation) {
     this[internal.setState]({ orientation });
-  }
-
-  [internal.parseAttribute](name, value) {
-    return name === "swipe-fraction"
-      ? parseFloat(value)
-      : super[internal.parseAttribute]
-      ? super[internal.parseAttribute](name, value)
-      : value;
   }
 
   [internal.render](/** @type {ChangedFlags} */ changed) {

@@ -13,6 +13,14 @@ const colorSchemeElements = new Set();
  */
 export default function DarkModeMixin(Base) {
   return class dark extends Base {
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (name === "dark") {
+        this.dark = booleanAttributeValue(name, newValue);
+      } else {
+        super.attributeChangedCallback(name, oldValue, newValue);
+      }
+    }
+
     disconnectedCallback() {
       if (super.disconnectedCallback) {
         super.disconnectedCallback();
@@ -39,7 +47,10 @@ export default function DarkModeMixin(Base) {
       return this[internal.state].dark;
     }
     set dark(dark) {
-      this[internal.setState]({ dark });
+      // Avoid loops when reflecting attribute.
+      if (dark !== this[internal.state].dark) {
+        this[internal.setState]({ dark });
+      }
     }
 
     get [internal.defaultState]() {
@@ -63,14 +74,6 @@ export default function DarkModeMixin(Base) {
       if (detectDarkMode === "auto" || detectDarkMode === "off") {
         this[internal.setState]({ detectDarkMode });
       }
-    }
-
-    [internal.parseAttribute](name, value) {
-      return name === "dark"
-        ? booleanAttributeValue(name, value)
-        : super[internal.parseAttribute]
-        ? super[internal.parseAttribute](name, value)
-        : value;
     }
 
     [internal.render](changed) {

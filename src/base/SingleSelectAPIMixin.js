@@ -23,6 +23,14 @@ import * as internal from "./internal.js";
 export default function SingleSelectAPIMixin(Base) {
   // The class prototype added by the mixin.
   class SingleSelectAPI extends Base {
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (name === "selected-index") {
+        this.selectedIndex = Number(newValue);
+      } else {
+        super.attributeChangedCallback(name, oldValue, newValue);
+      }
+    }
+
     [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
@@ -39,14 +47,6 @@ export default function SingleSelectAPIMixin(Base) {
         });
         this.dispatchEvent(event);
       }
-    }
-
-    [internal.parseAttribute](name, value) {
-      return name === "selected-index"
-        ? Number(value)
-        : super[internal.parseAttribute]
-        ? super[internal.parseAttribute](name, value)
-        : value;
     }
 
     /**

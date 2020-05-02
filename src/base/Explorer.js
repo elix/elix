@@ -42,6 +42,14 @@ const Base = CursorAPIMixin(
  * @part {Modes} stage - the main element showing a single item from the list
  */
 class Explorer extends Base {
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "proxy-list-overlap") {
+      this.proxyListOverlap = String(newValue) === "true";
+    } else {
+      super.attributeChangedCallback(name, oldValue, newValue);
+    }
+  }
+
   [internal.checkSize]() {
     if (super[internal.checkSize]) {
       super[internal.checkSize]();
@@ -65,14 +73,6 @@ class Explorer extends Base {
       proxyPartType: "div",
       stagePartType: Modes,
     });
-  }
-
-  [internal.parseAttribute](name, value) {
-    return name === "proxy-list-overlap"
-      ? String(value) === "true"
-      : super[internal.parseAttribute]
-      ? super[internal.parseAttribute](name, value)
-      : value;
   }
 
   [internal.render](/** @type {ChangedFlags} */ changed) {

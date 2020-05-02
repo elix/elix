@@ -16,6 +16,14 @@ const closeResolveKey = Symbol("closeResolve");
 export default function OpenCloseMixin(Base) {
   // The class prototype added by the mixin.
   class OpenClose extends Base {
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (name === "opened") {
+        this.opened = booleanAttributeValue(name, newValue);
+      } else {
+        super.attributeChangedCallback(name, oldValue, newValue);
+      }
+    }
+
     /**
      * Close the component (if not already closed).
      *
@@ -113,14 +121,6 @@ export default function OpenCloseMixin(Base) {
     set opened(opened) {
       this[internal.setState]({ closeResult: undefined });
       this.toggle(opened);
-    }
-
-    [internal.parseAttribute](name, value) {
-      return name === "opened"
-        ? booleanAttributeValue(name, value)
-        : super[internal.parseAttribute]
-        ? super[internal.parseAttribute](name, value)
-        : value;
     }
 
     [internal.rendered](/** @type {ChangedFlags} */ changed) {

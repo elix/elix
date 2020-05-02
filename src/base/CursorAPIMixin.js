@@ -19,6 +19,18 @@ import * as internal from "./internal.js";
 export default function CursorAPIMixin(Base) {
   // The class prototype added by the mixin.
   class CursorAPI extends Base {
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (name === "current-index") {
+        this.currentIndex = Number(newValue);
+      } else if (name === "current-item-required") {
+        this.currentItemRequired = booleanAttributeValue(name, newValue);
+      } else if (name === "cursor-operations-wrap") {
+        this.cursorOperationsWrap = booleanAttributeValue(name, newValue);
+      } else {
+        super.attributeChangedCallback(name, oldValue, newValue);
+      }
+    }
+
     /**
      * True if the item cursor can be moved to the next item, false if not (the
      * current item is the last item in the list).
@@ -148,22 +160,6 @@ export default function CursorAPIMixin(Base) {
         super.goPrevious();
       }
       return this[internal.goPrevious]();
-    }
-
-    [internal.parseAttribute](name, value) {
-      const parsers = {
-        "current-index": (s) => Number(s),
-        "current-item-required": (s) =>
-          booleanAttributeValue("current-item-required", value),
-        "cursor-operations-wrap": (s) =>
-          booleanAttributeValue("cursor-operations-wrap", value),
-      };
-      const parser = parsers[name];
-      return parser
-        ? parser(value)
-        : super[internal.parseAttribute]
-        ? super[internal.parseAttribute](name, value)
-        : value;
     }
 
     [internal.rendered](/** @type {ChangedFlags} */ changed) {

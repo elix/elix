@@ -3,6 +3,14 @@ import ReactiveElement from "../../src/core/ReactiveElement.js";
 import * as template from "../../src/core/template.js";
 
 export default class MessageSummary extends ReactiveElement {
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "read") {
+      this.read = String(newValue) === "true";
+    } else {
+      super.attributeChangedCallback(name, oldValue, newValue);
+    }
+  }
+
   get date() {
     return this[internal.state].date;
   }
@@ -24,14 +32,6 @@ export default class MessageSummary extends ReactiveElement {
   }
   set read(read) {
     this[internal.setState]({ read });
-  }
-
-  [internal.parseAttribute](name, value) {
-    return name === "read"
-      ? String(value) === "true"
-      : super[internal.parseAttribute]
-      ? super[internal.parseAttribute](name, value)
-      : value;
   }
 
   [internal.render](changed) {

@@ -16,6 +16,14 @@ import * as internal from "./internal.js";
 export default function CalendarElementMixin(Base) {
   // The class prototype added by the mixin.
   class CalendarElement extends Base {
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (name === "date") {
+        this.date = new Date(newValue);
+      } else {
+        super.attributeChangedCallback(name, oldValue, newValue);
+      }
+    }
+
     /**
      * The date that should be shown by the element. For elements that show a
      * range of dates (a month, a week, etc.), the referenced date will be
@@ -66,14 +74,6 @@ export default function CalendarElementMixin(Base) {
     }
     set locale(locale) {
       this[internal.setState]({ locale });
-    }
-
-    [internal.parseAttribute](name, value) {
-      return name === "date"
-        ? new Date(value)
-        : super[internal.parseAttribute]
-        ? super[internal.parseAttribute](name, value)
-        : value;
     }
 
     [internal.rendered](/** @type {ChangedFlags} */ changed) {

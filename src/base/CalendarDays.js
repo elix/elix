@@ -29,6 +29,14 @@ const Base = CalendarElementMixin(ReactiveElement);
  * @part {div} day-container - container for the days
  */
 class CalendarDays extends Base {
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "start-date") {
+      this.startDate = new Date(newValue);
+    } else {
+      super.attributeChangedCallback(name, oldValue, newValue);
+    }
+  }
+
   /**
    * Returns the day element corresponding to the given date, or null if the
    * date falls outside this calendar week.
@@ -84,14 +92,6 @@ class CalendarDays extends Base {
       showSelectedDay: false,
       startDate: today,
     });
-  }
-
-  [internal.parseAttribute](name, value) {
-    return name === "start-date"
-      ? new Date(value)
-      : super[internal.parseAttribute]
-      ? super[internal.parseAttribute](name, value)
-      : value;
   }
 
   [internal.render](/** @type {ChangedFlags} */ changed) {

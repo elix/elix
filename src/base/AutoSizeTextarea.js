@@ -31,6 +31,14 @@ const Base = FormElementMixin(
  * @mixes TrackTextSelectionMixin
  */
 class AutoSizeTextarea extends Base {
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "minimum-rows") {
+      this.minimumRows = Number(newValue);
+    } else {
+      super.attributeChangedCallback(name, oldValue, newValue);
+    }
+  }
+
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       minimumRows: 1,
@@ -66,14 +74,6 @@ class AutoSizeTextarea extends Base {
   }
   set minimumRows(minimumRows) {
     this[internal.setState]({ minimumRows });
-  }
-
-  [internal.parseAttribute](name, value) {
-    return name === "minimum-rows"
-      ? Number(value)
-      : super[internal.parseAttribute]
-      ? super[internal.parseAttribute](name, value)
-      : value;
   }
 
   [internal.render](/** @type {ChangedFlags} */ changed) {
