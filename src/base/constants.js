@@ -12,7 +12,7 @@
  * typing.
  *
  * This is used by
- * [KeyboardPrefixSelectionMixin](KeyboardPrefixSelectionMixin).
+ * [KeyboardPrefixCursorMixin](KeyboardPrefixCursorMixin).
  *
  * @const {number} TYPING_TIMEOUT_DURATION
  */

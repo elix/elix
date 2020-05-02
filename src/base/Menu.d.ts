@@ -11,8 +11,8 @@ import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
-import KeyboardPagedSelectionMixin from "./KeyboardPagedSelectionMixin.js";
-import KeyboardPrefixSelectionMixin from "./KeyboardPrefixSelectionMixin.js";
+import KeyboardPagedCursorMixin from "./KeyboardPagedCursorMixin.js";
+import KeyboardPrefixCursorMixin from "./KeyboardPrefixCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
@@ -27,8 +27,8 @@ export default class MenuBase extends AriaMenuMixin(
           ItemsTextMixin(
             KeyboardDirectionMixin(
               KeyboardMixin(
-                KeyboardPagedSelectionMixin(
-                  KeyboardPrefixSelectionMixin(
+                KeyboardPagedCursorMixin(
+                  KeyboardPrefixCursorMixin(
                     LanguageDirectionMixin(
                       SelectedItemTextValueMixin(
                         CurrentItemInViewMixin(

@@ -1,13 +1,13 @@
 import * as internal from "../../src/base/internal.js";
-import KeyboardPagedSelectionMixin from "../../src/base/KeyboardPagedSelectionMixin.js";
+import KeyboardPagedCursorMixin from "../../src/base/KeyboardPagedCursorMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import { assert } from "../testHelpers.js";
 
 const itemHeight = 100;
 
-const Base = KeyboardPagedSelectionMixin(ReactiveMixin(HTMLElement));
+const Base = KeyboardPagedCursorMixin(ReactiveMixin(HTMLElement));
 
-class KeyboardPagedSelectionTest extends Base {
+class KeyboardPagedCursorTest extends Base {
   connectedCallback() {
     const items = Array.prototype.slice.call(this.children);
     this[internal.setState]({
@@ -16,12 +16,9 @@ class KeyboardPagedSelectionTest extends Base {
     });
   }
 }
-customElements.define(
-  "keyboard-paged-selection-test",
-  KeyboardPagedSelectionTest
-);
+customElements.define("keyboard-paged-cursor-test", KeyboardPagedCursorTest);
 
-describe("KeyboardPagedSelectionMixin", function () {
+describe("KeyboardPagedCursorMixin", function () {
   let container;
 
   before(() => {
@@ -86,7 +83,7 @@ describe("KeyboardPagedSelectionMixin", function () {
 });
 
 function createSampleElement() {
-  const fixture = new KeyboardPagedSelectionTest();
+  const fixture = new KeyboardPagedCursorTest();
 
   // Force scroll: make element only tall enough to show 2 items at a time.
   const itemsToShow = 2;

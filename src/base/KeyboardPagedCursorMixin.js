@@ -3,21 +3,21 @@ import * as internal from "./internal.js";
 import { defaultScrollTarget } from "./scrolling.js";
 
 /**
- * Maps the Page Up and Page Down keys to selection operations.
+ * Maps the Page Up and Page Down keys to item cursor operations.
  *
  * The keyboard interaction model generally follows that of Microsoft Windows'
  * list boxes instead of those in OS X:
  *
- * * The Page Up/Down and Home/End keys actually change the selection, rather
+ * * The Page Up/Down and Home/End keys actually move the item cursor, rather
  *   than just scrolling. The former behavior seems more generally useful for
  *   keyboard users.
  *
- * * Pressing Page Up/Down will change the selection to the topmost/bottommost
- *   visible item if the selection is not already there. Thereafter, the key
- *   will move the selection up/down by a page, and (per the above point) make
- *   the selected item visible.
+ * * Pressing Page Up/Down will first move the cursor to the topmost/bottommost
+ *   visible item if the cursor is not already there. Thereafter, the key
+ *   will move the cursor up/down by a page, and (per the above point) make
+ *   the current item visible.
  *
- * To ensure the selected item is in view following use of Page Up/Down, use
+ * To ensure the current item is in view following use of Page Up/Down, use
  * the related [CurrentItemInViewMixin](CurrentItemInViewMixin).
  *
  * This mixin expects the component to provide:
@@ -27,12 +27,12 @@ import { defaultScrollTarget } from "./scrolling.js";
  *   keyboard handling and call `[internal.keydown]` yourself.
  * * A `currentIndex` state member updatable via [internal.setState]`.
  *
- * @module KeyboardPagedSelectionMixin
+ * @module KeyboardPagedCursorMixin
  * @param {Constructor<ReactiveElement>} Base
  */
-export default function KeyboardPagedSelectionMixin(Base) {
+export default function KeyboardPagedCursorMixin(Base) {
   // The class prototype added by the mixin.
-  class KeyboardPagedSelection extends Base {
+  class KeyboardPagedCursor extends Base {
     [internal.keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
       const orientation = this.orientation;
@@ -100,7 +100,7 @@ export default function KeyboardPagedSelectionMixin(Base) {
     }
   }
 
-  return KeyboardPagedSelection;
+  return KeyboardPagedCursor;
 }
 
 /**
@@ -165,7 +165,7 @@ function getIndexOfItemAtY(items, y, downward) {
 
 /**
  * Move by one page downward (if downward is true), or upward (if false).
- * Return true if we ended up changing the selection, false if not.
+ * Return true if we ended up moving the cursor, false if not.
  *
  * @private
  * @param {ReactiveElement} element
@@ -177,32 +177,32 @@ function scrollOnePage(element, downward) {
   const currentIndex = element[internal.state].currentIndex;
 
   // Determine the item visible just at the edge of direction we're heading.
-  // We'll select that item if it's not already selected.
+  // We'll move to that item if it's not already current.
   const targetRect = scrollTarget.getBoundingClientRect();
   const edge = downward ? targetRect.bottom : targetRect.top;
   const indexOfItemAtEdge = getIndexOfItemAtY(items, edge, downward);
 
   let newIndex;
   if (indexOfItemAtEdge && currentIndex === indexOfItemAtEdge) {
-    // The item at the edge was already selected, so scroll in the indicated
-    // direction by one page, measuring from the bounds of the currently
-    // selected item. Leave the new item at that edge selected.
-    const selectedItem = items[currentIndex];
-    const selectedRect = selectedItem.getBoundingClientRect();
+    // The item at the edge was already current, so scroll in the indicated
+    // direction by one page, measuring from the bounds of the current item.
+    // Leave the new item at that edge current.
+    const currentItem = items[currentIndex];
+    const currentRect = currentItem.getBoundingClientRect();
     const pageHeight = scrollTarget.clientHeight;
     const y = downward
-      ? selectedRect.bottom + pageHeight
-      : selectedRect.top - pageHeight;
+      ? currentRect.bottom + pageHeight
+      : currentRect.top - pageHeight;
     newIndex = getIndexOfItemAtY(items, y, downward);
   } else {
-    // The item at the edge wasn't selected yet. Instead of scrolling, we'll
-    // just select that item. That is, the first attempt to page up/down
-    // usually just moves the selection to the edge in that direction.
+    // The item at the edge wasn't current yet. Instead of scrolling, we'll just
+    // move to that item. That is, the first attempt to page up/down usually
+    // just moves the cursor to the edge in that direction.
     newIndex = indexOfItemAtEdge;
   }
 
   if (!newIndex) {
-    // We can't find an item in the direction we want to travel. Select the
+    // We can't find an item in the direction we want to travel. Move to the
     // last item (if moving downward) or first item (if moving upward).
     newIndex = downward ? items.length - 1 : 0;
   }

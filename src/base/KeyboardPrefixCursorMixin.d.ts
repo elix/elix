@@ -3,11 +3,11 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-declare const KeyboardPrefixSelectionMixin: Mixin<
+declare const KeyboardPrefixCursorMixin: Mixin<
   {},
   {
-    selectItemWithTextPrefix(prefix: string): boolean;
+    goToItemWithPrefix(prefix: string): boolean;
   }
 >;
 
-export default KeyboardPrefixSelectionMixin;
+export default KeyboardPrefixCursorMixin;

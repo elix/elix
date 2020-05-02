@@ -7,7 +7,7 @@ const typedPrefixKey = Symbol("typedPrefix");
 const prefixTimeoutKey = Symbol("prefixTimeout");
 
 /**
- * Lets a user select a list item by typing the first few characters
+ * Lets a user navigate an item cursor by typing the beginning of items
  *
  * Example: suppose a component using this mixin has the following items:
  *
@@ -24,33 +24,61 @@ const prefixTimeoutKey = Symbol("prefixTimeout");
  *     </sample-list-component>
  *
  * If this component receives the focus, and the user presses the "b" or "B"
- * key, the "Banana" item will be selected, because it's the first item that
+ * key, the item cursor will move to "Banana", because it's the first item that
  * matches the prefix "b". (Matching is case-insensitive.) If the user now
- * presses the "l" or "L" key quickly, the prefix to match becomes "bl", so
- * "Blackberry" will be selected.
+ * presses the "l" or "L" key quickly, the prefix to match becomes "bl", so the
+ * cursor will move to "Blackberry".
  *
- * The prefix typing feature has a one second timeout — the prefix to match
- * will be reset after a second has passed since the user last typed a key.
- * If, in the above example, the user waits a second between typing "b" and
- * "l", the prefix will become "l", so "Lemon" would be selected.
+ * The prefix typing feature has a one second timeout — the prefix to match will
+ * be reset after a second has passed since the user last typed a key. If, in
+ * the above example, the user waits a second between typing "b" and "l", the
+ * prefix will become "l", so the cursor would move to "Lemon".
  *
  * This mixin expects the component to invoke a `keydown` method when a key is
- * pressed. You can use [KeyboardMixin](KeyboardMixin) for that
- * purpose, or wire up your own keyboard handling and call `keydown` yourself.
+ * pressed. You can use [KeyboardMixin](KeyboardMixin) for that purpose, or wire
+ * up your own keyboard handling and call `keydown` yourself.
  *
  * This mixin also expects the component to provide an `items` property. The
  * `textContent` of those items will be used for purposes of prefix matching.
  *
- * @module KeyboardPrefixSelectionMixin
+ * @module KeyboardPrefixCursorMixin
  * @param {Constructor<ReactiveElement>} Base
  */
-export default function KeyboardPrefixSelectionMixin(Base) {
+export default function KeyboardPrefixCursorMixin(Base) {
   // The class prototype added by the mixin.
-  class KeyboardPrefixSelection extends Base {
+  class KeyboardPrefixCursor extends Base {
     constructor() {
       // @ts-ignore
       super();
       resetTypedPrefix(this);
+    }
+
+    /**
+     * Go to the first item whose text content begins with the given prefix.
+     *
+     * @param {string} prefix - The prefix string to search for
+     * @returns {boolean}
+     */
+    goToItemWithPrefix(prefix) {
+      if (super.goToItemWithPrefix) {
+        super.goToItemWithPrefix(prefix);
+      }
+      if (prefix == null || prefix.length === 0) {
+        return false;
+      }
+      // Find item that begins with the prefix. Ignore case.
+      const searchText = prefix.toLowerCase();
+      /** @type {string[]} */ const texts = this[internal.state].texts;
+      const index = texts.findIndex(
+        (text) => text.substr(0, prefix.length).toLowerCase() === searchText
+      );
+      if (index >= 0) {
+        const previousIndex = this[internal.state].currentIndex;
+        this[internal.setState]({ currentIndex: index });
+        return this[internal.state].currentIndex !== previousIndex;
+      } else {
+        return false;
+      }
     }
 
     [internal.keydown](/** @type {KeyboardEvent} */ event) {
@@ -83,37 +111,9 @@ export default function KeyboardPrefixSelectionMixin(Base) {
         handled || (super[internal.keydown] && super[internal.keydown](event))
       );
     }
-
-    /**
-     * Select the first item whose text content begins with the given prefix.
-     *
-     * @param {string} prefix - The prefix string to search for
-     * @returns {boolean}
-     */
-    selectItemWithTextPrefix(prefix) {
-      if (super.selectItemWithTextPrefix) {
-        super.selectItemWithTextPrefix(prefix);
-      }
-      if (prefix == null || prefix.length === 0) {
-        return false;
-      }
-      // Find item that begins with the prefix. Ignore case.
-      const searchText = prefix.toLowerCase();
-      /** @type {string[]} */ const texts = this[internal.state].texts;
-      const index = texts.findIndex(
-        (text) => text.substr(0, prefix.length).toLowerCase() === searchText
-      );
-      if (index >= 0) {
-        const previousIndex = this[internal.state].currentIndex;
-        this[internal.setState]({ currentIndex: index });
-        return this[internal.state].currentIndex !== previousIndex;
-      } else {
-        return false;
-      }
-    }
   }
 
-  return KeyboardPrefixSelection;
+  return KeyboardPrefixCursor;
 }
 
 /**
@@ -128,7 +128,7 @@ function handleBackspace(element) {
   if (length > 0) {
     cast[typedPrefixKey] = cast[typedPrefixKey].substr(0, length - 1);
   }
-  element.selectItemWithTextPrefix(cast[typedPrefixKey]);
+  element.goToItemWithPrefix(cast[typedPrefixKey]);
   setPrefixTimeout(element);
 }
 
@@ -143,7 +143,7 @@ function handlePlainCharacter(element, char) {
   /** @type {any} */ const cast = element;
   const prefix = cast[typedPrefixKey] || "";
   cast[typedPrefixKey] = prefix + char;
-  element.selectItemWithTextPrefix(cast[typedPrefixKey]);
+  element.goToItemWithPrefix(cast[typedPrefixKey]);
   setPrefixTimeout(element);
 }
 

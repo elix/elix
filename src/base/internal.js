@@ -132,7 +132,7 @@ export const focusTarget = coreInternal.focusTarget;
  * Symbol for the `getItemText` method.
  *
  * This method can be applied to an item to return its text.
- * [KeyboardPrefixSelectionMixin](KeyboardPrefixSelectionMixin) uses this to
+ * [KeyboardPrefixCursorMixin](KeyboardPrefixCursorMixin) uses this to
  * obtain the text for each item in a list, then matches keypresses again that
  * text.
  *

@@ -13,8 +13,8 @@ import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
-import KeyboardPagedSelectionMixin from "./KeyboardPagedSelectionMixin.js";
-import KeyboardPrefixSelectionMixin from "./KeyboardPrefixSelectionMixin.js";
+import KeyboardPagedCursorMixin from "./KeyboardPagedCursorMixin.js";
+import KeyboardPrefixCursorMixin from "./KeyboardPrefixCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
@@ -32,8 +32,8 @@ const Base = AriaListMixin(
                 ItemsTextMixin(
                   KeyboardDirectionMixin(
                     KeyboardMixin(
-                      KeyboardPagedSelectionMixin(
-                        KeyboardPrefixSelectionMixin(
+                      KeyboardPagedCursorMixin(
+                        KeyboardPrefixCursorMixin(
                           LanguageDirectionMixin(
                             SelectedItemTextValueMixin(
                               CurrentItemInViewMixin(
@@ -64,8 +64,8 @@ const Base = AriaListMixin(
  *
  * This component supports ARIA support and full keyboard navigation. See
  * [KeyboardDirectionMixin](KeyboardDirectionMixin),
- * [KeyboardPagedSelectionMixin](KeyboardPagedSelectionMixin), and
- * [KeyboardPrefixSelectionMixin](KeyboardPrefixSelectionMixin) for keyboard
+ * [KeyboardPagedCursorMixin](KeyboardPagedCursorMixin), and
+ * [KeyboardPrefixCursorMixin](KeyboardPrefixCursorMixin) for keyboard
  * details.
  *
  * @inherits ReactiveElement
@@ -77,8 +77,8 @@ const Base = AriaListMixin(
  * @mixes ItemsTextMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
- * @mixes KeyboardPagedSelectionMixin
- * @mixes KeyboardPrefixSelectionMixin
+ * @mixes KeyboardPagedCursorMixin
+ * @mixes KeyboardPrefixCursorMixin
  * @mixes LanguageDirectionMixin
  * @mixes SelectedItemTextValueMixin
  * @mixes CurrentItemInViewMixin

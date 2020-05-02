@@ -12,8 +12,8 @@ import ItemsAPIMixin from "../../src/base/ItemsAPIMixin.js";
 import ItemsTextMixin from "../../src/base/ItemsTextMixin.js";
 import KeyboardDirectionMixin from "../../src/base/KeyboardDirectionMixin.js";
 import KeyboardMixin from "../../src/base/KeyboardMixin.js";
-import KeyboardPagedSelectionMixin from "../../src/base/KeyboardPagedSelectionMixin.js";
-import KeyboardPrefixSelectionMixin from "../../src/base/KeyboardPrefixSelectionMixin.js";
+import KeyboardPagedCursorMixin from "../../src/base/KeyboardPagedCursorMixin.js";
+import KeyboardPrefixCursorMixin from "../../src/base/KeyboardPrefixCursorMixin.js";
 import LanguageDirectionMixin from "../../src/base/LanguageDirectionMixin.js";
 import SelectedItemTextValueMixin from "../../src/base/SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "../../src/base/SingleSelectAPIMixin.js";
@@ -29,8 +29,8 @@ const Base = AriaListMixin(
           ItemsTextMixin(
             KeyboardDirectionMixin(
               KeyboardMixin(
-                KeyboardPagedSelectionMixin(
-                  KeyboardPrefixSelectionMixin(
+                KeyboardPagedCursorMixin(
+                  KeyboardPrefixCursorMixin(
                     LanguageDirectionMixin(
                       SelectedItemTextValueMixin(
                         CurrentItemInViewMixin(

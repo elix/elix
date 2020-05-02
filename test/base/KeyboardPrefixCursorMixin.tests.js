@@ -1,14 +1,14 @@
 import * as internal from "../../src/base/internal.js";
 import ItemsTextMixin from "../../src/base/ItemsTextMixin.js";
-import KeyboardPrefixSelectionMixin from "../../src/base/KeyboardPrefixSelectionMixin.js";
+import KeyboardPrefixCursorMixin from "../../src/base/KeyboardPrefixCursorMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import { assert } from "../testHelpers.js";
 
 const Base = ItemsTextMixin(
-  KeyboardPrefixSelectionMixin(ReactiveMixin(HTMLElement))
+  KeyboardPrefixCursorMixin(ReactiveMixin(HTMLElement))
 );
 
-class KeyboardPrefixSelectionTest extends Base {
+class KeyboardPagedCursorTest extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       selectedIndex: -1,
@@ -22,12 +22,9 @@ class KeyboardPrefixSelectionTest extends Base {
     this[internal.setState]({ items });
   }
 }
-customElements.define(
-  "keyboard-prefix-selection-test",
-  KeyboardPrefixSelectionTest
-);
+customElements.define("keyboard-prefix-cursor-test", KeyboardPagedCursorTest);
 
-describe("KeyboardPrefixSelectionMixin", () => {
+describe("KeyboardPrefixCursorMixin", () => {
   let container;
 
   before(() => {
@@ -111,7 +108,7 @@ describe("KeyboardPrefixSelectionMixin", () => {
 });
 
 function createSampleElement() {
-  const fixture = new KeyboardPrefixSelectionTest();
+  const fixture = new KeyboardPagedCursorTest();
   const texts = [
     "Acai",
     "Acerola",

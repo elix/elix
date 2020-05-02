@@ -5,7 +5,7 @@
 
 import * as internal from "./internal.js";
 
-declare const KeyboardPagedSelectionMixin: Mixin<
+declare const KeyboardPagedCursorMixin: Mixin<
   {},
   {
     pageDown(): boolean;
@@ -14,4 +14,4 @@ declare const KeyboardPagedSelectionMixin: Mixin<
   }
 >;
 
-export default KeyboardPagedSelectionMixin;
+export default KeyboardPagedCursorMixin;
