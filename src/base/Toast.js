@@ -28,6 +28,14 @@ class Toast extends Base {
     });
   }
 
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "duration") {
+      this.duration = Number(newValue);
+    } else {
+      super.attributeChangedCallback(name, oldValue, newValue);
+    }
+  }
+
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       duration: null,
@@ -49,7 +57,9 @@ class Toast extends Base {
     return this[internal.state].duration;
   }
   set duration(duration) {
-    this[internal.setState]({ duration });
+    if (!isNaN(duration)) {
+      this[internal.setState]({ duration });
+    }
   }
 
   get [internal.effectEndTarget]() {

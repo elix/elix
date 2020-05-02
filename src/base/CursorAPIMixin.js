@@ -23,9 +23,15 @@ export default function CursorAPIMixin(Base) {
       if (name === "current-index") {
         this.currentIndex = Number(newValue);
       } else if (name === "current-item-required") {
-        this.currentItemRequired = booleanAttributeValue(name, newValue);
+        const value = booleanAttributeValue(name, newValue);
+        if (this.currentItemRequired !== value) {
+          this.currentItemRequired = value;
+        }
       } else if (name === "cursor-operations-wrap") {
-        this.cursorOperationsWrap = booleanAttributeValue(name, newValue);
+        const value = booleanAttributeValue(name, newValue);
+        if (this.cursorOperationsWrap !== value) {
+          this.cursorOperationsWrap = value;
+        }
       } else {
         super.attributeChangedCallback(name, oldValue, newValue);
       }
@@ -61,7 +67,9 @@ export default function CursorAPIMixin(Base) {
       return items && items.length > 0 ? currentIndex : -1;
     }
     set currentIndex(currentIndex) {
-      this[internal.setState]({ currentIndex });
+      if (!isNaN(currentIndex)) {
+        this[internal.setState]({ currentIndex });
+      }
     }
 
     /**

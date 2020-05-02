@@ -73,7 +73,9 @@ class AutoSizeTextarea extends Base {
     return this[internal.state].minimumRows;
   }
   set minimumRows(minimumRows) {
-    this[internal.setState]({ minimumRows });
+    if (!isNaN(minimumRows)) {
+      this[internal.setState]({ minimumRows });
+    }
   }
 
   [internal.render](/** @type {ChangedFlags} */ changed) {

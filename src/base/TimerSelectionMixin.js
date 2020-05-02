@@ -21,7 +21,10 @@ export default function TimerSelectionMixin(Base) {
       if (name === "cursor-timer-duration") {
         this.cursorTimerDuration = Number(newValue);
       } else if (name === "playing") {
-        this.playing = booleanAttributeValue("playing", newValue);
+        const value = booleanAttributeValue(name, newValue);
+        if (this.playing !== value) {
+          this.playing = value;
+        }
       } else {
         super.attributeChangedCallback(name, oldValue, newValue);
       }
@@ -38,7 +41,9 @@ export default function TimerSelectionMixin(Base) {
       return this[internal.state].cursorTimerDuration;
     }
     set cursorTimerDuration(cursorTimerDuration) {
-      this[internal.setState]({ cursorTimerDuration });
+      if (!isNaN(cursorTimerDuration)) {
+        this[internal.setState]({ cursorTimerDuration });
+      }
     }
 
     get [internal.defaultState]() {

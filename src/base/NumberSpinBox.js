@@ -12,6 +12,8 @@ class NumberSpinBox extends SpinBox {
       this.max = parseFloat(newValue);
     } else if (name === "min") {
       this.min = parseFloat(newValue);
+    } else if (name === "step") {
+      this.step = parseFloat(newValue);
     } else {
       super.attributeChangedCallback(name, oldValue, newValue);
     }
@@ -150,8 +152,9 @@ class NumberSpinBox extends SpinBox {
     return this[internal.state].step;
   }
   set step(step) {
-    const parsed = typeof step === "string" ? parseFloat(step) : step;
-    this[internal.setState]({ step: parsed });
+    if (!isNaN(step)) {
+      this[internal.setState]({ step });
+    }
   }
 
   /**

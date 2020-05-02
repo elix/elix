@@ -18,7 +18,10 @@ export default function OpenCloseMixin(Base) {
   class OpenClose extends Base {
     attributeChangedCallback(name, oldValue, newValue) {
       if (name === "opened") {
-        this.opened = booleanAttributeValue(name, newValue);
+        const value = booleanAttributeValue(name, newValue);
+        if (this.opened !== value) {
+          this.opened = value;
+        }
       } else {
         super.attributeChangedCallback(name, oldValue, newValue);
       }

@@ -120,7 +120,9 @@ class ExpandablePanel extends Base {
     return this[internal.state].transitionDuration;
   }
   set transitionDuration(transitionDuration) {
-    this[internal.setState]({ transitionDuration });
+    if (!isNaN(transitionDuration)) {
+      this[internal.setState]({ transitionDuration });
+    }
   }
 }
 

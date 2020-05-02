@@ -59,9 +59,11 @@ export default function SingleSelectAPIMixin(Base) {
       return items && items.length > 0 ? currentIndex : -1;
     }
     set selectedIndex(selectedIndex) {
-      this[internal.setState]({
-        currentIndex: selectedIndex,
-      });
+      if (!isNaN(selectedIndex)) {
+        this[internal.setState]({
+          currentIndex: selectedIndex,
+        });
+      }
     }
 
     /**

@@ -15,7 +15,10 @@ export default function DarkModeMixin(Base) {
   return class dark extends Base {
     attributeChangedCallback(name, oldValue, newValue) {
       if (name === "dark") {
-        this.dark = booleanAttributeValue(name, newValue);
+        const value = booleanAttributeValue(name, newValue);
+        if (this.dark !== value) {
+          this.dark = value;
+        }
       } else {
         super.attributeChangedCallback(name, oldValue, newValue);
       }
@@ -47,10 +50,7 @@ export default function DarkModeMixin(Base) {
       return this[internal.state].dark;
     }
     set dark(dark) {
-      // Avoid loops when reflecting attribute.
-      if (dark !== this[internal.state].dark) {
-        this[internal.setState]({ dark });
-      }
+      this[internal.setState]({ dark });
     }
 
     get [internal.defaultState]() {
