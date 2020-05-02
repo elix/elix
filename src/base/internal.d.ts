@@ -33,6 +33,7 @@ export const goNext: "_goNext";
 export const goPrevious: "_goPrevious";
 export const goRight: "_goRight";
 export const goStart: "_goStart";
+export const goToItemWithPrefix: "_goToItemWithPrefix";
 export const goUp: "_goUp";
 export const hasDynamicTemplate: "_hasDynamicTemplate";
 export const ids: "_ids";

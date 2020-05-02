@@ -59,9 +59,9 @@ export default function KeyboardPrefixCursorMixin(Base) {
      * @param {string} prefix - The prefix string to search for
      * @returns {boolean}
      */
-    goToItemWithPrefix(prefix) {
-      if (super.goToItemWithPrefix) {
-        super.goToItemWithPrefix(prefix);
+    [internal.goToItemWithPrefix](prefix) {
+      if (super[internal.goToItemWithPrefix]) {
+        super[internal.goToItemWithPrefix](prefix);
       }
       if (prefix == null || prefix.length === 0) {
         return false;
@@ -128,7 +128,7 @@ function handleBackspace(element) {
   if (length > 0) {
     cast[typedPrefixKey] = cast[typedPrefixKey].substr(0, length - 1);
   }
-  element.goToItemWithPrefix(cast[typedPrefixKey]);
+  element[internal.goToItemWithPrefix](cast[typedPrefixKey]);
   setPrefixTimeout(element);
 }
 
@@ -143,7 +143,7 @@ function handlePlainCharacter(element, char) {
   /** @type {any} */ const cast = element;
   const prefix = cast[typedPrefixKey] || "";
   cast[typedPrefixKey] = prefix + char;
-  element.goToItemWithPrefix(cast[typedPrefixKey]);
+  element[internal.goToItemWithPrefix](cast[typedPrefixKey]);
   setPrefixTimeout(element);
 }
 

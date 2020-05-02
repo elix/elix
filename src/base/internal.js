@@ -213,6 +213,15 @@ export const goRight = Symbol("goRight");
 export const goStart = Symbol("goStart");
 
 /**
+ * Symbol for the `goToItemWithPrefix` method.
+ *
+ * This method is invoked by
+ * [KeyboardPrefixCursorMixin](KeyboardPrefixCursorMixin) when the user types
+ * text characters.
+ */
+export const goToItemWithPrefix = Symbol("goToItemWithPrefix");
+
+/**
  * Symbol for the `goUp` method.
  *
  * This method is invoked when the user wants to go/navigate up.
