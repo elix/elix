@@ -8,6 +8,7 @@ import "./base/CalendarMonthYearHeader.tests.js";
 import "./base/content.tests.js";
 import "./base/ContentItemsMixin.tests.js";
 import "./base/CurrentItemInViewMixin.tests.js";
+import "./base/CursorAPIMixin.tests.js";
 import "./base/DarkModeMixin.tests.js";
 import "./base/DateComboBox.tests.js";
 import "./base/DelegateFocusMixin.tests.js";

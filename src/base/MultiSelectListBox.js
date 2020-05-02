@@ -3,6 +3,7 @@ import ReactiveElement from "../core/ReactiveElement.js";
 import AriaListMixin from "./AriaListMixin.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import CurrentItemInViewMixin from "./CurrentItemInViewMixin.js";
+import CursorAPIMixin from "./CursorAPIMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import {
@@ -31,22 +32,24 @@ import SlotItemsMixin from "./SlotItemsMixin.js";
 
 const Base = AriaListMixin(
   ComposedFocusMixin(
-    DirectionCursorMixin(
-      FocusVisibleMixin(
-        ItemsAPIMixin(
-          ItemsCursorMixin(
-            ItemsMultiSelectMixin(
-              ItemsTextMixin(
-                KeyboardDirectionMixin(
-                  KeyboardMixin(
-                    KeyboardPagedSelectionMixin(
-                      KeyboardPrefixSelectionMixin(
-                        LanguageDirectionMixin(
-                          CurrentItemInViewMixin(
-                            MultiSelectAPIMixin(
-                              MultiSelectToggleMixin(
-                                SingleSelectAPIMixin(
-                                  SlotItemsMixin(ReactiveElement)
+    CursorAPIMixin(
+      DirectionCursorMixin(
+        FocusVisibleMixin(
+          ItemsAPIMixin(
+            ItemsCursorMixin(
+              ItemsMultiSelectMixin(
+                ItemsTextMixin(
+                  KeyboardDirectionMixin(
+                    KeyboardMixin(
+                      KeyboardPagedSelectionMixin(
+                        KeyboardPrefixSelectionMixin(
+                          LanguageDirectionMixin(
+                            CurrentItemInViewMixin(
+                              MultiSelectAPIMixin(
+                                MultiSelectToggleMixin(
+                                  SingleSelectAPIMixin(
+                                    SlotItemsMixin(ReactiveElement)
+                                  )
                                 )
                               )
                             )
