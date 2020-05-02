@@ -38,13 +38,6 @@ describe("SingleSelectAPIMixin", () => {
     assert.equal(fixture.selectedIndex, -1);
   });
 
-  it("selects first item when selection is required and no item is currently selected", () => {
-    const fixture = new SingleSelectAPITest();
-    assert.equal(fixture.selectedIndex, -1);
-    fixture.selectionRequired = true;
-    assert.equal(fixture.selectedIndex, 0);
-  });
-
   it("changing selection through (simulated) user interaction raises the selected-index-changed event", (done) => {
     const fixture = new SingleSelectAPITest();
     fixture.addEventListener("selected-index-changed", () => {

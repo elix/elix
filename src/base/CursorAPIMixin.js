@@ -1,3 +1,4 @@
+import { booleanAttributeValue } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import * as internal from "./internal.js";
 
@@ -84,8 +85,12 @@ export default function CursorAPIMixin(Base) {
       return this[internal.state].currentItemRequired;
     }
     set currentItemRequired(currentItemRequired) {
+      const parsed = booleanAttributeValue(
+        "current-item-required",
+        currentItemRequired
+      );
       this[internal.setState]({
-        currentItemRequired: String(currentItemRequired) === "true",
+        currentItemRequired: parsed,
       });
     }
 
@@ -99,8 +104,12 @@ export default function CursorAPIMixin(Base) {
       return this[internal.state].cursorOperationsWrap;
     }
     set cursorOperationsWrap(cursorOperationsWrap) {
+      const parsed = booleanAttributeValue(
+        "cursor-operations-wrap",
+        cursorOperationsWrap
+      );
       this[internal.setState]({
-        cursorOperationsWrap: String(cursorOperationsWrap) === "true",
+        cursorOperationsWrap: parsed,
       });
     }
 

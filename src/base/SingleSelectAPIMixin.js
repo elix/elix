@@ -78,21 +78,6 @@ export default function SingleSelectAPIMixin(Base) {
         this[internal.setState]({ currentIndex: index });
       }
     }
-
-    /**
-     * True if the list should always have a selection (if it has items).
-     *
-     * @type {boolean}
-     * @default false
-     */
-    get selectionRequired() {
-      return this[internal.state].currentItemRequired;
-    }
-    set selectionRequired(selectionRequired) {
-      this[internal.setState]({
-        currentItemRequired: String(selectionRequired) === "true",
-      });
-    }
   }
 
   return SingleSelectAPI;
