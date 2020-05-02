@@ -6,7 +6,7 @@ const itemsChangedListenerKey = Symbol("itemsChangedListener");
 /** @type {any} */
 const previousItemsDelegateKey = Symbol("previousItemsDelegate");
 /** @type {any} */
-const selectedIndexChangedListenerKey = Symbol("selectedIndexChangedListener");
+const currentIndexChangedListenerKey = Symbol("currentIndexChangedListener");
 
 /**
  * Treats the items inside a shadow element as the component's own items.
@@ -31,13 +31,13 @@ export default function DelegateItemsMixin(Base) {
         }
       };
       // @ts-ignore
-      this[selectedIndexChangedListenerKey] = (event) => {
+      this[currentIndexChangedListenerKey] = (event) => {
         /** @type {any} */
         const cast = event;
-        const delegateSelectedIndex = cast.detail.selectedIndex;
-        if (this[internal.state].currentIndex !== delegateSelectedIndex) {
+        const delegateCurrentIndex = cast.detail.currentIndex;
+        if (this[internal.state].currentIndex !== delegateCurrentIndex) {
           this[internal.setState]({
-            currentIndex: delegateSelectedIndex,
+            currentIndex: delegateCurrentIndex,
           });
         }
       };
@@ -67,8 +67,8 @@ export default function DelegateItemsMixin(Base) {
         if (typeof itemsDelegate === "undefined") {
           throw `To use DelegateItemsMixin, ${this.constructor.name} must define a getter for [internal.itemsDelegate].`;
         }
-        if ("selectedIndex" in itemsDelegate) {
-          itemsDelegate.selectedIndex = this[internal.state].currentIndex;
+        if ("currentIndex" in itemsDelegate) {
+          itemsDelegate.currentIndex = this[internal.state].currentIndex;
         }
       }
     }
@@ -88,7 +88,7 @@ export default function DelegateItemsMixin(Base) {
             this[itemsChangedListenerKey]
           );
           previousItemsDelegate.removeEventListener(
-            this[selectedIndexChangedListenerKey]
+            this[currentIndexChangedListenerKey]
           );
         }
         // Start listening to events on new delegate.
@@ -97,8 +97,8 @@ export default function DelegateItemsMixin(Base) {
           this[itemsChangedListenerKey]
         );
         itemsDelegate.addEventListener(
-          "selected-index-changed",
-          this[selectedIndexChangedListenerKey]
+          "current-index-changed",
+          this[currentIndexChangedListenerKey]
         );
       }
     }
