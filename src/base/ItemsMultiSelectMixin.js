@@ -65,6 +65,16 @@ export default function ItemsMultiSelectMixin(Base) {
       return effects;
     }
 
+    /**
+     * Toggle the element of the `selectedFlags` array with the given index.
+     *
+     * If the `toggle` parameter is omitted, the indicated flag is flipped. If a
+     * boolean value is supplied for `toggle`, the flag is set to that value.
+     *
+     * @protected
+     * @param {number} index - the index into the `selectedFlags` array
+     * @param {boolean} [toggle] - if supplied, the value to set the flag to
+     */
     [toggleSelectedFlag](index, toggle) {
       if (super[toggleSelectedFlag]) {
         super[toggleSelectedFlag](index, toggle);

@@ -34,7 +34,8 @@ export default function ItemsCursorMixin(Base) {
     /**
      * Move to the first item in the set.
      *
-     * @returns {Boolean} True if the selection changed, false if not.
+     * @protected
+     * @returns {Boolean} True if the current item changed, false if not.
      */
     [goFirst]() {
       if (super[goFirst]) {
@@ -46,7 +47,8 @@ export default function ItemsCursorMixin(Base) {
     /**
      * Move to the last item in the set.
      *
-     * @returns {Boolean} True if the selection changed, false if not.
+     * @protected
+     * @returns {Boolean} True if the current item changed, false if not.
      */
     [goLast]() {
       if (super[goLast]) {
@@ -60,6 +62,7 @@ export default function ItemsCursorMixin(Base) {
      *
      * If no item is current, move to the first item.
      *
+     * @protected
      * @returns {Boolean} True if the current item changed, false if not.
      */
     [goNext]() {
@@ -90,6 +93,7 @@ export default function ItemsCursorMixin(Base) {
      *
      * If no item is current, move to the last item.
      *
+     * @protected
      * @returns {Boolean} True if the current item changed, false if not.
      */
     [goPrevious]() {
