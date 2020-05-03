@@ -42,6 +42,7 @@ export default function MultiSelectToggleMixin(Base) {
           const { currentIndex } = this[state];
           if (currentIndex >= 0) {
             this.toggleSelectedFlag(currentIndex);
+            handled = true;
           }
           break;
         }
