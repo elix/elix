@@ -256,6 +256,10 @@ class CalendarMonth extends Base {
           display: block;
         }
 
+        [part~="day-names-header"] {
+          display: grid;
+        }
+
         [part~="month-days"] {
           display: block;
         }
