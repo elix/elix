@@ -17,6 +17,8 @@ import * as internal from "./internal.js";
  *   `aria-activedescendant` attribute.
  * * Use of `aria-activedescendant` in turn requires that all items in the
  *   list have ID attributes assigned to them.
+ * * If the list supports mutli-selection, `aria-multiselectable` must be
+ *   set to "true" on the host.
  *
  * This mixin tries to address all of the above requirements. To that end,
  * this mixin will assign generated IDs to any item that doesn't already have
@@ -107,6 +109,15 @@ export default function AriaListMixin(Base) {
           this.setAttribute("aria-activedescendant", currentItem.id);
         } else {
           this.removeAttribute("aria-activedescendant");
+        }
+      }
+
+      if (changed.selectedFlags) {
+        // Let ARIA know this is a multi-select list box.
+        if (this[internal.state].selectedFlags) {
+          this.setAttribute("aria-multiselectable", "true");
+        } else {
+          this.removeAttribute("aria-multiselectable");
         }
       }
 

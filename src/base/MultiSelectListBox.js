@@ -8,7 +8,6 @@ import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import {
   defaultState,
-  firstRender,
   ids,
   render,
   scrollTarget,
@@ -114,11 +113,6 @@ class MultiSelectListBox extends Base {
 
   [render](/** @type {ChangedFlags} */ changed) {
     super[render](changed);
-
-    if (this[firstRender]) {
-      // Let ARIA know this is a multi-select list box.
-      this.setAttribute("aria-multiselectable", "true");
-    }
 
     // Apply `active` style to the current item only.
     if (changed.items || changed.currentIndex) {
