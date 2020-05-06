@@ -18,6 +18,12 @@ import * as internal from "./internal.js";
  * @part {Button} grip - the handle the user can tap, click, or swipe to open or close the drawer
  */
 class DrawerWithGrip extends Drawer {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
+      gripPartType: Button,
+    });
+  }
+
   /**
    * The class or tag used to create the `grip` part – the grip
    * handle the user can tap/click/swipe to open or close the drawer.
@@ -105,12 +111,6 @@ class DrawerWithGrip extends Drawer {
       const gripSize = this[internal.ids].grip[dimension];
       this[internal.setState]({ gripSize });
     }
-  }
-
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
-      gripPartType: Button,
-    });
   }
 
   // Tell TrackpadSwipeMixin that the gripped content is the scrollable element
