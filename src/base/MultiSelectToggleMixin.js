@@ -12,7 +12,7 @@ import {
 } from "./internal.js";
 
 /**
- * Basic keyboard/tap toggle UI for a multi-select list-like element
+ * Basic keyboard/tap toggle UI for a multi-select list-like element.
  *
  * @module MultiSelectToggleMixin
  * @param {Constructor<ReactiveElement>} Base
@@ -41,7 +41,7 @@ export default function MultiSelectToggleMixin(Base) {
         case " ": {
           const { currentIndex } = this[state];
           if (currentIndex >= 0) {
-            this.toggleSelectedFlag(currentIndex);
+            this[toggleSelectedFlag](currentIndex);
             handled = true;
           }
           break;

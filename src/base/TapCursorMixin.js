@@ -3,7 +3,7 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 import * as internal from "./internal.js";
 
 /**
- * A tap/mousedown on a list item makes that item current
+ * A tap/mousedown on a list item makes that item current.
  *
  * This simple mixin is useful in list-like elements like [ListBox](ListBox),
  * where a tap/mousedown on a list item implicitly selects it.

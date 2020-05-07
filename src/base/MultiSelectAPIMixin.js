@@ -9,7 +9,7 @@ import {
 import { selectedItemsToFlags } from "./ItemsMultiSelectMixin.js";
 
 /**
- * Exposes a public API for multiple selection on a list-like element
+ * Exposes a public API for multiple selection on a list-like element.
  *
  * This mixin expects a component to provide an `items` Array of all elements in
  * the list. This mixin also expects the component to apply
@@ -47,6 +47,11 @@ export default function MultiSelectAPIMixin(Base) {
       }
     }
 
+    /**
+     * An array of boolean values indicating which items are selected.
+     *
+     * @type {boolean[]}
+     */
     get selectedFlags() {
       return this[state].selectedFlags;
     }
@@ -54,6 +59,11 @@ export default function MultiSelectAPIMixin(Base) {
       this[setState]({ selectedFlags });
     }
 
+    /**
+     * An array containing the subset of items which are currently selected.
+     *
+     * @type {ListItemElement[]}
+     */
     get selectedItems() {
       return this[state].selectedItems;
     }
@@ -63,6 +73,13 @@ export default function MultiSelectAPIMixin(Base) {
       this[setState]({ selectedFlags });
     }
 
+    /**
+     * Toggles the indicated value in the `selectedFlags` array.
+     *
+     * @param {number} index - the position the `selectedFlags` array
+     * @param {boolean} [toggle] - if present, the flag will be set to
+     * this boolean value; if omitted, the flag will be toggled
+     */
     toggleSelectedFlag(index, toggle) {
       this[toggleSelectedFlag](index, toggle);
     }

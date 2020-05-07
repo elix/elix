@@ -3,7 +3,7 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 import * as internal from "./internal.js";
 
 /**
- * Tracks whether the element is currently selected
+ * Tracks whether the element is currently selected.
  *
  * @module SelectableMixin
  * @state selected
