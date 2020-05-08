@@ -1,8 +1,15 @@
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
+import * as templating from "../core/template.js";
 import * as calendar from "./calendar.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  ids,
+  render,
+  setState,
+  state,
+  template,
+} from "./internal.js";
 
 const Base = CalendarElementMixin(ReactiveElement);
 
@@ -26,8 +33,8 @@ const Base = CalendarElementMixin(ReactiveElement);
  * @mixes CalendarElementMixin
  */
 class CalendarMonthYearHeader extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       date: calendar.today(),
       monthFormat: "long",
       yearFormat: "numeric",
@@ -44,21 +51,21 @@ class CalendarMonthYearHeader extends Base {
    * @default 'long'
    */
   get monthFormat() {
-    return this[internal.state].monthFormat;
+    return this[state].monthFormat;
   }
   set monthFormat(monthFormat) {
-    this[internal.setState]({ monthFormat });
+    this[setState]({ monthFormat });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
     if (
       changed.date ||
       changed.locale ||
       changed.monthFormat ||
       changed.yearFormat
     ) {
-      const { date, locale, monthFormat, yearFormat } = this[internal.state];
+      const { date, locale, monthFormat, yearFormat } = this[state];
       /** @type {PlainObject} */ const formatOptions = {};
       if (monthFormat) {
         formatOptions.month = monthFormat;
@@ -67,12 +74,12 @@ class CalendarMonthYearHeader extends Base {
         formatOptions.year = yearFormat;
       }
       const formatter = calendar.dateTimeFormat(locale, formatOptions);
-      this[internal.ids].formatted.textContent = formatter.format(date);
+      this[ids].formatted.textContent = formatter.format(date);
     }
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templating.html`
       <style>
         :host {
           display: inline-block;
@@ -93,10 +100,10 @@ class CalendarMonthYearHeader extends Base {
    * @default 'numeric'
    */
   get yearFormat() {
-    return this[internal.state].yearFormat;
+    return this[state].yearFormat;
   }
   set yearFormat(yearFormat) {
-    this[internal.setState]({ yearFormat });
+    this[setState]({ yearFormat });
   }
 }
 
