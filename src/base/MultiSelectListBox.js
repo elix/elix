@@ -28,6 +28,7 @@ import MultiSelectAPIMixin from "./MultiSelectAPIMixin.js";
 import MultiSelectToggleMixin from "./MultiSelectToggleMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
+import TapCursorMixin from "./TapCursorMixin.js";
 
 const Base = AriaListMixin(
   ComposedFocusMixin(
@@ -47,7 +48,9 @@ const Base = AriaListMixin(
                               MultiSelectAPIMixin(
                                 MultiSelectToggleMixin(
                                   SingleSelectAPIMixin(
-                                    SlotItemsMixin(ReactiveElement)
+                                    SlotItemsMixin(
+                                      TapCursorMixin(ReactiveElement)
+                                    )
                                   )
                                 )
                               )
@@ -96,6 +99,7 @@ const Base = AriaListMixin(
  * @mixes MultiSelectToggleMixin
  * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
+ * @mixes TapCursorMixin
  */
 class MultiSelectListBox extends Base {
   get [defaultState]() {

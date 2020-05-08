@@ -1,42 +1,65 @@
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
-import * as internal from "./internal.js";
+import { html } from "../core/template.js";
+import {
+  firstRender,
+  ids,
+  raiseChangeEvents,
+  render,
+  setState,
+  state,
+  template,
+} from "./internal.js";
 import SelectableMixin from "./SelectableMixin.js";
 
 /**
- * A checkable item in a list
+ * A checkable item in a list.
+ *
+ * This component is designed to be used as a child inside a multi-select
+ * list component like [MultiSelectListBox](MultiSelectListBox).
  *
  * @inherits ReactiveElement
  * @mixes SelectableMixin
  */
 class CheckListItem extends SelectableMixin(ReactiveElement) {
-  [internal.render](changed) {
-    super[internal.render](changed);
+  [render](changed) {
+    super[render](changed);
 
-    if (this[internal.firstRender]) {
-      // Disable default click behavior on check box.
-      this[internal.ids].checkbox.addEventListener("click", (event) => {
+    if (this[firstRender]) {
+      // Prevent checkbox from getting focus.
+      this[ids].checkbox.addEventListener("keydown", (event) => {
         event.preventDefault();
+      });
+      this[ids].checkbox.addEventListener("mousedown", (event) => {
+        event.preventDefault();
+      });
+
+      // Checking the box toggles the selected state.
+      this[ids].checkbox.addEventListener("change", () => {
+        this[raiseChangeEvents] = true;
+        /** @type {any} */ const checkbox = this[ids].checkbox;
+        const selected = checkbox.checked;
+        this[setState]({ selected });
+        this[raiseChangeEvents] = false;
       });
     }
 
     // Render selected state as checked.
     if (changed.selected) {
-      const { selected } = this[internal.state];
-      /** @type {any} */ const checkbox = this[internal.ids].checkbox;
+      const { selected } = this[state];
+      /** @type {any} */ const checkbox = this[ids].checkbox;
       checkbox.checked = selected;
     }
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return html`
       <style>
         :host {
           display: grid;
           grid-template-columns: auto 1fr;
         }
       </style>
-      <input id="checkbox" type="checkbox" role="none" tabindex="-1">
+      <input id="checkbox" type="checkbox" role="none" tabindex="-1" />
       <slot></slot>
     `;
   }

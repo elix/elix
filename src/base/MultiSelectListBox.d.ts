@@ -21,6 +21,7 @@ import MultiSelectAPIMixin from "./MultiSelectAPIMixin.js";
 import MultiSelectToggleMixin from "./MultiSelectToggleMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
+import TapCursorMixin from "./TapCursorMixin.js";
 
 export default class MultiSelectListBox extends AriaListMixin(
   ComposedFocusMixin(
@@ -40,7 +41,9 @@ export default class MultiSelectListBox extends AriaListMixin(
                               MultiSelectAPIMixin(
                                 MultiSelectToggleMixin(
                                   SingleSelectAPIMixin(
-                                    SlotItemsMixin(ReactiveElement)
+                                    SlotItemsMixin(
+                                      TapCursorMixin(ReactiveElement)
+                                    )
                                   )
                                 )
                               )

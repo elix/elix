@@ -48,6 +48,7 @@ export default function SelectableMixin(Base) {
          * @event selected-changed
          */
         const event = new CustomEvent("selected-changed", {
+          bubbles: true,
           detail: { selected },
         });
         this.dispatchEvent(event);

@@ -5,9 +5,7 @@ import {
   keydown,
   raiseChangeEvents,
   render,
-  setState,
   state,
-  tap,
   toggleSelectedFlag,
 } from "./internal.js";
 
@@ -23,13 +21,19 @@ export default function MultiSelectToggleMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener("mousedown", (event) => {
-        // Only process events for the main (usually left) button.
-        if (event.button !== 0) {
-          return;
-        }
+
+      this.addEventListener("selected-changed", (event) => {
         this[raiseChangeEvents] = true;
-        this[tap](event);
+        // Find which item was selected, and update its selected flag.
+        const { target } = event;
+        const { items } = this[state];
+        if (items && target instanceof Node) {
+          const targetIndex = indexOfItemContainingTarget(items, target);
+          if (targetIndex >= 0) {
+            const { selected } = /** @type {any} */ (event).detail;
+            this[toggleSelectedFlag](targetIndex, selected);
+          }
+        }
         this[raiseChangeEvents] = false;
       });
     }
@@ -64,34 +68,6 @@ export default function MultiSelectToggleMixin(Base) {
           webkitUserSelect: "none",
           userSelect: "none",
         });
-      }
-    }
-
-    [tap](/** @type {MouseEvent} */ event) {
-      // In some situations, the event target will not be the child which was
-      // originally clicked on. E.g., if the item clicked on is a button, the
-      // event seems to be raised in phase 2 (AT_TARGET) — but the event target
-      // will be the component, not the item that was clicked on. Instead of
-      // using the event target, we get the first node in the event's composed
-      // path.
-      // @ts-ignore
-      const target = event.composedPath
-        ? event.composedPath()[0]
-        : event.target;
-
-      // Find which item was clicked on and, if found, select it. For elements
-      // which don't require a selection, a background click will determine
-      // the item was null, in which we case we'll remove the selection.
-      const { items } = this[state];
-      if (items && target instanceof Node) {
-        const targetIndex = indexOfItemContainingTarget(items, target);
-        if (targetIndex >= 0) {
-          this[setState]({
-            currentIndex: targetIndex,
-          });
-          this[toggleSelectedFlag](targetIndex);
-          event.stopPropagation();
-        }
       }
     }
   };

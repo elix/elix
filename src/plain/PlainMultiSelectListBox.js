@@ -27,17 +27,6 @@ class PlainMultiSelectListBox extends MultiSelectListBox {
             color: highlighttext;
           }
 
-          /* ::slotted(*)::before {
-            content: "☐";
-            display: inline-block;
-            font-size: 1.2em;
-            margin-right: 0.2em;
-          }
-
-          ::slotted([selected])::before {
-            content: "☑";
-          } */
-
           @media (pointer: coarse) {
             ::slotted(*) {
               padding: 1em;
