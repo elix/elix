@@ -35,7 +35,9 @@ export default function ItemsAPIMixin(Base) {
          *
          * @event items-changed
          */
-        const event = new CustomEvent("items-changed");
+        const event = new CustomEvent("items-changed", {
+          bubbles: true,
+        });
         this.dispatchEvent(event);
       }
     }

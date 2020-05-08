@@ -89,6 +89,7 @@ class MenuButton extends PopupButton {
        * @event menu-item-selected
        */
       const event = new CustomEvent("menu-item-selected", {
+        bubbles: true,
         detail: {
           selectedItem: item,
         },

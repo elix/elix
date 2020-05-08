@@ -150,6 +150,7 @@ class Explorer extends Base {
            * @event selection-effect-finished
            */
           const finishedEvent = new CustomEvent("selection-effect-finished", {
+            bubbles: true,
             detail: { selectedIndex },
           });
           this.dispatchEvent(finishedEvent);

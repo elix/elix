@@ -82,6 +82,7 @@ export default function TransitionEffectMixin(Base) {
          * @event effect-phase-changed
          */
         const event = new CustomEvent("effect-phase-changed", {
+          bubbles: true,
           detail: {
             effect,
             effectPhase,

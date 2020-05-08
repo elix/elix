@@ -138,6 +138,7 @@ export default function OpenCloseMixin(Base) {
          * @event opened-changed
          */
         const openedChangedEvent = new CustomEvent("opened-changed", {
+          bubbles: true,
           detail: {
             closeResult: this[internal.state].closeResult,
             opened: this[internal.state].opened,
@@ -151,7 +152,9 @@ export default function OpenCloseMixin(Base) {
            *
            * @event opened
            */
-          const openedEvent = new CustomEvent("opened");
+          const openedEvent = new CustomEvent("opened", {
+            bubbles: true,
+          });
           this.dispatchEvent(openedEvent);
         } else {
           /**
@@ -160,6 +163,7 @@ export default function OpenCloseMixin(Base) {
            * @event closed
            */
           const closedEvent = new CustomEvent("closed", {
+            bubbles: true,
             detail: {
               closeResult: this[internal.state].closeResult,
             },

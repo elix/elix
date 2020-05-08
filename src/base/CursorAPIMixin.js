@@ -182,6 +182,7 @@ export default function CursorAPIMixin(Base) {
          * @event current-index-changed
          */
         const event = new CustomEvent("current-index-changed", {
+          bubbles: true,
           detail: { currentIndex },
         });
         this.dispatchEvent(event);

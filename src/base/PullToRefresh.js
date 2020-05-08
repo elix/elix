@@ -136,6 +136,7 @@ class PullToRefresh extends Base {
          * @event refreshing-changed
          */
         const event = new CustomEvent("refreshing-changed", {
+          bubbles: true,
           detail: {
             refreshing: this[internal.state].refreshing,
           },

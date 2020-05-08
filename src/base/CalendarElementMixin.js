@@ -90,6 +90,7 @@ export default function CalendarElementMixin(Base) {
          * @event date-changed
          */
         const event = new CustomEvent("date-changed", {
+          bubbles: true,
           detail: { date },
         });
         this.dispatchEvent(event);

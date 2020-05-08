@@ -42,7 +42,9 @@ export default function MultiSelectAPIMixin(Base) {
          *
          * @event selected-flags-changed
          */
-        const event = new CustomEvent("selected-flags-changed");
+        const event = new CustomEvent("selected-flags-changed", {
+          bubbles: true,
+        });
         this.dispatchEvent(event);
       }
     }

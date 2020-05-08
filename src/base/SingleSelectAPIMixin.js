@@ -43,6 +43,7 @@ export default function SingleSelectAPIMixin(Base) {
          * @event selected-index-changed
          */
         const event = new CustomEvent("selected-index-changed", {
+          bubbles: true,
           detail: { selectedIndex },
         });
         this.dispatchEvent(event);
