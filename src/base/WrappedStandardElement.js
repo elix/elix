@@ -1,8 +1,20 @@
 import { setInternalState, standardBooleanAttributes } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
+import * as templating from "../core/templating.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  defaultTabIndex,
+  firstRender,
+  ids,
+  nativeInternals,
+  render,
+  rendered,
+  setState,
+  shadowRoot,
+  state,
+  template,
+} from "./internal.js";
 
 const extendsKey = Symbol("extends");
 
@@ -194,8 +206,8 @@ class WrappedStandardElement extends Base {
   constructor() {
     super();
     /** @type {any} */ const cast = this;
-    if (!this[internal.nativeInternals] && cast.attachInternals) {
-      this[internal.nativeInternals] = cast.attachInternals();
+    if (!this[nativeInternals] && cast.attachInternals) {
+      this[nativeInternals] = cast.attachInternals();
     }
   }
 
@@ -215,14 +227,10 @@ class WrappedStandardElement extends Base {
   attributeChangedCallback(name, oldValue, newValue) {
     const forwardAttribute = attributesWithoutProperties.indexOf(name) >= 0;
     if (forwardAttribute) {
-      const innerAttributes = Object.assign(
-        {},
-        this[internal.state].innerAttributes,
-        {
-          [name]: newValue,
-        }
-      );
-      this[internal.setState]({ innerAttributes });
+      const innerAttributes = Object.assign({}, this[state].innerAttributes, {
+        [name]: newValue,
+      });
+      this[setState]({ innerAttributes });
     } else {
       // Rely on the base attributeChangedCallback provided by
       // AttributeMarshallingMixin.
@@ -245,13 +253,13 @@ class WrappedStandardElement extends Base {
   //
   // click() {}
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       innerAttributes: {},
     });
   }
 
-  get [internal.defaultTabIndex]() {
+  get [defaultTabIndex]() {
     return focusableByDefault[this.extends] ? 0 : -1;
   }
 
@@ -271,7 +279,7 @@ class WrappedStandardElement extends Base {
    */
   get inner() {
     /** @type {any} */
-    const result = this[internal.ids] && this[internal.ids].inner;
+    const result = this[ids] && this[ids].inner;
     if (!result) {
       /* eslint-disable no-console */
       console.warn(
@@ -305,8 +313,8 @@ class WrappedStandardElement extends Base {
     // in response to user interaction (e.g., an input element's value changes
     // as the user types), the component must listen to suitable events on the
     // inner element and update its state accordingly.
-    const value = this[internal.state][name];
-    return value || (this[internal.shadowRoot] && this.inner[name]);
+    const value = this[state][name];
+    return value || (this[shadowRoot] && this.inner[name]);
   }
 
   static get observedAttributes() {
@@ -316,11 +324,11 @@ class WrappedStandardElement extends Base {
     return [...super.observedAttributes, ...attributesWithoutProperties];
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
     const inner = this.inner;
-    if (this[internal.firstRender]) {
+    if (this[firstRender]) {
       // Listen for any events raised by the inner element which will not
       // automatically be retargetted across the Shadow DOM boundary, and
       // re-raise those events when they happen.
@@ -352,13 +360,13 @@ class WrappedStandardElement extends Base {
     }
 
     if (changed.tabIndex) {
-      inner.tabIndex = this[internal.state].tabIndex;
+      inner.tabIndex = this[state].tabIndex;
     }
 
     if (changed.innerAttributes) {
       // Forward attributes to the inner element.
       // See notes at attributeChangedCallback.
-      const { innerAttributes } = this[internal.state];
+      const { innerAttributes } = this[state];
       for (const name in innerAttributes) {
         applyAttribute(inner, name, innerAttributes[name]);
       }
@@ -367,7 +375,7 @@ class WrappedStandardElement extends Base {
     // Forward delegated properties to the inner element.
     this.constructor[delegatedPropertySettersKey].forEach((property) => {
       if (changed[property]) {
-        const value = this[internal.state][property];
+        const value = this[state][property];
 
         // Inner selection properties needed to be handled specially.
         // See TrackTextSelectionMixin.
@@ -381,12 +389,12 @@ class WrappedStandardElement extends Base {
     });
   }
 
-  [internal.rendered](/** @type {ChangedFlags} */ changed) {
-    super[internal.rendered](changed);
+  [rendered](/** @type {ChangedFlags} */ changed) {
+    super[rendered](changed);
 
     // Apply disabled state.
     if (changed.disabled) {
-      const { disabled } = this[internal.state];
+      const { disabled } = this[state];
       if (disabled !== undefined) {
         setInternalState(this, "disabled", disabled);
       }
@@ -400,8 +408,8 @@ class WrappedStandardElement extends Base {
    * @param {any} value
    */
   setInnerProperty(name, value) {
-    // We normally don't check an existing state value before calling[internal.setState],
-    // relying instead on[internal.setState] to do that check for us. However, we have
+    // We normally don't check an existing state value before calling[setState],
+    // relying instead on[setState] to do that check for us. However, we have
     // dangers in this particular component of creating infinite loops.
     //
     // E.g., setting the tabindex attibute will call attributeChangedCallback,
@@ -410,8 +418,8 @@ class WrappedStandardElement extends Base {
     // tabIndex property to the tabindex attribute, causing a loop.
     //
     // To avoid this, we check the existing value before updating our state.
-    if (this[internal.state][name] !== value) {
-      this[internal.setState]({ [name]: value });
+    if (this[state][name] !== value) {
+      this[setState]({ [name]: value });
     }
   }
 
@@ -445,11 +453,11 @@ class WrappedStandardElement extends Base {
    *
    * @type {(string|HTMLTemplateElement)}
    */
-  get [internal.template]() {
+  get [template]() {
     const display = blockElements.includes(this.extends)
       ? "block"
       : "inline-block";
-    return template.html`
+    return templating.html`
       <style>
         :host {
           display: ${display}

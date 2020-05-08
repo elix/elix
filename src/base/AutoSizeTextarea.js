@@ -1,6 +1,17 @@
-import * as template from "../core/template.js";
+import * as templating from "../core/templating.js";
 import FormElementMixin from "./FormElementMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  firstRender,
+  ids,
+  raiseChangeEvents,
+  render,
+  rendered,
+  setState,
+  state,
+  stateEffects,
+  template,
+} from "./internal.js";
 import SlotContentMixin from "./SlotContentMixin.js";
 import TrackTextSelectionMixin from "./TrackTextSelectionMixin.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
@@ -39,8 +50,8 @@ class AutoSizeTextarea extends Base {
     }
   }
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       minimumRows: 1,
       value: null,
       valueTracksContent: true,
@@ -70,18 +81,18 @@ class AutoSizeTextarea extends Base {
    * @default 1
    */
   get minimumRows() {
-    return this[internal.state].minimumRows;
+    return this[state].minimumRows;
   }
   set minimumRows(minimumRows) {
     if (!isNaN(minimumRows)) {
-      this[internal.setState]({ minimumRows });
+      this[setState]({ minimumRows });
     }
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
-    if (this[internal.firstRender]) {
+    if (this[firstRender]) {
       /**
        * Raised when the user changes the element's text content.
        *
@@ -91,45 +102,44 @@ class AutoSizeTextarea extends Base {
        *
        * @event input
        */
-      this[internal.ids].inner.addEventListener("input", () => {
-        this[internal.raiseChangeEvents] = true;
-        this[internal.setState]({ valueTracksContent: false });
+      this[ids].inner.addEventListener("input", () => {
+        this[raiseChangeEvents] = true;
+        this[setState]({ valueTracksContent: false });
         /** @type {any} */
-        const inner = this[internal.ids].inner;
-        this[internal.setState]({
+        const inner = this[ids].inner;
+        this[setState]({
           value: inner.value,
         });
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = false;
       });
     }
 
-    const { copyStyle, lineHeight, minimumRows, value } = this[internal.state];
+    const { copyStyle, lineHeight, minimumRows, value } = this[state];
     if (changed.copyStyle) {
-      Object.assign(this[internal.ids].copyContainer.style, copyStyle);
+      Object.assign(this[ids].copyContainer.style, copyStyle);
     }
 
     if (changed.lineHeight || (changed.minimumRows && lineHeight != null)) {
       const minHeight = minimumRows * lineHeight;
-      this[internal.ids].copyContainer.style.minHeight = `${minHeight}px`;
+      this[ids].copyContainer.style.minHeight = `${minHeight}px`;
     }
 
     if (changed.value) {
-      /** @type {HTMLTextAreaElement} */ (this[internal.ids]
-        .inner).value = value;
-      this[internal.ids].textCopy.textContent = value;
+      /** @type {HTMLTextAreaElement} */ (this[ids].inner).value = value;
+      this[ids].textCopy.textContent = value;
     }
   }
 
-  [internal.rendered](/** @type {ChangedFlags} */ changed) {
-    super[internal.rendered](changed);
-    if (this[internal.firstRender]) {
+  [rendered](/** @type {ChangedFlags} */ changed) {
+    super[rendered](changed);
+    if (this[firstRender]) {
       // For auto-sizing to work, we need the text copy to have the same border,
       // padding, and other relevant characteristics as the original text area.
       // Since those aspects are affected by CSS, we have to wait until the
       // element is in the document before we can update the text copy.
-      const textareaStyle = getComputedStyle(this[internal.ids].inner);
-      const lineHeight = this[internal.ids].extraSpace.clientHeight;
-      this[internal.setState]({
+      const textareaStyle = getComputedStyle(this[ids].inner);
+      const lineHeight = this[ids].extraSpace.clientHeight;
+      this[setState]({
         copyStyle: {
           "border-bottom-style": textareaStyle.borderBottomStyle,
           "border-bottom-width": textareaStyle.borderBottomWidth,
@@ -148,8 +158,8 @@ class AutoSizeTextarea extends Base {
       });
     }
 
-    if (changed.value && this[internal.raiseChangeEvents]) {
-      const { value } = this[internal.state];
+    if (changed.value && this[raiseChangeEvents]) {
+      const { value } = this[state];
       /**
        * Raised when the `value` property changes.
        *
@@ -163,8 +173,8 @@ class AutoSizeTextarea extends Base {
     }
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     // If the value is tracking content and content changes, update the value.
     if (
@@ -199,8 +209,8 @@ class AutoSizeTextarea extends Base {
    *   access to assigned content so we can copy into the textarea, while
    *   ensuring the original content doesn't show up directly.
    */
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templating.html`
       <style>
         :host {
           display: block;
@@ -258,10 +268,10 @@ class AutoSizeTextarea extends Base {
    * @type {string}
    */
   get value() {
-    return this[internal.state].value;
+    return this[state].value;
   }
   set value(value) {
-    this[internal.setState]({
+    this[setState]({
       value,
       valueTracksContent: false,
     });
