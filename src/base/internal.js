@@ -389,6 +389,14 @@ export const render = coreInternal.render;
 export const renderChanges = coreInternal.renderChanges;
 
 /**
+ * Symbol for the `renderDataToElement` method.
+ *
+ * [DataItemsMixin](DataItemsMixin) invokes this method to render data to an
+ * element being used as an item in a list.
+ */
+export const renderDataToElement = Symbol("renderDataToElement");
+
+/**
  * Symbol for the `rendered` method.
  *
  * [ReactiveMixin](ReactiveMixin) will invoke this method after your
