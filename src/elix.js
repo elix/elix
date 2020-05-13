@@ -22,6 +22,7 @@ export { default as ContentItemsMixin } from "./base/ContentItemsMixin.js";
 export { default as CurrentItemInViewMixin } from "./base/CurrentItemInViewMixin.js";
 export { default as CursorAPIMixin } from "./base/CursorAPIMixin.js";
 export { default as DarkModeMixin } from "./base/DarkModeMixin.js";
+export { default as DataItemsMixin } from "./base/DataItemsMixin.js";
 export { default as DelegateFocusMixin } from "./base/DelegateFocusMixin.js";
 export { default as DelegateInputLabelMixin } from "./base/DelegateInputLabelMixin.js";
 export { default as DelegateInputSelectionMixin } from "./base/DelegateInputSelectionMixin.js";

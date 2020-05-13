@@ -47,6 +47,7 @@ export { default as CrossfadeStage } from "./CrossfadeStage.js";
 export { default as CurrentItemInViewMixin } from "../src/base/CurrentItemInViewMixin.js";
 export { default as CursorAPIMixin } from "../src/base/CursorAPIMixin.js";
 export { default as DarkModeMixin } from "../src/base/DarkModeMixin.js";
+export { default as DataItemsMixin } from "../src/base/DataItemsMixin.js";
 export { default as DateComboBox } from "./DateComboBox.js";
 export { default as DateInput } from "./DateInput.js";
 export { default as DelegateFocusMixin } from "../src/base/DelegateFocusMixin.js";
