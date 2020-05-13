@@ -18,21 +18,6 @@ export default function DataItemsMixin(Base) {
       });
     }
 
-    // [render](changed) {
-    //   super[render](changed);
-
-    //   if (changed.data) {
-    //     // Render the data to the items.
-    //     const { data, items } = this[state];
-    //     if (data && items) {
-    //       data.forEach((entry, index) => {
-    //         const item = items[index];
-    //         this[renderDataToElement](entry, item);
-    //       });
-    //     }
-    //   }
-    // }
-
     [stateEffects](state, changed) {
       const effects = super[stateEffects]
         ? super[stateEffects](state, changed)
