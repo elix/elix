@@ -174,7 +174,11 @@ class MenuButton extends PopupButton {
     if (this[internal.firstRender]) {
       // If the user hovers over an item, select it.
       this.addEventListener("mousemove", (event) => {
-        const target = event.target;
+        // Treat the deepest element in the composed event path as the target.
+        const target = event.composedPath
+          ? event.composedPath()[0]
+          : event.target;
+
         if (target && target instanceof Node) {
           const hoverIndex = indexOfItemContainingTarget(this.items, target);
           if (hoverIndex !== this[internal.state].menuSelectedIndex) {
