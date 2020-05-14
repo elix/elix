@@ -4,11 +4,11 @@
  * @module html
  */
 
-import { fragmentFrom as html } from "./htmlLiterals.js";
+import { fragmentFrom } from "./htmlLiterals.js";
 
-export default html;
+export default fragmentFrom.html;
 
 /* eslint-disable no-console */
 console.warn(
-  `The html helper has been moved to htmlLiterals.js. Please update your imports.`
+  `The html helper has moved to htmlLiterals.js, and is now called \`templateFrom.html\`. Please update your imports.`
 );
