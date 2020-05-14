@@ -1,8 +1,7 @@
 import { deepContains } from "../core/dom.js";
-import html from "../core/html.js";
+import { fragmentFrom, templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as template from "../core/template.js";
-import * as internal from "./internal.js";
+import { defaultState, render, setState, state, template } from "./internal.js";
 
 // We consider the keyboard to be active if the window has received a keydown
 // event since the last mousedown event.
@@ -52,7 +51,7 @@ export default function FocusVisibleMixin(Base) {
           const containsFocus = deepContains(this, newFocusedElement);
           const lostFocus = !isFocusedElement && !containsFocus;
           if (lostFocus) {
-            this[internal.setState]({
+            this[setState]({
               focusVisible: false,
             });
             // No longer need to listen for changes in focus visibility.
@@ -66,9 +65,9 @@ export default function FocusVisibleMixin(Base) {
       });
       this.addEventListener("focusin", () => {
         Promise.resolve().then(() => {
-          if (this[internal.state].focusVisible !== keyboardActive) {
+          if (this[state].focusVisible !== keyboardActive) {
             // Show the element as focused if the keyboard has been used.
-            this[internal.setState]({
+            this[setState]({
               focusVisible: keyboardActive,
             });
           }
@@ -84,28 +83,28 @@ export default function FocusVisibleMixin(Base) {
       });
     }
 
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         focusVisible: false,
       });
     }
 
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      if (super[render]) {
+        super[render](changed);
       }
 
       // Suppress the component's normal `outline` style unless we know the
       // focus should be visible.
       if (changed.focusVisible) {
-        const { focusVisible } = this[internal.state];
+        const { focusVisible } = this[state];
         this.toggleAttribute("focus-visible", focusVisible);
       }
     }
 
-    get [internal.template]() {
-      const result = super[internal.template] || template.html``;
-      result.content.append(html`
+    get [template]() {
+      const result = super[template] || templateFrom.html``;
+      result.content.append(fragmentFrom.html`
         <style>
           :host {
             outline: none;
@@ -124,7 +123,7 @@ export default function FocusVisibleMixin(Base) {
 }
 
 function refreshFocus(/** @type {ReactiveElement} */ element) {
-  element[internal.setState]({
+  element[setState]({
     focusVisible: keyboardActive,
   });
 }

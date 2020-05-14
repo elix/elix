@@ -1,5 +1,5 @@
 import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
@@ -12,7 +12,7 @@ export default function PlainButtonMixin(Base) {
   return class PlainButton extends Base {
     get [internal.template]() {
       const result = super[internal.template];
-      result.content.append(html`
+      result.content.append(fragmentFrom.html`
         <style>
           :host([disabled]) ::slotted(*) {
             opacity: 0.5;

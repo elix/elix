@@ -10,5 +10,5 @@ export default fragmentFrom.html;
 
 /* eslint-disable no-console */
 console.warn(
-  `The html helper has moved to htmlLiterals.js, and is now called \`templateFrom.html\`. Please update your imports.`
+  `The html helper has moved to htmlLiterals.js, and is now called \`fragmentFrom.html\`. Please update your imports.`
 );

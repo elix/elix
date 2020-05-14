@@ -1,8 +1,8 @@
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
-import * as internal from "./internal.js";
+import { defaultState, keydown, state, tap, template } from "./internal.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
 
@@ -41,8 +41,8 @@ const mapKeysToClick = !firefox;
  * @mixes KeyboardMixin
  */
 class Button extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       role: "button",
       treatEnterAsClick: true,
       treatSpaceAsClick: true,
@@ -52,20 +52,20 @@ class Button extends Base {
   // Pressing Enter or Space raises a click event, as if the user had clicked
   // the inner button.
   // TODO: Space should raise the click on *keyup*.
-  [internal.keydown](/** @type {KeyboardEvent} */ event) {
+  [keydown](/** @type {KeyboardEvent} */ event) {
     let handled;
     if (mapKeysToClick) {
       switch (event.key) {
         case " ":
-          if (this[internal.state].treatSpaceAsClick) {
-            this[internal.tap]();
+          if (this[state].treatSpaceAsClick) {
+            this[tap]();
             handled = true;
           }
           break;
 
         case "Enter":
-          if (this[internal.state].treatEnterAsClick) {
-            this[internal.tap]();
+          if (this[state].treatEnterAsClick) {
+            this[tap]();
             handled = true;
           }
           break;
@@ -73,13 +73,11 @@ class Button extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return (
-      handled || (super[internal.keydown] && super[internal.keydown](event))
-    );
+    return handled || (super[keydown] && super[keydown](event));
   }
 
   // Respond to a simulated click.
-  [internal.tap]() {
+  [tap]() {
     const clickEvent = new MouseEvent("click", {
       bubbles: true,
       cancelable: true,
@@ -87,10 +85,10 @@ class Button extends Base {
     this.dispatchEvent(clickEvent);
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           :host {
             display: inline-flex;
