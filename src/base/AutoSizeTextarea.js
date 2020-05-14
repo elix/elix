@@ -1,4 +1,4 @@
-import * as templating from "../core/templating.js";
+import { templateFrom } from "../core/htmlLiterals.js";
 import FormElementMixin from "./FormElementMixin.js";
 import {
   defaultState,
@@ -210,7 +210,7 @@ class AutoSizeTextarea extends Base {
    *   ensuring the original content doesn't show up directly.
    */
   get [template]() {
-    return templating.html`
+    return templateFrom.html`
       <style>
         :host {
           display: block;

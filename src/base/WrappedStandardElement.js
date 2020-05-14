@@ -1,6 +1,6 @@
 import { setInternalState, standardBooleanAttributes } from "../core/dom.js";
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as templating from "../core/templating.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import {
   defaultState,
@@ -457,7 +457,7 @@ class WrappedStandardElement extends Base {
     const display = blockElements.includes(this.extends)
       ? "block"
       : "inline-block";
-    return templating.html`
+    return templateFrom.html`
       <style>
         :host {
           display: ${display}
