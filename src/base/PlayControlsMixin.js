@@ -133,6 +133,7 @@ export default function PlayControlsMixin(Base) {
 
           #playControlsContainer {
             display: grid;
+            flex: 1;
           }
         </style>
 

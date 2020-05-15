@@ -204,11 +204,12 @@ class CrossfadeStage extends Base {
     return template.html`
       <style>
         :host {
-          display: inline-grid;
+          display: inline-flex;
         }
 
         #crossfadeContainer {
           display: inline-grid;
+          flex: 1;
           position: relative;
         }
 

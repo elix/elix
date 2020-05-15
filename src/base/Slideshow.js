@@ -1,3 +1,4 @@
+import html from "../core/html.js";
 import CrossfadeStage from "./CrossfadeStage.js";
 import * as internal from "./internal.js";
 import TimerCursorMixin from "./TimerCursorMixin.js";
@@ -29,6 +30,21 @@ class Slideshow extends Base {
       playing: true,
       transitionDuration: 1000,
     });
+  }
+
+  get [internal.template]() {
+    const result = super[internal.template];
+
+    result.content.append(html`
+      <style>
+        #crossfadeContainer {
+          align-items: stretch;
+          justify-content: stretch;
+        }
+      </style>
+    `);
+
+    return result;
   }
 }
 
