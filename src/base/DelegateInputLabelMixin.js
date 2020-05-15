@@ -1,5 +1,11 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  inputDelegate,
+  render,
+  setState,
+  state,
+} from "./internal.js";
 
 /**
  * Delegates its ARIA label property to an inner input-type element
@@ -19,24 +25,24 @@ export default function DelegateInputLabelMixin(Base) {
   class DelegateInputLabel extends Base {
     // Forward any ARIA label to the input element.
     get ariaLabel() {
-      return this[internal.state].ariaLabel;
+      return this[state].ariaLabel;
     }
     set ariaLabel(ariaLabel) {
-      this[internal.setState]({ ariaLabel });
+      this[setState]({ ariaLabel });
     }
 
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         ariaLabel: "",
       });
     }
 
-    [internal.render](changed) {
-      super[internal.render](changed);
+    [render](changed) {
+      super[render](changed);
 
       if (changed.ariaLabel) {
-        const { ariaLabel } = this[internal.state];
-        this[internal.inputDelegate].setAttribute("aria-label", ariaLabel);
+        const { ariaLabel } = this[state];
+        this[inputDelegate].setAttribute("aria-label", ariaLabel);
       }
     }
   }

@@ -1,4 +1,15 @@
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  firstRender,
+  raiseChangeEvents,
+  render,
+  renderChanges,
+  rendered,
+  rendering,
+  setState,
+  state,
+  stateEffects,
+} from "./internal.js";
 
 /** @type {any} */
 const stateKey = Symbol("state");
@@ -34,7 +45,7 @@ export default function ReactiveMixin(Base) {
       // first render actually happens, we set that flag to be undefined so we
       // have a way of distinguishing between a component that has never
       // rendered and one that is being rendered for the nth time.
-      this[internal.firstRender] = undefined;
+      this[firstRender] = undefined;
 
       // We want to support the standard HTML pattern of only raising events in
       // response to direct user interactions. For a detailed discussion of this
@@ -47,7 +58,7 @@ export default function ReactiveMixin(Base) {
       // a setState call is made while the flag is true, then that fact will be
       // remembered and passed the subsequent render/rendered methods. That will
       // let the methods know whether they should raise property change events.
-      this[internal.raiseChangeEvents] = false;
+      this[raiseChangeEvents] = false;
 
       // Maintain a change log of all fields which have changed since the
       // component was last rendered.
@@ -55,7 +66,7 @@ export default function ReactiveMixin(Base) {
 
       // Set the initial state from the default state defined by the component
       // and its mixins/base classes.
-      this[internal.setState](this[internal.defaultState]);
+      this[setState](this[defaultState]);
     }
 
     // When the component is attached to the document (or upgraded), we will
@@ -71,7 +82,7 @@ export default function ReactiveMixin(Base) {
       //
       // If the component was forced to render before this point, and the state
       // hasn't changed, this call will be a no-op.
-      this[internal.renderChanges]();
+      this[renderChanges]();
     }
 
     /**
@@ -80,9 +91,9 @@ export default function ReactiveMixin(Base) {
      *
      * @type {PlainObject}
      */
-    get [internal.defaultState]() {
+    get [defaultState]() {
       // Defer to base implementation if defined.
-      return super[internal.defaultState] || {};
+      return super[defaultState] || {};
     }
 
     /**
@@ -100,9 +111,9 @@ export default function ReactiveMixin(Base) {
      * @param {ChangedFlags} changed - dictionary of flags indicating which state
      * members have changed since the last render
      */
-    [internal.render](changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
+    [render](changed) {
+      if (super[render]) {
+        super[render](changed);
       }
     }
 
@@ -118,10 +129,10 @@ export default function ReactiveMixin(Base) {
      * This method invokes the internal `render` method, then invokes the
      * `rendered` method.
      */
-    [internal.renderChanges]() {
-      if (this[internal.firstRender] === undefined) {
+    [renderChanges]() {
+      if (this[firstRender] === undefined) {
         // First render.
-        this[internal.firstRender] = true;
+        this[firstRender] = true;
       }
 
       // Get the log of which fields have changed since the last render. As a
@@ -131,25 +142,23 @@ export default function ReactiveMixin(Base) {
 
       // We only render if this is the first render, or state has has changed
       // since the last render.
-      if (this[internal.firstRender] || changed) {
-        // If at least one of the[internal.setState] calls was made in response
+      if (this[firstRender] || changed) {
+        // If at least one of the[setState] calls was made in response
         // to user interaction or some other component-internal event, set the
         // raiseChangeEvents flag so that render/rendered methods know whether
         // to raise property change events. See the comments in the component
         // constructor where we initialize this flag for details.
-        const saveRaiseChangeEvents = this[internal.raiseChangeEvents];
-        this[internal.raiseChangeEvents] = this[
-          raiseChangeEventsInNextRenderKey
-        ];
+        const saveRaiseChangeEvents = this[raiseChangeEvents];
+        this[raiseChangeEvents] = this[raiseChangeEventsInNextRenderKey];
 
         // We set a flag to indicate that rendering is happening. The component
         // may use this to avoid triggering other updates during the render.
-        this[internal.rendering] = true;
+        this[rendering] = true;
 
         // Invoke any internal render implementations.
-        this[internal.render](changed);
+        this[render](changed);
 
-        this[internal.rendering] = false;
+        this[rendering] = false;
 
         // Since we've now rendered all changes, clear the change log. If other
         // async render calls are queued up behind this call, they'll see an
@@ -157,13 +166,13 @@ export default function ReactiveMixin(Base) {
         this[changedSinceLastRenderKey] = null;
 
         // Let the component know it was rendered.
-        this[internal.rendered](changed);
+        this[rendered](changed);
 
         // We've now rendered for the first time.
-        this[internal.firstRender] = false;
+        this[firstRender] = false;
 
         // Restore state of event flags.
-        this[internal.raiseChangeEvents] = saveRaiseChangeEvents;
+        this[raiseChangeEvents] = saveRaiseChangeEvents;
         this[raiseChangeEventsInNextRenderKey] = saveRaiseChangeEvents;
       }
     }
@@ -185,9 +194,9 @@ export default function ReactiveMixin(Base) {
      *
      * @param {ChangedFlags} changed
      */
-    [internal.rendered](changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [rendered](changed) {
+      if (super[rendered]) {
+        super[rendered](changed);
       }
     }
 
@@ -200,12 +209,12 @@ export default function ReactiveMixin(Base) {
      * @param {PlainObject} changes - the changes to apply to the element's state
      * @returns {Promise} - resolves when the new state has been rendered
      */
-    async [internal.setState](changes) {
+    async [setState](changes) {
       // There's no good reason to have a render method update state.
-      if (this[internal.rendering]) {
+      if (this[rendering]) {
         /* eslint-disable no-console */
         console.warn(
-          `${this.constructor.name} called [internal.setState] during rendering, which you should avoid.\nSee https://elix.org/documentation/ReactiveMixin.`
+          `${this.constructor.name} called [setState] during rendering, which you should avoid.\nSee https://elix.org/documentation/ReactiveMixin.`
         );
       }
 
@@ -225,7 +234,7 @@ export default function ReactiveMixin(Base) {
       }
 
       // Freeze the new state so it's immutable. This prevents accidental
-      // attempts to set state without going through [internal.setState].
+      // attempts to set state without going through [setState].
       Object.freeze(state);
 
       // Set this as the component's new state.
@@ -234,13 +243,13 @@ export default function ReactiveMixin(Base) {
       // If setState was called with the raiseChangeEvents flag set, record that
       // fact for use in rendering. See the comments in the component
       // constructor for details.
-      if (this[internal.raiseChangeEvents]) {
+      if (this[raiseChangeEvents]) {
         this[raiseChangeEventsInNextRenderKey] = true;
       }
 
       // Look to see whether the component is already set up to render.
       const willRender =
-        this[internal.firstRender] === undefined ||
+        this[firstRender] === undefined ||
         this[changedSinceLastRenderKey] !== null;
 
       // Add this round of changed fields to the complete log of fields that
@@ -265,7 +274,7 @@ export default function ReactiveMixin(Base) {
         // Now that the above promise has resolved, render the component. By the
         // time this line is reached, the complete log of batched changes can be
         // applied in a single render call.
-        this[internal.renderChanges]();
+        this[renderChanges]();
       }
     }
 
@@ -283,7 +292,7 @@ export default function ReactiveMixin(Base) {
      *
      * @type {PlainObject}
      */
-    get [internal.state]() {
+    get [state]() {
       return this[stateKey];
     }
 
@@ -313,19 +322,17 @@ export default function ReactiveMixin(Base) {
      * latest proposal for the new state
      * @returns {PlainObject}
      */
-    [internal.stateEffects](state, changed) {
-      return super[internal.stateEffects]
-        ? super[internal.stateEffects](state, changed)
-        : {};
+    [stateEffects](state, changed) {
+      return super[stateEffects] ? super[stateEffects](state, changed) : {};
     }
   }
 
-  // Expose state when debugging; see note for `[internal.state]` getter.
+  // Expose state when debugging; see note for `[state]` getter.
   const elixdebug = new URLSearchParams(location.search).get("elixdebug");
   if (elixdebug === "true") {
     Object.defineProperty(Reactive.prototype, "state", {
       get() {
-        return this[internal.state];
+        return this[state];
       },
     });
   }
@@ -366,7 +373,7 @@ export function copyStateWithChanges(element, changes) {
     Object.assign(changed, changedByEffects);
     // Ask the component if there are any second- (or third-, etc.) order
     // effects that should be applied.
-    effects = element[internal.stateEffects](state, changedByEffects);
+    effects = element[stateEffects](state, changedByEffects);
   }
   return { state, changed };
 }

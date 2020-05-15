@@ -1,8 +1,19 @@
-import html from "../core/html.js";
-import * as template from "../core/template.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
+import { transmute } from "../core/template.js";
 import Button from "./Button.js";
 import Drawer from "./Drawer.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  ids,
+  raiseChangeEvents,
+  render,
+  rendered,
+  scrollTarget,
+  setState,
+  shadowRoot,
+  state,
+  template,
+} from "./internal.js";
 
 /**
  * A drawer that includes an always-visible grip element
@@ -18,8 +29,8 @@ import * as internal from "./internal.js";
  * @part {Button} grip - the handle the user can tap, click, or swipe to open or close the drawer
  */
 class DrawerWithGrip extends Drawer {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       gripPartType: Button,
     });
   }
@@ -32,37 +43,35 @@ class DrawerWithGrip extends Drawer {
    * @default Button
    */
   get gripPartType() {
-    return this[internal.state].gripPartType;
+    return this[state].gripPartType;
   }
   set gripPartType(gripPartType) {
-    this[internal.setState]({ gripPartType });
+    this[setState]({ gripPartType });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    if (super[internal.render]) {
-      super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    if (super[render]) {
+      super[render](changed);
     }
 
-    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+    renderParts(this[shadowRoot], this[state], changed);
 
     if (changed.gripPartType) {
-      this[internal.ids].grip.addEventListener("click", (event) => {
+      this[ids].grip.addEventListener("click", (event) => {
         // Clicking grip toggles drawer.
-        this[internal.raiseChangeEvents] = true;
+        this[raiseChangeEvents] = true;
         this.toggle();
         event.stopPropagation();
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = false;
       });
     }
 
     if (changed.fromEdge || changed.rightToLeft) {
       // Position the grip so it's at the outer edge of the drawer.
-      const { fromEdge, rightToLeft } = this[internal.state];
+      const { fromEdge, rightToLeft } = this[state];
 
       const vertical = fromEdge === "top" || fromEdge === "bottom";
-      this[internal.ids].frame.style.flexDirection = vertical
-        ? "column"
-        : "row";
+      this[ids].frame.style.flexDirection = vertical ? "column" : "row";
 
       // Determine what grid we'll use to relatively position the content and
       // the grip.
@@ -93,34 +102,33 @@ class DrawerWithGrip extends Drawer {
         ? mapFromEdgeToGripCell.left
         : mapFromEdgeToGripCell.right;
 
-      this[internal.ids].gripContainer.style.grid = mapFromEdgeToGrid[fromEdge];
-      this[internal.ids].gripWorkaround.style.gridArea =
-        mapFromEdgeToGripCell[fromEdge];
+      this[ids].gripContainer.style.grid = mapFromEdgeToGrid[fromEdge];
+      this[ids].gripWorkaround.style.gridArea = mapFromEdgeToGripCell[fromEdge];
     }
   }
 
-  [internal.rendered](/** @type {ChangedFlags} */ changed) {
-    super[internal.rendered](changed);
+  [rendered](/** @type {ChangedFlags} */ changed) {
+    super[rendered](changed);
 
-    if (this[internal.state].gripSize === null) {
+    if (this[state].gripSize === null) {
       // Use the rendered size of the grip to set the gripSize. This will ensure
       // the grip is visible, peeking out from the edge of the drawer's container.
-      const { fromEdge } = this[internal.state];
+      const { fromEdge } = this[state];
       const vertical = fromEdge === "top" || fromEdge === "bottom";
       const dimension = vertical ? "offsetHeight" : "offsetWidth";
-      const gripSize = this[internal.ids].grip[dimension];
-      this[internal.setState]({ gripSize });
+      const gripSize = this[ids].grip[dimension];
+      this[setState]({ gripSize });
     }
   }
 
   // Tell TrackpadSwipeMixin that the gripped content is the scrollable element
   // the user is going to try to scroll with the trackpad.
-  get [internal.scrollTarget]() {
-    return this[internal.ids].grippedContent;
+  get [scrollTarget]() {
+    return this[ids].grippedContent;
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     // Replace the default slot with one that includes a grip element.
     //
@@ -129,7 +137,7 @@ class DrawerWithGrip extends Drawer {
     // display: block instead of flex appears to be the reason this helps.
     const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
-      defaultSlot.replaceWith(html`
+      defaultSlot.replaceWith(fragmentFrom.html`
         <div id="gripContainer">
           <div id="grippedContent">
             <slot></slot>
@@ -143,9 +151,9 @@ class DrawerWithGrip extends Drawer {
       `);
     }
 
-    renderParts(result.content, this[internal.state]);
+    renderParts(result.content, this[state]);
 
-    result.content.append(html`
+    result.content.append(fragmentFrom.html`
       <style>
         [part~="frame"] {
           display: flex;
@@ -195,7 +203,7 @@ function renderParts(root, state, changed) {
     const { gripPartType } = state;
     const grip = root.getElementById("grip");
     if (grip) {
-      template.transmute(grip, gripPartType);
+      transmute(grip, gripPartType);
     }
   }
 }

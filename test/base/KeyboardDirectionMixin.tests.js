@@ -1,16 +1,16 @@
-import * as internal from "../../src/base/internal.js";
+import { goRight, keydown, state } from "../../src/base/internal.js";
 import KeyboardDirectionMixin from "../../src/base/KeyboardDirectionMixin.js";
 import { assert, sinon } from "../testHelpers.js";
 
 class KeyboardDirectionMixinTest extends KeyboardDirectionMixin(HTMLElement) {
   constructor() {
     super();
-    this[internal.state] = { orientation: "" };
+    this[state] = { orientation: "" };
   }
 
-  [internal.goRight]() {
-    if (super[internal.goRight]) {
-      super[internal.goRight]();
+  [goRight]() {
+    if (super[goRight]) {
+      super[goRight]();
     }
     return true;
   }
@@ -20,8 +20,8 @@ customElements.define("keyboard-direction-test", KeyboardDirectionMixinTest);
 describe("KeyboardDirectionMixin", () => {
   it("maps a Right arrow key to a goRight action", () => {
     const fixture = new KeyboardDirectionMixinTest();
-    const spy = sinon.spy(fixture, internal.goRight);
-    const result = fixture[internal.keydown]({
+    const spy = sinon.spy(fixture, goRight);
+    const result = fixture[keydown]({
       key: "ArrowRight",
     });
     assert(spy.calledOnce);
@@ -30,11 +30,11 @@ describe("KeyboardDirectionMixin", () => {
 
   it("ignores a Right arrow key when orientation is vertical", () => {
     const fixture = new KeyboardDirectionMixinTest();
-    Object.assign(fixture[internal.state], {
+    Object.assign(fixture[state], {
       orientation: "vertical",
     });
-    const spy = sinon.spy(fixture, internal.goRight);
-    const result = fixture[internal.keydown]({
+    const spy = sinon.spy(fixture, goRight);
+    const result = fixture[keydown]({
       key: "ArrowRight",
     });
     assert(!spy.calledOnce);
@@ -43,8 +43,8 @@ describe("KeyboardDirectionMixin", () => {
 
   it("ignores a Right arrow key if the meta (command) key was pressed", () => {
     const fixture = new KeyboardDirectionMixinTest();
-    const spy = sinon.spy(fixture, internal.goRight);
-    const result = fixture[internal.keydown]({
+    const spy = sinon.spy(fixture, goRight);
+    const result = fixture[keydown]({
       altKey: true,
       key: "ArrowRight",
     });

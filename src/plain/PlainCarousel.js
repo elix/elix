@@ -1,6 +1,6 @@
 import Carousel from "../base/Carousel.js";
 import DarkModeMixin from "../base/DarkModeMixin.js";
-import * as internal from "../base/internal.js";
+import { defaultState } from "../base/internal.js";
 import PlainArrowDirectionMixin from "./PlainArrowDirectionMixin.js";
 import PlainCarouselMixin from "./PlainCarouselMixin.js";
 import PlainPageDot from "./PlainPageDot.js";
@@ -17,8 +17,8 @@ import PlainPageDot from "./PlainPageDot.js";
 class PlainCarousel extends DarkModeMixin(
   PlainArrowDirectionMixin(PlainCarouselMixin(Carousel))
 ) {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       proxyPartType: PlainPageDot,
     });
   }

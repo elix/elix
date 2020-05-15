@@ -1,6 +1,6 @@
-import * as internal from "../base/internal.js";
+import { defaultState, template } from "../base/internal.js";
 import Tabs from "../base/Tabs.js";
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import PlainTabButton from "./PlainTabButton.js";
 import PlainTabStrip from "./PlainTabStrip.js";
 
@@ -12,18 +12,18 @@ import PlainTabStrip from "./PlainTabStrip.js";
  * @part {PlainTabStrip} proxy-list
  */
 class PlainTabs extends Tabs {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       itemRole: "tabpanel",
       proxyPartType: PlainTabButton,
       proxyListPartType: PlainTabStrip,
       tabAlign: "start",
     });
   }
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           [part~="proxy-list"] {
             z-index: 1;

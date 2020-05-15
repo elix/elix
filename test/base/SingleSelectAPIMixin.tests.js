@@ -1,4 +1,9 @@
-import * as internal from "../../src/base/internal.js";
+import {
+  defaultState,
+  raiseChangeEvents,
+  setState,
+  state,
+} from "../../src/base/internal.js";
 import ItemsCursorMixin from "../../src/base/ItemsCursorMixin.js";
 import SingleSelectAPIMixin from "../../src/base/SingleSelectAPIMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
@@ -7,17 +12,17 @@ import { assert } from "../testHelpers.js";
 class SingleSelectAPITest extends ItemsCursorMixin(
   SingleSelectAPIMixin(ReactiveMixin(HTMLElement))
 ) {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       items: ["Zero", "One", "Two"],
     });
   }
 
   get items() {
-    return this[internal.state].items;
+    return this[state].items;
   }
   set items(items) {
-    this[internal.setState]({ items });
+    this[setState]({ items });
   }
 }
 customElements.define("single-select-api-test", SingleSelectAPITest);
@@ -45,9 +50,9 @@ describe("SingleSelectAPIMixin", () => {
     });
     container.appendChild(fixture);
 
-    fixture[internal.raiseChangeEvents] = true; // Simulate user interaction
+    fixture[raiseChangeEvents] = true; // Simulate user interaction
     fixture.selectedIndex = 1;
-    fixture[internal.raiseChangeEvents] = false;
+    fixture[raiseChangeEvents] = false;
   });
 
   it("changing selection programmatically does not raise the selected-index-changed event", (done) => {

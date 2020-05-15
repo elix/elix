@@ -1,6 +1,6 @@
 import ExpandableSection from "../base/ExpandableSection.js";
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { defaultState, template } from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import PlainButton from "./PlainButton.js";
 import PlainExpandCollapseToggle from "./PlainExpandCollapseToggle.js";
 
@@ -12,17 +12,17 @@ import PlainExpandCollapseToggle from "./PlainExpandCollapseToggle.js";
  * @part {PlainExpandCollapseToggle} toggle
  */
 class PlainExpandableSection extends ExpandableSection {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       headerPartType: PlainButton,
       togglePartType: PlainExpandCollapseToggle,
     });
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           [part~="toggle"] {
             margin: 0.75em;

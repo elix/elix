@@ -1,9 +1,16 @@
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import EffectMixin from "./EffectMixin.js";
 import * as fractionalSelection from "./fractionalSelection.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  ids,
+  render,
+  setState,
+  state,
+  template,
+} from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
@@ -48,35 +55,33 @@ class SlidingStage extends Base {
     }
   }
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       currentItemRequired: true,
       orientation: "horizontal",
     });
   }
 
   get orientation() {
-    return this[internal.state].orientation;
+    return this[state].orientation;
   }
   set orientation(orientation) {
-    this[internal.setState]({ orientation });
+    this[setState]({ orientation });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
     if (
       changed.currentIndex ||
       changed.enableEffects ||
       changed.orientation ||
       changed.swipeFraction
     ) {
-      const { orientation, rightToLeft, currentIndex, items } = this[
-        internal.state
-      ];
+      const { orientation, rightToLeft, currentIndex, items } = this[state];
       const vertical = orientation === "vertical";
       const sign = vertical ? -1 : rightToLeft ? 1 : -1;
-      const swiping = this[internal.state].swipeFraction != null;
-      const swipeFraction = this[internal.state].swipeFraction || 0;
+      const swiping = this[state].swipeFraction != null;
+      const swipeFraction = this[state].swipeFraction || 0;
       let translation;
       if (currentIndex >= 0) {
         const selectionFraction = currentIndex + sign * swipeFraction;
@@ -90,39 +95,39 @@ class SlidingStage extends Base {
         translation = 0;
       }
 
-      const slidingStageContent = this[internal.ids].slidingStageContent;
+      const slidingStageContent = this[ids].slidingStageContent;
       const axis = vertical ? "Y" : "X";
       slidingStageContent.style.transform = `translate${axis}(${translation}%)`;
 
-      const showTransition = this[internal.state].enableEffects && !swiping;
+      const showTransition = this[state].enableEffects && !swiping;
       slidingStageContent.style.transition = showTransition
         ? "transform 0.25s"
         : "none";
     }
     if (changed.orientation) {
-      const { orientation } = this[internal.state];
+      const { orientation } = this[state];
       const vertical = orientation === "vertical";
-      this[internal.ids].slidingStageContent.style.flexDirection = vertical
+      this[ids].slidingStageContent.style.flexDirection = vertical
         ? "column"
         : "";
     }
   }
 
   get swipeFraction() {
-    return this[internal.state].swipeFraction;
+    return this[state].swipeFraction;
   }
   set swipeFraction(swipeFraction) {
-    this[internal.setState]({ swipeFraction });
+    this[setState]({ swipeFraction });
   }
 
-  get [internal.template]() {
+  get [template]() {
     // The trick here is to give the slotted elements a flex-basis of 100%. This
     // makes them each as big as the component, spreading them out equally. The
     // slidingStageContent container will only big as big as the host too, but
     // all the elements slotted inside it will still be visible even if they
     // fall outside its bounds. By translating the container left or right, we
     // can cause any individual slotted item to become the sole visible item.
-    return template.html`
+    return templateFrom.html`
       <style>
         :host {
           display: inline-flex;

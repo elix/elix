@@ -1,8 +1,16 @@
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import EffectMixin from "./EffectMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  firstRender,
+  render,
+  setState,
+  state,
+  stateEffects,
+  template,
+} from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
@@ -37,8 +45,8 @@ const Base = CursorAPIMixin(
  * @mixes TransitionEffectMixin
  */
 class CrossfadeStage extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       currentItemRequired: true,
       effect: "select",
       effectEndTarget: null,
@@ -47,14 +55,14 @@ class CrossfadeStage extends Base {
     });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
-    if (this[internal.firstRender]) {
+    if (this[firstRender]) {
       this.addEventListener("effect-phase-changed", (event) => {
         /** @type {any} */ const cast = event;
         if (cast.detail.effectPhase === "after") {
-          const { currentIndex } = this[internal.state];
+          const { currentIndex } = this[state];
           /**
            * This event is raised when changing the selection and the selection
            * effect has completed.
@@ -96,7 +104,7 @@ class CrossfadeStage extends Base {
         rightToLeft,
         currentIndex,
         swipeFraction,
-      } = this[internal.state];
+      } = this[state];
       if (items && effect === "select") {
         if (enableEffects && effectPhase === "before") {
           // Prepare to animate.
@@ -146,7 +154,7 @@ class CrossfadeStage extends Base {
     ) {
       // Apply opacity transition.
       const { enableEffects, items, swipeFraction, transitionDuration } = this[
-        internal.state
+        state
       ];
       const transition =
         enableEffects && swipeFraction == null
@@ -161,14 +169,14 @@ class CrossfadeStage extends Base {
   }
 
   get swipeFraction() {
-    return this[internal.state].swipeFraction;
+    return this[state].swipeFraction;
   }
   set swipeFraction(swipeFraction) {
-    this[internal.setState]({ swipeFraction });
+    this[setState]({ swipeFraction });
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     // When selection changes, (re)start the selection effect.
     if (changed.currentIndex) {
@@ -194,14 +202,14 @@ class CrossfadeStage extends Base {
   }
 
   get transitionDuration() {
-    return this[internal.state].transitionDuration;
+    return this[state].transitionDuration;
   }
   set transitionDuration(transitionDuration) {
-    this[internal.setState]({ transitionDuration });
+    this[setState]({ transitionDuration });
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           display: inline-flex;

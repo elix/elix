@@ -1,9 +1,16 @@
 import { setInternalState } from "../core/dom.js";
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
 import * as calendar from "./calendar.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  ids,
+  render,
+  setState,
+  state,
+  template,
+} from "./internal.js";
 import SelectableMixin from "./SelectableMixin.js";
 
 const Base = CalendarElementMixin(SelectableMixin(ReactiveElement));
@@ -45,17 +52,17 @@ const Base = CalendarElementMixin(SelectableMixin(ReactiveElement));
  * @state weekend
  */
 class CalendarDay extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       date: calendar.today(),
       outsideRange: false,
     });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
-    const { date } = this[internal.state];
+    const { date } = this[state];
     if (changed.date) {
       const today = calendar.today();
       const dayOfWeek = date.getDay();
@@ -87,12 +94,12 @@ class CalendarDay extends Base {
       setInternalState(this, "saturday", dayOfWeek === 6);
 
       setInternalState(this, "today", daysFromToday === 0);
-      this[internal.ids].day.textContent = dayOfMonth.toString();
+      this[ids].day.textContent = dayOfMonth.toString();
     }
 
     if (changed.date || changed.locale) {
       const dayOfWeek = date.getDay();
-      const { locale } = this[internal.state];
+      const { locale } = this[state];
       const weekend =
         dayOfWeek === calendar.weekendStart(locale) ||
         dayOfWeek === calendar.weekendEnd(locale);
@@ -101,23 +108,19 @@ class CalendarDay extends Base {
     }
 
     if (changed.outsideRange) {
-      setInternalState(
-        this,
-        "outside-range",
-        this[internal.state].outsideRange
-      );
+      setInternalState(this, "outside-range", this[state].outsideRange);
     }
   }
 
   get outsideRange() {
-    return this[internal.state].outsideRange;
+    return this[state].outsideRange;
   }
   set outsideRange(outsideRange) {
-    this[internal.setState]({ outsideRange });
+    this[setState]({ outsideRange });
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           box-sizing: border-box;

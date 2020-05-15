@@ -1,6 +1,6 @@
 import { defaultAriaRole, ensureId } from "./accessibility.js";
 import Explorer from "./Explorer.js";
-import * as internal from "./internal.js";
+import { defaultState, ids, render, setState, state } from "./internal.js";
 import TabButton from "./TabButton.js";
 import TabStrip from "./TabStrip.js";
 
@@ -17,8 +17,8 @@ import TabStrip from "./TabStrip.js";
  * @part {TabStrip} proxy-list
  */
 class Tabs extends Explorer {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       itemRole: "tabpanel",
       proxyPartType: TabButton,
       proxyListPartType: TabStrip,
@@ -26,13 +26,13 @@ class Tabs extends Explorer {
     });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
-    const { items } = this[internal.state];
-    /** @type {Element[]} */ const proxies = this[internal.state].proxies;
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
+    const { items } = this[state];
+    /** @type {Element[]} */ const proxies = this[state].proxies;
     if ((changed.items || changed.proxies) && items && proxies) {
       // Recreate association between items and proxies.
-      const { proxiesAssigned, itemRole } = this[internal.state];
+      const { proxiesAssigned, itemRole } = this[state];
 
       // Create role for each item.
       items.forEach((item, index) => {
@@ -79,9 +79,9 @@ class Tabs extends Explorer {
     }
     if (changed.tabAlign) {
       // Apply alignment to proxy list.
-      if ("tabAlign" in this[internal.ids].proxyList) {
-        const proxyList = /** @type {any} */ (this[internal.ids].proxyList);
-        proxyList.tabAlign = this[internal.state].tabAlign;
+      if ("tabAlign" in this[ids].proxyList) {
+        const proxyList = /** @type {any} */ (this[ids].proxyList);
+        proxyList.tabAlign = this[state].tabAlign;
       }
     }
   }
@@ -93,10 +93,10 @@ class Tabs extends Explorer {
    * @default 'start'
    */
   get tabAlign() {
-    return this[internal.state].tabAlign;
+    return this[state].tabAlign;
   }
   set tabAlign(tabAlign) {
-    this[internal.setState]({ tabAlign });
+    this[setState]({ tabAlign });
   }
 }
 

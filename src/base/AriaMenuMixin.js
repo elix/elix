@@ -1,6 +1,12 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import { defaultAriaRole } from "./accessibility.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  render,
+  rendering,
+  setState,
+  state,
+} from "./internal.js";
 
 /**
  * Tells assistive technologies to describe a list's items as a menu of choices.
@@ -11,8 +17,8 @@ import * as internal from "./internal.js";
 export default function AriaMenuMixin(Base) {
   // The class prototype added by the mixin.
   class AriaMenu extends Base {
-    get [internal.defaultState]() {
-      const base = super[internal.defaultState];
+    get [defaultState]() {
+      const base = super[defaultState];
       return Object.assign(base, {
         itemRole: base.itemRole || "menuitem",
         role: base.role || "menu",
@@ -20,18 +26,18 @@ export default function AriaMenuMixin(Base) {
     }
 
     get itemRole() {
-      return this[internal.state].itemRole;
+      return this[state].itemRole;
     }
     set itemRole(itemRole) {
-      this[internal.setState]({ itemRole });
+      this[setState]({ itemRole });
     }
 
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      if (super[render]) {
+        super[render](changed);
       }
-      const { currentIndex, itemRole } = this[internal.state];
-      /** @type {ListItemElement[]} */ const items = this[internal.state].items;
+      const { currentIndex, itemRole } = this[state];
+      /** @type {ListItemElement[]} */ const items = this[state].items;
       if ((changed.items || changed.itemRole) && items) {
         // Give each item a role.
         items.forEach((item) => {
@@ -51,7 +57,7 @@ export default function AriaMenuMixin(Base) {
       }
       if (changed.role) {
         // Apply top-level role.
-        const { role } = this[internal.state];
+        const { role } = this[state];
         this.setAttribute("role", role);
       }
     }
@@ -63,8 +69,8 @@ export default function AriaMenuMixin(Base) {
     }
     set role(role) {
       super.role = role;
-      if (!this[internal.rendering]) {
-        this[internal.setState]({ role });
+      if (!this[rendering]) {
+        this[setState]({ role });
       }
     }
   }

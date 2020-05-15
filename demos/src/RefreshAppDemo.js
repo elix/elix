@@ -1,8 +1,16 @@
 import "../../define/PullToRefresh.js";
-import * as internal from "../../src/base/internal.js";
+import {
+  defaultState,
+  firstRender,
+  ids,
+  render,
+  setState,
+  state,
+  template,
+} from "../../src/base/internal.js";
 import { updateChildNodes } from "../../src/core/dom.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
-import * as template from "../../src/core/template.js";
 
 const texts = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie molestie enim porta dapibus. Phasellus dolor quam, egestas eu viverra at, porttitor in diam. Donec risus tellus, accumsan eget ipsum sed, vestibulum blandit ante. Nullam rhoncus leo nec lobortis convallis. Donec posuere tellus a nibh dignissim, rhoncus viverra neque rutrum. Suspendisse rutrum at massa vitae venenatis. Suspendisse ut risus pellentesque lacus dictum aliquet. Cras a arcu id odio molestie imperdiet.`,
@@ -18,9 +26,9 @@ const texts = [
 ];
 
 class RefreshAppDemo extends ReactiveElement {
-  get [internal.defaultState]() {
+  get [defaultState]() {
     const paragraphs = createParagraphs(texts);
-    return Object.assign(super[internal.defaultState], {
+    return Object.assign(super[defaultState], {
       paragraphs,
     });
   }
@@ -30,23 +38,23 @@ class RefreshAppDemo extends ReactiveElement {
       navigator.vibrate(5);
     }
     setTimeout(async () => {
-      /** @type {any} */ (this[internal.ids].pullToRefresh).refreshing = false;
-      /** @type {any} */ const refreshSound = this[internal.ids].refreshSound;
+      /** @type {any} */ (this[ids].pullToRefresh).refreshing = false;
+      /** @type {any} */ const refreshSound = this[ids].refreshSound;
       await playSound(refreshSound);
       // Rotate last paragraph to first place.
-      const paragraphs = [...this[internal.state].paragraphs];
+      const paragraphs = [...this[state].paragraphs];
       const last = paragraphs.pop();
       paragraphs.unshift(last);
       Object.freeze(paragraphs);
-      this[internal.setState]({ paragraphs });
+      this[setState]({ paragraphs });
     }, 1000);
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {PlainObject} */ changed) {
+    super[render](changed);
 
-    if (this[internal.firstRender]) {
-      this[internal.ids].pullToRefresh.addEventListener(
+    if (this[firstRender]) {
+      this[ids].pullToRefresh.addEventListener(
         "refreshing-changed",
         (event) => {
           /** @type {any} */
@@ -59,15 +67,12 @@ class RefreshAppDemo extends ReactiveElement {
     }
 
     if (changed.paragraphs) {
-      updateChildNodes(
-        this[internal.ids].pullToRefresh,
-        this[internal.state].paragraphs
-      );
+      updateChildNodes(this[ids].pullToRefresh, this[state].paragraphs);
     }
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           display: block;

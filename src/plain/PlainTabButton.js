@@ -1,6 +1,6 @@
-import * as internal from "../base/internal.js";
+import { ids, render, state, template } from "../base/internal.js";
 import TabButton from "../base/TabButton.js";
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 
 /**
  * TabButton component in the Plain reference design system
@@ -8,11 +8,11 @@ import html from "../core/html.js";
  * @inherits TabButton
  */
 class PlainTabButton extends TabButton {
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
     if (changed.position) {
       // Adjust margins.
-      const { position } = this[internal.state];
+      const { position } = this[state];
 
       Object.assign(this.style, {
         marginBottom: position === "top" ? "-1px" : null,
@@ -29,12 +29,11 @@ class PlainTabButton extends TabButton {
         right: "0 0.25em 0.25em 0",
         top: "0.25em 0.25em 0 0",
       };
-      this[internal.ids].inner.style.borderRadius =
-        borderRadiusForPosition[position];
+      this[ids].inner.style.borderRadius = borderRadiusForPosition[position];
     }
     if (changed.position || changed.selected) {
       // Adjust selected appearance.
-      const { position, selected } = this[internal.state];
+      const { position, selected } = this[state];
       /** @type {IndexedObject<string|null>} */
       const buttonStyle = {
         borderBottomColor: null,
@@ -60,10 +59,10 @@ class PlainTabButton extends TabButton {
     }
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           [part~="inner"] {
             background: white;

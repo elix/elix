@@ -1,6 +1,6 @@
 import { forwardFocus } from "../core/dom.js";
-import html from "../core/html.js";
-import * as template from "../core/template.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
+import { transmute } from "../core/template.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
@@ -8,7 +8,20 @@ import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import Hidden from "./Hidden.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  ids,
+  inputDelegate,
+  keydown,
+  raiseChangeEvents,
+  render,
+  rendered,
+  setState,
+  shadowRoot,
+  state,
+  stateEffects,
+  template,
+} from "./internal.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import PopupSource from "./PopupSource.js";
 import UpDownToggle from "./UpDownToggle.js";
@@ -42,8 +55,8 @@ const Base = AriaRoleMixin(
  * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
  */
 class ComboBox extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       focused: false,
       inputPartType: "input",
       orientation: "vertical",
@@ -56,20 +69,20 @@ class ComboBox extends Base {
     });
   }
 
-  get [internal.inputDelegate]() {
-    return this[internal.ids].input;
+  get [inputDelegate]() {
+    return this[ids].input;
   }
 
-  [internal.rendered](/** @type {ChangedFlags} */ changed) {
-    super[internal.rendered](changed);
-    if (this[internal.state].selectText) {
+  [rendered](/** @type {ChangedFlags} */ changed) {
+    super[rendered](changed);
+    if (this[state].selectText) {
       // Select the text in the input after giving the inner input a chance to render the value.
       setTimeout(() => {
         // Text selection might have been turned off in the interim;
         // double-check that we still want to select text.
-        if (this[internal.state].selectText) {
+        if (this[state].selectText) {
           /** @type {any} */
-          const cast = this[internal.ids].input;
+          const cast = this[ids].input;
           const value = cast.value;
           if (value > "") {
             cast.selectionStart = 0;
@@ -80,8 +93,8 @@ class ComboBox extends Base {
     }
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     // Select text on closing.
     // Exception: on mobile devices, leaving the text selected may show
@@ -105,7 +118,7 @@ class ComboBox extends Base {
    * @type {Element|null}
    */
   get input() {
-    return this[internal.shadowRoot] ? this[internal.ids].input : null;
+    return this[shadowRoot] ? this[ids].input : null;
   }
 
   /**
@@ -116,13 +129,13 @@ class ComboBox extends Base {
    * @default 'input'
    */
   get inputPartType() {
-    return this[internal.state].inputPartType;
+    return this[state].inputPartType;
   }
   set inputPartType(inputPartType) {
-    this[internal.setState]({ inputPartType });
+    this[setState]({ inputPartType });
   }
 
-  [internal.keydown](/** @type {KeyboardEvent} */ event) {
+  [keydown](/** @type {KeyboardEvent} */ event) {
     let handled;
 
     switch (event.key) {
@@ -152,9 +165,7 @@ class ComboBox extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return (
-      handled || (super[internal.keydown] && super[internal.keydown](event))
-    );
+    return handled || (super[keydown] && super[keydown](event));
   }
 
   /**
@@ -163,10 +174,10 @@ class ComboBox extends Base {
    * @type {string}
    */
   get placeholder() {
-    return this[internal.state].placeholder;
+    return this[state].placeholder;
   }
   set placeholder(placeholder) {
-    this[internal.setState]({ placeholder });
+    this[setState]({ placeholder });
   }
 
   /**
@@ -177,42 +188,42 @@ class ComboBox extends Base {
    * @default UpDownToggle
    */
   get popupTogglePartType() {
-    return this[internal.state].popupTogglePartType;
+    return this[state].popupTogglePartType;
   }
   set popupTogglePartType(popupTogglePartType) {
-    this[internal.setState]({ popupTogglePartType });
+    this[setState]({ popupTogglePartType });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
-    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+    renderParts(this[shadowRoot], this[state], changed);
 
     if (changed.inputPartType) {
-      this[internal.ids].input.addEventListener("blur", () => {
-        this[internal.setState]({
+      this[ids].input.addEventListener("blur", () => {
+        this[setState]({
           focused: false,
         });
         // If we're open and lose focus, then close.
         if (this.opened) {
-          this[internal.raiseChangeEvents] = true;
+          this[raiseChangeEvents] = true;
           this.close();
-          this[internal.raiseChangeEvents] = false;
+          this[raiseChangeEvents] = false;
         }
       });
 
-      this[internal.ids].input.addEventListener("focus", () => {
-        this[internal.raiseChangeEvents] = true;
-        this[internal.setState]({
+      this[ids].input.addEventListener("focus", () => {
+        this[raiseChangeEvents] = true;
+        this[setState]({
           focused: true,
         });
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = false;
       });
 
-      this[internal.ids].input.addEventListener("input", () => {
-        this[internal.raiseChangeEvents] = true;
+      this[ids].input.addEventListener("input", () => {
+        this[raiseChangeEvents] = true;
         /** @type {any} */
-        const cast = this[internal.ids].input;
+        const cast = this[ids].input;
         const value = cast.value;
         /** @type {PlainObject} */ const changes = {
           value,
@@ -222,51 +233,51 @@ class ComboBox extends Base {
           // If user types while popup is closed, implicitly open it.
           changes.opened = true;
         }
-        this[internal.setState](changes);
-        this[internal.raiseChangeEvents] = false;
+        this[setState](changes);
+        this[raiseChangeEvents] = false;
       });
 
-      this[internal.ids].input.addEventListener("keydown", () => {
-        this[internal.raiseChangeEvents] = true;
-        this[internal.setState]({
+      this[ids].input.addEventListener("keydown", () => {
+        this[raiseChangeEvents] = true;
+        this[setState]({
           selectText: false,
         });
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = false;
       });
 
       // If the user clicks on the input and the popup is closed, open it.
-      this[internal.ids].input.addEventListener("mousedown", (event) => {
+      this[ids].input.addEventListener("mousedown", (event) => {
         // Only process events for the main (usually left) button.
         if (/** @type {MouseEvent} */ (event).button !== 0) {
           return;
         }
-        this[internal.raiseChangeEvents] = true;
-        this[internal.setState]({
+        this[raiseChangeEvents] = true;
+        this[setState]({
           selectText: false,
         });
         if (this.closed && !this.disabled) {
           this.open();
         }
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = false;
       });
     }
 
     if (changed.popupTogglePartType) {
-      const popupToggle = this[internal.ids].popupToggle;
-      const input = this[internal.ids].input;
+      const popupToggle = this[ids].popupToggle;
+      const input = this[ids].input;
       popupToggle.addEventListener("mousedown", (event) => {
         // Only process events for the main (usually left) button.
         if (/** @type {MouseEvent} */ (event).button !== 0) {
           return;
         }
         // Ignore mousedown if we're presently disabled.
-        if (this[internal.state].disabled) {
+        if (this[state].disabled) {
           event.preventDefault();
           return;
         }
-        this[internal.raiseChangeEvents] = true;
+        this[raiseChangeEvents] = true;
         this.toggle();
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = false;
       });
       if (popupToggle instanceof HTMLElement && input instanceof HTMLElement) {
         // Forward focus for new toggle button.
@@ -275,7 +286,7 @@ class ComboBox extends Base {
     }
 
     if (changed.popupPartType) {
-      const popup = this[internal.ids].popup;
+      const popup = this[ids].popup;
       /** @type {any} */ const cast = popup;
       popup.removeAttribute("tabindex");
       // Override popup's backdrop to hide it.
@@ -298,49 +309,49 @@ class ComboBox extends Base {
     }
 
     if (changed.disabled) {
-      const { disabled } = this[internal.state];
-      /** @type {any} */ (this[internal.ids].input).disabled = disabled;
-      /** @type {any} */ (this[internal.ids].popupToggle).disabled = disabled;
+      const { disabled } = this[state];
+      /** @type {any} */ (this[ids].input).disabled = disabled;
+      /** @type {any} */ (this[ids].popupToggle).disabled = disabled;
     }
 
     if (changed.placeholder) {
-      const { placeholder } = this[internal.state];
-      /** @type {any} */ (this[internal.ids].input).placeholder = placeholder;
+      const { placeholder } = this[state];
+      /** @type {any} */ (this[ids].input).placeholder = placeholder;
     }
 
     // Tell the toggle which direction it should point to depending on which
     // direction the popup will open.
     if (changed.popupPosition || changed.popupTogglePartType) {
-      const { popupPosition } = this[internal.state];
+      const { popupPosition } = this[state];
       const direction = popupPosition === "below" ? "down" : "up";
-      /** @type {any} */ const popupToggle = this[internal.ids].popupToggle;
+      /** @type {any} */ const popupToggle = this[ids].popupToggle;
       if ("direction" in popupToggle) {
         popupToggle.direction = direction;
       }
     }
 
     if (changed.value) {
-      const { value } = this[internal.state];
-      /** @type {any} */ (this[internal.ids].input).value = value;
+      const { value } = this[state];
+      /** @type {any} */ (this[ids].input).value = value;
     }
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     // Put an input element and toggle in the source.
     const sourceSlot = result.content.querySelector('slot[name="source"]');
     if (sourceSlot) {
-      sourceSlot.replaceWith(html`
+      sourceSlot.replaceWith(fragmentFrom.html`
         <input id="input" part="input"></input>
         <div id="popupToggle" part="popup-toggle" tabindex="-1"></div>
       `);
     }
 
-    renderParts(result.content, this[internal.state]);
+    renderParts(result.content, this[state]);
 
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           [part~="source"] {
             background-color: inherit;
@@ -366,10 +377,10 @@ class ComboBox extends Base {
   }
 
   get value() {
-    return this[internal.state].value;
+    return this[state].value;
   }
   set value(value) {
-    this[internal.setState]({ value });
+    this[setState]({ value });
   }
 }
 
@@ -386,14 +397,14 @@ function renderParts(root, state, changed) {
     const { inputPartType } = state;
     const input = root.getElementById("input");
     if (input) {
-      template.transmute(input, inputPartType);
+      transmute(input, inputPartType);
     }
   }
   if (!changed || changed.popupTogglePartType) {
     const { popupTogglePartType } = state;
     const popupToggle = root.getElementById("popupToggle");
     if (popupToggle) {
-      template.transmute(popupToggle, popupTogglePartType);
+      transmute(popupToggle, popupTogglePartType);
     }
   }
 }

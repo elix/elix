@@ -1,7 +1,7 @@
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
-import * as internal from "./internal.js";
+import { defaultState, render, state, template } from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
@@ -32,16 +32,16 @@ const Base = CursorAPIMixin(
  * @mixes SlotItemsMixin
  */
 class Modes extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       currentItemRequired: true,
     });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
     if (changed.items || changed.currentIndex) {
-      const { currentIndex, items } = this[internal.state];
+      const { currentIndex, items } = this[state];
       if (items) {
         items.forEach((item, index) => {
           const selected = index === currentIndex;
@@ -51,8 +51,8 @@ class Modes extends Base {
     }
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           display: inline-flex;

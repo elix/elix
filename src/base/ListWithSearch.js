@@ -1,6 +1,6 @@
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
+import { transmute } from "../core/template.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
@@ -10,7 +10,23 @@ import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FilterListBox from "./FilterListBox.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  goDown,
+  goEnd,
+  goStart,
+  goUp,
+  ids,
+  inputDelegate,
+  itemsDelegate,
+  keydown,
+  raiseChangeEvents,
+  render,
+  setState,
+  shadowRoot,
+  state,
+  template,
+} from "./internal.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
@@ -60,8 +76,8 @@ const Base = ComposedFocusMixin(
  * @part {FilterListBox} list - the searchable list of items
  */
 class ListWithSearch extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       filter: "",
       inputPartType: "input",
       listPartType: FilterListBox,
@@ -70,10 +86,10 @@ class ListWithSearch extends Base {
   }
 
   get filter() {
-    return this[internal.state].filter;
+    return this[state].filter;
   }
   set filter(filter) {
-    this[internal.setState]({ filter });
+    this[setState]({ filter });
   }
 
   /**
@@ -84,24 +100,24 @@ class ListWithSearch extends Base {
    * @default 'input'
    */
   get inputPartType() {
-    return this[internal.state].inputPartType;
+    return this[state].inputPartType;
   }
   set inputPartType(inputPartType) {
-    this[internal.setState]({ inputPartType });
+    this[setState]({ inputPartType });
   }
 
-  get [internal.inputDelegate]() {
-    return this[internal.ids].input;
+  get [inputDelegate]() {
+    return this[ids].input;
   }
 
-  get [internal.itemsDelegate]() {
-    return this[internal.ids].list;
+  get [itemsDelegate]() {
+    return this[ids].list;
   }
 
-  [internal.keydown](/** @type {KeyboardEvent} */ event) {
+  [keydown](/** @type {KeyboardEvent} */ event) {
     let handled;
     /** @type {any} */
-    const list = this[internal.ids].list;
+    const list = this[ids].list;
 
     switch (event.key) {
       // We do our own handling of the Up and Down arrow keys, rather than
@@ -110,14 +126,10 @@ class ListWithSearch extends Base {
       // handle them. We also need to forward PageDown/PageUp to the list
       // element.
       case "ArrowDown":
-        handled = event.altKey
-          ? this[internal.goEnd]()
-          : this[internal.goDown]();
+        handled = event.altKey ? this[goEnd]() : this[goDown]();
         break;
       case "ArrowUp":
-        handled = event.altKey
-          ? this[internal.goStart]()
-          : this[internal.goUp]();
+        handled = event.altKey ? this[goStart]() : this[goUp]();
         break;
 
       // Forward Page Down/Page Up to the list element.
@@ -153,9 +165,7 @@ class ListWithSearch extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return (
-      handled || (super[internal.keydown] && super[internal.keydown](event))
-    );
+    return handled || (super[keydown] && super[keydown](event));
   }
 
   /**
@@ -166,49 +176,49 @@ class ListWithSearch extends Base {
    * @default ListBox
    */
   get listPartType() {
-    return this[internal.state].listPartType;
+    return this[state].listPartType;
   }
   set listPartType(listPartType) {
-    this[internal.setState]({ listPartType });
+    this[setState]({ listPartType });
   }
 
   get placeholder() {
-    return this[internal.state].placeholder;
+    return this[state].placeholder;
   }
   set placeholder(placeholder) {
-    this[internal.setState]({ placeholder });
+    this[setState]({ placeholder });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
-    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+    renderParts(this[shadowRoot], this[state], changed);
 
     if (changed.inputPartType) {
-      this[internal.ids].input.addEventListener("input", () => {
-        this[internal.raiseChangeEvents] = true;
-        const filter = /** @type {any} */ (this[internal.ids].input).value;
-        this[internal.setState]({ filter });
-        this[internal.raiseChangeEvents] = false;
+      this[ids].input.addEventListener("input", () => {
+        this[raiseChangeEvents] = true;
+        const filter = /** @type {any} */ (this[ids].input).value;
+        this[setState]({ filter });
+        this[raiseChangeEvents] = false;
       });
     }
 
     if (changed.filter) {
-      const { filter } = this[internal.state];
-      /** @type {HTMLInputElement} */ (this[internal.ids].input).value = filter;
-      /** @type {any} */ (this[internal.ids].list).filter = filter;
+      const { filter } = this[state];
+      /** @type {HTMLInputElement} */ (this[ids].input).value = filter;
+      /** @type {any} */ (this[ids].list).filter = filter;
     }
 
     if (changed.placeholder) {
-      const { placeholder } = this[internal.state];
-      /** @type {HTMLInputElement} */ (this[internal.ids]
+      const { placeholder } = this[state];
+      /** @type {HTMLInputElement} */ (this[ids]
         .input).placeholder = placeholder;
     }
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
-    result.content.append(html`
+  get [template]() {
+    const result = super[template];
+    result.content.append(fragmentFrom.html`
       <style>
         :host {
           display: grid;
@@ -229,7 +239,7 @@ class ListWithSearch extends Base {
       </div>
     `);
 
-    renderParts(result.content, this[internal.state]);
+    renderParts(result.content, this[state]);
 
     return result;
   }
@@ -248,14 +258,14 @@ function renderParts(root, state, changed) {
     const { inputPartType } = state;
     const input = root.getElementById("input");
     if (input) {
-      template.transmute(input, inputPartType);
+      transmute(input, inputPartType);
     }
   }
   if (!changed || changed.listPartType) {
     const { listPartType } = state;
     const list = root.getElementById("list");
     if (list) {
-      template.transmute(list, listPartType);
+      transmute(list, listPartType);
     }
   }
 }

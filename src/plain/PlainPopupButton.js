@@ -1,4 +1,4 @@
-import * as internal from "../base/internal.js";
+import { defaultState } from "../base/internal.js";
 import PopupButton from "../base/PopupButton.js";
 import PlainBorderButton from "./PlainBorderButton.js";
 import PlainPopup from "./PlainPopup.js";
@@ -11,8 +11,8 @@ import PlainPopup from "./PlainPopup.js";
  * @part {PlainBorderButton} source
  */
 class PlainPopupButton extends PopupButton {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       popupPartType: PlainPopup,
       sourcePartType: PlainBorderButton,
     });

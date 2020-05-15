@@ -1,4 +1,4 @@
-import * as internal from "../../src/base/internal.js";
+import { keydown, renderChanges, state } from "../../src/base/internal.js";
 import KeyboardMixin from "../../src/base/KeyboardMixin.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
 import * as mockInteractions from "../mockInteractions.js";
@@ -20,7 +20,7 @@ describe("KeyboardMixin", () => {
 
   it("assigns a tabindex of 0 by default", () => {
     const fixture = new KeyboardTest();
-    fixture[internal.renderChanges]();
+    fixture[renderChanges]();
     assert.equal(fixture.getAttribute("tabindex"), "0");
   });
 
@@ -33,20 +33,20 @@ describe("KeyboardMixin", () => {
 
   it("reflects tabindex attribute and tabIndex property assignments in state", async () => {
     const fixture = new KeyboardTest();
-    fixture[internal.renderChanges]();
-    assert.equal(fixture[internal.state].tabIndex, 0);
+    fixture[renderChanges]();
+    assert.equal(fixture[state].tabIndex, 0);
     fixture.setAttribute("tabindex", "1");
-    fixture[internal.renderChanges]();
-    assert.equal(fixture[internal.state].tabIndex, 1);
+    fixture[renderChanges]();
+    assert.equal(fixture[state].tabIndex, 1);
     assert.equal(fixture.tabIndex, 1);
     fixture.tabIndex = 2;
-    assert.equal(fixture[internal.state].tabIndex, 2);
+    assert.equal(fixture[state].tabIndex, 2);
     assert.equal(fixture.getAttribute("tabindex"), "2");
   });
 
   it("listens to keydown and fires the keydown() method", (done) => {
     const fixture = new KeyboardTest();
-    fixture[internal.keydown] = () => {
+    fixture[keydown] = () => {
       done();
       return true;
     };

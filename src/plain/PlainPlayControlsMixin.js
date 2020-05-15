@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { ids, render, state, template } from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
@@ -15,27 +15,27 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
  */
 export default function PlainPlayControlsMixin(Base) {
   return class PlainPlayControls extends Base {
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      super[render](changed);
 
       // Show playing icon if paused; paused icon if playing.
       if (changed.playing) {
-        const { playing } = this[internal.state];
-        this[internal.ids].pausedIcon.style.display = playing ? "none" : "";
-        this[internal.ids].playingIcon.style.display = playing ? "" : "none";
+        const { playing } = this[state];
+        this[ids].pausedIcon.style.display = playing ? "none" : "";
+        this[ids].playingIcon.style.display = playing ? "" : "none";
       }
 
       // Flip the icons for right-to-left.
       if (changed.rightToLeft) {
-        const rightToLeft = this[internal.state].rightToLeft;
+        const rightToLeft = this[state].rightToLeft;
         const transform = rightToLeft ? "rotate(180deg)" : "";
-        this[internal.ids].nextIcon.style.transform = transform;
-        this[internal.ids].previousIcon.style.transform = transform;
+        this[ids].nextIcon.style.transform = transform;
+        this[ids].previousIcon.style.transform = transform;
       }
     }
 
-    get [internal.template]() {
-      const result = super[internal.template];
+    get [template]() {
+      const result = super[template];
 
       // Insert our icons into the button slots.
       const previousButton = result.content.querySelector(
@@ -43,7 +43,7 @@ export default function PlainPlayControlsMixin(Base) {
       );
       if (previousButton) {
         previousButton.append(
-          html`
+          fragmentFrom.html`
             <svg
               id="previousIcon"
               part="control-icon previous-icon"
@@ -63,7 +63,7 @@ export default function PlainPlayControlsMixin(Base) {
       );
       if (playButton) {
         playButton.append(
-          html`
+          fragmentFrom.html`
             <svg
               id="playingIcon"
               part="control-icon playing-icon"
@@ -98,7 +98,7 @@ export default function PlainPlayControlsMixin(Base) {
       );
       if (nextButton) {
         nextButton.append(
-          html`
+          fragmentFrom.html`
             <svg
               id="nextIcon"
               part="control-icon next-icon"
@@ -115,7 +115,7 @@ export default function PlainPlayControlsMixin(Base) {
       }
 
       result.content.append(
-        html`
+        fragmentFrom.html`
           <style>
             [part~="button-container"] {
               box-sizing: border-box;

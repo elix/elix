@@ -1,6 +1,13 @@
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  ids,
+  render,
+  setState,
+  state,
+  template,
+} from "./internal.js";
 
 /**
  * An element that can point up or down.
@@ -9,8 +16,8 @@ import * as internal from "./internal.js";
  * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
  */
 class UpDownToggle extends ReactiveElement {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       direction: "down",
       disabled: false,
     });
@@ -23,38 +30,37 @@ class UpDownToggle extends ReactiveElement {
    * @default 'down'
    */
   get direction() {
-    return this[internal.state].direction;
+    return this[state].direction;
   }
   set direction(direction) {
-    this[internal.setState]({ direction });
+    this[setState]({ direction });
   }
 
   get disabled() {
-    return this[internal.state].disabled;
+    return this[state].disabled;
   }
   set disabled(disabled) {
-    this[internal.setState]({ disabled });
+    this[setState]({ disabled });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
     if (changed.direction) {
-      const { direction } = this[internal.state];
-      this[internal.ids].downIcon.style.display =
+      const { direction } = this[state];
+      this[ids].downIcon.style.display =
         direction === "down" ? "block" : "none";
-      this[internal.ids].upIcon.style.display =
-        direction === "up" ? "block" : "none";
+      this[ids].upIcon.style.display = direction === "up" ? "block" : "none";
     }
 
     if (changed.disabled) {
-      const { disabled } = this[internal.state];
+      const { disabled } = this[state];
       this.toggleAttribute("disabled", disabled);
     }
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           display: inline-block;

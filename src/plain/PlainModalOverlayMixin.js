@@ -1,4 +1,4 @@
-import * as internal from "../base/internal.js";
+import { defaultState } from "../base/internal.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import PlainModalBackdrop from "./PlainModalBackdrop.js";
 import PlainOverlayFrame from "./PlainOverlayFrame.js";
@@ -13,8 +13,8 @@ import PlainOverlayFrame from "./PlainOverlayFrame.js";
  */
 export default function PlaPlainModalOverlayMixin(Base) {
   return class PlainModalOverlay extends Base {
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         backdropPartType: PlainModalBackdrop,
         framePartType: PlainOverlayFrame,
       });

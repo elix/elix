@@ -1,6 +1,6 @@
 import CalendarMonthNavigator from "../base/CalendarMonthNavigator.js";
 import DarkModeMixin from "../base/DarkModeMixin.js";
-import * as internal from "../base/internal.js";
+import { defaultState } from "../base/internal.js";
 import PlainArrowDirectionMixin from "./PlainArrowDirectionMixin.js";
 import PlainCalendarDayButton from "./PlainCalendarDayButton.js";
 import PlainCalendarDayNamesHeader from "./PlainCalendarDayNamesHeader.js";
@@ -19,8 +19,8 @@ import PlainCalendarMonthYearHeader from "./PlainCalendarMonthYearHeader.js";
 class PlainCalendarMonthNavigator extends DarkModeMixin(
   PlainArrowDirectionMixin(CalendarMonthNavigator)
 ) {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       dayNamesHeaderPartType: PlainCalendarDayNamesHeader,
       dayPartType: PlainCalendarDayButton,
       monthYearHeaderPartType: PlainCalendarMonthYearHeader,

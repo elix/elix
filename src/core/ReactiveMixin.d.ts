@@ -3,24 +3,31 @@
 
 /// <reference path="shared.d.ts"/>
 
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  raiseChangeEvents,
+  render,
+  renderChanges,
+  rendered,
+  rendering,
+  setState,
+  state,
+  stateEffects,
+} from "./internal.js";
 
 declare const ReactiveMixin: Mixin<
   {},
   {
     connectedCallback(): void;
-    readonly [internal.defaultState]: PlainObject;
-    [internal.raiseChangeEvents]: boolean;
-    [internal.render](changed: ChangedFlags): void;
-    [internal.renderChanges](): void;
-    [internal.rendered](changed: ChangedFlags): void;
-    [internal.rendering]: boolean;
-    [internal.setState](changes: PlainObject): Promise<void>;
-    readonly [internal.state]: PlainObject;
-    [internal.stateEffects](
-      state: PlainObject,
-      changed: ChangedFlags
-    ): PlainObject;
+    readonly [defaultState]: PlainObject;
+    [raiseChangeEvents]: boolean;
+    [render](changed: ChangedFlags): void;
+    [renderChanges](): void;
+    [rendered](changed: ChangedFlags): void;
+    [rendering]: boolean;
+    [setState](changes: PlainObject): Promise<void>;
+    readonly [state]: PlainObject;
+    [stateEffects](state: PlainObject, changed: ChangedFlags): PlainObject;
   }
 >;
 

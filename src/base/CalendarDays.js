@@ -1,10 +1,19 @@
 import { updateChildNodes } from "../core/dom.js";
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
+import { createElement } from "../core/template.js";
 import * as calendar from "./calendar.js";
 import CalendarDay from "./CalendarDay.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  ids,
+  render,
+  setState,
+  state,
+  stateEffects,
+  template,
+} from "./internal.js";
 
 const Base = CalendarElementMixin(ReactiveElement);
 
@@ -52,10 +61,10 @@ class CalendarDays extends Base {
   }
 
   get dayCount() {
-    return this[internal.state].dayCount;
+    return this[state].dayCount;
   }
   set dayCount(dayCount) {
-    this[internal.setState]({ dayCount });
+    this[setState]({ dayCount });
   }
 
   /**
@@ -66,10 +75,10 @@ class CalendarDays extends Base {
    * @default CalendarDay
    */
   get dayPartType() {
-    return this[internal.state].dayPartType;
+    return this[state].dayPartType;
   }
   set dayPartType(dayPartType) {
-    this[internal.setState]({ dayPartType });
+    this[setState]({ dayPartType });
   }
 
   /**
@@ -78,12 +87,12 @@ class CalendarDays extends Base {
    * @type {Element[]|null}
    */
   get days() {
-    return this[internal.state].days;
+    return this[state].days;
   }
 
-  get [internal.defaultState]() {
+  get [defaultState]() {
     const today = calendar.today();
-    return Object.assign(super[internal.defaultState], {
+    return Object.assign(super[defaultState], {
       date: today,
       dayCount: 1,
       dayPartType: CalendarDay,
@@ -94,18 +103,15 @@ class CalendarDays extends Base {
     });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
     if (changed.days) {
-      updateChildNodes(
-        this[internal.ids].dayContainer,
-        this[internal.state].days
-      );
+      updateChildNodes(this[ids].dayContainer, this[state].days);
     }
     if (changed.date || changed.locale || changed.showSelectedDay) {
       // Ensure only current date has "selected" class.
-      const showSelectedDay = this[internal.state].showSelectedDay;
-      const { date } = this[internal.state];
+      const showSelectedDay = this[state].showSelectedDay;
+      const { date } = this[state];
       const selectedDate = date.getDate();
       const selectedMonth = date.getMonth();
       const selectedYear = date.getFullYear();
@@ -122,13 +128,13 @@ class CalendarDays extends Base {
     }
     if (changed.dayCount || changed.startDate) {
       // Mark dates as inside or outside of range.
-      const { dayCount, startDate } = this[internal.state];
+      const { dayCount, startDate } = this[state];
       const firstDateAfterRange = calendar.offsetDateByDays(
         startDate,
         dayCount
       );
       /** @type {any[]} */
-      const days = this[internal.state].days || [];
+      const days = this[state].days || [];
       days.forEach((day) => {
         if ("outsideRange" in day) {
           const dayDate = day.date;
@@ -143,30 +149,30 @@ class CalendarDays extends Base {
   }
 
   get showCompleteWeeks() {
-    return this[internal.state].showCompleteWeeks;
+    return this[state].showCompleteWeeks;
   }
   set showCompleteWeeks(showCompleteWeeks) {
-    this[internal.setState]({ showCompleteWeeks });
+    this[setState]({ showCompleteWeeks });
   }
 
   get showSelectedDay() {
-    return this[internal.state].showSelectedDay;
+    return this[state].showSelectedDay;
   }
   set showSelectedDay(showSelectedDay) {
-    this[internal.setState]({ showSelectedDay });
+    this[setState]({ showSelectedDay });
   }
 
   get startDate() {
-    return this[internal.state].startDate;
+    return this[state].startDate;
   }
   set startDate(startDate) {
-    if (!calendar.datesEqual(this[internal.state].startDate, startDate)) {
-      this[internal.setState]({ startDate });
+    if (!calendar.datesEqual(this[state].startDate, startDate)) {
+      this[setState]({ startDate });
     }
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     // If any date-related state changes, regenerate the set of days.
     if (
@@ -183,8 +189,8 @@ class CalendarDays extends Base {
     return effects;
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           display: inline-block;
@@ -230,9 +236,7 @@ function updateDays(state, forceCreation) {
   let date = workingStartDate;
   for (let i = 0; i < workingDayCount; i++) {
     const createNewElement = forceCreation || i >= days.length;
-    const day = createNewElement
-      ? template.createElement(dayPartType)
-      : days[i];
+    const day = createNewElement ? createElement(dayPartType) : days[i];
     day.date = new Date(date.getTime());
     day.locale = locale;
     if ("part" in day) {

@@ -1,5 +1,5 @@
 import { selfAndComposedAncestors } from "../core/dom.js";
-import * as internal from "./internal.js";
+import { shadowRoot } from "./internal.js";
 
 /**
  * Utilities for working with scrolling.
@@ -54,7 +54,7 @@ export function canScrollInDirection(target, orientation, downOrRight) {
 /**
  * This helper returns a guess as to what portion of the given element can be
  * scrolled. This is used by [CurrentItemInViewMixin](CurrentItemInViewMixin) to
- * provide a default implementation of [internal.scrollTarget].
+ * provide a default implementation of [scrollTarget].
  *
  * If the element has a shadow root containing a default (unnamed) slot, this
  * returns the first ancestor of that slot that has either `overflow-x` or
@@ -66,7 +66,7 @@ export function canScrollInDirection(target, orientation, downOrRight) {
  * @returns {Element}
  */
 export function defaultScrollTarget(element) {
-  const root = element[internal.shadowRoot];
+  const root = element[shadowRoot];
   const slot = root && root.querySelector("slot:not([name])");
   const scrollingParent =
     slot &&

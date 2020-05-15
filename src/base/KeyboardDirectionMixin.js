@@ -1,5 +1,14 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  goDown,
+  goEnd,
+  goLeft,
+  goRight,
+  goStart,
+  goUp,
+  keydown,
+  state,
+} from "./internal.js";
 
 /**
  * Maps direction keys to direction semantics.
@@ -30,9 +39,9 @@ export default function KeyboardDirectionMixin(Base) {
      * Invoked when the user wants to go/navigate down.
      * The default implementation of this method does nothing.
      */
-    [internal.goDown]() {
-      if (super[internal.goDown]) {
-        return super[internal.goDown]();
+    [goDown]() {
+      if (super[goDown]) {
+        return super[goDown]();
       }
     }
 
@@ -40,9 +49,9 @@ export default function KeyboardDirectionMixin(Base) {
      * Invoked when the user wants to go/navigate to the end (e.g., of a list).
      * The default implementation of this method does nothing.
      */
-    [internal.goEnd]() {
-      if (super[internal.goEnd]) {
-        return super[internal.goEnd]();
+    [goEnd]() {
+      if (super[goEnd]) {
+        return super[goEnd]();
       }
     }
 
@@ -50,9 +59,9 @@ export default function KeyboardDirectionMixin(Base) {
      * Invoked when the user wants to go/navigate left.
      * The default implementation of this method does nothing.
      */
-    [internal.goLeft]() {
-      if (super[internal.goLeft]) {
-        return super[internal.goLeft]();
+    [goLeft]() {
+      if (super[goLeft]) {
+        return super[goLeft]();
       }
     }
 
@@ -60,9 +69,9 @@ export default function KeyboardDirectionMixin(Base) {
      * Invoked when the user wants to go/navigate right.
      * The default implementation of this method does nothing.
      */
-    [internal.goRight]() {
-      if (super[internal.goRight]) {
-        return super[internal.goRight]();
+    [goRight]() {
+      if (super[goRight]) {
+        return super[goRight]();
       }
     }
 
@@ -70,9 +79,9 @@ export default function KeyboardDirectionMixin(Base) {
      * Invoked when the user wants to go/navigate to the start (e.g., of a
      * list). The default implementation of this method does nothing.
      */
-    [internal.goStart]() {
-      if (super[internal.goStart]) {
-        return super[internal.goStart]();
+    [goStart]() {
+      if (super[goStart]) {
+        return super[goStart]();
       }
     }
 
@@ -80,17 +89,17 @@ export default function KeyboardDirectionMixin(Base) {
      * Invoked when the user wants to go/navigate up.
      * The default implementation of this method does nothing.
      */
-    [internal.goUp]() {
-      if (super[internal.goUp]) {
-        return super[internal.goUp]();
+    [goUp]() {
+      if (super[goUp]) {
+        return super[goUp]();
       }
     }
 
-    [internal.keydown](/** @type {KeyboardEvent} */ event) {
+    [keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
 
       // Respect orientation state if defined, otherwise assume "both".
-      const orientation = this[internal.state].orientation || "both";
+      const orientation = this[state].orientation || "both";
       const horizontal = orientation === "horizontal" || orientation === "both";
       const vertical = orientation === "vertical" || orientation === "both";
 
@@ -99,47 +108,39 @@ export default function KeyboardDirectionMixin(Base) {
       switch (event.key) {
         case "ArrowDown":
           if (vertical) {
-            handled = event.altKey
-              ? this[internal.goEnd]()
-              : this[internal.goDown]();
+            handled = event.altKey ? this[goEnd]() : this[goDown]();
           }
           break;
 
         case "ArrowLeft":
           if (horizontal && !event.metaKey && !event.altKey) {
-            handled = this[internal.goLeft]();
+            handled = this[goLeft]();
           }
           break;
 
         case "ArrowRight":
           if (horizontal && !event.metaKey && !event.altKey) {
-            handled = this[internal.goRight]();
+            handled = this[goRight]();
           }
           break;
 
         case "ArrowUp":
           if (vertical) {
-            handled = event.altKey
-              ? this[internal.goStart]()
-              : this[internal.goUp]();
+            handled = event.altKey ? this[goStart]() : this[goUp]();
           }
           break;
 
         case "End":
-          handled = this[internal.goEnd]();
+          handled = this[goEnd]();
           break;
 
         case "Home":
-          handled = this[internal.goStart]();
+          handled = this[goStart]();
           break;
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return (
-        handled ||
-        (super[internal.keydown] && super[internal.keydown](event)) ||
-        false
-      );
+      return handled || (super[keydown] && super[keydown](event)) || false;
     }
   }
 

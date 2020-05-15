@@ -10,15 +10,15 @@
  * To use these `Symbol` objects in your own component, include this module and
  * then create a property or method whose key is the desired Symbol. E.g.,
  * [ShadowTemplateMixin](ShadowTemplateMixin) expects a component to define
- * a property called [internal.template](#template):
+ * a property called [template](#template):
  *
- *     import * as internal from 'elix/src/internal.js';
- *     import * as template from 'elix/src/template.js'
+ *     import { checkSize, contentSlot, defaultState, defaultTabIndex, delegatesFocus, effectEndTarget, firstRender, focusTarget, getItemText, goDown, goEnd, goFirst, goLast, goLeft, goNext, goPrevious, goRight, goStart, goToItemWithPrefix, goUp, hasDynamicTemplate, ids, inputDelegate, itemMatchesState, itemsDelegate, keydown, mouseenter, mouseleave, nativeInternals, event, raiseChangeEvents, render, renderChanges, renderDataToElement, rendered, rendering, scrollTarget, setState, shadowRoot, shadowRootMode, startEffect, state, stateEffects, swipeDown, swipeDownComplete, swipeLeft, swipeLeftTransitionEnd, swipeRight, swipeRightTransitionEnd, swipeUp, swipeUpComplete, swipeStart, swipeTarget, tap, template, toggleSelectedFlag } from 'elix/src/internal.js';
+ *     import { createElement, replace, transmute } from 'elix/src/template.js'
  *     import ShadowTemplateMixin from 'elix/src/ShadowTemplateMixin.js';
  *
  *     class MyElement extends ShadowTemplateMixin(HTMLElement) {
- *       [internal.template]() {
- *         return template.html`Hello, <em>world</em>.`;
+ *       [template]() {
+ *         return templateFrom.html`Hello, <em>world</em>.`;
  *       }
  *     }
  *
@@ -228,10 +228,10 @@ export const hasDynamicTemplate = coreInternal.hasDynamicTemplate;
  * a given ID.
  *
  * Example: if component's template contains a shadow element
- * `<button id="foo">`, you can use the reference `this[internal.ids].foo` to obtain
+ * `<button id="foo">`, you can use the reference `this[ids].foo` to obtain
  * the corresponding button in the component instance's shadow tree.
  * The `ids` function is simply a shorthand for `getElementById`, so
- * `this[internal.ids].foo` is the same as `this.shadowRoot.getElementById('foo')`.
+ * `this[ids].foo` is the same as `this.shadowRoot.getElementById('foo')`.
  */
 export const ids = coreInternal.ids;
 
@@ -258,9 +258,9 @@ export const inputDelegate = Symbol("inputDelegate");
  * menu items, using code similar to this:
  *
  *     // Filter the set of items to ignore disabled items.
- *     [internal.itemMatchesState](item, state) {
- *       const base = super[internal.itemMatchesState] ?
- *         super[internal.itemMatchesState](item, state) :
+ *     [itemMatchesState](item, state) {
+ *       const base = super[itemMatchesState] ?
+ *         super[itemMatchesState](item, state) :
  *         true;
  *       return base && !item.disabled;
  *     }
@@ -349,10 +349,10 @@ export const nativeInternals = coreInternal.nativeInternals;
  * `true` at the start of the event handler, then `false` at the end:
  *
  *     this.addEventListener('click', event => {
- *       this[internal.raiseChangeEvents] = true;
+ *       this[raiseChangeEvents] = true;
  *       // Do work here, possibly setting properties, like:
  *       this.foo = 'Hello';
- *       this[internal.raiseChangeEvents] = false;
+ *       this[raiseChangeEvents] = false;
  *     });
  *
  * Elsewhere, property setters that raise change events should only do so it
@@ -360,7 +360,7 @@ export const nativeInternals = coreInternal.nativeInternals;
  *
  *     set foo(value) {
  *       // Save foo value here, do any other work.
- *       if (this[internal.raiseChangeEvents]) {
+ *       if (this[raiseChangeEvents]) {
  *         export const event = new CustomEvent('foo-changed');
  *         this.dispatchEvent(event);
  *       }

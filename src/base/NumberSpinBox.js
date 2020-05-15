@@ -1,4 +1,4 @@
-import * as internal from "./internal.js";
+import { defaultState, setState, state, stateEffects } from "./internal.js";
 import SpinBox from "./SpinBox.js";
 
 /**
@@ -19,8 +19,8 @@ class NumberSpinBox extends SpinBox {
     }
   }
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       max: null,
       min: null,
       step: 1,
@@ -47,10 +47,10 @@ class NumberSpinBox extends SpinBox {
    * @default 1
    */
   get max() {
-    return this[internal.state].max;
+    return this[state].max;
   }
   set max(max) {
-    this[internal.setState]({ max });
+    this[setState]({ max });
   }
 
   /**
@@ -60,10 +60,10 @@ class NumberSpinBox extends SpinBox {
    * @default 1
    */
   get min() {
-    return this[internal.state].min;
+    return this[state].min;
   }
   set min(min) {
-    this[internal.setState]({ min });
+    this[setState]({ min });
   }
 
   /**
@@ -80,8 +80,8 @@ class NumberSpinBox extends SpinBox {
     return isNaN(parsed) ? 0 : parsed;
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects];
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects];
 
     // If step changed, calculate its precision (number of digits after
     // the decimal).
@@ -149,11 +149,11 @@ class NumberSpinBox extends SpinBox {
    * @default 1
    */
   get step() {
-    return this[internal.state].step;
+    return this[state].step;
   }
   set step(step) {
     if (!isNaN(step)) {
-      this[internal.setState]({ step });
+      this[setState]({ step });
     }
   }
 
@@ -165,12 +165,12 @@ class NumberSpinBox extends SpinBox {
    */
   stepDown() {
     super.stepDown();
-    const { max, precision, value } = this[internal.state];
+    const { max, precision, value } = this[state];
     let result = this.parseValue(value, precision) - this.step;
     if (max !== null) {
       result = Math.min(result, max);
     }
-    const { min } = this[internal.state];
+    const { min } = this[state];
     if (min === null || result >= min) {
       this.value = this.formatValue(result, precision);
     }
@@ -184,12 +184,12 @@ class NumberSpinBox extends SpinBox {
    */
   stepUp() {
     super.stepUp();
-    const { min, precision, value } = this[internal.state];
+    const { min, precision, value } = this[state];
     let result = this.parseValue(value, precision) + this.step;
     if (min !== null) {
       result = Math.max(result, min);
     }
-    const { max } = this[internal.state];
+    const { max } = this[state];
     if (max === null || result <= max) {
       this.value = this.formatValue(result, precision);
     }

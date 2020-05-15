@@ -1,4 +1,4 @@
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import AriaListMixin from "./AriaListMixin.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
@@ -7,7 +7,15 @@ import CursorAPIMixin from "./CursorAPIMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  ids,
+  render,
+  scrollTarget,
+  setState,
+  state,
+  template,
+} from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
@@ -90,24 +98,24 @@ const Base = AriaListMixin(
  * @mixes TapCursorMixin
  */
 class ListBox extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       orientation: "vertical",
     });
   }
 
   get orientation() {
-    return this[internal.state].orientation;
+    return this[state].orientation;
   }
   set orientation(orientation) {
-    this[internal.setState]({ orientation });
+    this[setState]({ orientation });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
     if (changed.items || changed.currentIndex) {
       // Apply `selected` style to the selected item only.
-      const { currentIndex, items } = this[internal.state];
+      const { currentIndex, items } = this[state];
       if (items) {
         items.forEach((item, index) => {
           item.toggleAttribute("selected", index === currentIndex);
@@ -117,7 +125,7 @@ class ListBox extends Base {
     if (changed.orientation) {
       // Update list orientation styling.
       const style =
-        this[internal.state].orientation === "vertical"
+        this[state].orientation === "vertical"
           ? {
               display: "block",
               flexDirection: "",
@@ -130,17 +138,17 @@ class ListBox extends Base {
               overflowX: "auto",
               overflowY: "hidden",
             };
-      Object.assign(this[internal.ids].container.style, style);
+      Object.assign(this[ids].container.style, style);
     }
   }
 
-  get [internal.scrollTarget]() {
-    return this[internal.ids].container;
+  get [scrollTarget]() {
+    return this[ids].container;
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
-    result.content.append(html`
+  get [template]() {
+    const result = super[template];
+    result.content.append(fragmentFrom.html`
       <style>
         :host {
           box-sizing: border-box;

@@ -1,6 +1,6 @@
 import DarkModeMixin from "../base/DarkModeMixin.js";
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { template } from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import PlainButton from "./PlainButton.js";
 
 const Base = DarkModeMixin(PlainButton);
@@ -16,10 +16,10 @@ const Base = DarkModeMixin(PlainButton);
  * @mixes DarkModeMixin
  */
 class PlainArrowDirectionButton extends Base {
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           :host {
             color: rgba(0, 0, 0, 0.7);

@@ -1,6 +1,13 @@
 import { setInternalState } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  nativeInternals,
+  render,
+  rendered,
+  setState,
+  state,
+} from "./internal.js";
 
 /**
  * Tracks whether the element is currently selected.
@@ -15,33 +22,33 @@ export default function SelectableMixin(Base) {
     constructor() {
       super();
       /** @type {any} */ const cast = this;
-      if (!this[internal.nativeInternals] && cast.attachInternals) {
-        this[internal.nativeInternals] = cast.attachInternals();
+      if (!this[nativeInternals] && cast.attachInternals) {
+        this[nativeInternals] = cast.attachInternals();
       }
     }
 
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         selected: false,
       });
     }
 
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      super[render](changed);
       if (changed.selected) {
-        const { selected } = this[internal.state];
+        const { selected } = this[state];
         setInternalState(this, "selected", selected);
       }
     }
 
-    [internal.rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [rendered](/** @type {ChangedFlags} */ changed) {
+      if (super[rendered]) {
+        super[rendered](changed);
       }
 
       // TODO: How do we know whether to raise this if selection is set by Menu? */
-      if (changed.selected /* && this[internal.raiseChangeEvents] */) {
-        const { selected } = this[internal.state];
+      if (changed.selected /* && this[raiseChangeEvents] */) {
+        const { selected } = this[state];
         /**
          * Raised when the `selected` property changes.
          *
@@ -62,13 +69,13 @@ export default function SelectableMixin(Base) {
      * @default false
      */
     get selected() {
-      return this[internal.state].selected;
+      return this[state].selected;
     }
     set selected(selected) {
       // Note: AttributeMarshallingMixin will recognize `selected` as the name of
       // attribute that should be parsed as a boolean attribute, and so will
       // handling parsing it for us.
-      this[internal.setState]({ selected });
+      this[setState]({ selected });
     }
   };
 }

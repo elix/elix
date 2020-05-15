@@ -1,7 +1,7 @@
 import AriaListMixin from "./AriaListMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
-import * as internal from "./internal.js";
+import { stateEffects } from "./internal.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import SlidingStage from "./SlidingStage.js";
@@ -38,8 +38,8 @@ const Base = AriaListMixin(
  * @mixes TrackpadSwipeMixin
  */
 class SlidingPages extends Base {
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     // Have swipeAxis follow orientation.
     if (changed.orientation) {

@@ -1,69 +1,78 @@
 import { substantiveElements } from "../../src/base/content.js";
-import * as internal from "../../src/base/internal.js";
-import * as template from "../../src/core/template.js";
-import ReactiveElement from "../../src/core/ReactiveElement.js";
+import {
+  contentSlot,
+  defaultState,
+  ids,
+  render,
+  setState,
+  state,
+  stateEffects,
+  template,
+} from "../../src/base/internal.js";
 import SlotContentMixin from "../../src/base/SlotContentMixin.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
+import ReactiveElement from "../../src/core/ReactiveElement.js";
 
 const Base = SlotContentMixin(ReactiveElement);
 
 class RenderState extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       fixture: null,
       fixtureState: {},
     });
   }
 
-  get [internal.contentSlot]() {
-    const slot = this[internal.ids].fixtureSlot;
+  get [contentSlot]() {
+    const slot = this[ids].fixtureSlot;
     return slot instanceof HTMLSlotElement ? slot : null;
   }
 
   get fixture() {
-    return this[internal.state].fixture;
+    return this[state].fixture;
   }
 
   get fixtureState() {
-    return this[internal.state].fixtureState;
+    return this[state].fixtureState;
   }
   set fixtureState(fixtureState) {
     const parsed =
       typeof fixtureState === "string"
         ? JSON.parse(fixtureState)
         : fixtureState;
-    this[internal.setState]({
+    this[setState]({
       fixtureState: parsed,
     });
   }
 
-  [internal.render](changed) {
-    if (super[internal.render]) {
-      super[internal.render](changed);
+  [render](changed) {
+    if (super[render]) {
+      super[render](changed);
     }
     if (changed.fixture || changed.fixtureState) {
-      const { fixture, fixtureState } = this[internal.state];
+      const { fixture, fixtureState } = this[state];
       if (fixture && fixtureState) {
         customElements
           .whenDefined(fixture.localName)
           .then(() => {
             // Wait for fixture to do its initial render.
-            return fixture[internal.setState]({});
+            return fixture[setState]({});
           })
           .then(() => {
             // Force an update of the fixture's state.
-            fixture[internal.setState](fixtureState);
+            fixture[setState](fixtureState);
           });
       }
       const textContent =
         Object.keys(fixtureState).length > 0
           ? JSON.stringify(fixtureState, null, 2)
           : "";
-      this[internal.ids].fixtureState.textContent = textContent;
+      this[ids].fixtureState.textContent = textContent;
     }
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     if (changed.content) {
       if (!state.content) {
@@ -98,8 +107,8 @@ class RenderState extends Base {
     return effects;
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           display: flex;

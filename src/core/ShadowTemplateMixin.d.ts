@@ -3,16 +3,16 @@
 
 /// <reference path="shared.d.ts"/>
 
-import * as internal from "./internal.js";
+import { ids, shadowRoot, shadowRootMode } from "./internal.js";
 
 declare const ShadowTemplateMixin: Mixin<
   {},
   {
-    readonly [internal.ids]: {
+    readonly [ids]: {
       [id: string]: HTMLElement | SVGElement;
     };
-    [internal.shadowRoot]: ShadowRoot;
-    [internal.shadowRootMode]: "closed" | "open";
+    [shadowRoot]: ShadowRoot;
+    [shadowRootMode]: "closed" | "open";
   }
 >;
 

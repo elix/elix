@@ -1,5 +1,5 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import { render, rendering, setState, state } from "./internal.js";
 
 /**
  * Lets a component define its ARIA role through a `role` state member
@@ -19,13 +19,13 @@ import * as internal from "./internal.js";
 export default function AriaRoleMixin(Base) {
   // The class prototype added by the mixin.
   class AriaRole extends Base {
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      if (super[render]) {
+        super[render](changed);
       }
       if (changed.role) {
         // Apply top-level role.
-        const { role } = this[internal.state];
+        const { role } = this[state];
         this.setAttribute("role", role);
       }
     }
@@ -37,8 +37,8 @@ export default function AriaRoleMixin(Base) {
     }
     set role(role) {
       super.role = role;
-      if (!this[internal.rendering]) {
-        this[internal.setState]({ role });
+      if (!this[rendering]) {
+        this[setState]({ role });
       }
     }
   }

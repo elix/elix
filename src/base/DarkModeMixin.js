@@ -1,6 +1,6 @@
 import { booleanAttributeValue, setInternalState } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import { defaultState, render, rendered, setState, state } from "./internal.js";
 
 // Elements listening for changes in prefers-color-scheme.
 const colorSchemeElements = new Set();
@@ -47,14 +47,14 @@ export default function DarkModeMixin(Base) {
      * @type {boolean}
      */
     get dark() {
-      return this[internal.state].dark;
+      return this[state].dark;
     }
     set dark(dark) {
-      this[internal.setState]({ dark });
+      this[setState]({ dark });
     }
 
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         dark: false,
         detectDarkMode: "auto",
       });
@@ -68,28 +68,28 @@ export default function DarkModeMixin(Base) {
      * @default 'auto'
      */
     get detectDarkMode() {
-      return this[internal.state].detectDarkMode;
+      return this[state].detectDarkMode;
     }
     set detectDarkMode(detectDarkMode) {
       if (detectDarkMode === "auto" || detectDarkMode === "off") {
-        this[internal.setState]({ detectDarkMode });
+        this[setState]({ detectDarkMode });
       }
     }
 
-    [internal.render](changed) {
-      super[internal.render](changed);
+    [render](changed) {
+      super[render](changed);
 
       if (changed.dark) {
-        const { dark } = this[internal.state];
+        const { dark } = this[state];
         setInternalState(this, "dark", dark);
       }
     }
 
-    [internal.rendered](changed) {
-      super[internal.rendered](changed);
+    [rendered](changed) {
+      super[rendered](changed);
 
       if (changed.detectDarkMode) {
-        const { detectDarkMode } = this[internal.state];
+        const { detectDarkMode } = this[state];
         // Add/remove element to/from list of elements listening to color
         // scheme.
         if (detectDarkMode === "auto") {
@@ -111,7 +111,7 @@ function setDarkModeFromBackgroundColor(element) {
     const hsl = rgbToHsl(rgb);
     // We consider any lightness below 50% to be dark.
     const dark = hsl.l < 0.5;
-    element[internal.setState]({ dark });
+    element[setState]({ dark });
   }
 }
 

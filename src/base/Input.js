@@ -1,8 +1,15 @@
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
-import * as internal from "./internal.js";
+import {
+  firstRender,
+  ids,
+  inputDelegate,
+  raiseChangeEvents,
+  render,
+  template,
+} from "./internal.js";
 import TrackTextSelectionMixin from "./TrackTextSelectionMixin.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
 
@@ -27,13 +34,13 @@ const Base = DelegateInputLabelMixin(
  * @mixes TrackTextSelectionMixin
  */
 class Input extends Base {
-  get [internal.inputDelegate]() {
+  get [inputDelegate]() {
     return this.inner;
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
-    if (this[internal.firstRender]) {
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
+    if (this[firstRender]) {
       // The following jsDoc comment doesn't directly apply to the statement which
       // follows, but is placed there because the comment has to go somewhere to
       // be visible to jsDoc, and the statement is at tangentially related.
@@ -46,20 +53,20 @@ class Input extends Base {
        *
        * @event input
        */
-      this[internal.ids].inner.addEventListener("input", () => {
-        this[internal.raiseChangeEvents] = true;
+      this[ids].inner.addEventListener("input", () => {
+        this[raiseChangeEvents] = true;
         // Invoke the value setter to fix up selectionStart/selectionEnd too.
         this.value = /** @type {any} */ (this.inner).value;
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = false;
       });
 
       this.setAttribute("role", "none");
     }
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
-    result.content.append(html`
+  get [template]() {
+    const result = super[template];
+    result.content.append(fragmentFrom.html`
       <style>
         [part~="inner"] {
           font: inherit;

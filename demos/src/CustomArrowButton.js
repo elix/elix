@@ -1,12 +1,12 @@
 import Button from "../../src/base/Button.js";
-import * as internal from "../../src/base/internal.js";
-import * as template from "../../src/core/template.js";
+import { template } from "../../src/base/internal.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 
 class CustomArrowButton extends Button {
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      template.html`
+      templateFrom.html`
         <style>
           :host {
             align-items: center;

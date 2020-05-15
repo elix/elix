@@ -1,4 +1,4 @@
-import * as internal from "../../src/base/internal.js";
+import { stateEffects } from "../../src/base/internal.js";
 import PlainSpinBox from "../../src/plain/PlainSpinBox.js";
 
 const romanToNumberMap = {
@@ -18,8 +18,8 @@ const romanToNumberMap = {
 };
 
 export default class RomanSpinBox extends PlainSpinBox {
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects];
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects];
 
     if (changed.value) {
       const { value } = state;

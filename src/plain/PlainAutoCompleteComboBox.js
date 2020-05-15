@@ -1,5 +1,5 @@
 import AutoCompleteComboBox from "../base/AutoCompleteComboBox.js";
-import * as internal from "../base/internal.js";
+import { defaultState } from "../base/internal.js";
 import PlainAutoCompleteInput from "./PlainAutoCompleteInput.js";
 import PlainComboBoxMixin from "./PlainComboBoxMixin.js";
 import PlainListBox from "./PlainListBox.js";
@@ -14,8 +14,8 @@ import PlainListBox from "./PlainListBox.js";
 class PlainAutoCompleteComboBox extends PlainComboBoxMixin(
   AutoCompleteComboBox
 ) {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       inputPartType: PlainAutoCompleteInput,
       listPartType: PlainListBox,
     });

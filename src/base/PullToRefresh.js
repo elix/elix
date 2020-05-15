@@ -1,8 +1,22 @@
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
+import { transmute } from "../core/template.js";
 import EffectMixin from "./EffectMixin.js";
 import { dampen } from "./fractionalSelection.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  firstRender,
+  ids,
+  raiseChangeEvents,
+  render,
+  rendered,
+  setState,
+  shadowRoot,
+  state,
+  stateEffects,
+  swipeTarget,
+  template,
+} from "./internal.js";
 import { getScrollableElement } from "./scrolling.js";
 import TouchSwipeMixin from "./TouchSwipeMixin.js";
 
@@ -24,9 +38,9 @@ const Base = EffectMixin(TouchSwipeMixin(ReactiveElement));
  * @part {div} refreshing-indicator - the element shown during a refresh of the content
  */
 class PullToRefresh extends Base {
-  get [internal.defaultState]() {
+  get [defaultState]() {
     // Suppress transition effects on page load.
-    return Object.assign(super[internal.defaultState], {
+    return Object.assign(super[defaultState], {
       swipeFractionMin: 0, // Can't swipe up, only down
       pullIndicatorPartType: "div",
       pullTriggeredRefresh: false,
@@ -38,19 +52,19 @@ class PullToRefresh extends Base {
     });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
-    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+    renderParts(this[shadowRoot], this[state], changed);
 
-    if (this[internal.firstRender]) {
+    if (this[firstRender]) {
       // Listen to scroll events in case the user scrolls up past the page's top.
       let scrollTarget = getScrollableElement(this) || window;
       scrollTarget.addEventListener("scroll", async () => {
         // We might normally call requestAnimationFrame in a scroll handler, but
         // in this case that could cause our scroll handling to run after the user
         // has scrolled away from the top.
-        this[internal.raiseChangeEvents] = true;
+        this[raiseChangeEvents] = true;
         // Desktop and Mobile Safari don't agree on how to expose document
         // scrollTop, so we use window.pageYOffset.
         // See https://stackoverflow.com/questions/2506958/how-to-find-in-javascript-the-current-scroll-offset-in-mobile-safari-iphon
@@ -59,26 +73,23 @@ class PullToRefresh extends Base {
             ? window.pageYOffset
             : scrollTarget.scrollTop;
         await handleScrollPull(this, scrollTop);
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = false;
       });
     }
 
     if (changed.refreshing) {
-      const { refreshing } = this[internal.state];
-      const refreshingIndicator = this[internal.ids].refreshingIndicator;
+      const { refreshing } = this[state];
+      const refreshingIndicator = this[ids].refreshingIndicator;
       refreshingIndicator.style.visibility = refreshing ? "visible" : "hidden";
-      if ("playing" in this[internal.ids].refreshingIndicator) {
+      if ("playing" in this[ids].refreshingIndicator) {
         /** @type {any} */ (refreshingIndicator).playing = refreshing;
       }
     }
 
     if (changed.enableEffects || changed.refreshing || changed.swipeFraction) {
-      const { enableEffects, refreshing, swipeFraction } = this[internal.state];
+      const { enableEffects, refreshing, swipeFraction } = this[state];
       const swipingDown = swipeFraction != null && swipeFraction > 0;
-      let y = getTranslationForSwipeFraction(
-        this[internal.state],
-        this[internal.swipeTarget]
-      );
+      let y = getTranslationForSwipeFraction(this[state], this[swipeTarget]);
       if (refreshing) {
         y = Math.max(y, getSwipeThreshold(this));
       }
@@ -100,36 +111,33 @@ class PullToRefresh extends Base {
         refreshing,
         scrollPullDistance,
         swipeFraction,
-      } = this[internal.state];
+      } = this[state];
       const swipingDown = swipeFraction != null && swipeFraction > 0;
       const scrollingDown = !!scrollPullDistance;
       const pullingDown = swipingDown || scrollingDown;
       const showPullIndicator =
         !refreshing && !pullTriggeredRefresh && pullingDown;
-      this[internal.ids].pullIndicator.style.visibility = showPullIndicator
+      this[ids].pullIndicator.style.visibility = showPullIndicator
         ? "visible"
         : "hidden";
     }
   }
 
-  [internal.rendered](/** @type {ChangedFlags} */ changed) {
-    super[internal.rendered](changed);
+  [rendered](/** @type {ChangedFlags} */ changed) {
+    super[rendered](changed);
 
     if (
-      this[internal.state].swipeFraction > 0 &&
-      !this[internal.state].refreshing &&
-      !this[internal.state].pullTriggeredRefresh
+      this[state].swipeFraction > 0 &&
+      !this[state].refreshing &&
+      !this[state].pullTriggeredRefresh
     ) {
-      const y = getTranslationForSwipeFraction(
-        this[internal.state],
-        this[internal.swipeTarget]
-      );
+      const y = getTranslationForSwipeFraction(this[state], this[swipeTarget]);
       if (y >= getSwipeThreshold(this)) {
         // User has dragged element down far enough to trigger a refresh.
         this.refreshing = true;
       }
     } else if (changed.refreshing) {
-      if (this[internal.raiseChangeEvents]) {
+      if (this[raiseChangeEvents]) {
         /**
          * Raised when the `refreshing` state changes.
          *
@@ -138,7 +146,7 @@ class PullToRefresh extends Base {
         const event = new CustomEvent("refreshing-changed", {
           bubbles: true,
           detail: {
-            refreshing: this[internal.state].refreshing,
+            refreshing: this[state].refreshing,
           },
         });
         this.dispatchEvent(event);
@@ -155,17 +163,17 @@ class PullToRefresh extends Base {
    * @type {PartDescriptor}
    */
   get pullIndicatorPartType() {
-    return this[internal.state].pullIndicatorPartType;
+    return this[state].pullIndicatorPartType;
   }
   set pullIndicatorPartType(pullIndicatorPartType) {
-    this[internal.setState]({ pullIndicatorPartType });
+    this[setState]({ pullIndicatorPartType });
   }
 
   get refreshing() {
-    return this[internal.state].refreshing;
+    return this[state].refreshing;
   }
   set refreshing(refreshing) {
-    this[internal.setState]({ refreshing });
+    this[setState]({ refreshing });
   }
 
   /**
@@ -177,14 +185,14 @@ class PullToRefresh extends Base {
    * @default ProgressSpinner
    */
   get refreshingIndicatorPartType() {
-    return this[internal.state].refreshingIndicatorPartType;
+    return this[state].refreshingIndicatorPartType;
   }
   set refreshingIndicatorPartType(refreshingIndicatorPartType) {
-    this[internal.setState]({ refreshingIndicatorPartType });
+    this[setState]({ refreshingIndicatorPartType });
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     // We use a pullTriggeredRefresh flag to track whether the current pull
     // gesture has already triggered a refresh. If the user pulls down far
@@ -209,8 +217,8 @@ class PullToRefresh extends Base {
     return effects;
   }
 
-  get [internal.template]() {
-    const result = template.html`
+  get [template]() {
+    const result = templateFrom.html`
       <style>
         :host {
           display: block;
@@ -250,7 +258,7 @@ class PullToRefresh extends Base {
       <slot></slot>
     `;
 
-    renderParts(result.content, this[internal.state]);
+    renderParts(result.content, this[state]);
 
     return result;
   }
@@ -263,7 +271,7 @@ class PullToRefresh extends Base {
  * @param {PullToRefresh} element
  */
 function getSwipeThreshold(element) {
-  const indicatorContainer = element[internal.ids].indicatorContainer;
+  const indicatorContainer = element[ids].indicatorContainer;
   return indicatorContainer instanceof HTMLElement
     ? indicatorContainer.offsetHeight
     : 0;
@@ -315,9 +323,9 @@ async function handleScrollPull(element, scrollTop) {
     // Start a scroll pull operation.
     let scrollPullDistance = -scrollTop;
     if (
-      element[internal.state].scrollPullDistance &&
-      !element[internal.state].scrollPullMaxReached &&
-      scrollPullDistance < element[internal.state].scrollPullDistance
+      element[state].scrollPullDistance &&
+      !element[state].scrollPullMaxReached &&
+      scrollPullDistance < element[state].scrollPullDistance
     ) {
       // The negative scroll events have started to head back to zero (most
       // likely because the user let go and stopped scrolling), so we've reached
@@ -325,13 +333,13 @@ async function handleScrollPull(element, scrollTop) {
       // stop our own translation effect and let the browser smoothly snap the
       // page back to the top (zero) scroll position. If we don't do that, we'll
       // be fighting with the browser effect, and the result will not be smooth.
-      element[internal.setState]({ scrollPullMaxReached: true });
+      element[setState]({ scrollPullMaxReached: true });
     }
-    await element[internal.setState]({ scrollPullDistance });
-  } else if (element[internal.state].scrollPullDistance !== null) {
+    await element[setState]({ scrollPullDistance });
+  } else if (element[state].scrollPullDistance !== null) {
     // We've scrolled back into zero/positive territory, i.e., at or below the
     // top of the page, so the scroll pull has finished.
-    await element[internal.setState]({
+    await element[setState]({
       scrollPullDistance: null,
       scrollPullMaxReached: false,
     });
@@ -351,14 +359,14 @@ function renderParts(root, state, changed) {
     const { pullIndicatorPartType } = state;
     const pullIndicator = root.getElementById("pullIndicator");
     if (pullIndicator) {
-      template.transmute(pullIndicator, pullIndicatorPartType);
+      transmute(pullIndicator, pullIndicatorPartType);
     }
   }
   if (!changed || changed.refreshingIndicatorPartType) {
     const { refreshingIndicatorPartType } = state;
     const refreshingIndicator = root.getElementById("refreshingIndicator");
     if (refreshingIndicator) {
-      template.transmute(refreshingIndicator, refreshingIndicatorPartType);
+      transmute(refreshingIndicator, refreshingIndicatorPartType);
     }
   }
 }

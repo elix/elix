@@ -1,18 +1,18 @@
-import * as internal from "../../src/base/internal.js";
+import { defaultState, template } from "../../src/base/internal.js";
 import TabButton from "../../src/base/TabButton.js";
-import * as template from "../../src/core/template.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 
 class ToolbarTab extends TabButton {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       generic: false,
     });
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      template.html`
+      templateFrom.html`
         <style>
           :host([selected]) {
             color: dodgerblue;

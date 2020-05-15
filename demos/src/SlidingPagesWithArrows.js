@@ -1,6 +1,6 @@
 import ArrowDirectionMixin from "../../src/base/ArrowDirectionMixin.js";
-import * as internal from "../../src/base/internal.js";
-import * as template from "../../src/core/template.js";
+import { defaultState, template } from "../../src/base/internal.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 import PlainArrowDirectionButton from "../../src/plain/PlainArrowDirectionButton.js";
 import PlainArrowDirectionMixin from "../../src/plain/PlainArrowDirectionMixin.js";
 import SlidingPages from "../../src/plain/PlainSlidingPages.js";
@@ -8,21 +8,21 @@ import SlidingPages from "../../src/plain/PlainSlidingPages.js";
 const Base = PlainArrowDirectionMixin(ArrowDirectionMixin(SlidingPages));
 
 class SlidingPagesWithArrows extends Base {
-  get [internal.defaultState]() {
+  get [defaultState]() {
     // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
     // Firefox doesn't support the pointer:fine media query, so we look for the
     // absence of pointer:coarse. Firefox doesn't support that either, but as of
     // Aug 2018, Firefox mobile usage is not significant. On desktop, at least,
     // Firefox will show the arrows.
     const finePointer = !window.matchMedia("(pointer:coarse)").matches;
-    return Object.assign(super[internal.defaultState], {
+    return Object.assign(super[defaultState], {
       arrowButtonPartType: PlainArrowDirectionButton,
       showArrowButtons: finePointer,
     });
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     const slidingStageContent = result.content.getElementById(
       "slidingStageContent"
@@ -33,7 +33,7 @@ class SlidingPagesWithArrows extends Base {
     }
 
     result.content.append(
-      template.html`
+      templateFrom.html`
         <style>
           [part~="arrow-icon"] {
             font-size: 48px;

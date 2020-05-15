@@ -3,14 +3,14 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-import * as internal from "./internal.js";
+import { scrollTarget } from "./internal.js";
 
 declare const KeyboardPagedCursorMixin: Mixin<
   {},
   {
     pageDown(): boolean;
     pageUp(): boolean;
-    [internal.scrollTarget]: Element;
+    [scrollTarget]: Element;
   }
 >;
 

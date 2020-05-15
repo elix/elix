@@ -3,13 +3,13 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-import * as internal from "./internal.js";
+import { contentSlot } from "./internal.js";
 
 declare const SlotContentMixin: StateMixin<
   {},
   {},
   {
-    readonly [internal.contentSlot]: HTMLSlotElement | null;
+    readonly [contentSlot]: HTMLSlotElement | null;
   },
   {
     content: Node[];

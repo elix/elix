@@ -1,15 +1,15 @@
 import * as content from "../../src/base/content.js";
-import * as internal from "../../src/base/internal.js";
+import { template } from "../../src/base/internal.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ShadowTemplateMixin from "../../src/core/ShadowTemplateMixin.js";
-import * as template from "../../src/core/template.js";
 import { assert } from "../testHelpers.js";
 
 /*
  * Simple element with a slot.
  */
 class ChildrenTest extends ShadowTemplateMixin(HTMLElement) {
-  [internal.template]() {
-    return template.html`
+  [template]() {
+    return templateFrom.html`
       <div id="static">This is static content</div>
       <slot></slot>
     `;
@@ -21,8 +21,8 @@ customElements.define("children-test", ChildrenTest);
  * Element containing an instance of the above, so we can test redistribution.
  */
 class RedistributionTest extends ShadowTemplateMixin(HTMLElement) {
-  [internal.template]() {
-    return template.html`<children-test><slot></slot></children-test>`;
+  [template]() {
+    return templateFrom.html`<children-test><slot></slot></children-test>`;
   }
 }
 customElements.define("redistribution-test", RedistributionTest);

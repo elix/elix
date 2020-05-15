@@ -1,17 +1,24 @@
-import * as internal from "../../src/base/internal.js";
+import {
+  hasDynamicTemplate,
+  ids,
+  render,
+  shadowRoot,
+  shadowRootMode,
+  template,
+} from "../../src/base/internal.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ShadowTemplateMixin from "../../src/core/ShadowTemplateMixin.js";
-import * as template from "../../src/core/template.js";
 import { assert } from "../testHelpers.js";
 
 /* Element with a simple template */
 class ElementWithStringTemplate extends ShadowTemplateMixin(HTMLElement) {
   constructor() {
     super();
-    this[internal.render]();
+    this[render]();
   }
 
-  get [internal.template]() {
-    return template.html`<div id="message">Hello</div>`;
+  get [template]() {
+    return templateFrom.html`<div id="message">Hello</div>`;
   }
 }
 customElements.define(
@@ -25,10 +32,10 @@ elementTemplate.innerHTML = `Hello`;
 class ElementWithRealTemplate extends ShadowTemplateMixin(HTMLElement) {
   constructor() {
     super();
-    this[internal.render]();
+    this[render]();
   }
 
-  get [internal.template]() {
+  get [template]() {
     return elementTemplate;
   }
 }
@@ -39,11 +46,11 @@ let staticTemplateCount = 0;
 class ElementWithCachedTemplate extends ShadowTemplateMixin(HTMLElement) {
   constructor() {
     super();
-    this[internal.render]();
+    this[render]();
   }
 
-  get [internal.template]() {
-    return template.html`${staticTemplateCount++}`;
+  get [template]() {
+    return templateFrom.html`${staticTemplateCount++}`;
   }
 }
 customElements.define(
@@ -56,15 +63,15 @@ let dynamicTemplateCount = 0;
 class ElementWithDynamicTemplate extends ShadowTemplateMixin(HTMLElement) {
   constructor() {
     super();
-    this[internal.render]();
+    this[render]();
   }
 
-  get [internal.hasDynamicTemplate]() {
+  get [hasDynamicTemplate]() {
     return true;
   }
 
-  get [internal.template]() {
-    return template.html`${dynamicTemplateCount++}`;
+  get [template]() {
+    return templateFrom.html`${dynamicTemplateCount++}`;
   }
 }
 customElements.define(
@@ -76,14 +83,14 @@ customElements.define(
 class ElementWithClosedRoot extends ShadowTemplateMixin(HTMLElement) {
   constructor() {
     super();
-    this[internal.render]();
+    this[render]();
   }
   /** @type {'closed'|'open'} */
-  get [internal.shadowRootMode]() {
+  get [shadowRootMode]() {
     return "closed";
   }
-  get [internal.template]() {
-    return template.html`<div id="message">Hello</div>`;
+  get [template]() {
+    return templateFrom.html`<div id="message">Hello</div>`;
   }
 }
 customElements.define("element-with-closed-root", ElementWithClosedRoot);
@@ -102,7 +109,7 @@ describe("ShadowTemplateMixin", () => {
   it("stamps string template into root", () => {
     const fixture = new ElementWithStringTemplate();
     assert(fixture.shadowRoot);
-    assert(fixture[internal.shadowRoot]);
+    assert(fixture[shadowRoot]);
     // @ts-ignore prevent tsc error "`*.shadowRoot` might be null"
     assert.equal(fixture.shadowRoot.textContent.trim(), "Hello");
   });
@@ -114,11 +121,11 @@ describe("ShadowTemplateMixin", () => {
     assert.equal(fixture.shadowRoot.textContent.trim(), "Hello");
   });
 
-  it("generates this[internal.ids] references for shadow elements with 'id' attributes", () => {
+  it("generates this[ids] references for shadow elements with 'id' attributes", () => {
     const fixture = new ElementWithStringTemplate();
     const root = fixture.shadowRoot;
     const message = root && root.getElementById("message");
-    assert.equal(fixture[internal.ids].message, message);
+    assert.equal(fixture[ids].message, message);
   });
 
   it("caches the template for a component", () => {
@@ -143,6 +150,6 @@ describe("ShadowTemplateMixin", () => {
     const fixture = new ElementWithClosedRoot();
     container.append(fixture);
     assert.isNull(fixture.shadowRoot);
-    assert(fixture[internal.shadowRoot]);
+    assert(fixture[shadowRoot]);
   });
 });

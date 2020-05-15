@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { defaultState, template } from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import PlainInput from "./PlainInput.js";
 import PlainRepeatButton from "./PlainRepeatButton.js";
@@ -14,20 +14,20 @@ import PlainRepeatButton from "./PlainRepeatButton.js";
  */
 export default function PlainSpinBoxMixin(Base) {
   return class PlainSpinBox extends Base {
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         buttonPartType: PlainRepeatButton,
         inputPartType: PlainInput,
       });
     }
 
-    get [internal.template]() {
-      const result = super[internal.template];
+    get [template]() {
+      const result = super[template];
       const upButton = result.content.getElementById("upButton");
       upButton.textContent = "▲";
       const downButton = result.content.getElementById("downButton");
       downButton.textContent = "▼";
-      result.content.append(html`
+      result.content.append(fragmentFrom.html`
         <style>
           :host {
             background: white;

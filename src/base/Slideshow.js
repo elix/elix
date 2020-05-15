@@ -1,6 +1,6 @@
 import html from "../core/html.js";
 import CrossfadeStage from "./CrossfadeStage.js";
-import * as internal from "./internal.js";
+import { defaultState } from "./internal.js";
 import TimerCursorMixin from "./TimerCursorMixin.js";
 
 const Base = TimerCursorMixin(CrossfadeStage);
@@ -23,8 +23,8 @@ const Base = TimerCursorMixin(CrossfadeStage);
  * @mixes TimerCursorMixin
  */
 class Slideshow extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       cursorOperationsWrap: true,
       cursorTimerDuration: 3000,
       playing: true,

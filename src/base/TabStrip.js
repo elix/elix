@@ -1,11 +1,19 @@
 import { deepContains } from "../core/dom.js";
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
 import { defaultAriaRole } from "./accessibility.js";
 import AriaListMixin from "./AriaListMixin.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  keydown,
+  render,
+  rendered,
+  setState,
+  state,
+  template,
+} from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
@@ -73,8 +81,8 @@ const Base = AriaListMixin(
  * @mixes TapCursorMixin
  */
 class TabStrip extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       currentItemRequired: true,
       orientation: "horizontal",
       position: "top",
@@ -85,7 +93,7 @@ class TabStrip extends Base {
     });
   }
 
-  [internal.keydown](/** @type {KeyboardEvent} */ event) {
+  [keydown](/** @type {KeyboardEvent} */ event) {
     let handled;
 
     // Let user select a tab button with Enter or Space.
@@ -93,10 +101,10 @@ class TabStrip extends Base {
       /* eslint-disable no-case-declarations */
       case " ":
       case "Enter":
-        const { items, currentIndex } = this[internal.state];
+        const { items, currentIndex } = this[state];
         if (event.target instanceof HTMLElement) {
           const newIndex = items && items.indexOf(event.target);
-          this[internal.setState]({
+          this[setState]({
             currentIndex: newIndex,
           });
           handled = newIndex !== currentIndex;
@@ -105,16 +113,12 @@ class TabStrip extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return (
-      handled ||
-      (super[internal.keydown] && super[internal.keydown](event)) ||
-      false
-    );
+    return handled || (super[keydown] && super[keydown](event)) || false;
   }
 
   // TabStrip orientation depends on position property.
   get orientation() {
-    return this[internal.state].orientation;
+    return this[state].orientation;
   }
 
   /**
@@ -130,23 +134,23 @@ class TabStrip extends Base {
    * @default 'top'
    */
   get position() {
-    return this[internal.state].position;
+    return this[state].position;
   }
   set position(position) {
     const orientation =
       position === "top" || position === "bottom" ? "horizontal" : "vertical";
-    this[internal.setState]({
+    this[setState]({
       orientation,
       position,
     });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
-    const { items } = this[internal.state];
+    const { items } = this[state];
     if (changed.items && items) {
-      const { tabButtonRole } = this[internal.state];
+      const { tabButtonRole } = this[state];
       items.forEach((item) => {
         if (tabButtonRole === defaultAriaRole[item.localName]) {
           item.removeAttribute("role");
@@ -158,7 +162,7 @@ class TabStrip extends Base {
 
     if ((changed.items || changed.currentIndex) && items) {
       // Apply `selected` style to the selected item only.
-      const { currentIndex } = this[internal.state];
+      const { currentIndex } = this[state];
       items.forEach((item, index) => {
         item.toggleAttribute("selected", index === currentIndex);
       });
@@ -166,11 +170,11 @@ class TabStrip extends Base {
 
     if (changed.orientation) {
       this.style.gridAutoFlow =
-        this[internal.state].orientation === "vertical" ? "row" : "column";
+        this[state].orientation === "vertical" ? "row" : "column";
     }
 
     if (changed.tabAlign) {
-      const { tabAlign } = this[internal.state];
+      const { tabAlign } = this[state];
       const justifyContentForTabAlign = {
         center: "center",
         end: "end",
@@ -182,7 +186,7 @@ class TabStrip extends Base {
     }
 
     if (changed.items || changed.position) {
-      const { position } = this[internal.state];
+      const { position } = this[state];
       if (items) {
         items.forEach((item) => {
           if ("position" in item) {
@@ -193,8 +197,8 @@ class TabStrip extends Base {
     }
   }
 
-  [internal.rendered](/** @type {ChangedFlags} */ changed) {
-    super[internal.rendered](changed);
+  [rendered](/** @type {ChangedFlags} */ changed) {
+    super[rendered](changed);
 
     // Does this component, or any of its assigned nodes, have focus?
     // This is a surprisingly hard question to answer.
@@ -230,14 +234,14 @@ class TabStrip extends Base {
    * @default 'start'
    */
   get tabAlign() {
-    return this[internal.state].tabAlign;
+    return this[state].tabAlign;
   }
   set tabAlign(tabAlign) {
-    this[internal.setState]({ tabAlign });
+    this[setState]({ tabAlign });
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           display: inline-grid;

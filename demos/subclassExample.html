@@ -12,49 +12,110 @@
     </template>
 
     <script type="module">
-      import * as internal from "../src/core/internal.js";
-      import * as template from "../src/core/template.js";
+      import {
+        checkSize,
+        contentSlot,
+        defaultState,
+        defaultTabIndex,
+        delegatesFocus,
+        effectEndTarget,
+        firstRender,
+        focusTarget,
+        getItemText,
+        goDown,
+        goEnd,
+        goFirst,
+        goLast,
+        goLeft,
+        goNext,
+        goPrevious,
+        goRight,
+        goStart,
+        goToItemWithPrefix,
+        goUp,
+        hasDynamicTemplate,
+        ids,
+        inputDelegate,
+        itemMatchesState,
+        itemsDelegate,
+        keydown,
+        mouseenter,
+        mouseleave,
+        nativeInternals,
+        event,
+        raiseChangeEvents,
+        render,
+        renderChanges,
+        renderDataToElement,
+        rendered,
+        rendering,
+        scrollTarget,
+        setState,
+        shadowRoot,
+        shadowRootMode,
+        startEffect,
+        state,
+        stateEffects,
+        swipeDown,
+        swipeDownComplete,
+        swipeLeft,
+        swipeLeftTransitionEnd,
+        swipeRight,
+        swipeRightTransitionEnd,
+        swipeUp,
+        swipeUpComplete,
+        swipeStart,
+        swipeTarget,
+        tap,
+        template,
+        toggleSelectedFlag,
+      } from "../src/core/internal.js";
+      import {
+        createElement,
+        replace,
+        transmute,
+      } from "../src/core/template.js";
       import ReactiveElement from "../src/core/ReactiveElement.js";
 
       class IncrementDecrement extends ReactiveElement {
-        // This property becomes the value of this[internal.state] at constructor time.
-        get [internal.defaultState]() {
-          return Object.assign(super[internal.defaultState], {
-            value: 0
+        // This property becomes the value of this[state] at constructor time.
+        get [defaultState]() {
+          return Object.assign(super[defaultState], {
+            value: 0,
           });
         }
 
         // When state changes, render updates to the DOM.
-        [internal.render](changed) {
-          super[internal.render](changed);
+        [render](changed) {
+          super[render](changed);
 
-          if (this[internal.firstRender]) {
-            this[internal.ids].decrement.addEventListener("click", () => {
+          if (this[firstRender]) {
+            this[ids].decrement.addEventListener("click", () => {
               this.value--;
             });
-            this[internal.ids].increment.addEventListener("click", () => {
+            this[ids].increment.addEventListener("click", () => {
               this.value++;
             });
           }
 
           if (changed.value) {
-            const { value } = this[internal.state];
+            const { value } = this[state];
             this.style.color = value < 0 ? "red" : null;
-            this[internal.ids].visibleValue.textContent = value;
+            this[ids].visibleValue.textContent = value;
           }
         }
 
-        get [internal.template]() {
+        get [template]() {
           return incrementDecrementTemplate;
         }
 
         // Provide a public property that gets/sets state.
         get value() {
-          return this[internal.state].value;
+          return this[state].value;
         }
         set value(value) {
-          this[internal.setState]({
-            value: parseInt(value)
+          this[setState]({
+            value: parseInt(value),
           });
         }
       }
@@ -62,10 +123,10 @@
       customElements.define("increment-decrement", IncrementDecrement);
 
       class CustomIncrementDecrement extends IncrementDecrement {
-        get [internal.template]() {
-          const result = super[internal.template];
+        get [template]() {
+          const result = super[template];
           result.content.append(
-            template.html`
+            templateFrom.html`
               <style>
                 :host {
                   background: lightgray;
@@ -89,15 +150,15 @@
           return result;
         }
 
-        [internal.render](changed) {
-          super[internal.render](changed);
+        [render](changed) {
+          super[render](changed);
           if (changed.value) {
-            const { value } = this[internal.state];
+            const { value } = this[state];
             if (value > 0) {
               this.style.color = "dodgerblue";
             }
-            this[internal.ids].decrement.disabled = value <= -5;
-            this[internal.ids].increment.disabled = value >= 5;
+            this[ids].decrement.disabled = value <= -5;
+            this[ids].increment.disabled = value >= 5;
           }
         }
 

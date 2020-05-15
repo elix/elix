@@ -3,12 +3,12 @@ import {
   firstFocusableElement,
   updateChildNodes,
 } from "../../src/core/dom.js";
-import * as template from "../../src/core/template.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 import { assert } from "../testHelpers.js";
 
 describe("DOM helpers", () => {
   it("firstFocusableElement finds first focusable element in light DOM", () => {
-    const fixture = template.html`
+    const fixture = templateFrom.html`
       <div></div>
       <input tabindex="-1">
       <button disabled>Disabled</button>
@@ -24,7 +24,7 @@ describe("DOM helpers", () => {
 
   it("firstFocusableElement finds first focusable element in composed tree", () => {
     const fixture = document.createElement("div");
-    const fixtureTemplate = template.html`
+    const fixtureTemplate = templateFrom.html`
       <div></div>
       <slot></slot>
       <button id="enabled"></button>
@@ -32,7 +32,7 @@ describe("DOM helpers", () => {
     const shadowRoot = fixture.attachShadow({ mode: "open" });
     const shadowContent = document.importNode(fixtureTemplate.content, true);
     shadowRoot.appendChild(shadowContent);
-    const childrenTemplate = template.html`
+    const childrenTemplate = templateFrom.html`
       <div>
         <input>
       </div>

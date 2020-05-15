@@ -1,6 +1,12 @@
 import CenteredStrip from "../base/CenteredStrip.js";
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import {
+  defaultState,
+  render,
+  setState,
+  state,
+  template,
+} from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 
 const opacityMinimum = 0.4;
 const opacityMaximum = 1.0;
@@ -17,14 +23,14 @@ const opacityMaximum = 1.0;
  * @inherits CenteredStrip
  */
 class PlainCenteredStripOpacity extends CenteredStrip {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       transitionDuration: 250,
     });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
     if (
       changed.currentIndex ||
       changed.enableEffects ||
@@ -41,7 +47,7 @@ class PlainCenteredStripOpacity extends CenteredStrip {
         rightToLeft,
         swipeFraction,
         transitionDuration,
-      } = this[internal.state];
+      } = this[state];
       if (items) {
         const sign = rightToLeft ? 1 : -1;
         const swiping = swipeFraction != null;
@@ -71,10 +77,10 @@ class PlainCenteredStripOpacity extends CenteredStrip {
     }
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           ::slotted(*) {
             opacity: ${opacityMinimum.toString()};
@@ -86,10 +92,10 @@ class PlainCenteredStripOpacity extends CenteredStrip {
   }
 
   get transitionDuration() {
-    return this[internal.state].transitionDuration;
+    return this[state].transitionDuration;
   }
   set transitionDuration(transitionDuration) {
-    this[internal.setState]({ transitionDuration });
+    this[setState]({ transitionDuration });
   }
 }
 

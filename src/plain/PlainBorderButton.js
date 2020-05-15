@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { template } from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import PlainButton from "./PlainButton.js";
 
 /**
@@ -8,10 +8,10 @@ import PlainButton from "./PlainButton.js";
  * @inherits PlainButton
  */
 class PlainBorderButton extends PlainButton {
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           [part~="inner"] {
             background: #eee;

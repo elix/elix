@@ -1,11 +1,20 @@
 import { forwardFocus } from "../core/dom.js";
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import AriaListMixin from "./AriaListMixin.js";
 import ArrowDirectionMixin from "./ArrowDirectionMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import Explorer from "./Explorer.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  ids,
+  render,
+  setState,
+  state,
+  stateEffects,
+  swipeTarget,
+  template,
+} from "./internal.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import SlidingStage from "./SlidingStage.js";
@@ -47,7 +56,7 @@ const Base = AriaListMixin(
  * @part {SlidingStage} stage
  */
 class Carousel extends Base {
-  get [internal.defaultState]() {
+  get [defaultState]() {
     // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
     // As of Mar 14 2018, Firefox does not yet support pointer queries, in which
     // case we assume use of a mouse.
@@ -55,7 +64,7 @@ class Carousel extends Base {
     const mediaQueryList = window.matchMedia(pointerQuery);
     const showArrowButtons =
       mediaQueryList.media === pointerQuery ? mediaQueryList.matches : true;
-    return Object.assign(super[internal.defaultState], {
+    return Object.assign(super[defaultState], {
       orientation: "horizontal",
       proxyListOverlap: true,
       proxyListPosition: "bottom",
@@ -65,33 +74,33 @@ class Carousel extends Base {
   }
 
   get orientation() {
-    return this[internal.state].orientation;
+    return this[state].orientation;
   }
   set orientation(orientation) {
-    this[internal.setState]({ orientation });
+    this[setState]({ orientation });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    if (changed.proxyListPartType && this[internal.ids].proxyList) {
+  [render](/** @type {ChangedFlags} */ changed) {
+    if (changed.proxyListPartType && this[ids].proxyList) {
       // Turn off focus handling for old proxy list.
-      const proxyList = this[internal.ids].proxyList;
+      const proxyList = this[ids].proxyList;
       if (proxyList instanceof HTMLElement) {
         forwardFocus(proxyList, null);
       }
     }
 
-    super[internal.render](changed);
+    super[render](changed);
 
     if (changed.stagePartType || changed.orientation) {
-      /** @type {any} */ const cast = this[internal.ids].stage;
+      /** @type {any} */ const cast = this[ids].stage;
       if ("orientation" in cast) {
-        cast.orientation = this[internal.state].orientation;
+        cast.orientation = this[state].orientation;
       }
     }
 
     if (changed.proxyListPartType) {
       // Keep focus off of the proxies and onto the carousel itself.
-      const proxyList = this[internal.ids].proxyList;
+      const proxyList = this[ids].proxyList;
       if (proxyList instanceof HTMLElement) {
         forwardFocus(proxyList, this);
       }
@@ -99,14 +108,14 @@ class Carousel extends Base {
     }
 
     if (changed.orientation || changed.proxyListPartType) {
-      /** @type {any} */ const cast = this[internal.ids].proxyList;
+      /** @type {any} */ const cast = this[ids].proxyList;
       if ("orientation" in cast) {
-        cast.orientation = this[internal.state].orientation;
+        cast.orientation = this[state].orientation;
       }
     }
 
     if (changed.stagePartType) {
-      this[internal.ids].stage.removeAttribute("tabindex");
+      this[ids].stage.removeAttribute("tabindex");
     }
 
     const proxies = this.proxies;
@@ -120,14 +129,14 @@ class Carousel extends Base {
     }
   }
 
-  get [internal.swipeTarget]() {
-    const base = super[internal.swipeTarget];
-    const stage = this[internal.ids].stage;
+  get [swipeTarget]() {
+    const base = super[swipeTarget];
+    const stage = this[ids].stage;
     return stage instanceof HTMLElement ? stage : base;
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     // When orientation changes, have swipe axis follow suit, and also
     // set the default proxy list position.
@@ -143,8 +152,8 @@ class Carousel extends Base {
     return effects;
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     const stage = result.content.querySelector("#stage");
     /** @type {any} */ const cast = this;
@@ -156,7 +165,7 @@ class Carousel extends Base {
     }
 
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           [part~="stage"] {
             height: 100%;

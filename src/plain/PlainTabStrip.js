@@ -1,6 +1,6 @@
-import * as internal from "../base/internal.js";
+import { template } from "../base/internal.js";
 import TabStrip from "../base/TabStrip.js";
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 
 /**
  * Toast component in the Plain reference design system
@@ -8,10 +8,10 @@ import html from "../core/html.js";
  * @inherits TabStrip
  */
 class PlainTabStrip extends TabStrip {
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           :host {
             grid-gap: 0.25em;

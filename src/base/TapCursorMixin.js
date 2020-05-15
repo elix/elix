@@ -1,6 +1,13 @@
 import { indexOfItemContainingTarget } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  firstRender,
+  raiseChangeEvents,
+  render,
+  setState,
+  state,
+  tap,
+} from "./internal.js";
 
 /**
  * A tap/mousedown on a list item makes that item current.
@@ -40,17 +47,17 @@ export default function TapCursorMixin(Base) {
         if (event.button !== 0) {
           return;
         }
-        this[internal.raiseChangeEvents] = true;
-        this[internal.tap](event);
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = true;
+        this[tap](event);
+        this[raiseChangeEvents] = false;
       });
     }
 
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      if (super[render]) {
+        super[render](changed);
       }
-      if (this[internal.firstRender]) {
+      if (this[firstRender]) {
         Object.assign(this.style, {
           touchAction: "manipulation", // for iOS Safari
           mozUserSelect: "none",
@@ -61,7 +68,7 @@ export default function TapCursorMixin(Base) {
       }
     }
 
-    [internal.tap](/** @type {MouseEvent} */ event) {
+    [tap](/** @type {MouseEvent} */ event) {
       // In some situations, the event target will not be the child which was
       // originally clicked on. E.g., if the item clicked on is a button, the
       // event seems to be raised in phase 2 (AT_TARGET) — but the event target
@@ -76,14 +83,14 @@ export default function TapCursorMixin(Base) {
       // Find which item was clicked on and, if found, make it current. For
       // elements which don't require a cursor, a background click will
       // determine the item was null, in which we case we'll remove the cursor.
-      const { items, currentIndex, currentItemRequired } = this[internal.state];
+      const { items, currentIndex, currentItemRequired } = this[state];
       if (items && target instanceof Node) {
         const targetIndex = indexOfItemContainingTarget(items, target);
         if (
           targetIndex >= 0 ||
           (!currentItemRequired && currentIndex !== targetIndex)
         ) {
-          this[internal.setState]({
+          this[setState]({
             currentIndex: targetIndex,
           });
           event.stopPropagation();

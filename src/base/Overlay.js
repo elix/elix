@@ -1,7 +1,18 @@
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
+import { transmute } from "../core/template.js";
 import Backdrop from "./Backdrop.js";
-import * as internal from "./internal.js";
+import {
+  checkSize,
+  defaultState,
+  ids,
+  render,
+  rendered,
+  setState,
+  shadowRoot,
+  state,
+  template,
+} from "./internal.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import OverlayFrame from "./OverlayFrame.js";
 import OverlayMixin from "./OverlayMixin.js";
@@ -40,7 +51,7 @@ const Base = OpenCloseMixin(OverlayMixin(SlotContentMixin(ReactiveElement)));
  */
 class Overlay extends Base {
   get backdrop() {
-    return this[internal.ids] && this[internal.ids].backdrop;
+    return this[ids] && this[ids].backdrop;
   }
 
   /**
@@ -56,21 +67,21 @@ class Overlay extends Base {
    * @default Backdrop
    */
   get backdropPartType() {
-    return this[internal.state].backdropPartType;
+    return this[state].backdropPartType;
   }
   set backdropPartType(backdropPartType) {
-    this[internal.setState]({ backdropPartType });
+    this[setState]({ backdropPartType });
   }
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       backdropPartType: Backdrop,
       framePartType: OverlayFrame,
     });
   }
 
   get frame() {
-    return this[internal.ids].frame;
+    return this[ids].frame;
   }
 
   /**
@@ -85,33 +96,33 @@ class Overlay extends Base {
    * @default OverlayFrame
    */
   get framePartType() {
-    return this[internal.state].framePartType;
+    return this[state].framePartType;
   }
   set framePartType(framePartType) {
-    this[internal.setState]({ framePartType });
+    this[setState]({ framePartType });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
-    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
+    renderParts(this[shadowRoot], this[state], changed);
   }
 
-  [internal.rendered](/** @type {ChangedFlags} */ changed) {
-    super[internal.rendered](changed);
+  [rendered](/** @type {ChangedFlags} */ changed) {
+    super[rendered](changed);
 
-    if (changed.opened && this[internal.state].content) {
+    if (changed.opened && this[state].content) {
       // If contents know how to size themselves, ask them to check their size.
-      this[internal.state].content.forEach((element) => {
-        if (element[internal.checkSize]) {
-          element[internal.checkSize]();
+      this[state].content.forEach((element) => {
+        if (element[checkSize]) {
+          element[checkSize]();
         }
       });
     }
   }
 
-  get [internal.template]() {
+  get [template]() {
     // TODO: Consider moving frameContent div to Drawer.
-    const result = template.html`
+    const result = templateFrom.html`
       <style>
         :host {
           align-items: center;
@@ -153,7 +164,7 @@ class Overlay extends Base {
       </div>
     `;
 
-    renderParts(result.content, this[internal.state]);
+    renderParts(result.content, this[state]);
 
     return result;
   }
@@ -172,14 +183,14 @@ function renderParts(root, state, changed) {
     const { backdropPartType } = state;
     const backdrop = root.getElementById("backdrop");
     if (backdrop) {
-      template.transmute(backdrop, backdropPartType);
+      transmute(backdrop, backdropPartType);
     }
   }
   if (!changed || changed.framePartType) {
     const { framePartType } = state;
     const frame = root.getElementById("frame");
     if (frame) {
-      template.transmute(frame, framePartType);
+      transmute(frame, framePartType);
     }
   }
 }

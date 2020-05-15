@@ -1,9 +1,19 @@
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
+import { transmute } from "../core/template.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
 import Button from "./Button.js";
 import ExpandablePanel from "./ExpandablePanel.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  ids,
+  raiseChangeEvents,
+  render,
+  setState,
+  shadowRoot,
+  state,
+  template,
+} from "./internal.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import UpDownToggle from "./UpDownToggle.js";
 
@@ -21,8 +31,8 @@ const Base = AriaRoleMixin(OpenCloseMixin(ReactiveElement));
  * @part {ExpandablePanel} panel - contains the component's expandable/collapsible content
  */
 class ExpandableSection extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       headerPartType: Button,
       panelPartType: ExpandablePanel,
       role: "region",
@@ -38,10 +48,10 @@ class ExpandableSection extends Base {
    * @default Button
    */
   get headerPartType() {
-    return this[internal.state].headerPartType;
+    return this[state].headerPartType;
   }
   set headerPartType(headerPartType) {
-    this[internal.setState]({ headerPartType });
+    this[setState]({ headerPartType });
   }
 
   /**
@@ -52,47 +62,44 @@ class ExpandableSection extends Base {
    * @default ExpandablePanel
    */
   get panelPartType() {
-    return this[internal.state].panelPartType;
+    return this[state].panelPartType;
   }
   set panelPartType(panelPartType) {
-    this[internal.setState]({ panelPartType });
+    this[setState]({ panelPartType });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
-    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+    renderParts(this[shadowRoot], this[state], changed);
 
     if (changed.headerPartType) {
-      this[internal.ids].header.addEventListener("click", () => {
-        this[internal.raiseChangeEvents] = true;
+      this[ids].header.addEventListener("click", () => {
+        this[raiseChangeEvents] = true;
         this.toggle();
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = false;
       });
     }
 
     if (changed.opened || changed.togglePartType) {
-      const { opened } = this[internal.state];
+      const { opened } = this[state];
 
-      this[internal.ids].header.setAttribute(
-        "aria-expanded",
-        opened.toString()
-      );
+      this[ids].header.setAttribute("aria-expanded", opened.toString());
 
-      /** @type {any} */ const toggle = this[internal.ids].toggle;
+      /** @type {any} */ const toggle = this[ids].toggle;
       if ("direction" in toggle) {
         toggle.direction = opened ? "up" : "down";
       }
 
-      if ("opened" in this[internal.ids].panel) {
-        /** @type {any} */ (this[internal.ids].panel).opened = opened;
+      if ("opened" in this[ids].panel) {
+        /** @type {any} */ (this[ids].panel).opened = opened;
       }
     }
   }
 
-  get [internal.template]() {
+  get [template]() {
     // Default expand/collapse icons from Google's Material Design collection.
-    const result = template.html`
+    const result = templateFrom.html`
       <style>
         :host {
           display: inline-block;
@@ -130,7 +137,7 @@ class ExpandableSection extends Base {
       </div>
     `;
 
-    renderParts(result.content, this[internal.state]);
+    renderParts(result.content, this[state]);
 
     return result;
   }
@@ -143,10 +150,10 @@ class ExpandableSection extends Base {
    * @default UpDownToggle
    */
   get togglePartType() {
-    return this[internal.state].togglePartType;
+    return this[state].togglePartType;
   }
   set togglePartType(togglePartType) {
-    this[internal.setState]({ togglePartType });
+    this[setState]({ togglePartType });
   }
 }
 
@@ -163,21 +170,21 @@ function renderParts(root, state, changed) {
     const { headerPartType } = state;
     const header = root.getElementById("header");
     if (header) {
-      template.transmute(header, headerPartType);
+      transmute(header, headerPartType);
     }
   }
   if (!changed || changed.panelPartType) {
     const { panelPartType } = state;
     const panel = root.getElementById("panel");
     if (panel) {
-      template.transmute(panel, panelPartType);
+      transmute(panel, panelPartType);
     }
   }
   if (!changed || changed.togglePartType) {
     const { togglePartType } = state;
     const toggle = root.getElementById("toggle");
     if (toggle) {
-      template.transmute(toggle, togglePartType);
+      transmute(toggle, togglePartType);
     }
   }
 }

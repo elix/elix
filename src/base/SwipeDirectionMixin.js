@@ -1,5 +1,14 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  goDown,
+  goLeft,
+  goRight,
+  goUp,
+  swipeDown,
+  swipeLeft,
+  swipeRight,
+  swipeUp,
+} from "./internal.js";
 
 /**
  * Map swipe gestures to direction semantics.
@@ -11,31 +20,31 @@ export default function SwipeDirectionMixin(Base) {
   // The class prototype added by the mixin.
   return class SwipeDirection extends Base {
     /**
-     * Invokes the [internal.goUp](internal#internal.goUp) method.
+     * Invokes the [goUp](internal#internal.goUp) method.
      */
-    [internal.swipeDown]() {
-      this[internal.goUp]();
+    [swipeDown]() {
+      this[goUp]();
     }
 
     /**
-     * Invokes the [internal.goRight](internal#internal.goRight) method.
+     * Invokes the [goRight](internal#internal.goRight) method.
      */
-    [internal.swipeLeft]() {
-      this[internal.goRight]();
+    [swipeLeft]() {
+      this[goRight]();
     }
 
     /**
-     * Invokes the [internal.goLeft](internal#internal.goLeft) method.
+     * Invokes the [goLeft](internal#internal.goLeft) method.
      */
-    [internal.swipeRight]() {
-      this[internal.goLeft]();
+    [swipeRight]() {
+      this[goLeft]();
     }
 
     /**
-     * Invokes the [internal.goDown](internal#internal.goDown) method.
+     * Invokes the [goDown](internal#internal.goDown) method.
      */
-    [internal.swipeUp]() {
-      this[internal.goDown]();
+    [swipeUp]() {
+      this[goDown]();
     }
   };
 }

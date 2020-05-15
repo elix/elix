@@ -1,5 +1,5 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import { defaultState, render, rendered, setState, state } from "./internal.js";
 
 /** @type {any} */
 const itemsChangedListenerKey = Symbol("itemsChangedListener");
@@ -24,8 +24,8 @@ export default function DelegateItemsMixin(Base) {
         /** @type {any} */
         const cast = event.target;
         const delegateItems = cast.items;
-        if (this[internal.state].items !== delegateItems) {
-          this[internal.setState]({
+        if (this[state].items !== delegateItems) {
+          this[setState]({
             items: delegateItems,
           });
         }
@@ -35,16 +35,16 @@ export default function DelegateItemsMixin(Base) {
         /** @type {any} */
         const cast = event;
         const delegateCurrentIndex = cast.detail.currentIndex;
-        if (this[internal.state].currentIndex !== delegateCurrentIndex) {
-          this[internal.setState]({
+        if (this[state].currentIndex !== delegateCurrentIndex) {
+          this[setState]({
             currentIndex: delegateCurrentIndex,
           });
         }
       };
     }
 
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         items: null,
       });
     }
@@ -55,31 +55,31 @@ export default function DelegateItemsMixin(Base) {
      * @returns {Element[]|null} the element's current items
      */
     get items() {
-      return this[internal.state] ? this[internal.state].items : null;
+      return this[state] ? this[state].items : null;
     }
 
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      if (super[render]) {
+        super[render](changed);
       }
       if (changed.currentIndex) {
-        const itemsDelegate = this[internal.itemsDelegate];
+        const itemsDelegate = this[itemsDelegate];
         if (typeof itemsDelegate === "undefined") {
-          throw `To use DelegateItemsMixin, ${this.constructor.name} must define a getter for [internal.itemsDelegate].`;
+          throw `To use DelegateItemsMixin, ${this.constructor.name} must define a getter for [itemsDelegate].`;
         }
         if ("currentIndex" in itemsDelegate) {
-          itemsDelegate.currentIndex = this[internal.state].currentIndex;
+          itemsDelegate.currentIndex = this[state].currentIndex;
         }
       }
     }
 
-    [internal.rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [rendered](/** @type {ChangedFlags} */ changed) {
+      if (super[rendered]) {
+        super[rendered](changed);
       }
 
       // If the delegate changed, wire up event handlers.
-      const itemsDelegate = this[internal.itemsDelegate];
+      const itemsDelegate = this[itemsDelegate];
       const previousItemsDelegate = this[previousItemsDelegateKey];
       if (itemsDelegate !== previousItemsDelegate) {
         if (previousItemsDelegate) {

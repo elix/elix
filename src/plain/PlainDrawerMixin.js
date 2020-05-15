@@ -1,4 +1,4 @@
-import * as internal from "../base/internal.js";
+import { ids, render, state } from "../base/internal.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
@@ -9,8 +9,8 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
  */
 export default function PlainDrawerMixin(Base) {
   return class PlainDrawer extends Base {
-    [internal.render](changed) {
-      super[internal.render](changed);
+    [render](changed) {
+      super[render](changed);
       // As the drawer opens (closes), transition the backdrop to fully
       // opaque (transparent).
       if (changed.openedFraction) {
@@ -19,7 +19,7 @@ export default function PlainDrawerMixin(Base) {
           openedFraction,
           openedRenderedFraction,
           showTransition,
-        } = this[internal.state];
+        } = this[state];
 
         // The time required to show transitions depends on how far apart the
         // elements currently are from their desired state.
@@ -30,7 +30,7 @@ export default function PlainDrawerMixin(Base) {
           ? transitionFraction * (drawerTransitionDuration / 1000)
           : 0;
 
-        Object.assign(this[internal.ids].backdrop.style, {
+        Object.assign(this[ids].backdrop.style, {
           opacity: openedFraction,
           transition: showTransition ? `opacity ${duration}s linear` : "",
         });

@@ -1,6 +1,12 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import { defaultAriaRole, ensureId } from "./accessibility.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  render,
+  rendering,
+  setState,
+  state,
+} from "./internal.js";
 
 /**
  * Exposes a list's currently-selected item to assistive technologies.
@@ -41,8 +47,8 @@ import * as internal from "./internal.js";
 export default function AriaListMixin(Base) {
   // The class prototype added by the mixin.
   class AriaList extends Base {
-    get [internal.defaultState]() {
-      const base = super[internal.defaultState];
+    get [defaultState]() {
+      const base = super[defaultState];
       return Object.assign(base, {
         itemRole: base.itemRole || "option",
         role: base.role || "listbox",
@@ -50,19 +56,19 @@ export default function AriaListMixin(Base) {
     }
 
     get itemRole() {
-      return this[internal.state].itemRole;
+      return this[state].itemRole;
     }
     set itemRole(itemRole) {
-      this[internal.setState]({ itemRole });
+      this[setState]({ itemRole });
     }
 
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      if (super[render]) {
+        super[render](changed);
       }
 
-      const { currentIndex, itemRole } = this[internal.state];
-      /** @type {ListItemElement[]} */ const items = this[internal.state].items;
+      const { currentIndex, itemRole } = this[state];
+      /** @type {ListItemElement[]} */ const items = this[state].items;
 
       // Give each item an ID.
       if (changed.items && items) {
@@ -87,7 +93,7 @@ export default function AriaListMixin(Base) {
       // Reflect the selected state to each item.
       if (changed.items || changed.currentIndex || changed.selectedFlags) {
         // Does the list support multi-selection?
-        const { selectedFlags } = this[internal.state];
+        const { selectedFlags } = this[state];
         if (items) {
           items.forEach((item, index) => {
             const selected = selectedFlags
@@ -114,7 +120,7 @@ export default function AriaListMixin(Base) {
 
       if (changed.selectedFlags) {
         // Let ARIA know this is a multi-select list box.
-        if (this[internal.state].selectedFlags) {
+        if (this[state].selectedFlags) {
           this.setAttribute("aria-multiselectable", "true");
         } else {
           this.removeAttribute("aria-multiselectable");
@@ -123,13 +129,13 @@ export default function AriaListMixin(Base) {
 
       // Let ARIA know list orientation.
       if (changed.orientation) {
-        const { orientation } = this[internal.state];
+        const { orientation } = this[state];
         this.setAttribute("aria-orientation", orientation);
       }
 
       // Apply top-level role.
       if (changed.role) {
-        const { role } = this[internal.state];
+        const { role } = this[state];
         this.setAttribute("role", role);
       }
     }
@@ -141,8 +147,8 @@ export default function AriaListMixin(Base) {
     }
     set role(role) {
       super.role = role;
-      if (!this[internal.rendering]) {
-        this[internal.setState]({ role });
+      if (!this[rendering]) {
+        this[setState]({ role });
       }
     }
   }

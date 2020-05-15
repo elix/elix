@@ -1,6 +1,13 @@
-import * as internal from "../../src/base/internal.js";
+import {
+  defaultState,
+  ids,
+  render,
+  setState,
+  state,
+  template,
+} from "../../src/base/internal.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
-import * as template from "../../src/core/template.js";
 
 export default class MessageSummary extends ReactiveElement {
   attributeChangedCallback(name, oldValue, newValue) {
@@ -12,14 +19,14 @@ export default class MessageSummary extends ReactiveElement {
   }
 
   get date() {
-    return this[internal.state].date;
+    return this[state].date;
   }
   set date(date) {
-    this[internal.setState]({ date });
+    this[setState]({ date });
   }
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       date: null,
       read: false,
       sender: null,
@@ -28,44 +35,44 @@ export default class MessageSummary extends ReactiveElement {
   }
 
   get read() {
-    return this[internal.state].read;
+    return this[state].read;
   }
   set read(read) {
-    this[internal.setState]({ read });
+    this[setState]({ read });
   }
 
-  [internal.render](changed) {
-    super[internal.render](changed);
+  [render](changed) {
+    super[render](changed);
     if (changed.date) {
-      this[internal.ids].date.textContent = this[internal.state].date;
+      this[ids].date.textContent = this[state].date;
     }
     if (changed.read) {
-      this.classList.toggle("read", this[internal.state].read);
+      this.classList.toggle("read", this[state].read);
     }
     if (changed.sender) {
-      this[internal.ids].sender.textContent = this[internal.state].sender;
+      this[ids].sender.textContent = this[state].sender;
     }
     if (changed.summary) {
-      this[internal.ids].summary.textContent = this[internal.state].summary;
+      this[ids].summary.textContent = this[state].summary;
     }
   }
 
   get sender() {
-    return this[internal.state].sender;
+    return this[state].sender;
   }
   set sender(sender) {
-    this[internal.setState]({ sender });
+    this[setState]({ sender });
   }
 
   get summary() {
-    return this[internal.state].summary;
+    return this[state].summary;
   }
   set summary(summary) {
-    this[internal.setState]({ summary });
+    this[setState]({ summary });
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           display: flex;

@@ -1,4 +1,4 @@
-import * as internal from "./internal.js";
+import { ids, raiseChangeEvents, render } from "./internal.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import Overlay from "./Overlay.js";
 import PopupModalityMixin from "./PopupModalityMixin.js";
@@ -15,10 +15,10 @@ const Base = KeyboardMixin(PopupModalityMixin(Overlay));
  * @mixes PopupModalityMixin
  */
 class Popup extends Base {
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
     if (changed.backdropPartType) {
-      this[internal.ids].backdrop.addEventListener(
+      this[ids].backdrop.addEventListener(
         "mousedown",
         mousedownHandler.bind(this)
       );
@@ -27,10 +27,7 @@ class Popup extends Base {
       // backdrop in some cases that Mobile Chrome handles. For completeness, we
       // also listen to touchend.
       if (!("PointerEvent" in window)) {
-        this[internal.ids].backdrop.addEventListener(
-          "touchend",
-          mousedownHandler
-        );
+        this[ids].backdrop.addEventListener("touchend", mousedownHandler);
       }
     }
   }
@@ -43,9 +40,9 @@ class Popup extends Base {
 async function mousedownHandler(event) {
   // @ts-ignore
   const element = this;
-  element[internal.raiseChangeEvents] = true;
+  element[raiseChangeEvents] = true;
   await element.close();
-  element[internal.raiseChangeEvents] = false;
+  element[raiseChangeEvents] = false;
   event.preventDefault();
   event.stopPropagation();
 }

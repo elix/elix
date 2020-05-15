@@ -1,9 +1,19 @@
 import { forwardFocus } from "../core/dom.js";
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as template from "../core/template.js";
+import { transmute } from "../core/template.js";
 import Button from "./Button.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  goNext,
+  goPrevious,
+  ids,
+  keydown,
+  render,
+  setState,
+  shadowRoot,
+  state,
+} from "./internal.js";
 
 const wrap = Symbol("wrap");
 
@@ -30,20 +40,20 @@ export default function PlayControlsMixin(Base) {
      * @default Button
      */
     get controlButtonPartType() {
-      return this[internal.state].controlButtonPartType;
+      return this[state].controlButtonPartType;
     }
     set controlButtonPartType(controlButtonPartType) {
-      this[internal.setState]({ controlButtonPartType });
+      this[setState]({ controlButtonPartType });
     }
 
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         controlButtonPartType: Button,
       });
     }
 
     // Pressing Space is the same as clicking the button.
-    [internal.keydown](/** @type {KeyboardEvent} */ event) {
+    [keydown](/** @type {KeyboardEvent} */ event) {
       let handled;
 
       switch (event.key) {
@@ -54,40 +64,38 @@ export default function PlayControlsMixin(Base) {
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return (
-        handled || (super[internal.keydown] && super[internal.keydown](event))
-      );
+      return handled || (super[keydown] && super[keydown](event));
     }
 
-    [internal.render](/** @type {ChangedFlags} */ changed) {
+    [render](/** @type {ChangedFlags} */ changed) {
       if (changed.arrowButtonPartType) {
-        const previousButton = this[internal.ids].previousButton;
+        const previousButton = this[ids].previousButton;
         if (previousButton instanceof HTMLElement) {
           // Turn off focus handling for old previous button.
           forwardFocus(previousButton, null);
         }
-        const playButton = this[internal.ids].playButton;
+        const playButton = this[ids].playButton;
         if (playButton instanceof HTMLElement) {
           // Turn off focus handling for old play button.
           forwardFocus(playButton, null);
         }
-        const nextButton = this[internal.ids].nextButton;
+        const nextButton = this[ids].nextButton;
         if (nextButton instanceof HTMLElement) {
           // Turn off focus handling for old next button.
           forwardFocus(nextButton, null);
         }
       }
 
-      if (super[internal.render]) {
-        super[internal.render](changed);
+      if (super[render]) {
+        super[render](changed);
       }
 
-      renderParts(this[internal.shadowRoot], this[internal.state], changed);
+      renderParts(this[shadowRoot], this[state], changed);
 
       if (changed.controlButtonPartType) {
-        const { nextButton, playButton, previousButton } = this[internal.ids];
+        const { nextButton, playButton, previousButton } = this[ids];
         previousButton.addEventListener("click", (event) => {
-          this[internal.goPrevious]();
+          this[goPrevious]();
           event.stopPropagation();
         });
         playButton.addEventListener("click", (event) => {
@@ -99,7 +107,7 @@ export default function PlayControlsMixin(Base) {
           event.stopPropagation();
         });
         nextButton.addEventListener("click", (event) => {
-          this[internal.goNext]();
+          this[goNext]();
           event.stopPropagation();
         });
 
@@ -122,7 +130,7 @@ export default function PlayControlsMixin(Base) {
      * @param {Element} target - the element that should be wrapped by play controls
      */
     [wrap](target) {
-      const playControls = html`
+      const playControls = fragmentFrom.html`
         <style>
           [part~="button-container"] {
             bottom: 0;
@@ -167,7 +175,7 @@ export default function PlayControlsMixin(Base) {
         <div id="playControlsContainer" role="none"></div>
       `;
 
-      renderParts(playControls, this[internal.state]);
+      renderParts(playControls, this[state]);
 
       // Wrap the target with the play controls.
       const container = playControls.getElementById("playControlsContainer");
@@ -194,7 +202,7 @@ function renderParts(root, state, changed) {
     const { controlButtonPartType } = state;
     const controlButtons = root.querySelectorAll('[part~="control-button"]');
     controlButtons.forEach((controlButton) =>
-      template.transmute(controlButton, controlButtonPartType)
+      transmute(controlButton, controlButtonPartType)
     );
   }
 }

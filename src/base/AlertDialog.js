@@ -1,8 +1,19 @@
 import { updateChildNodes } from "../core/dom.js";
-import html from "../core/html.js";
-import * as template from "../core/template.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
+import { createElement } from "../core/template.js";
 import Dialog from "./Dialog.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  firstRender,
+  ids,
+  keydown,
+  raiseChangeEvents,
+  render,
+  setState,
+  state,
+  stateEffects,
+  template,
+} from "./internal.js";
 
 /**
  * Asks a single question the user can answer with choice buttons
@@ -19,7 +30,7 @@ class AlertDialog extends Dialog {
    * @type {HTMLElement[]}
    */
   get choiceButtons() {
-    return this[internal.state].choiceButtons;
+    return this[state].choiceButtons;
   }
 
   /**
@@ -30,10 +41,10 @@ class AlertDialog extends Dialog {
    * @default 'button'
    */
   get choiceButtonPartType() {
-    return this[internal.state].choiceButtonPartType;
+    return this[state].choiceButtonPartType;
   }
   set choiceButtonPartType(choiceButtonPartType) {
-    this[internal.setState]({ choiceButtonPartType });
+    this[setState]({ choiceButtonPartType });
   }
 
   /**
@@ -46,14 +57,14 @@ class AlertDialog extends Dialog {
    * @type {string[]}
    */
   get choices() {
-    return this[internal.state].choices;
+    return this[state].choices;
   }
   set choices(choices) {
-    this[internal.setState]({ choices });
+    this[setState]({ choices });
   }
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       choiceButtonPartType: "button",
       choiceButtons: [],
       choices: ["OK"],
@@ -61,7 +72,7 @@ class AlertDialog extends Dialog {
   }
 
   // Let the user select a choice by pressing its initial letter.
-  [internal.keydown](/** @type {KeyboardEvent} */ event) {
+  [keydown](/** @type {KeyboardEvent} */ event) {
     let handled = false;
 
     const key = event.key.length === 1 && event.key.toLowerCase();
@@ -79,27 +90,23 @@ class AlertDialog extends Dialog {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return (
-      handled ||
-      (super[internal.keydown] && super[internal.keydown](event)) ||
-      false
-    );
+    return handled || (super[keydown] && super[keydown](event)) || false;
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
-    if (this[internal.firstRender]) {
-      this[internal.ids].choiceButtonContainer.addEventListener(
+    if (this[firstRender]) {
+      this[ids].choiceButtonContainer.addEventListener(
         "click",
         async (event) => {
           // TODO: Ignore clicks on choiceButtonContainer background.
           const button = event.target;
           if (button instanceof HTMLElement) {
             const choice = button.textContent;
-            this[internal.raiseChangeEvents] = true;
+            this[raiseChangeEvents] = true;
             await this.close({ choice });
-            this[internal.raiseChangeEvents] = false;
+            this[raiseChangeEvents] = false;
           }
         }
       );
@@ -107,20 +114,20 @@ class AlertDialog extends Dialog {
 
     if (changed.choiceButtons) {
       updateChildNodes(
-        this[internal.ids].choiceButtonContainer,
-        this[internal.state].choiceButtons
+        this[ids].choiceButtonContainer,
+        this[state].choiceButtons
       );
     }
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     // When choices or choice button part type changes, regenerate buttons.
     if (changed.choiceButtonPartType || changed.choices) {
       /** @type {string[]} */ const choices = state.choices;
       const choiceButtons = choices.map((choice) => {
-        const button = template.createElement(state.choiceButtonPartType);
+        const button = createElement(state.choiceButtonPartType);
         if ("part" in button) {
           /** @type {any} */ (button).part = "choice-button";
         }
@@ -136,12 +143,12 @@ class AlertDialog extends Dialog {
     return effects;
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     // Replace the default slot with a new default slot and a button container.
     const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
-      defaultSlot.replaceWith(html`
+      defaultSlot.replaceWith(fragmentFrom.html`
         <div id="alertDialogContent">
           <slot></slot>
           <div id="choiceButtonContainer" part="choice-button-container"></div>

@@ -7,7 +7,17 @@ import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
 import CurrentItemInViewMixin from "../../src/base/CurrentItemInViewMixin.js";
 import CursorAPIMixin from "../../src/base/CursorAPIMixin.js";
 import DirectionCursorMixin from "../../src/base/DirectionCursorMixin.js";
-import * as internal from "../../src/base/internal.js";
+import {
+  defaultState,
+  firstRender,
+  ids,
+  render,
+  rendered,
+  scrollTarget,
+  setState,
+  state,
+  template,
+} from "../../src/base/internal.js";
 import ItemsAPIMixin from "../../src/base/ItemsAPIMixin.js";
 import ItemsCursorMixin from "../../src/base/ItemsCursorMixin.js";
 import ItemsTextMixin from "../../src/base/ItemsTextMixin.js";
@@ -19,8 +29,8 @@ import LanguageDirectionMixin from "../../src/base/LanguageDirectionMixin.js";
 import SelectedItemTextValueMixin from "../../src/base/SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "../../src/base/SingleSelectAPIMixin.js";
 import TapCursorMixin from "../../src/base/TapCursorMixin.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
-import * as template from "../../src/core/template.js";
 
 const Base = AriaListMixin(
   ContentItemsMixin(
@@ -55,21 +65,21 @@ const Base = AriaListMixin(
 );
 
 class CountryListBox extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       orientation: "vertical",
     });
   }
 
   get orientation() {
-    return this[internal.state].orientation;
+    return this[state].orientation;
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {PlainObject} */ changed) {
+    super[render](changed);
     if (changed.items || changed.currentIndex) {
       // Apply `selected` style to the selected item only.
-      const { currentIndex, items } = this[internal.state];
+      const { currentIndex, items } = this[state];
       if (items) {
         items.forEach((item, index) => {
           item.toggleAttribute("selected", index === currentIndex);
@@ -78,21 +88,21 @@ class CountryListBox extends Base {
     }
   }
 
-  [internal.rendered](changed) {
-    super[internal.rendered](changed);
+  [rendered](changed) {
+    super[rendered](changed);
 
-    if (this[internal.firstRender]) {
-      const content = this[internal.ids].content.children;
-      this[internal.setState]({ content });
+    if (this[firstRender]) {
+      const content = this[ids].content.children;
+      this[setState]({ content });
     }
   }
 
-  get [internal.scrollTarget]() {
-    return this[internal.ids].content;
+  get [scrollTarget]() {
+    return this[ids].content;
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           border: 1px solid gray;

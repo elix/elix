@@ -1,5 +1,5 @@
 import CalendarMonth from "../base/CalendarMonth.js";
-import * as internal from "../base/internal.js";
+import { defaultState } from "../base/internal.js";
 import PlainCalendarDay from "./PlainCalendarDay.js";
 import PlainCalendarDayNamesHeader from "./PlainCalendarDayNamesHeader.js";
 import PlainCalendarMonthYearHeader from "./PlainCalendarMonthYearHeader.js";
@@ -13,8 +13,8 @@ import PlainCalendarMonthYearHeader from "./PlainCalendarMonthYearHeader.js";
  * @part {PlainCalendarMonthYearHeader} month-year-header
  */
 class PlainCalendarMonth extends CalendarMonth {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       dayNamesHeaderPartType: PlainCalendarDayNamesHeader,
       dayPartType: PlainCalendarDay,
       monthYearHeaderPartType: PlainCalendarMonthYearHeader,

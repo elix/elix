@@ -1,5 +1,5 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import { defaultState, getItemText, stateEffects } from "./internal.js";
 
 /**
  * Exposes the text content of a list's items as an array of strings.
@@ -10,8 +10,8 @@ import * as internal from "./internal.js";
 export default function ItemsTextMixin(Base) {
   // The class prototype added by the mixin.
   class ItemsText extends Base {
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         texts: null,
       });
     }
@@ -26,19 +26,19 @@ export default function ItemsTextMixin(Base) {
      * @param {ListItemElement} item
      * @returns {string}
      */
-    [internal.getItemText](item) {
+    [getItemText](item) {
       return getItemText(item);
     }
 
-    [internal.stateEffects](state, changed) {
-      const effects = super[internal.stateEffects]
-        ? super[internal.stateEffects](state, changed)
+    [stateEffects](state, changed) {
+      const effects = super[stateEffects]
+        ? super[stateEffects](state, changed)
         : {};
 
       // Regenerate texts when items change.
       if (changed.items) {
         const { items } = state;
-        const texts = getTextsFromItems(items, this[internal.getItemText]);
+        const texts = getTextsFromItems(items, this[getItemText]);
         if (texts) {
           Object.freeze(texts);
           Object.assign(effects, { texts });

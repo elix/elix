@@ -1,5 +1,19 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  goDown,
+  goEnd,
+  goFirst,
+  goLast,
+  goLeft,
+  goNext,
+  goPrevious,
+  goRight,
+  goStart,
+  goUp,
+  state,
+  stateEffects,
+} from "./internal.js";
 
 /**
  * Maps direction semantics to cursor semantics.
@@ -18,8 +32,8 @@ import * as internal from "./internal.js";
 export default function DirectionCursorMixin(Base) {
   // The class prototype added by the mixin.
   class DirectionCursor extends Base {
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         canGoDown: null,
         canGoLeft: null,
         canGoRight: null,
@@ -30,21 +44,21 @@ export default function DirectionCursorMixin(Base) {
     /**
      * Interprets `goDown` to mean "move to the next item".
      */
-    [internal.goDown]() {
-      if (super[internal.goDown]) {
-        super[internal.goDown]();
+    [goDown]() {
+      if (super[goDown]) {
+        super[goDown]();
       }
-      return this[internal.goNext]();
+      return this[goNext]();
     }
 
     /**
      * Interprets `goEnd` to mean "move to the last item".
      */
-    [internal.goEnd]() {
-      if (super[internal.goEnd]) {
-        super[internal.goEnd]();
+    [goEnd]() {
+      if (super[goEnd]) {
+        super[goEnd]();
       }
-      return this[internal.goLast]();
+      return this[goLast]();
     }
 
     /**
@@ -53,13 +67,13 @@ export default function DirectionCursorMixin(Base) {
      * If the element has a `rightToLeft` property and it is true, then this
      * moves to the _next_ item.
      */
-    [internal.goLeft]() {
-      if (super[internal.goLeft]) {
-        super[internal.goLeft]();
+    [goLeft]() {
+      if (super[goLeft]) {
+        super[goLeft]();
       }
-      return this[internal.state] && this[internal.state].rightToLeft
-        ? this[internal.goNext]()
-        : this[internal.goPrevious]();
+      return this[state] && this[state].rightToLeft
+        ? this[goNext]()
+        : this[goPrevious]();
     }
 
     /**
@@ -68,38 +82,38 @@ export default function DirectionCursorMixin(Base) {
      * If the element has a `rightToLeft` property and it is true, then this
      * moves to the _previous_ item.
      */
-    [internal.goRight]() {
-      if (super[internal.goRight]) {
-        super[internal.goRight]();
+    [goRight]() {
+      if (super[goRight]) {
+        super[goRight]();
       }
-      return this[internal.state] && this[internal.state].rightToLeft
-        ? this[internal.goPrevious]()
-        : this[internal.goNext]();
+      return this[state] && this[state].rightToLeft
+        ? this[goPrevious]()
+        : this[goNext]();
     }
 
     /**
      * Interprets `goStart` to mean "move to the first item".
      */
-    [internal.goStart]() {
-      if (super[internal.goStart]) {
-        super[internal.goStart]();
+    [goStart]() {
+      if (super[goStart]) {
+        super[goStart]();
       }
-      return this[internal.goFirst]();
+      return this[goFirst]();
     }
 
     /**
      * Interprets `goUp` to mean "move to the previous item".
      */
-    [internal.goUp]() {
-      if (super[internal.goUp]) {
-        super[internal.goUp]();
+    [goUp]() {
+      if (super[goUp]) {
+        super[goUp]();
       }
-      return this[internal.goPrevious]();
+      return this[goPrevious]();
     }
 
-    [internal.stateEffects](state, changed) {
-      const effects = super[internal.stateEffects]
-        ? super[internal.stateEffects](state, changed)
+    [stateEffects](state, changed) {
+      const effects = super[stateEffects]
+        ? super[stateEffects](state, changed)
         : {};
 
       // Update computed state members to track whether we can go

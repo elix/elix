@@ -1,6 +1,6 @@
-import * as internal from "../base/internal.js";
+import { template } from "../base/internal.js";
 import OverlayFrame from "../base/OverlayFrame.js";
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 
 /**
  * OverlayFrame component in the Plain reference design system
@@ -11,10 +11,10 @@ import html from "../core/html.js";
  * @inherits OverlayFrame
  */
 class PlainOverlayFrame extends OverlayFrame {
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           :host {
             background: white;

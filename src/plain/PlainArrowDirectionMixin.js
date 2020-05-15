@@ -1,5 +1,11 @@
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import {
+  defaultState,
+  ids,
+  render,
+  state,
+  template,
+} from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import PlainArrowDirectionButton from "./PlainArrowDirectionButton.js";
 
@@ -15,40 +21,39 @@ import PlainArrowDirectionButton from "./PlainArrowDirectionButton.js";
  */
 export default function PlainArrowDirectionMixin(Base) {
   return class PlainArrowDirection extends Base {
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         arrowButtonPartType: PlainArrowDirectionButton,
       });
     }
 
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      super[render](changed);
 
       // Rotate the default icons for vertical orientation, flip the default
       // icons for right-to-left.
       if (changed.orientation || changed.rightToLeft) {
-        const { orientation, rightToLeft } = this[internal.state];
+        const { orientation, rightToLeft } = this[state];
         const vertical = orientation === "vertical";
         const transform = vertical
           ? "rotate(90deg)"
           : rightToLeft
           ? "rotateZ(180deg)"
           : "";
-        if (this[internal.ids].arrowIconPrevious) {
-          this[internal.ids].arrowIconPrevious.style.transform = transform;
+        if (this[ids].arrowIconPrevious) {
+          this[ids].arrowIconPrevious.style.transform = transform;
         }
-        if (this[internal.ids].arrowIconNext) {
-          this[internal.ids].arrowIconNext.style.transform = transform;
+        if (this[ids].arrowIconNext) {
+          this[ids].arrowIconNext.style.transform = transform;
         }
       }
 
       // Apply dark mode to buttons.
       if (changed.dark) {
-        const { dark } = this[internal.state];
-        /** @type {any} */ const arrowButtonPrevious = this[internal.ids]
+        const { dark } = this[state];
+        /** @type {any} */ const arrowButtonPrevious = this[ids]
           .arrowButtonPrevious;
-        /** @type {any} */ const arrowButtonNext = this[internal.ids]
-          .arrowButtonNext;
+        /** @type {any} */ const arrowButtonNext = this[ids].arrowButtonNext;
         if ("dark" in arrowButtonPrevious) {
           /** @type {any} */ (arrowButtonPrevious).dark = dark;
         }
@@ -58,8 +63,8 @@ export default function PlainArrowDirectionMixin(Base) {
       }
     }
 
-    get [internal.template]() {
-      const result = super[internal.template];
+    get [template]() {
+      const result = super[template];
 
       // Insert our icons into the button slots.
       const arrowButtonPrevious = result.content.querySelector(
@@ -67,7 +72,7 @@ export default function PlainArrowDirectionMixin(Base) {
       );
       if (arrowButtonPrevious) {
         arrowButtonPrevious.append(
-          html`
+          fragmentFrom.html`
             <svg
               id="arrowIconPrevious"
               part="arrow-icon arrow-icon-previous"
@@ -87,7 +92,7 @@ export default function PlainArrowDirectionMixin(Base) {
       );
       if (arrowButtonNext) {
         arrowButtonNext.append(
-          html`
+          fragmentFrom.html`
             <svg
               id="arrowIconNext"
               part="arrow-icon arrow-icon-next"

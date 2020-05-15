@@ -1,5 +1,5 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import { defaultState, rendered, setState, state } from "./internal.js";
 
 /**
  * Tracks the disabled state of a component that can be disabled
@@ -10,8 +10,8 @@ import * as internal from "./internal.js";
 export default function DisabledMixin(Base) {
   // The class prototype added by the mixin.
   class Disabled extends Base {
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         disabled: false,
       });
     }
@@ -40,16 +40,16 @@ export default function DisabledMixin(Base) {
      * @default false
      */
     get disabled() {
-      return this[internal.state].disabled;
+      return this[state].disabled;
     }
     // AttributeMarshallingMixin should parse this as a boolean attribute for us.
     set disabled(disabled) {
-      this[internal.setState]({ disabled });
+      this[setState]({ disabled });
     }
 
-    [internal.rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [rendered](/** @type {ChangedFlags} */ changed) {
+      if (super[rendered]) {
+        super[rendered](changed);
       }
       if (changed.disabled) {
         // Reflect value of disabled property to the corresponding attribute.

@@ -1,6 +1,15 @@
 import { ownEvent } from "../core/dom.js";
-import html from "../core/html.js";
-import * as internal from "./internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
+import {
+  defaultState,
+  firstRender,
+  ids,
+  keydown,
+  raiseChangeEvents,
+  render,
+  state,
+  template,
+} from "./internal.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import PopupSource from "./PopupSource.js";
 
@@ -13,14 +22,14 @@ const Base = KeyboardMixin(PopupSource);
  * @mixes KeyboardMixin
  */
 class PopupButton extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       role: "button",
       sourcePartType: "button",
     });
   }
 
-  [internal.keydown](/** @type {KeyboardEvent} */ event) {
+  [keydown](/** @type {KeyboardEvent} */ event) {
     let handled;
 
     switch (event.key) {
@@ -36,30 +45,28 @@ class PopupButton extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return (
-      handled || (super[internal.keydown] && super[internal.keydown](event))
-    );
+    return handled || (super[keydown] && super[keydown](event));
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
-    if (this[internal.firstRender]) {
+    if (this[firstRender]) {
       // If the top-level element gets the focus while the popup is open, the
       // most likely expanation is that the user hit Shift+Tab to back up out of
       // the popup. In that case, we should close.
       this.addEventListener("focus", async (event) => {
-        const hostFocused = !ownEvent(this[internal.ids].popup, event);
+        const hostFocused = !ownEvent(this[ids].popup, event);
         // It's possible to get a focus event in the initial mousedown on the
         // source button before the popup is even rendered. We don't want to
         // close in that case, so we check to see if we've already measured the
         // popup dimensions (which will be true if the popup fully completed
         // rendering).
-        const measured = this[internal.state].popupHeight !== null;
+        const measured = this[state].popupHeight !== null;
         if (hostFocused && this.opened && measured) {
-          this[internal.raiseChangeEvents] = true;
+          this[raiseChangeEvents] = true;
           await this.close();
-          this[internal.raiseChangeEvents] = false;
+          this[raiseChangeEvents] = false;
         }
       });
     }
@@ -68,7 +75,7 @@ class PopupButton extends Base {
       // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
       // mousedown won't fire until the user releases their finger, so it behaves
       // like a click.
-      const source = this[internal.ids].source;
+      const source = this[ids].source;
       source.addEventListener("mousedown", (event) => {
         // mousedown events fire even if button is disabled, so we need
         // to explicitly ignore those.
@@ -87,9 +94,9 @@ class PopupButton extends Base {
         // popup. See note below.
         setTimeout(() => {
           if (!this.opened) {
-            this[internal.raiseChangeEvents] = true;
+            this[raiseChangeEvents] = true;
             this.open();
-            this[internal.raiseChangeEvents] = false;
+            this[raiseChangeEvents] = false;
           }
         });
         event.stopPropagation();
@@ -103,10 +110,10 @@ class PopupButton extends Base {
     }
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           [part~="source"] {
             cursor: default;

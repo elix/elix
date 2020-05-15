@@ -1,11 +1,20 @@
 import EffectMixin from "../../src/base/EffectMixin.js";
-import * as internal from "../../src/base/internal.js";
+import {
+  defaultState,
+  ids,
+  keydown,
+  render,
+  state,
+  swipeLeftTransitionEnd,
+  swipeRight,
+  template,
+} from "../../src/base/internal.js";
 import ListBox from "../../src/base/ListBox.js";
 import SwipeCommandsMixin from "../../src/base/SwipeCommandsMixin.js";
 import TouchSwipeMixin from "../../src/base/TouchSwipeMixin.js";
 import TrackpadSwipeMixin from "../../src/base/TrackpadSwipeMixin.js";
 import { updateChildNodes } from "../../src/core/dom.js";
-import * as template from "../../src/core/template.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 import "./AnimateAlignment.js";
 
 const Base = EffectMixin(
@@ -17,8 +26,8 @@ const Base = EffectMixin(
  * items for Mark Read/Unread (swipe right) and Delete (swipe left).
  */
 export default class MessageListBox extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       // The Delete command removes an item, and we also want a swipe to Delete to
       // follow through: the leftward animation will continue all the way to the
       // left after the user completes the gesture.
@@ -30,7 +39,7 @@ export default class MessageListBox extends Base {
   // To show how keyboard support can coexist with swipe commands, we define
   // the Space key as a shortcut for Mark Read/Unread and the Delete key as a
   // shortcut for the Delete command.
-  [internal.keydown](/** @type {KeyboardEvent} */ event) {
+  [keydown](/** @type {KeyboardEvent} */ event) {
     let handled = false;
     const selectedItem = this.selectedItem;
 
@@ -52,33 +61,25 @@ export default class MessageListBox extends Base {
     }
 
     // Prefer our result if it's defined, otherwise use base result.
-    return (
-      handled ||
-      (super[internal.keydown] && super[internal.keydown](event)) ||
-      false
-    );
+    return handled || (super[keydown] && super[keydown](event)) || false;
   }
 
-  [internal.render](changed) {
-    super[internal.render](changed);
+  [render](changed) {
+    super[render](changed);
 
     // Our Mark Read/Unread command can show one of two different icons and
     // labels to indicate the read/unread state that will result if the user
     // ends the swipe at that point.
     if (changed.swipeItem || changed.swipeRightWillCommit) {
       const { swipeItem, swipeRightCommitted, swipeRightWillCommit } = this[
-        internal.state
+        state
       ];
       if (swipeItem && "read" in swipeItem) {
         const read = swipeItem.read;
         const newRead =
           swipeRightCommitted || swipeRightWillCommit ? !read : read;
-        this[internal.ids].readIconWithLabel.style.display = newRead
-          ? ""
-          : "none";
-        this[internal.ids].unreadIconWithLabel.style.display = newRead
-          ? "none"
-          : "";
+        this[ids].readIconWithLabel.style.display = newRead ? "" : "none";
+        this[ids].unreadIconWithLabel.style.display = newRead ? "none" : "";
       }
     }
 
@@ -86,16 +87,14 @@ export default class MessageListBox extends Base {
     // transition between left and right alignment. We use this alignment to
     // signal the point at which releasing the swipe would commit the command.
     if (changed.swipeRightCommitted || changed.swipeRightWillCommit) {
-      /** @type {any} */ (this[internal.ids].unreadCommand).align =
-        this[internal.state].swipeRightCommitted ||
-        this[internal.state].swipeRightWillCommit
+      /** @type {any} */ (this[ids].unreadCommand).align =
+        this[state].swipeRightCommitted || this[state].swipeRightWillCommit
           ? "right"
           : "left";
     }
     if (changed.swipeLeftCommitted || changed.swipeLeftWillCommit) {
-      /** @type {any} */ (this[internal.ids].deleteCommand).align =
-        this[internal.state].swipeLeftCommitted ||
-        this[internal.state].swipeLeftWillCommit
+      /** @type {any} */ (this[ids].deleteCommand).align =
+        this[state].swipeLeftCommitted || this[state].swipeLeftWillCommit
           ? "left"
           : "right";
     }
@@ -104,30 +103,30 @@ export default class MessageListBox extends Base {
   // A swipe left indicates we should perform the Delete command. We want to
   // wait until the left swipe animation has completed before excuting the
   // deletion.
-  [internal.swipeLeftTransitionEnd]() {
-    if (super[internal.swipeLeftTransitionEnd]) {
-      super[internal.swipeLeftTransitionEnd]();
+  [swipeLeftTransitionEnd]() {
+    if (super[swipeLeftTransitionEnd]) {
+      super[swipeLeftTransitionEnd]();
     }
-    this[internal.state].swipeItem.remove();
+    this[state].swipeItem.remove();
   }
 
   // A swipe right indicates we should toggle an item's read/unread state. We
   // toggle the state as soon as the swipe happens (before the item animates
   // back to its normal state).
-  [internal.swipeRight]() {
-    const { swipeItem } = this[internal.state];
+  [swipeRight]() {
+    const { swipeItem } = this[state];
     if ("read" in swipeItem) {
       swipeItem.read = !swipeItem.read;
     }
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     // Patch the Mark Read/Unread command into the left command slot.
     const leftCommandSlot = result.content.getElementById("leftCommandSlot");
     if (leftCommandSlot) {
-      const leftCommandTemplate = template.html`
+      const leftCommandTemplate = templateFrom.html`
         <animate-alignment id="unreadCommand" slot="leftCommand" class="command">
           <div id="readIconWithLabel" class="iconWithLabel">
             <img class="icon" src="resources/outline-drafts-24px.svg">
@@ -145,7 +144,7 @@ export default class MessageListBox extends Base {
     // Patch the Delete command into the right commands slot.
     const rightCommandSlot = result.content.getElementById("rightCommandSlot");
     if (rightCommandSlot) {
-      const rightCommandTemplate = template.html`
+      const rightCommandTemplate = templateFrom.html`
         <animate-alignment id="deleteCommand" align="right" slot="rightCommand" class="command">
           <div class="iconWithLabel">
             <img class="icon" src="resources/outline-delete-24px.svg">
@@ -160,7 +159,7 @@ export default class MessageListBox extends Base {
     }
 
     result.content.append(
-      template.html`
+      templateFrom.html`
         <style>
           :host([generic]) ::slotted(*) {
             padding: 0;

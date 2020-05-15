@@ -1,4 +1,4 @@
-import * as internal from "../../src/base/internal.js";
+import { keydown, setState, state } from "../../src/base/internal.js";
 import KeyboardPagedCursorMixin from "../../src/base/KeyboardPagedCursorMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import { assert } from "../testHelpers.js";
@@ -10,7 +10,7 @@ const Base = KeyboardPagedCursorMixin(ReactiveMixin(HTMLElement));
 class KeyboardPagedCursorTest extends Base {
   connectedCallback() {
     const items = Array.prototype.slice.call(this.children);
-    this[internal.setState]({
+    this[setState]({
       items,
       selectedIndex: -1,
     });
@@ -32,35 +32,35 @@ describe("KeyboardPagedCursorMixin", function () {
   it("If bottom item not selected, Page Down selects bottom item", () => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    fixture[internal.setState]({ currentIndex: 0 });
-    const handled = fixture[internal.keydown]({
+    fixture[setState]({ currentIndex: 0 });
+    const handled = fixture[keydown]({
       key: "PageDown",
     });
     assert(handled);
-    assert.equal(fixture[internal.state].currentIndex, 1);
+    assert.equal(fixture[state].currentIndex, 1);
   });
 
   it("If bottom item selected, Page Down advances selection by one page", () => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    fixture[internal.setState]({ currentIndex: 1 });
-    const handled = fixture[internal.keydown]({
+    fixture[setState]({ currentIndex: 1 });
+    const handled = fixture[keydown]({
       key: "PageDown",
     });
     assert(handled);
-    assert.equal(fixture[internal.state].currentIndex, 3);
+    assert.equal(fixture[state].currentIndex, 3);
   });
 
   it("If less than one page remaining, Page Down selects last item", (done) => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    fixture[internal.setState]({ currentIndex: 3 });
+    fixture[setState]({ currentIndex: 3 });
     fixture.addEventListener("scroll", () => {
-      const handled = fixture[internal.keydown]({
+      const handled = fixture[keydown]({
         key: "PageDown",
       });
       assert(handled);
-      assert.equal(fixture[internal.state].currentIndex, 4);
+      assert.equal(fixture[state].currentIndex, 4);
       done();
     });
     fixture.scrollTop = 2 * itemHeight; // So index 2 is at top of viewport.
@@ -69,13 +69,13 @@ describe("KeyboardPagedCursorMixin", function () {
   it("If last item already selected, Page Down has no effect", (done) => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    fixture[internal.setState]({ currentIndex: 4 });
+    fixture[setState]({ currentIndex: 4 });
     fixture.addEventListener("scroll", () => {
-      const handled = fixture[internal.keydown]({
+      const handled = fixture[keydown]({
         key: "PageDown",
       });
       assert(!handled);
-      assert.equal(fixture[internal.state].currentIndex, 4);
+      assert.equal(fixture[state].currentIndex, 4);
       done();
     });
     fixture.scrollTop = 3 * itemHeight; // So index 3 is at top of viewport.

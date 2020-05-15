@@ -1,5 +1,11 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  keydown,
+  raiseChangeEvents,
+  scrollTarget,
+  setState,
+  state,
+} from "./internal.js";
 import { defaultScrollTarget } from "./scrolling.js";
 
 /**
@@ -22,10 +28,10 @@ import { defaultScrollTarget } from "./scrolling.js";
  *
  * This mixin expects the component to provide:
  *
- * * A `[internal.keydown]` method invoked when a key is pressed. You can use
+ * * A `[keydown]` method invoked when a key is pressed. You can use
  *   [KeyboardMixin](KeyboardMixin) for that purpose, or wire up your own
- *   keyboard handling and call `[internal.keydown]` yourself.
- * * A `currentIndex` state member updatable via [internal.setState]`.
+ *   keyboard handling and call `[keydown]` yourself.
+ * * A `currentIndex` state member updatable via [setState]`.
  *
  * @module KeyboardPagedCursorMixin
  * @param {Constructor<ReactiveElement>} Base
@@ -33,7 +39,7 @@ import { defaultScrollTarget } from "./scrolling.js";
 export default function KeyboardPagedCursorMixin(Base) {
   // The class prototype added by the mixin.
   class KeyboardPagedCursor extends Base {
-    [internal.keydown](/** @type {KeyboardEvent} */ event) {
+    [keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
       const orientation = this.orientation;
       if (orientation !== "horizontal") {
@@ -49,18 +55,14 @@ export default function KeyboardPagedCursorMixin(Base) {
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return (
-        handled || (super[internal.keydown] && super[internal.keydown](event))
-      );
+      return handled || (super[keydown] && super[keydown](event));
     }
 
     // Default orientation implementation defers to super,
     // but if not found, looks in state.
     get orientation() {
       return (
-        super.orientation ||
-        (this[internal.state] && this[internal.state].orientation) ||
-        "both"
+        super.orientation || (this[state] && this[state].orientation) || "both"
       );
     }
 
@@ -89,14 +91,14 @@ export default function KeyboardPagedCursorMixin(Base) {
      * Page Down. The default value is calculated by
      * [defaultScrollTarget](defaultScrollTarget#defaultScrollTarget).
      *
-     * See [internal.scrollTarget](internal#internal.scrollTarget).
+     * See [scrollTarget](internal#internal.scrollTarget).
      *
      * @type {HTMLElement}
      */
-    get [internal.scrollTarget]() {
+    get [scrollTarget]() {
       /** @type {any} */
       const element = this;
-      return super[internal.scrollTarget] || defaultScrollTarget(element);
+      return super[scrollTarget] || defaultScrollTarget(element);
     }
   }
 
@@ -172,9 +174,9 @@ function getIndexOfItemAtY(items, y, downward) {
  * @param {boolean} downward
  */
 function scrollOnePage(element, downward) {
-  const scrollTarget = element[internal.scrollTarget];
-  const items = element[internal.state].items;
-  const currentIndex = element[internal.state].currentIndex;
+  const scrollTarget = element[scrollTarget];
+  const items = element[state].items;
+  const currentIndex = element[state].currentIndex;
 
   // Determine the item visible just at the edge of direction we're heading.
   // We'll move to that item if it's not already current.
@@ -210,15 +212,15 @@ function scrollOnePage(element, downward) {
   // If external code causes an operation that scrolls the page, it's impossible
   // for it to predict where the currentIndex is going to end up. Accordingly,
   // we raise change events.
-  const saveRaiseChangesEvents = element[internal.raiseChangeEvents];
-  element[internal.raiseChangeEvents] = true;
+  const saveRaiseChangesEvents = element[raiseChangeEvents];
+  element[raiseChangeEvents] = true;
 
-  element[internal.setState]({
+  element[setState]({
     currentIndex: newIndex,
   });
 
-  element[internal.raiseChangeEvents] = saveRaiseChangesEvents;
+  element[raiseChangeEvents] = saveRaiseChangesEvents;
 
-  const changed = element[internal.state].currentIndex !== currentIndex;
+  const changed = element[state].currentIndex !== currentIndex;
   return changed;
 }

@@ -1,6 +1,12 @@
 import { closestFocusableNode } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  firstRender,
+  render,
+  shadowRoot,
+  state,
+} from "./internal.js";
 
 // Quick detection of whether we'll need to handle focus.
 // As of February 2019, we don't need to handle this in Chrome, perhaps because
@@ -33,19 +39,19 @@ const nativeDelegatesFocus = shadowRoot.delegatesFocus;
 export default function ComposedFocusMixin(Base) {
   // The class prototype added by the mixin.
   class ComposedFocus extends Base {
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         composeFocus: !nativeDelegatesFocus,
       });
     }
 
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      if (super[render]) {
+        super[render](changed);
       }
-      if (this[internal.firstRender]) {
+      if (this[firstRender]) {
         this.addEventListener("mousedown", (event) => {
-          if (!this[internal.state].composeFocus) {
+          if (!this[state].composeFocus) {
             return;
           }
           // Only process events for the main (usually left) button.

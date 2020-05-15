@@ -1,13 +1,30 @@
 import { forwardFocus, indexOfItemContainingTarget } from "../core/dom.js";
-import html from "../core/html.js";
-import * as template from "../core/template.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
+import { transmute } from "../core/template.js";
 import ComboBox from "./ComboBox.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  firstRender,
+  getItemText,
+  goDown,
+  goEnd,
+  goStart,
+  goUp,
+  ids,
+  itemsDelegate,
+  keydown,
+  raiseChangeEvents,
+  render,
+  setState,
+  shadowRoot,
+  state,
+  stateEffects,
+  template,
+} from "./internal.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
-import { getItemText } from "./ItemsTextMixin.js";
 import ListBox from "./ListBox.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
@@ -29,8 +46,8 @@ const Base = CursorAPIMixin(
  * @part {ListBox} list - the list of choices
  */
 class ListComboBox extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       currentIndex: -1,
       horizontalAlign: "stretch",
       listPartType: ListBox,
@@ -41,25 +58,21 @@ class ListComboBox extends Base {
   // on KeyboardDirectionMixin. The latter supports Home and End, and we don't
   // want to handle those -- we want to let the text input handle them.
   // We also need to forward PageDown/PageUp to the list element.
-  [internal.keydown](/** @type {KeyboardEvent} */ event) {
+  [keydown](/** @type {KeyboardEvent} */ event) {
     let handled;
     /** @type {any} */
-    const list = this[internal.ids].list;
+    const list = this[ids].list;
 
     switch (event.key) {
       case "ArrowDown":
         if (this.opened) {
-          handled = event.altKey
-            ? this[internal.goEnd]()
-            : this[internal.goDown]();
+          handled = event.altKey ? this[goEnd]() : this[goDown]();
         }
         break;
 
       case "ArrowUp":
         if (this.opened) {
-          handled = event.altKey
-            ? this[internal.goStart]()
-            : this[internal.goUp]();
+          handled = event.altKey ? this[goStart]() : this[goUp]();
         }
         break;
 
@@ -77,9 +90,7 @@ class ListComboBox extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return (
-      handled || (super[internal.keydown] && super[internal.keydown](event))
-    );
+    return handled || (super[keydown] && super[keydown](event));
   }
 
   /**
@@ -90,38 +101,38 @@ class ListComboBox extends Base {
    * @default ListBox
    */
   get listPartType() {
-    return this[internal.state].listPartType;
+    return this[state].listPartType;
   }
   set listPartType(listPartType) {
-    this[internal.setState]({ listPartType });
+    this[setState]({ listPartType });
   }
 
-  get [internal.itemsDelegate]() {
-    return this[internal.ids].list;
+  get [itemsDelegate]() {
+    return this[ids].list;
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    if (changed.listPartType && this[internal.ids].list) {
+  [render](/** @type {ChangedFlags} */ changed) {
+    if (changed.listPartType && this[ids].list) {
       // Turn off focus handling for old list.
       /** @type {any} */
-      const cast = this[internal.ids].list;
+      const cast = this[ids].list;
       forwardFocus(cast, null);
     }
 
-    super[internal.render](changed);
+    super[render](changed);
 
-    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+    renderParts(this[shadowRoot], this[state], changed);
 
-    if (this[internal.firstRender]) {
+    if (this[firstRender]) {
       this.setAttribute("aria-haspopup", "listbox");
     }
 
     if (changed.inputPartType) {
-      this[internal.ids].input.setAttribute("aria-autocomplete", "both");
+      this[ids].input.setAttribute("aria-autocomplete", "both");
     }
 
     if (changed.listPartType) {
-      this[internal.ids].list.addEventListener("mousedown", (event) => {
+      this[ids].list.addEventListener("mousedown", (event) => {
         // Only process events for the main (usually left) button.
         if (/** @type {MouseEvent} */ (event).button !== 0) {
           return;
@@ -132,9 +143,9 @@ class ListComboBox extends Base {
         if (target) {
           const targetIndex = indexOfItemContainingTarget(this.items, target);
           if (this.opened && targetIndex >= 0) {
-            this[internal.raiseChangeEvents] = true;
+            this[raiseChangeEvents] = true;
             this.close();
-            this[internal.raiseChangeEvents] = false;
+            this[raiseChangeEvents] = false;
           }
         }
       });
@@ -142,7 +153,7 @@ class ListComboBox extends Base {
       // Keep focus off of the list and on the top level combo box (which should
       // delegate focus to the input).
       /** @type {any} */
-      const cast = this[internal.ids].list;
+      const cast = this[ids].list;
       forwardFocus(cast, this);
 
       // Track changes in the list's selection state.
@@ -152,33 +163,30 @@ class ListComboBox extends Base {
       // presses Backspace to delete that selected text, Gboard/Chrome seems to
       // ignore the first press of the Backspace key. The user must press
       // Backspace a second time to actually delete the selected text.
-      this[internal.ids].list.addEventListener(
-        "selected-index-changed",
-        (event) => {
-          /** @type {any} */
-          const cast = event;
-          const listSelectedIndex = cast.detail.selectedIndex;
-          if (this[internal.state].selectedIndex !== listSelectedIndex) {
-            this[internal.raiseChangeEvents] = true;
-            this[internal.setState]({
-              currentIndex: listSelectedIndex,
-            });
-            this[internal.raiseChangeEvents] = false;
-          }
+      this[ids].list.addEventListener("selected-index-changed", (event) => {
+        /** @type {any} */
+        const cast = event;
+        const listSelectedIndex = cast.detail.selectedIndex;
+        if (this[state].selectedIndex !== listSelectedIndex) {
+          this[raiseChangeEvents] = true;
+          this[setState]({
+            currentIndex: listSelectedIndex,
+          });
+          this[raiseChangeEvents] = false;
         }
-      );
+      });
     }
 
     if (changed.currentIndex) {
-      const list = /** @type {any} */ (this[internal.ids].list);
+      const list = /** @type {any} */ (this[ids].list);
       if ("selectedIndex" in list) {
-        list.selectedIndex = this[internal.state].currentIndex;
+        list.selectedIndex = this[state].currentIndex;
       }
     }
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     // If value was changed directly or items have updated, select the
     // corresponding item in list.
@@ -231,13 +239,13 @@ class ListComboBox extends Base {
     return effects;
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     // Wrap default slot with a list.
     const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
-      defaultSlot.replaceWith(html`
+      defaultSlot.replaceWith(fragmentFrom.html`
         <style>
           [part~="list"] {
             border: none;
@@ -254,7 +262,7 @@ class ListComboBox extends Base {
       `);
     }
 
-    renderParts(result.content, this[internal.state]);
+    renderParts(result.content, this[state]);
 
     return result;
   }
@@ -273,7 +281,7 @@ function renderParts(root, state, changed) {
     const { listPartType } = state;
     const list = root.getElementById("list");
     if (list) {
-      template.transmute(list, listPartType);
+      transmute(list, listPartType);
     }
   }
 }

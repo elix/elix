@@ -1,41 +1,48 @@
-import * as internal from "../../src/base/internal.js";
-import * as template from "../../src/core/template.js";
 import EffectMixin from "../../src/base/EffectMixin.js";
+import {
+  defaultState,
+  effectEndTarget,
+  ids,
+  render,
+  setState,
+  startEffect,
+  state,
+  stateEffects,
+  template,
+} from "../../src/base/internal.js";
 import TransitionEffectMixin from "../../src/base/TransitionEffectMixin.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
 
 const Base = EffectMixin(TransitionEffectMixin(ReactiveElement));
 
 export default class AnimateAlignment extends Base {
   get align() {
-    return this[internal.state].align;
+    return this[state].align;
   }
   set align(align) {
-    if (
-      this[internal.state].enableEffects &&
-      this[internal.state].align !== align
-    ) {
+    if (this[state].enableEffects && this[state].align !== align) {
       const effect = align === "left" ? "slideLeft" : "slideRight";
-      this[internal.startEffect](effect);
+      this[startEffect](effect);
     } else {
-      this[internal.setState]({ align });
+      this[setState]({ align });
     }
   }
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       align: "left",
     });
   }
 
-  get [internal.effectEndTarget]() {
-    return this[internal.ids].container;
+  get [effectEndTarget]() {
+    return this[ids].container;
   }
 
-  [internal.render](changed) {
-    super[internal.render](changed);
-    const { align, effect, effectPhase, enableEffects } = this[internal.state];
-    const container = this[internal.ids].container;
+  [render](changed) {
+    super[render](changed);
+    const { align, effect, effectPhase, enableEffects } = this[state];
+    const container = this[ids].container;
     if (
       ((changed.effect || changed.effectPhase || changed.enableEffects) &&
         enableEffects &&
@@ -44,9 +51,8 @@ export default class AnimateAlignment extends Base {
     ) {
       if (effectPhase === "before") {
         // The inner container lets us measure how wide the content wants to be.
-        const containerWidth = this[internal.ids].container.clientWidth;
-        const distance =
-          this[internal.ids].stationary.clientWidth - containerWidth;
+        const containerWidth = this[ids].container.clientWidth;
+        const distance = this[ids].stationary.clientWidth - containerWidth;
         const transform =
           effect === "slideLeft"
             ? `translateX(${distance}px)`
@@ -77,8 +83,8 @@ export default class AnimateAlignment extends Base {
     }
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     if (changed.effectPhase && state.effectPhase === "after") {
       if (state.effect === "slideLeft") {
@@ -95,8 +101,8 @@ export default class AnimateAlignment extends Base {
     return effects;
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           display: inline-flex;
@@ -130,9 +136,8 @@ export default class AnimateAlignment extends Base {
   }
 
   toggleAlignment() {
-    const effect =
-      this[internal.state].align === "left" ? "slideRight" : "slideLeft";
-    this[internal.startEffect](effect);
+    const effect = this[state].align === "left" ? "slideRight" : "slideLeft";
+    this[startEffect](effect);
   }
 }
 

@@ -1,5 +1,5 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import { raiseChangeEvents, rendered, setState, state } from "./internal.js";
 
 /**
  * Exposes a public API for single selection on a list-like element
@@ -31,12 +31,12 @@ export default function SingleSelectAPIMixin(Base) {
       }
     }
 
-    [internal.rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [rendered](/** @type {ChangedFlags} */ changed) {
+      if (super[rendered]) {
+        super[rendered](changed);
       }
-      if (changed.currentIndex && this[internal.raiseChangeEvents]) {
-        const selectedIndex = this[internal.state].currentIndex;
+      if (changed.currentIndex && this[raiseChangeEvents]) {
+        const selectedIndex = this[state].currentIndex;
         /**
          * Raised when the `selectedIndex` property changes.
          *
@@ -56,12 +56,12 @@ export default function SingleSelectAPIMixin(Base) {
      * @type {number}
      */
     get selectedIndex() {
-      const { items, currentIndex } = this[internal.state];
+      const { items, currentIndex } = this[state];
       return items && items.length > 0 ? currentIndex : -1;
     }
     set selectedIndex(selectedIndex) {
       if (!isNaN(selectedIndex)) {
-        this[internal.setState]({
+        this[setState]({
           currentIndex: selectedIndex,
         });
       }
@@ -73,17 +73,17 @@ export default function SingleSelectAPIMixin(Base) {
      * @type {Element}
      */
     get selectedItem() {
-      const { items, currentIndex } = this[internal.state];
+      const { items, currentIndex } = this[state];
       return items && items[currentIndex];
     }
     set selectedItem(selectedItem) {
-      const { items } = this[internal.state];
+      const { items } = this[state];
       if (!items) {
         return;
       }
       const index = items.indexOf(selectedItem);
       if (index >= 0) {
-        this[internal.setState]({ currentIndex: index });
+        this[setState]({ currentIndex: index });
       }
     }
   }

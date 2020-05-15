@@ -1,6 +1,12 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import * as calendar from "./calendar.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  raiseChangeEvents,
+  rendered,
+  setState,
+  state,
+} from "./internal.js";
 
 /**
  * Adds locale-sensitive date support.
@@ -37,17 +43,17 @@ export default function CalendarElementMixin(Base) {
      * @type {Date}
      */
     get date() {
-      return this[internal.state].date;
+      return this[state].date;
     }
     set date(date) {
       // Only update state if actual date value differs from current state.
-      if (!calendar.datesEqual(date, this[internal.state].date)) {
-        this[internal.setState]({ date });
+      if (!calendar.datesEqual(date, this[state].date)) {
+        this[setState]({ date });
       }
     }
 
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         date: null,
         locale: navigator.language,
       });
@@ -70,20 +76,20 @@ export default function CalendarElementMixin(Base) {
      * @type {string}
      */
     get locale() {
-      return this[internal.state].locale;
+      return this[state].locale;
     }
     set locale(locale) {
-      this[internal.setState]({ locale });
+      this[setState]({ locale });
     }
 
-    [internal.rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [rendered](/** @type {ChangedFlags} */ changed) {
+      if (super[rendered]) {
+        super[rendered](changed);
       }
 
       // TODO: call calendar.datesEqual(date, previousState.date)?
-      if (changed.date && this[internal.raiseChangeEvents]) {
-        const date = this[internal.state].date;
+      if (changed.date && this[raiseChangeEvents]) {
+        const date = this[state].date;
         /**
          * Raised when the `date` property changes.
          *

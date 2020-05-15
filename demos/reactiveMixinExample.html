@@ -21,7 +21,64 @@
         <button id="increment">+</button>
       </template>
       <script type="module">
-        import * as internal from "../src/core/internal.js";
+        import {
+          checkSize,
+          contentSlot,
+          defaultState,
+          defaultTabIndex,
+          delegatesFocus,
+          effectEndTarget,
+          firstRender,
+          focusTarget,
+          getItemText,
+          goDown,
+          goEnd,
+          goFirst,
+          goLast,
+          goLeft,
+          goNext,
+          goPrevious,
+          goRight,
+          goStart,
+          goToItemWithPrefix,
+          goUp,
+          hasDynamicTemplate,
+          ids,
+          inputDelegate,
+          itemMatchesState,
+          itemsDelegate,
+          keydown,
+          mouseenter,
+          mouseleave,
+          nativeInternals,
+          event,
+          raiseChangeEvents,
+          render,
+          renderChanges,
+          renderDataToElement,
+          rendered,
+          rendering,
+          scrollTarget,
+          setState,
+          shadowRoot,
+          shadowRootMode,
+          startEffect,
+          state,
+          stateEffects,
+          swipeDown,
+          swipeDownComplete,
+          swipeLeft,
+          swipeLeftTransitionEnd,
+          swipeRight,
+          swipeRightTransitionEnd,
+          swipeUp,
+          swipeUpComplete,
+          swipeStart,
+          swipeTarget,
+          tap,
+          template,
+          toggleSelectedFlag,
+        } from "../src/core/internal.js";
         import ReactiveMixin from "../src/core/ReactiveMixin.js";
 
         // Create a native web component with reactive behavior.
@@ -33,10 +90,10 @@
             }
           }
 
-          // This property becomes the value of this[internal.state] at constructor time.
-          get [internal.defaultState]() {
-            return Object.assign(super[internal.defaultState], {
-              value: 0
+          // This property becomes the value of this[state] at constructor time.
+          get [defaultState]() {
+            return Object.assign(super[defaultState], {
+              value: 0,
             });
           }
 
@@ -47,7 +104,7 @@
 
           // Render the current state to the DOM.
           // ReactiveMixin invokes this method when the state changes.
-          [internal.render](changed) {
+          [render](changed) {
             if (!this.shadowRoot) {
               // First time we render, create the shadow subtree.
               const root = this.attachShadow({ mode: "open" });
@@ -77,10 +134,10 @@
 
           // Provide a public property that gets/sets state.
           get value() {
-            return this[internal.state].value;
+            return this[state].value;
           }
           set value(value) {
-            this[internal.setState]({ value });
+            this[setState]({ value });
           }
         }
 

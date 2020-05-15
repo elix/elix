@@ -22,47 +22,104 @@
       </template>
 
       <script type="module">
-        import * as internal from "../src/core/internal.js";
+        import {
+          checkSize,
+          contentSlot,
+          defaultState,
+          defaultTabIndex,
+          delegatesFocus,
+          effectEndTarget,
+          firstRender,
+          focusTarget,
+          getItemText,
+          goDown,
+          goEnd,
+          goFirst,
+          goLast,
+          goLeft,
+          goNext,
+          goPrevious,
+          goRight,
+          goStart,
+          goToItemWithPrefix,
+          goUp,
+          hasDynamicTemplate,
+          ids,
+          inputDelegate,
+          itemMatchesState,
+          itemsDelegate,
+          keydown,
+          mouseenter,
+          mouseleave,
+          nativeInternals,
+          event,
+          raiseChangeEvents,
+          render,
+          renderChanges,
+          renderDataToElement,
+          rendered,
+          rendering,
+          scrollTarget,
+          setState,
+          shadowRoot,
+          shadowRootMode,
+          startEffect,
+          state,
+          stateEffects,
+          swipeDown,
+          swipeDownComplete,
+          swipeLeft,
+          swipeLeftTransitionEnd,
+          swipeRight,
+          swipeRightTransitionEnd,
+          swipeUp,
+          swipeUpComplete,
+          swipeStart,
+          swipeTarget,
+          tap,
+          template,
+          toggleSelectedFlag,
+        } from "../src/core/internal.js";
         import ReactiveElement from "../src/core/ReactiveElement.js";
 
         // Create a native web component with reactive behavior.
         class IncrementDecrement extends ReactiveElement {
           // This sets the component's initial state at constructor time.
-          get [internal.defaultState]() {
-            return Object.assign(super[internal.defaultState], {
-              value: 0
+          get [defaultState]() {
+            return Object.assign(super[defaultState], {
+              value: 0,
             });
           }
 
           // Render the current state to the DOM.
-          [internal.render](changed) {
-            super[internal.render](changed);
+          [render](changed) {
+            super[render](changed);
 
-            if (this[internal.firstRender]) {
-              this[internal.ids].decrement.addEventListener("click", () => {
+            if (this[firstRender]) {
+              this[ids].decrement.addEventListener("click", () => {
                 this.value--;
               });
-              this[internal.ids].increment.addEventListener("click", () => {
+              this[ids].increment.addEventListener("click", () => {
                 this.value++;
               });
             }
 
             if (changed.value) {
-              this[internal.ids].value.textContent = this[internal.state].value;
+              this[ids].value.textContent = this[state].value;
             }
           }
 
           // This template is cloned to create the shadow tree for a new element.
-          get [internal.template]() {
+          get [template]() {
             return incrementDecrementTemplate;
           }
 
           // Provide a public property that gets/sets state.
           get value() {
-            return this[internal.state].value;
+            return this[state].value;
           }
           set value(value) {
-            this[internal.setState]({ value });
+            this[setState]({ value });
           }
         }
 

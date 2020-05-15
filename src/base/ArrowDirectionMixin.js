@@ -1,9 +1,19 @@
 import { forwardFocus } from "../core/dom.js";
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as template from "../core/template.js";
+import { transmute } from "../core/template.js";
 import Button from "./Button.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  goNext,
+  goPrevious,
+  ids,
+  raiseChangeEvents,
+  render,
+  setState,
+  shadowRoot,
+  state,
+} from "./internal.js";
 
 const wrap = Symbol("wrap");
 
@@ -27,10 +37,10 @@ function ArrowDirectionMixin(Base) {
      * @default true
      */
     get arrowButtonOverlap() {
-      return this[internal.state].arrowButtonOverlap;
+      return this[state].arrowButtonOverlap;
     }
     set arrowButtonOverlap(arrowButtonOverlap) {
-      this[internal.setState]({ arrowButtonOverlap });
+      this[setState]({ arrowButtonOverlap });
     }
 
     /**
@@ -40,10 +50,10 @@ function ArrowDirectionMixin(Base) {
      * @type {PartDescriptor}
      */
     get arrowButtonPartType() {
-      return this[internal.state].arrowButtonPartType;
+      return this[state].arrowButtonPartType;
     }
     set arrowButtonPartType(arrowButtonPartType) {
-      this[internal.setState]({ arrowButtonPartType });
+      this[setState]({ arrowButtonPartType });
     }
 
     // TODO: Symbols
@@ -51,7 +61,7 @@ function ArrowDirectionMixin(Base) {
       if (super.arrowButtonPrevious) {
         return super.arrowButtonPrevious();
       } else {
-        return this[internal.goPrevious]();
+        return this[goPrevious]();
       }
     }
 
@@ -59,7 +69,7 @@ function ArrowDirectionMixin(Base) {
       if (super.arrowButtonNext) {
         return super.arrowButtonNext();
       } else {
-        return this[internal.goNext]();
+        return this[goNext]();
       }
     }
 
@@ -73,8 +83,8 @@ function ArrowDirectionMixin(Base) {
       }
     }
 
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         arrowButtonOverlap: true,
         arrowButtonPartType: Button,
         orientation: "horizontal",
@@ -82,31 +92,31 @@ function ArrowDirectionMixin(Base) {
       });
     }
 
-    [internal.render](/** @type {ChangedFlags} */ changed) {
+    [render](/** @type {ChangedFlags} */ changed) {
       if (changed.arrowButtonPartType) {
-        const arrowButtonPrevious = this[internal.ids].arrowButtonPrevious;
+        const arrowButtonPrevious = this[ids].arrowButtonPrevious;
         if (arrowButtonPrevious instanceof HTMLElement) {
           // Turn off focus handling for old previous button.
           forwardFocus(arrowButtonPrevious, null);
         }
-        const arrowButtonNext = this[internal.ids].arrowButtonNext;
+        const arrowButtonNext = this[ids].arrowButtonNext;
         if (arrowButtonNext instanceof HTMLElement) {
           // Turn off focus handling for old next button.
           forwardFocus(arrowButtonNext, null);
         }
       }
 
-      if (super[internal.render]) {
-        super[internal.render](changed);
+      if (super[render]) {
+        super[render](changed);
       }
 
-      renderParts(this[internal.shadowRoot], this[internal.state], changed);
+      renderParts(this[shadowRoot], this[state], changed);
 
       if (changed.arrowButtonPartType) {
         /** @type {any} */
         const cast = this;
 
-        const arrowButtonPrevious = this[internal.ids].arrowButtonPrevious;
+        const arrowButtonPrevious = this[ids].arrowButtonPrevious;
         if (arrowButtonPrevious instanceof HTMLElement) {
           forwardFocus(arrowButtonPrevious, cast);
         }
@@ -118,7 +128,7 @@ function ArrowDirectionMixin(Base) {
           previousButtonHandler
         );
 
-        const arrowButtonNext = this[internal.ids].arrowButtonNext;
+        const arrowButtonNext = this[ids].arrowButtonNext;
         if (arrowButtonNext instanceof HTMLElement) {
           forwardFocus(arrowButtonNext, cast);
         }
@@ -134,12 +144,11 @@ function ArrowDirectionMixin(Base) {
         canGoPrevious,
         orientation,
         rightToLeft,
-      } = this[internal.state];
+      } = this[state];
       const vertical = orientation === "vertical";
-      /** @type {any} */ const arrowButtonPrevious = this[internal.ids]
+      /** @type {any} */ const arrowButtonPrevious = this[ids]
         .arrowButtonPrevious;
-      /** @type {any} */ const arrowButtonNext = this[internal.ids]
-        .arrowButtonNext;
+      /** @type {any} */ const arrowButtonNext = this[ids].arrowButtonNext;
 
       // Position the buttons.
       if (
@@ -147,7 +156,7 @@ function ArrowDirectionMixin(Base) {
         changed.orientation ||
         changed.rightToLeft
       ) {
-        this[internal.ids].arrowDirection.style.flexDirection = vertical
+        this[ids].arrowDirection.style.flexDirection = vertical
           ? "column"
           : "row";
 
@@ -232,17 +241,17 @@ function ArrowDirectionMixin(Base) {
       }
 
       if (changed.showArrowButtons) {
-        const display = this[internal.state].showArrowButtons ? null : "none";
+        const display = this[state].showArrowButtons ? null : "none";
         arrowButtonPrevious.style.display = display;
         arrowButtonNext.style.display = display;
       }
     }
 
     get showArrowButtons() {
-      return this[internal.state].showArrowButtons;
+      return this[state].showArrowButtons;
     }
     set showArrowButtons(showArrowButtons) {
-      this[internal.setState]({ showArrowButtons });
+      this[setState]({ showArrowButtons });
     }
 
     /**
@@ -251,7 +260,7 @@ function ArrowDirectionMixin(Base) {
      * @param {Element} target - the node that should be wrapped by buttons
      */
     [wrap](target) {
-      const arrowControls = html`
+      const arrowControls = fragmentFrom.html`
         <div
           id="arrowDirection"
           role="none"
@@ -285,7 +294,7 @@ function ArrowDirectionMixin(Base) {
         </div>
       `;
 
-      renderParts(arrowControls, this[internal.state]);
+      renderParts(arrowControls, this[state]);
 
       // Wrap the target with the arrow controls.
       const container = arrowControls.getElementById("arrowDirectionContainer");
@@ -312,13 +321,13 @@ function createButtonHandler(element, callback) {
     if (cast.button !== 0) {
       return;
     }
-    element[internal.raiseChangeEvents] = true;
+    element[raiseChangeEvents] = true;
     const handled = callback();
     if (handled) {
       event.stopPropagation();
     }
     await Promise.resolve();
-    element[internal.raiseChangeEvents] = false;
+    element[raiseChangeEvents] = false;
   };
 }
 
@@ -335,11 +344,11 @@ function renderParts(root, state, changed) {
     const { arrowButtonPartType } = state;
     const arrowButtonPrevious = root.getElementById("arrowButtonPrevious");
     if (arrowButtonPrevious) {
-      template.transmute(arrowButtonPrevious, arrowButtonPartType);
+      transmute(arrowButtonPrevious, arrowButtonPartType);
     }
     const arrowButtonNext = root.getElementById("arrowButtonNext");
     if (arrowButtonNext) {
-      template.transmute(arrowButtonNext, arrowButtonPartType);
+      transmute(arrowButtonNext, arrowButtonPartType);
     }
   }
 }

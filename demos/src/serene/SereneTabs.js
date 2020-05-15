@@ -1,12 +1,12 @@
 import CrossfadeStage from "../../../src/base/CrossfadeStage.js";
-import * as internal from "../../../src/base/internal.js";
+import { defaultState, template } from "../../../src/base/internal.js";
 import Tabs from "../../../src/base/Tabs.js";
-import * as template from "../../../src/core/template.js";
+import { templateFrom } from "../../../src/core/htmlLiterals.js";
 import SereneTabButton from "./SereneTabButton.js";
 
 class SereneTabs extends Tabs {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       generic: false,
       itemRole: "tabpanel",
       proxyPartType: SereneTabButton,
@@ -14,10 +14,10 @@ class SereneTabs extends Tabs {
     });
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      template.html`
+      templateFrom.html`
         <style>
           :host {
             display: flex;

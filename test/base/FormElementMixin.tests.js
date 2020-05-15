@@ -1,19 +1,25 @@
 import FormElementMixin from "../../src/base/FormElementMixin.js";
-import * as internal from "../../src/base/internal.js";
+import {
+  defaultState,
+  renderChanges,
+  setState,
+  state,
+  stateEffects,
+} from "../../src/base/internal.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
 import { assert } from "../testHelpers.js";
 
 const formElementsSupported = "ElementInternals" in window;
 
 class FormElementTest extends FormElementMixin(ReactiveElement) {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       value: null,
     });
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     if (changed.value) {
       const valid = state.value !== null && state.value !== "";
@@ -28,10 +34,10 @@ class FormElementTest extends FormElementMixin(ReactiveElement) {
   }
 
   get value() {
-    return this[internal.state].value;
+    return this[state].value;
   }
   set value(value) {
-    this[internal.setState]({ value });
+    this[setState]({ value });
   }
 }
 customElements.define("form-element-test", FormElementTest);
@@ -68,7 +74,7 @@ customElements.define("form-element-test", FormElementTest);
     form.append(fixture);
     container.append(form, resultFrame);
     fixture.value = "aardvark";
-    fixture[internal.renderChanges]();
+    fixture[renderChanges]();
     form.addEventListener("formdata", (event) => {
       assert(event["formData"].get("animal"), "aardvark");
       done();
@@ -78,10 +84,10 @@ customElements.define("form-element-test", FormElementTest);
 
   it("participates in validation", () => {
     const fixture = new FormElementTest();
-    fixture[internal.renderChanges]();
+    fixture[renderChanges]();
     assert.isFalse(fixture.checkValidity());
     fixture.value = "bandicoot";
-    fixture[internal.renderChanges]();
+    fixture[renderChanges]();
     assert(fixture.checkValidity());
   });
 });

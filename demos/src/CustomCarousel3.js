@@ -1,11 +1,11 @@
-import * as internal from "../../src/base/internal.js";
-import * as template from "../../src/core/template.js";
+import { template } from "../../src/base/internal.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 import PlainCarousel from "../../src/plain/PlainCarousel.js";
 
 // Shows how to change the glyphs used in the arrow buttons.
 class CustomCarousel extends PlainCarousel {
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     // Replace icons with glyphs.
     const previousSlot = result.content.querySelector(
@@ -22,7 +22,7 @@ class CustomCarousel extends PlainCarousel {
     }
 
     result.content.append(
-      template.html`
+      templateFrom.html`
         <style>
           .arrowButton {
             padding: 0.5em;

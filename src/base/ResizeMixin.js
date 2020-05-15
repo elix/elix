@@ -1,5 +1,11 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  checkSize,
+  defaultState,
+  rendered,
+  setState,
+  state,
+} from "./internal.js";
 
 /** @type {any} */ let resizeObserver;
 /** @type {Element[]} */ const windowResizeEntries = [];
@@ -27,16 +33,16 @@ export default function ResizeMixin(Base) {
   return class Resize extends Base {
     // Check this element's current height and width and, if either has changed,
     // update the corresponding state members.
-    [internal.checkSize]() {
-      if (super[internal.checkSize]) {
-        super[internal.checkSize]();
+    [checkSize]() {
+      if (super[checkSize]) {
+        super[checkSize]();
       }
       const { clientHeight, clientWidth } = this;
       const sizeChanged =
-        clientHeight !== this[internal.state].clientHeight ||
-        clientWidth !== this[internal.state].clientWidth;
+        clientHeight !== this[state].clientHeight ||
+        clientWidth !== this[state].clientWidth;
       if (sizeChanged) {
-        this[internal.setState]({
+        this[setState]({
           clientHeight,
           clientWidth,
         });
@@ -55,8 +61,8 @@ export default function ResizeMixin(Base) {
       }
     }
 
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         clientHeight: this.clientHeight,
         clientWidth: this.clientWidth,
       });
@@ -71,12 +77,12 @@ export default function ResizeMixin(Base) {
       }
     }
 
-    [internal.rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [rendered](/** @type {ChangedFlags} */ changed) {
+      if (super[rendered]) {
+        super[rendered](changed);
       }
 
-      this[internal.checkSize]();
+      this[checkSize]();
     }
   };
 }
@@ -94,7 +100,7 @@ if (typeof Observer !== "undefined") {
       // client size.
       const { target } = entry;
       const { clientHeight, clientWidth } = target;
-      target[internal.setState]({
+      target[setState]({
         clientHeight,
         clientWidth,
       });
@@ -104,7 +110,7 @@ if (typeof Observer !== "undefined") {
   // Fall back to only tracking window resize.
   window.addEventListener("resize", () => {
     windowResizeEntries.forEach((entry) => {
-      entry[internal.checkSize]();
+      entry[checkSize]();
     });
   });
 }

@@ -1,23 +1,23 @@
-import * as internal from "../../src/base/internal.js";
+import { ids, render, state, template } from "../../src/base/internal.js";
 import SlotContentMixin from "../../src/base/SlotContentMixin.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
-import * as template from "../../src/core/template.js";
 
 const Base = SlotContentMixin(ReactiveElement);
 
 class LabeledColorSwatch extends Base {
-  [internal.render](/** @type {PlainObject} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {PlainObject} */ changed) {
+    super[render](changed);
     if (changed.content) {
-      const content = this[internal.state].content;
+      const content = this[state].content;
       const strings = content ? content.map((node) => node.textContent) : [];
       const color = strings.join("").toLowerCase();
-      this[internal.ids].swatch.style.backgroundColor = color;
+      this[ids].swatch.style.backgroundColor = color;
     }
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           align-items: center;

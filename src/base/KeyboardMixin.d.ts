@@ -3,13 +3,13 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-import * as internal from "./internal.js";
+import { keydown } from "./internal.js";
 
 declare const KeyboardMixin: StateMixin<
   {},
   {},
   {
-    [internal.keydown](event: KeyboardEvent): boolean;
+    [keydown](event: KeyboardEvent): boolean;
   },
   {
     tabIndex: number;

@@ -1,6 +1,6 @@
 import AriaListMixin from "../../src/base/AriaListMixin.js";
 import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
-import * as internal from "../../src/base/internal.js";
+import { renderChanges, setState, state } from "../../src/base/internal.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
 import { assert } from "../testHelpers.js";
 
@@ -10,7 +10,7 @@ class AriaListTest extends AriaListMixin(ContentItemsMixin(ReactiveElement)) {
       super.connectedCallback();
     }
     const content = [...this.children];
-    this[internal.setState]({ content });
+    this[setState]({ content });
   }
 }
 customElements.define("aria-list-test", AriaListTest);
@@ -51,11 +51,11 @@ describe("AriaListMixin", () => {
     const item2 = document.createElement("div");
     fixture.appendChild(item2);
     container.appendChild(fixture);
-    await fixture[internal.setState]({ currentIndex: 0 });
+    await fixture[setState]({ currentIndex: 0 });
     assert.equal(fixture.getAttribute("aria-activedescendant"), item1.id);
     assert.equal(item1.getAttribute("aria-selected"), "true");
     assert.equal(item2.getAttribute("aria-selected"), "false");
-    await fixture[internal.setState]({ currentIndex: 1 });
+    await fixture[setState]({ currentIndex: 1 });
     assert.equal(fixture.getAttribute("aria-activedescendant"), item2.id);
     assert.equal(item1.getAttribute("aria-selected"), "false");
     assert.equal(item2.getAttribute("aria-selected"), "true");
@@ -69,10 +69,10 @@ describe("AriaListMixin", () => {
       document.createElement("div")
     );
     container.appendChild(fixture);
-    await fixture[internal.setState]({
+    await fixture[setState]({
       selectedFlags: [true, false, true],
     });
-    const items = fixture[internal.state].items;
+    const items = fixture[state].items;
     assert.equal(items[0].getAttribute("aria-selected"), "true");
     assert.equal(items[1].getAttribute("aria-selected"), "false");
     assert.equal(items[2].getAttribute("aria-selected"), "true");
@@ -80,7 +80,7 @@ describe("AriaListMixin", () => {
 
   it("assigns a default role of 'listbox'", () => {
     const fixture = new AriaListTest();
-    fixture[internal.renderChanges]();
+    fixture[renderChanges]();
     assert.equal(fixture.getAttribute("role"), "listbox");
   });
 

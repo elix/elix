@@ -1,7 +1,15 @@
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
 import EffectMixin from "./EffectMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  effectEndTarget,
+  ids,
+  render,
+  setState,
+  state,
+  template,
+} from "./internal.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import TransitionEffectMixin from "./TransitionEffectMixin.js";
 
@@ -28,26 +36,25 @@ const Base = OpenCloseMixin(
  * @mixes TransitionEffectMixin
  */
 class ExpandablePanel extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       transitionDuration: 250,
     });
   }
-  get [internal.effectEndTarget]() {
-    return this[internal.ids].outerContainer;
+  get [effectEndTarget]() {
+    return this[ids].outerContainer;
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
     if (changed.effect || changed.effectPhase || changed.enableEffects) {
       const { effect, effectPhase, enableEffects, transitionDuration } = this[
-        internal.state
+        state
       ];
 
       // The inner container lets us measure how tall the content wants to be.
-      const naturalHeight = this[
-        internal.ids
-      ].innerContainer.getBoundingClientRect().height;
+      const naturalHeight = this[ids].innerContainer.getBoundingClientRect()
+        .height;
 
       // The effect phase (before, during, after) determines which height we apply
       // to the outer container.
@@ -77,7 +84,7 @@ class ExpandablePanel extends Base {
           ? `height ${durationInSeconds}s`
           : null;
 
-      Object.assign(this[internal.ids].outerContainer.style, {
+      Object.assign(this[ids].outerContainer.style, {
         height,
         transition,
       });
@@ -85,17 +92,17 @@ class ExpandablePanel extends Base {
     if (changed.opened || changed.tabIndex) {
       // We only set aria-expanded if this component can get the keyboard focus
       // (which it usually won't).
-      const canReceiveFocus = this[internal.state].tabIndex >= 0;
+      const canReceiveFocus = this[state].tabIndex >= 0;
       if (canReceiveFocus) {
-        this.toggleAttribute("aria-expanded", this[internal.state].opened);
+        this.toggleAttribute("aria-expanded", this[state].opened);
       } else {
         this.removeAttribute("aria-expanded");
       }
     }
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           display: block;
@@ -117,11 +124,11 @@ class ExpandablePanel extends Base {
    * @default {250}
    */
   get transitionDuration() {
-    return this[internal.state].transitionDuration;
+    return this[state].transitionDuration;
   }
   set transitionDuration(transitionDuration) {
     if (!isNaN(transitionDuration)) {
-      this[internal.setState]({ transitionDuration });
+      this[setState]({ transitionDuration });
     }
   }
 }

@@ -1,6 +1,6 @@
 import CalendarDayButton from "../base/CalendarDayButton.js";
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { defaultState, template } from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import PlainCalendarDay from "./PlainCalendarDay.js";
 
 /**
@@ -10,16 +10,16 @@ import PlainCalendarDay from "./PlainCalendarDay.js";
  * @part {PlainCalendarDay} day
  */
 class PlainCalendarDayButton extends CalendarDayButton {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       dayPartType: PlainCalendarDay,
     });
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           :host {
             border: 1px solid transparent;

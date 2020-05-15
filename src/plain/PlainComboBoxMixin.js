@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { defaultState, ids, render, template } from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import PlainInput from "./PlainInput.js";
 import PlainOpenCloseToggle from "./PlainOpenCloseToggle.js";
@@ -15,22 +15,22 @@ import PlainPopup from "./PlainPopup.js";
  */
 export default function PlainComboBoxMixin(Base) {
   return class PlainComboBox extends Base {
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         inputPartType: PlainInput,
         popupPartType: PlainPopup,
         popupTogglePartType: PlainOpenCloseToggle,
       });
     }
 
-    [internal.render](changed) {
-      super[internal.render](changed);
+    [render](changed) {
+      super[render](changed);
 
       // Style the inner input.
       if (changed.inputPartType) {
         // We want to style the inner input if it's been created with
         // WrappedStandardElement, otherwise style the input directly.
-        const cast = /** @type {any} */ (this[internal.ids].input);
+        const cast = /** @type {any} */ (this[ids].input);
         const input = "inner" in cast ? cast.inner : cast;
         Object.assign(input.style, {
           outline: "none",
@@ -38,9 +38,9 @@ export default function PlainComboBoxMixin(Base) {
       }
     }
 
-    get [internal.template]() {
-      const result = super[internal.template];
-      result.content.append(html`
+    get [template]() {
+      const result = super[template];
+      result.content.append(fragmentFrom.html`
         <style>
           :host {
             background: white;

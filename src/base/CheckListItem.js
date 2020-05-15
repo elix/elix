@@ -1,5 +1,5 @@
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import { html } from "../core/template.js";
 import {
   firstRender,
   ids,
@@ -52,7 +52,7 @@ class CheckListItem extends SelectableMixin(ReactiveElement) {
   }
 
   get [template]() {
-    return html`
+    return fragmentFrom.html`
       <style>
         :host {
           display: grid;

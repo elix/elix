@@ -1,6 +1,12 @@
-import * as internal from "../base/internal.js";
+import {
+  defaultState,
+  ids,
+  render,
+  state,
+  template,
+} from "../base/internal.js";
 import ProgressSpinner from "../base/ProgressSpinner.js";
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 
 /**
  * ProgressSpinner component in the Plain reference design system
@@ -8,30 +14,30 @@ import html from "../core/html.js";
  * @inherits ProgressSpinner
  */
 class PlainProgressSpinner extends ProgressSpinner {
-  get [internal.defaultState]() {
+  get [defaultState]() {
     // The spinner has 12 discrete steps in its rotation.
-    return Object.assign(super[internal.defaultState], {
+    return Object.assign(super[defaultState], {
       rotationsPerSecond: 12,
     });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
     if (changed.count) {
-      const step = 360 / this[internal.state].rotationsPerSecond;
-      const angle = (this[internal.state].count * step) % 360;
-      this[internal.ids].spinner.style.transform = `rotate(${angle}deg)`;
+      const step = 360 / this[state].rotationsPerSecond;
+      const angle = (this[state].count * step) % 360;
+      this[ids].spinner.style.transform = `rotate(${angle}deg)`;
     }
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     // Replace default slot with a spinner icon.
     // Spinner SVG created from https://dribbble.com/shots/958711-Free-vector-iOS-spinners.
     const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
-      defaultSlot.replaceWith(html`
+      defaultSlot.replaceWith(fragmentFrom.html`
         <style>
           :host {
             height: 1.25em;

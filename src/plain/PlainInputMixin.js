@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { template } from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
@@ -10,9 +10,9 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
  */
 export default function PlainInputMixin(Base) {
   return class PlainInput extends Base {
-    get [internal.template]() {
-      const result = super[internal.template];
-      result.content.append(html`
+    get [template]() {
+      const result = super[template];
+      result.content.append(fragmentFrom.html`
         <style>
           :host {
             background: white;

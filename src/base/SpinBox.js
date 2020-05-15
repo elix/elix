@@ -1,14 +1,27 @@
 import { forwardFocus } from "../core/dom.js";
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
+import { transmute } from "../core/template.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
 import DisabledMixin from "./DisabledMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  goDown,
+  goUp,
+  ids,
+  inputDelegate,
+  raiseChangeEvents,
+  render,
+  rendered,
+  setState,
+  shadowRoot,
+  state,
+  template,
+} from "./internal.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 
@@ -44,8 +57,8 @@ const Base = DelegateFocusMixin(
  * @part down-button - the down button
  */
 export class SpinBox extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       buttonPartType: "button",
       canGoDown: true,
       canGoUp: true,
@@ -57,120 +70,119 @@ export class SpinBox extends Base {
     });
   }
 
-  [internal.goDown]() {
-    if (super[internal.goDown]) {
-      super[internal.goDown]();
+  [goDown]() {
+    if (super[goDown]) {
+      super[goDown]();
     }
     this.stepDown();
     return true; // Handled
   }
 
-  [internal.goUp]() {
-    if (super[internal.goUp]) {
-      super[internal.goUp]();
+  [goUp]() {
+    if (super[goUp]) {
+      super[goUp]();
     }
     this.stepUp();
     return true; // Handled
   }
 
-  get [internal.inputDelegate]() {
-    return this[internal.ids].input;
+  get [inputDelegate]() {
+    return this[ids].input;
   }
 
-  [internal.render](changed) {
-    super[internal.render](changed);
+  [render](changed) {
+    super[render](changed);
 
-    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+    renderParts(this[shadowRoot], this[state], changed);
 
     // Wire up handlers on new buttons.
     if (changed.buttonPartType) {
-      this[internal.ids].downButton.addEventListener("mousedown", () => {
-        this[internal.raiseChangeEvents] = true;
+      this[ids].downButton.addEventListener("mousedown", () => {
+        this[raiseChangeEvents] = true;
         this.stepDown();
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = false;
       });
-      this[internal.ids].upButton.addEventListener("mousedown", () => {
-        this[internal.raiseChangeEvents] = true;
+      this[ids].upButton.addEventListener("mousedown", () => {
+        this[raiseChangeEvents] = true;
         this.stepUp();
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = false;
       });
     }
 
     // Wire up event handler on new input.
     if (changed.inputPartType) {
       // Wire up handler on new input.
-      this[internal.ids].input.addEventListener("input", () => {
-        this.value = /** @type {any} */ (this[internal.ids].input).value;
+      this[ids].input.addEventListener("input", () => {
+        this.value = /** @type {any} */ (this[ids].input).value;
       });
     }
 
     // When buttons are clicked, keep focus on input.
     if (changed.buttonPartType || changed.inputPartType) {
-      const input = this[internal.ids].input;
-      const downButton = this[internal.ids].downButton;
+      const input = this[ids].input;
+      const downButton = this[ids].downButton;
       if (downButton instanceof HTMLElement && input instanceof HTMLElement) {
         forwardFocus(downButton, input);
       }
-      const upButton = this[internal.ids].upButton;
+      const upButton = this[ids].upButton;
       if (upButton instanceof HTMLElement && input instanceof HTMLElement) {
         forwardFocus(upButton, input);
       }
     }
 
-    const { disabled, value } = this[internal.state];
+    const { disabled, value } = this[state];
 
     // When disabled, disable inner elements.
     // Also, disable up or down button if we're at max or min.
     if (changed.canGoUp || changed.canGoDown || changed.disabled) {
-      const { canGoUp, canGoDown } = this[internal.state];
-      if ("disabled" in this[internal.ids].input) {
-        /** @type {any} */ (this[internal.ids].input).disabled = disabled;
+      const { canGoUp, canGoDown } = this[state];
+      if ("disabled" in this[ids].input) {
+        /** @type {any} */ (this[ids].input).disabled = disabled;
       }
-      if ("disabled" in this[internal.ids].downButton) {
+      if ("disabled" in this[ids].downButton) {
         const upDisabled = disabled || !canGoUp;
-        /** @type {any} */ (this[internal.ids].upButton).disabled = upDisabled;
+        /** @type {any} */ (this[ids].upButton).disabled = upDisabled;
       }
-      if ("disabled" in this[internal.ids].upButton) {
+      if ("disabled" in this[ids].upButton) {
         const downDisabled = disabled || !canGoDown;
-        /** @type {any} */ (this[internal.ids]
-          .downButton).disabled = downDisabled;
+        /** @type {any} */ (this[ids].downButton).disabled = downDisabled;
       }
     }
 
     // Render value state to input.
     if (changed.value) {
-      /** @type {any} */ (this[internal.ids].input).value = value;
+      /** @type {any} */ (this[ids].input).value = value;
     }
   }
 
-  [internal.rendered](changed) {
-    super[internal.rendered](changed);
+  [rendered](changed) {
+    super[rendered](changed);
 
     // If we changed the value as a result of stepDown/stepUp, put the cursor
     // at the end of the new text.
-    const { stepSelect, value } = this[internal.state];
+    const { stepSelect, value } = this[state];
     if (changed.value && stepSelect) {
-      /** @type {any} */ const input = this[internal.ids].input;
+      /** @type {any} */ const input = this[ids].input;
       const length = value.length;
       input.selectionStart = length;
       input.selectionEnd = length;
-      this[internal.setState]({ stepSelect: false });
+      this[setState]({ stepSelect: false });
     }
   }
 
   stepDown() {
     // Set selection after we've rendered.
-    this[internal.setState]({ stepSelect: true });
+    this[setState]({ stepSelect: true });
   }
 
   stepUp() {
     // Set selection after we've rendered.
-    this[internal.setState]({ stepSelect: true });
+    this[setState]({ stepSelect: true });
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
-    result.content.append(html`
+  get [template]() {
+    const result = super[template];
+    result.content.append(fragmentFrom.html`
       <style>
         :host {
           display: inline-grid;
@@ -202,10 +214,10 @@ export class SpinBox extends Base {
    * @default ""
    */
   get value() {
-    return this[internal.state].value;
+    return this[state].value;
   }
   set value(value) {
-    this[internal.setState]({ value });
+    this[setState]({ value });
   }
 }
 
@@ -222,14 +234,14 @@ function renderParts(root, state, changed) {
     const { buttonPartType } = state;
     const buttons = root.querySelectorAll('[part~="spin-button"]');
     buttons.forEach((button) => {
-      template.transmute(button, buttonPartType);
+      transmute(button, buttonPartType);
     });
   }
   if (!changed || changed.inputPartType) {
     const { inputPartType } = state;
     const input = root.getElementById("input");
     if (input) {
-      template.transmute(input, inputPartType);
+      transmute(input, inputPartType);
     }
   }
 }

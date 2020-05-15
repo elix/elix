@@ -1,4 +1,4 @@
-import * as internal from "../../src/base/internal.js";
+import { render } from "../../src/base/internal.js";
 import OpenCloseMixin from "../../src/base/OpenCloseMixin.js";
 import OverlayMixin from "../../src/base/OverlayMixin.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
@@ -7,8 +7,8 @@ import { assert } from "../testHelpers.js";
 const Base = OpenCloseMixin(OverlayMixin(ReactiveElement));
 
 class OverlayTest extends Base {
-  [internal.render](changed) {
-    super[internal.render](changed);
+  [render](changed) {
+    super[render](changed);
     this.tabIndex = 0;
   }
 }

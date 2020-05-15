@@ -1,5 +1,13 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  contentSlot,
+  defaultState,
+  firstRender,
+  raiseChangeEvents,
+  rendered,
+  setState,
+  shadowRoot,
+} from "./internal.js";
 
 /**
  * Defines a component's content as the flattened set of nodes assigned to a
@@ -27,13 +35,12 @@ export default function SlotContentMixin(Base) {
   // The class prototype added by the mixin.
   class SlotContent extends Base {
     /**
-     * See [internal.contentSlot](internal#internal.contentSlot).
+     * See [contentSlot](internal#internal.contentSlot).
      */
-    get [internal.contentSlot]() {
+    get [contentSlot]() {
       /** @type {HTMLSlotElement|null} */ const slot =
-        this[internal.shadowRoot] &&
-        this[internal.shadowRoot].querySelector("slot:not([name])");
-      if (!this[internal.shadowRoot] || !slot) {
+        this[shadowRoot] && this[shadowRoot].querySelector("slot:not([name])");
+      if (!this[shadowRoot] || !slot) {
         /* eslint-disable no-console */
         console.warn(
           `SlotContentMixin expects ${this.constructor.name} to define a shadow tree that includes a default (unnamed) slot.\nSee https://elix.org/documentation/SlotContentMixin.`
@@ -42,20 +49,20 @@ export default function SlotContentMixin(Base) {
       return slot;
     }
 
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         content: null,
       });
     }
 
-    [internal.rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [rendered](/** @type {ChangedFlags} */ changed) {
+      if (super[rendered]) {
+        super[rendered](changed);
       }
 
-      if (this[internal.firstRender]) {
+      if (this[firstRender]) {
         // Listen to changes on the default slot.
-        const slot = this[internal.contentSlot];
+        const slot = this[contentSlot];
         if (slot) {
           slot.addEventListener("slotchange", async () => {
             // Although slotchange isn't generally a user-driven event, it's
@@ -63,16 +70,16 @@ export default function SlotContentMixin(Base) {
             // to result in effects that the host of this element can predict.
             // To be on the safe side, we raise any change events that come up
             // during the processing of this event.
-            this[internal.raiseChangeEvents] = true;
+            this[raiseChangeEvents] = true;
 
             // The nodes assigned to the given component have changed.
             // Update the component's state to reflect the new content.
             const content = slot.assignedNodes({ flatten: true });
             Object.freeze(content);
-            this[internal.setState]({ content });
+            this[setState]({ content });
 
             await Promise.resolve();
-            this[internal.raiseChangeEvents] = false;
+            this[raiseChangeEvents] = false;
           });
         }
       }

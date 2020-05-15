@@ -1,5 +1,14 @@
 import { updateChildNodes } from "../core/dom.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  getItemText,
+  itemMatchesState,
+  raiseChangeEvents,
+  render,
+  setState,
+  state,
+  stateEffects,
+} from "./internal.js";
 import ListBox from "./ListBox.js";
 
 /**
@@ -8,8 +17,8 @@ import ListBox from "./ListBox.js";
  * @inherits ListBox
  */
 class FilterListBox extends ListBox {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       filter: null,
     });
   }
@@ -25,16 +34,16 @@ class FilterListBox extends ListBox {
    * @type {string}
    */
   get filter() {
-    return this[internal.state].filter;
+    return this[state].filter;
   }
   set filter(filter) {
     // If external code sets the filter, it's impossible for that code to
     // predict the effects on the items and selection, so we'll need to raise
     // change events.
-    const saveRaiseChangesEvents = this[internal.raiseChangeEvents];
-    this[internal.raiseChangeEvents] = true;
-    this[internal.setState]({ filter });
-    this[internal.raiseChangeEvents] = saveRaiseChangesEvents;
+    const saveRaiseChangesEvents = this[raiseChangeEvents];
+    this[raiseChangeEvents] = true;
+    this[setState]({ filter });
+    this[raiseChangeEvents] = saveRaiseChangesEvents;
   }
 
   /**
@@ -68,31 +77,28 @@ class FilterListBox extends ListBox {
    * @param {ListItemElement} item
    * @param {PlainObject} state
    */
-  [internal.itemMatchesState](item, state) {
-    const base = super[internal.itemMatchesState]
-      ? super[internal.itemMatchesState](item, state)
+  [itemMatchesState](item, state) {
+    const base = super[itemMatchesState]
+      ? super[itemMatchesState](item, state)
       : true;
     if (!base) {
       return false;
     }
-    const text = this[internal.getItemText](item).toLowerCase();
+    const text = this[getItemText](item).toLowerCase();
     const filter = state.filter && state.filter.toLowerCase();
     return !filter ? true : !text ? false : text.includes(filter);
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
-    const { content, filter } = this[internal.state];
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
+    const { content, filter } = this[state];
     // We inspect `content` instead of `items` so that we can render even those
     // elements that don't match the current filter.
     if ((changed.filter || changed.content) && content) {
       content.forEach((content) => {
         if (content instanceof HTMLElement || content instanceof SVGElement) {
           // Hide content elements that don't match the filter.
-          const matches = this[internal.itemMatchesState](
-            content,
-            this[internal.state]
-          );
+          const matches = this[itemMatchesState](content, this[state]);
           content.style.display = matches ? "" : "none";
 
           // For matching items, highlight the matching text.
@@ -105,8 +111,8 @@ class FilterListBox extends ListBox {
     }
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     // When filter changes, let other mixins know items should be recalculated.
     if (changed.filter) {

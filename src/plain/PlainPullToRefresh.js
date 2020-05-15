@@ -1,7 +1,7 @@
-import * as internal from "../base/internal.js";
+import { defaultState, template } from "../base/internal.js";
 import PullToRefresh from "../base/PullToRefresh.js";
-import html from "../core/html.js";
-import * as template from "../core/template.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
+import { replace } from "../core/template.js";
 import PlainProgressSpinner from "./PlainProgressSpinner.js";
 
 // Template for the default down arrow shown while pulling.
@@ -13,21 +13,21 @@ import PlainProgressSpinner from "./PlainProgressSpinner.js";
  * @part {PlainProgressSpinner} refreshing-indicator
  */
 class PlainPullToRefresh extends PullToRefresh {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       refreshingIndicatorPartType: PlainProgressSpinner,
       pullIndicatorPartType: "svg",
     });
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     // Use a default down arrow icon as the pull indicator.
     const pullIndicator = result.content.querySelector(
       '[part~="pull-indicator"]'
     );
-    const arrow = html`
+    const arrow = fragmentFrom.html`
       <svg
         viewBox="0 0 24 24"
         style="fill: #404040; height: 24px; width: 24px;"
@@ -38,11 +38,11 @@ class PlainPullToRefresh extends PullToRefresh {
       </svg>
     `.firstElementChild;
     if (pullIndicator && arrow) {
-      template.replace(pullIndicator, arrow);
+      replace(pullIndicator, arrow);
     }
 
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           [part~="indicator-container"] {
             padding: 1em;

@@ -1,5 +1,5 @@
 import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
-import * as internal from "../../src/base/internal.js";
+import { setState, state } from "../../src/base/internal.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import { assert } from "../testHelpers.js";
 
@@ -9,7 +9,7 @@ class ContentItemsTest extends ContentItemsMixin(ReactiveMixin(HTMLElement)) {
   updateContent() {
     // Copy content.
     const content = [...this.children];
-    this[internal.setState]({ content });
+    this[setState]({ content });
   }
 }
 customElements.define("content-items-test", ContentItemsTest);
@@ -33,7 +33,7 @@ describe("ContentItemsMixin", () => {
       <div>2</div>
     `;
     fixture.updateContent();
-    const items = fixture[internal.state].items;
+    const items = fixture[state].items;
     assert.equal(items.length, 2);
     assert.equal(items[0].textContent, "1");
     assert.equal(items[1].textContent, "2");

@@ -1,5 +1,5 @@
 import Explorer from "./Explorer.js";
-import * as internal from "./internal.js";
+import { defaultState, getItemText, render, state } from "./internal.js";
 
 /**
  * Master/detail user interface pattern navigated with a list box.
@@ -7,8 +7,8 @@ import * as internal from "./internal.js";
  * @inherits Explorer
  */
 class ListExplorer extends Explorer {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       proxyListPosition: "start",
       orientation: "vertical",
     });
@@ -24,20 +24,20 @@ class ListExplorer extends Explorer {
    * @param {ListItemElement} item
    * @returns {string}
    */
-  [internal.getItemText](item) {
+  [getItemText](item) {
     return getItemText(item);
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
-    const { items, proxiesAssigned } = this[internal.state];
-    /** @type {Element[]} */ const proxies = this[internal.state].proxies;
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
+    const { items, proxiesAssigned } = this[state];
+    /** @type {Element[]} */ const proxies = this[state].proxies;
     if ((changed.proxies || changed.items) && proxies && !proxiesAssigned) {
       // Update default proxy text from item labels.
       proxies.forEach((proxy, index) => {
         const item = items[index];
         if (item) {
-          const text = this[internal.getItemText](item);
+          const text = this[getItemText](item);
           proxy.textContent = text;
         }
       });

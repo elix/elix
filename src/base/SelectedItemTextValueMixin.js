@@ -1,5 +1,5 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import { rendered, setState, state } from "./internal.js";
 
 /**
  * Defines a component's value as the text content of the selected item.
@@ -23,17 +23,17 @@ import * as internal from "./internal.js";
 export default function SelectedItemTextValueMixin(Base) {
   // The class prototype added by the mixin.
   class SelectedItemTextValue extends Base {
-    [internal.rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [rendered](/** @type {ChangedFlags} */ changed) {
+      if (super[rendered]) {
+        super[rendered](changed);
       }
 
       // If we have a pending value to apply and now have items, apply the
       // value.
-      const { items, pendingValue } = this[internal.state];
+      const { items, pendingValue } = this[state];
       if (pendingValue && items) {
         const index = indexOfItemWithText(items, pendingValue);
-        this[internal.setState]({
+        this[setState]({
           currentIndex: index,
           pendingValue: null,
         });
@@ -55,16 +55,16 @@ export default function SelectedItemTextValueMixin(Base) {
         : this.selectedItem.textContent;
     }
     set value(text) {
-      const items = this[internal.state].items;
+      const items = this[state].items;
       if (items === null) {
         // No items yet, save and try again later.
-        this[internal.setState]({
+        this[setState]({
           pendingValue: text,
         });
       } else {
         // Select the index of the indicate text, if found.
         const currentIndex = indexOfItemWithText(items, text);
-        this[internal.setState]({ currentIndex });
+        this[setState]({ currentIndex });
       }
     }
   }

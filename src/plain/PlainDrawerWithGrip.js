@@ -1,6 +1,6 @@
 import DrawerWithGrip from "../base/DrawerWithGrip.js";
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { ids, render, state, template } from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import PlainDrawerMixin from "./PlainDrawerMixin.js";
 import PlainModalOverlayMixin from "./PlainModalOverlayMixin.js";
 
@@ -13,25 +13,25 @@ import PlainModalOverlayMixin from "./PlainModalOverlayMixin.js";
 class PlainDrawerWithGrip extends PlainDrawerMixin(
   PlainModalOverlayMixin(DrawerWithGrip)
 ) {
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
     // Rotate the default grip icon to reflect the swipe axis.
-    if (changed.swipeAxis && this[internal.ids].gripIcon) {
+    if (changed.swipeAxis && this[ids].gripIcon) {
       const transform =
-        this[internal.state].swipeAxis === "horizontal" ? "rotate(90deg)" : "";
-      this[internal.ids].gripIcon.style.transform = transform;
+        this[state].swipeAxis === "horizontal" ? "rotate(90deg)" : "";
+      this[ids].gripIcon.style.transform = transform;
     }
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     // Fill the grip slot with our icon.
     // Default grip icon from Material Design icons "drag handle".
     const gripSlot = result.content.querySelector('slot[name="grip"]');
     if (gripSlot) {
       gripSlot.append(
-        html`
+        fragmentFrom.html`
           <svg
             id="gripIcon"
             xmlns="http://www.w3.org/2000/svg"

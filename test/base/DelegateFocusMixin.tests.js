@@ -1,12 +1,12 @@
 import DelegateFocusMixin from "../../src/base/DelegateFocusMixin.js";
-import * as internal from "../../src/base/internal.js";
+import { template } from "../../src/base/internal.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
-import * as template from "../../src/core/template.js";
 import { assert } from "../testHelpers.js";
 
 class DelegateFocusTest extends DelegateFocusMixin(ReactiveElement) {
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <input>
     `;
   }

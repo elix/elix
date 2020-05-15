@@ -1,6 +1,6 @@
-import * as internal from "../base/internal.js";
+import { defaultState, template } from "../base/internal.js";
 import Toast from "../base/Toast.js";
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import PlainOverlayFrame from "./PlainOverlayFrame.js";
 
 /**
@@ -8,16 +8,16 @@ import PlainOverlayFrame from "./PlainOverlayFrame.js";
  * @part {PlainOverlayFrame} frame
  */
 class PlainToast extends Toast {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       framePartType: PlainOverlayFrame,
     });
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           :host {
             align-items: initial;

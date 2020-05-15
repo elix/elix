@@ -1,7 +1,17 @@
-import * as internal from "../../src/base/internal.js";
+import {
+  defaultState,
+  firstRender,
+  ids,
+  raiseChangeEvents,
+  render,
+  rendered,
+  setState,
+  state,
+  template,
+} from "../../src/base/internal.js";
 import { updateChildNodes } from "../../src/core/dom.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
-import * as template from "../../src/core/template.js";
 
 // Locale list from https://stackoverflow.com/questions/3191664/list-of-all-locales-and-their-short-codes/28357857#28357857
 // This includes only locales with regions; it omits languages without regions.
@@ -290,44 +300,43 @@ const locales = {
 };
 
 class LocaleSelector extends ReactiveElement {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       value: navigator.language,
     });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {PlainObject} */ changed) {
+    super[render](changed);
 
-    if (this[internal.firstRender]) {
-      this[internal.ids].select.addEventListener("change", () => {
-        this[internal.raiseChangeEvents] = true;
-        this.value = /** @type {any} */ (this[internal.ids].select).value;
-        this[internal.raiseChangeEvents] = false;
+    if (this[firstRender]) {
+      this[ids].select.addEventListener("change", () => {
+        this[raiseChangeEvents] = true;
+        this.value = /** @type {any} */ (this[ids].select).value;
+        this[raiseChangeEvents] = false;
       });
     }
 
     if (changed.value) {
-      const value = this[internal.state].value;
-      /** @type {HTMLSelectElement} */ (this[internal.ids]
-        .select).value = value;
+      const value = this[state].value;
+      /** @type {HTMLSelectElement} */ (this[ids].select).value = value;
     }
   }
 
-  [internal.rendered](changed) {
-    super[internal.rendered](changed);
-    if (changed.value && this[internal.raiseChangeEvents]) {
+  [rendered](changed) {
+    super[rendered](changed);
+    if (changed.value && this[raiseChangeEvents]) {
       const event = new CustomEvent("change", {
         detail: {
-          value: this[internal.state].value,
+          value: this[state].value,
         },
       });
       this.dispatchEvent(event);
     }
   }
 
-  get [internal.template]() {
-    const result = template.html`
+  get [template]() {
+    const result = templateFrom.html`
       <style>
         :host {
           display: inline-block;
@@ -351,10 +360,10 @@ class LocaleSelector extends ReactiveElement {
   }
 
   get value() {
-    return this[internal.state].value;
+    return this[state].value;
   }
   set value(value) {
-    this[internal.setState]({ value });
+    this[setState]({ value });
   }
 }
 

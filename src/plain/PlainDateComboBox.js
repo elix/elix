@@ -1,6 +1,6 @@
 import DateComboBox from "../base/DateComboBox.js";
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { defaultState, template } from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import PlainButton from "./PlainButton.js";
 import PlainCalendarMonthNavigator from "./PlainCalendarMonthNavigator.js";
 import PlainComboBoxMixin from "./PlainComboBoxMixin.js";
@@ -13,17 +13,17 @@ import PlainComboBoxMixin from "./PlainComboBoxMixin.js";
  * @part {PlainButton} today-button
  */
 class PlainDateComboBox extends PlainComboBoxMixin(DateComboBox) {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       calendarPartType: PlainCalendarMonthNavigator,
       todayButtonPartType: PlainButton,
     });
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           :host {
             width: 8em;

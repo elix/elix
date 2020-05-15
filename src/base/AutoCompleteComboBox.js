@@ -1,5 +1,5 @@
 import AutoCompleteInput from "./AutoCompleteInput.js";
-import * as internal from "./internal.js";
+import { defaultState, ids, render, state } from "./internal.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import ListComboBox from "./ListComboBox.js";
 
@@ -13,19 +13,17 @@ const Base = ItemsTextMixin(ListComboBox);
  * @part {AutoCompleteInput} input
  */
 class AutoCompleteComboBox extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       inputPartType: AutoCompleteInput,
     });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
     if (changed.texts) {
-      if ("texts" in this[internal.ids].input) {
-        /** @type {any} */ (this[internal.ids].input).texts = this[
-          internal.state
-        ].texts;
+      if ("texts" in this[ids].input) {
+        /** @type {any} */ (this[ids].input).texts = this[state].texts;
       }
     }
   }

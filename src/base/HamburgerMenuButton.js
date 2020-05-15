@@ -1,11 +1,21 @@
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
+import { transmute } from "../core/template.js";
 import Button from "./Button.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import Drawer from "./Drawer.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  ids,
+  keydown,
+  raiseChangeEvents,
+  render,
+  setState,
+  shadowRoot,
+  state,
+  template,
+} from "./internal.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 
@@ -30,8 +40,8 @@ const Base = DelegateFocusMixin(
  * @part {Button} menu-button - toggles display of the menu
  */
 class HamburgerMenuButton extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       fromEdge: "start",
       menuButtonPartType: Button,
       menuPartType: Drawer,
@@ -49,17 +59,17 @@ class HamburgerMenuButton extends Base {
    * @default 'start'
    */
   get fromEdge() {
-    return this[internal.state].fromEdge;
+    return this[state].fromEdge;
   }
   set fromEdge(fromEdge) {
-    this[internal.setState]({ fromEdge });
+    this[setState]({ fromEdge });
   }
 
   // When the menu is closed, pressing Enter or Space is the same as clicking
   // the menu button.
-  [internal.keydown](/** @type {KeyboardEvent} */ event) {
+  [keydown](/** @type {KeyboardEvent} */ event) {
     /** @type {any} */
-    const menuButton = this[internal.ids].menuButton;
+    const menuButton = this[ids].menuButton;
 
     let handled;
 
@@ -74,9 +84,7 @@ class HamburgerMenuButton extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return (
-      handled || (super[internal.keydown] && super[internal.keydown](event))
-    );
+    return handled || (super[keydown] && super[keydown](event));
   }
 
   /**
@@ -87,10 +95,10 @@ class HamburgerMenuButton extends Base {
    * @default Drawer
    */
   get menuPartType() {
-    return this[internal.state].menuPartType;
+    return this[state].menuPartType;
   }
   set menuPartType(menuPartType) {
-    this[internal.setState]({ menuPartType });
+    this[setState]({ menuPartType });
   }
 
   /**
@@ -101,59 +109,59 @@ class HamburgerMenuButton extends Base {
    * @default Button
    */
   get menuButtonPartType() {
-    return this[internal.state].menuButtonPartType;
+    return this[state].menuButtonPartType;
   }
   set menuButtonPartType(menuButtonPartType) {
-    this[internal.setState]({ menuButtonPartType });
+    this[setState]({ menuButtonPartType });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
-    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+    renderParts(this[shadowRoot], this[state], changed);
 
     if (changed.menuButtonPartType) {
-      this[internal.ids].menuButton.addEventListener("click", () => {
-        this[internal.raiseChangeEvents] = true;
+      this[ids].menuButton.addEventListener("click", () => {
+        this[raiseChangeEvents] = true;
         this.open();
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = false;
       });
     }
 
     if (changed.menuPartType) {
-      this[internal.ids].menu.addEventListener("closed", (event) => {
+      this[ids].menu.addEventListener("closed", (event) => {
         /** @type {any} */
         const cast = event;
-        this[internal.setState]({
+        this[setState]({
           closeResult: cast.detail.closeResult,
           opened: false,
         });
       });
-      this[internal.ids].menu.addEventListener("opened", () => {
-        this[internal.setState]({
+      this[ids].menu.addEventListener("opened", () => {
+        this[setState]({
           opened: true,
         });
       });
     }
 
-    const menu = /** @type {any} */ (this[internal.ids].menu);
+    const menu = /** @type {any} */ (this[ids].menu);
 
     if (changed.fromEdge) {
       if ("fromEdge" in menu) {
-        menu.fromEdge = this[internal.state].fromEdge;
+        menu.fromEdge = this[state].fromEdge;
       }
     }
 
     if (changed.opened) {
       if ("opened" in menu) {
-        menu.opened = this[internal.state].opened;
+        menu.opened = this[state].opened;
       }
     }
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
-    result.content.append(html`
+  get [template]() {
+    const result = super[template];
+    result.content.append(fragmentFrom.html`
       <style>
         :host {
           align-items: center;
@@ -169,7 +177,7 @@ class HamburgerMenuButton extends Base {
       </div>
     `);
 
-    renderParts(result.content, this[internal.state]);
+    renderParts(result.content, this[state]);
 
     return result;
   }
@@ -188,14 +196,14 @@ function renderParts(root, state, changed) {
     const { menuButtonPartType } = state;
     const menuButton = root.getElementById("menuButton");
     if (menuButton) {
-      template.transmute(menuButton, menuButtonPartType);
+      transmute(menuButton, menuButtonPartType);
     }
   }
   if (!changed || changed.menuPartType) {
     const { menuPartType } = state;
     const menu = root.getElementById("menu");
     if (menu) {
-      template.transmute(menu, menuPartType);
+      transmute(menu, menuPartType);
     }
   }
 }

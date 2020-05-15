@@ -3,7 +3,7 @@
 
 import ReactiveElement from "../core/ReactiveElement.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
-import * as internal from "./internal.js";
+import { checkSize } from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
@@ -19,7 +19,7 @@ export default class Explorer extends CursorAPIMixin(
     )
   )
 ) {
-  [internal.checkSize](): void;
+  [checkSize](): void;
   readonly proxies: Element[];
   proxyListOverlap: boolean;
   proxyListPosition: "bottom" | "end" | "left" | "right" | "start" | "top";

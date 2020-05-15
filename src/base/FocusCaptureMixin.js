@@ -1,7 +1,7 @@
 import { firstFocusableElement } from "../core/dom.js";
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import { firstRender, ids, keydown, render, shadowRoot } from "./internal.js";
 
 // Symbols for private data members on an element.
 const wrap = Symbol("wrap");
@@ -27,38 +27,34 @@ const wrappingFocusKey = Symbol("wrappingFocus");
  */
 function FocusCaptureMixin(Base) {
   class FocusCapture extends Base {
-    [internal.keydown](/** @type {KeyboardEvent} */ event) {
-      const firstElement = firstFocusableElement(this[internal.shadowRoot]);
+    [keydown](/** @type {KeyboardEvent} */ event) {
+      const firstElement = firstFocusableElement(this[shadowRoot]);
       const onFirstElement =
         document.activeElement === firstElement ||
-        this[internal.shadowRoot].activeElement === firstElement;
+        this[shadowRoot].activeElement === firstElement;
       if (onFirstElement && event.key === "Tab" && event.shiftKey) {
         // Set focus to focus catcher.
         // The Shift+Tab keydown event should continue bubbling, and the default
         // behavior should cause it to end up on the last focusable element.
         this[wrappingFocusKey] = true;
-        this[internal.ids].focusCatcher.focus();
+        this[ids].focusCatcher.focus();
         this[wrappingFocusKey] = false;
         // Don't mark the event as handled, since we want it to keep bubbling up.
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return (
-        (super[internal.keydown] && super[internal.keydown](event)) || false
-      );
+      return (super[keydown] && super[keydown](event)) || false;
     }
 
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      if (super[render]) {
+        super[render](changed);
       }
-      if (this[internal.firstRender]) {
-        this[internal.ids].focusCatcher.addEventListener("focus", () => {
+      if (this[firstRender]) {
+        this[ids].focusCatcher.addEventListener("focus", () => {
           if (!this[wrappingFocusKey]) {
             // Wrap focus back to the first focusable element.
-            const focusElement = firstFocusableElement(
-              this[internal.shadowRoot]
-            );
+            const focusElement = firstFocusableElement(this[shadowRoot]);
             if (focusElement) {
               focusElement.focus();
             }
@@ -76,7 +72,7 @@ function FocusCaptureMixin(Base) {
      * @param {Element} target - the element within which focus should wrap
      */
     [wrap](target) {
-      const focusCapture = html`
+      const focusCapture = fragmentFrom.html`
         <style>
           #focusCapture {
             display: flex;

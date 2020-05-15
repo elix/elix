@@ -3,12 +3,12 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-import * as internal from "./internal.js";
+import { delegatesFocus } from "./internal.js";
 
 declare const DelegateFocusMixin: Mixin<
   {},
   {
-    [internal.delegatesFocus]: boolean;
+    [delegatesFocus]: boolean;
   }
 >;
 

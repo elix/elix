@@ -3,12 +3,12 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-import * as internal from "./internal.js";
+import { goToItemWithPrefix } from "./internal.js";
 
 declare const KeyboardPrefixCursorMixin: Mixin<
   {},
   {
-    [internal.goToItemWithPrefix](prefix: string): boolean;
+    [goToItemWithPrefix](prefix: string): boolean;
   }
 >;
 

@@ -1,5 +1,5 @@
 import { forwardFocus, indexOfItemContainingTarget } from "../core/dom.js";
-import * as template from "../core/template.js";
+import { templateFrom } from "../core/htmlLiterals.js";
 import ArrowDirectionMixin from "./ArrowDirectionMixin.js";
 import * as calendar from "./calendar.js";
 import CalendarDayButton from "./CalendarDayButton.js";
@@ -7,7 +7,19 @@ import CalendarElementMixin from "./CalendarElementMixin.js";
 import CalendarMonth from "./CalendarMonth.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  goDown,
+  goLeft,
+  goRight,
+  goUp,
+  keydown,
+  raiseChangeEvents,
+  setState,
+  state,
+  stateEffects,
+  template,
+} from "./internal.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
@@ -44,7 +56,7 @@ class CalendarMonthNavigator extends Base {
       if (event.button !== 0) {
         return;
       }
-      this[internal.raiseChangeEvents] = true;
+      this[raiseChangeEvents] = true;
       const target = event.composedPath()[0];
       if (target instanceof Node) {
         const days = this.days;
@@ -55,7 +67,7 @@ class CalendarMonthNavigator extends Base {
           this.date = day.date;
         }
       }
-      this[internal.raiseChangeEvents] = false;
+      this[raiseChangeEvents] = false;
     });
     // Any click within this element puts focus on the top-level element.
     forwardFocus(this, this);
@@ -64,8 +76,8 @@ class CalendarMonthNavigator extends Base {
   arrowButtonNext() {
     // If we're asked to navigate to the next month, but don't have a date yet,
     // assume the current date.
-    const date = this[internal.state].date || calendar.today();
-    this[internal.setState]({
+    const date = this[state].date || calendar.today();
+    this[setState]({
       date: calendar.offsetDateByMonths(date, 1),
     });
     return true;
@@ -73,15 +85,15 @@ class CalendarMonthNavigator extends Base {
 
   arrowButtonPrevious() {
     // See note in arrowButtonNext.
-    const date = this[internal.state].date || calendar.today();
-    this[internal.setState]({
+    const date = this[state].date || calendar.today();
+    this[setState]({
       date: calendar.offsetDateByMonths(date, -1),
     });
     return true;
   }
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       arrowButtonOverlap: false,
       canGoNext: true,
       canGoPrevious: true,
@@ -94,80 +106,78 @@ class CalendarMonthNavigator extends Base {
     });
   }
 
-  [internal.keydown](/** @type {KeyboardEvent} */ event) {
+  [keydown](/** @type {KeyboardEvent} */ event) {
     let handled = false;
 
     switch (event.key) {
       case "Home":
-        this[internal.setState]({
+        this[setState]({
           date: calendar.today(),
         });
         handled = true;
         break;
 
       case "PageDown":
-        this[internal.setState]({
-          date: calendar.offsetDateByMonths(this[internal.state].date, 1),
+        this[setState]({
+          date: calendar.offsetDateByMonths(this[state].date, 1),
         });
         handled = true;
         break;
 
       case "PageUp":
-        this[internal.setState]({
-          date: calendar.offsetDateByMonths(this[internal.state].date, -1),
+        this[setState]({
+          date: calendar.offsetDateByMonths(this[state].date, -1),
         });
         handled = true;
         break;
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return (
-      handled || (super[internal.keydown] && super[internal.keydown](event))
-    );
+    return handled || (super[keydown] && super[keydown](event));
   }
 
-  [internal.goDown]() {
-    if (super[internal.goDown]) {
-      super[internal.goDown]();
+  [goDown]() {
+    if (super[goDown]) {
+      super[goDown]();
     }
-    this[internal.setState]({
-      date: calendar.offsetDateByDays(this[internal.state].date, 7),
+    this[setState]({
+      date: calendar.offsetDateByDays(this[state].date, 7),
     });
     return true;
   }
 
-  [internal.goLeft]() {
-    if (super[internal.goLeft]) {
-      super[internal.goLeft]();
+  [goLeft]() {
+    if (super[goLeft]) {
+      super[goLeft]();
     }
-    this[internal.setState]({
-      date: calendar.offsetDateByDays(this[internal.state].date, -1),
+    this[setState]({
+      date: calendar.offsetDateByDays(this[state].date, -1),
     });
     return true;
   }
 
-  [internal.goRight]() {
-    if (super[internal.goRight]) {
-      super[internal.goRight]();
+  [goRight]() {
+    if (super[goRight]) {
+      super[goRight]();
     }
-    this[internal.setState]({
-      date: calendar.offsetDateByDays(this[internal.state].date, 1),
+    this[setState]({
+      date: calendar.offsetDateByDays(this[state].date, 1),
     });
     return true;
   }
 
-  [internal.goUp]() {
-    if (super[internal.goUp]) {
-      super[internal.goUp]();
+  [goUp]() {
+    if (super[goUp]) {
+      super[goUp]();
     }
-    this[internal.setState]({
-      date: calendar.offsetDateByDays(this[internal.state].date, -7),
+    this[setState]({
+      date: calendar.offsetDateByDays(this[state].date, -7),
     });
     return true;
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     // Reflect any change in date to value as well so that FormElementMixin can
     // update form internals.
@@ -180,13 +190,13 @@ class CalendarMonthNavigator extends Base {
     return effects;
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     const monthYearHeader = result.content.querySelector("#monthYearHeader");
     /** @type {any} */ const cast = this;
     cast[ArrowDirectionMixin.wrap](monthYearHeader);
 
-    const styleTemplate = template.html`
+    const styleTemplate = templateFrom.html`
       <style>
         [part~="arrow-icon"] {
           font-size: 24px;

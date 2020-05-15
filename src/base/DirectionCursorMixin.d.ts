@@ -3,17 +3,17 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-import * as internal from "./internal.js";
+import { goDown, goEnd, goLeft, goRight, goStart, goUp } from "./internal.js";
 
 declare const DirectionCursorMixin: Mixin<
   {},
   {
-    [internal.goDown](): boolean;
-    [internal.goEnd](): boolean;
-    [internal.goLeft](): boolean;
-    [internal.goRight](): boolean;
-    [internal.goStart](): boolean;
-    [internal.goUp](): boolean;
+    [goDown](): boolean;
+    [goEnd](): boolean;
+    [goLeft](): boolean;
+    [goRight](): boolean;
+    [goStart](): boolean;
+    [goUp](): boolean;
   }
 >;
 

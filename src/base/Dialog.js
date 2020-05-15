@@ -1,7 +1,7 @@
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import DialogModalityMixin from "./DialogModalityMixin.js";
 import FocusCaptureMixin from "./FocusCaptureMixin.js";
-import * as internal from "./internal.js";
+import { defaultState, template } from "./internal.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import ModalBackdrop from "./ModalBackdrop.js";
 import Overlay from "./Overlay.js";
@@ -22,22 +22,22 @@ const Base = DialogModalityMixin(FocusCaptureMixin(KeyboardMixin(Overlay)));
  * @part {ModalBackdrop} backdrop
  */
 class Dialog extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       backdropPartType: ModalBackdrop,
       tabIndex: -1,
     });
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     const frame = result.content.querySelector("#frame");
     /** @type {any} */ const cast = this;
     cast[FocusCaptureMixin.wrap](frame);
 
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           :host {
             height: 100%;

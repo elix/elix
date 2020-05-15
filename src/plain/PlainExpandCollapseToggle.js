@@ -1,7 +1,7 @@
-import * as internal from "../base/internal.js";
+import { template } from "../base/internal.js";
 import UpDownToggle from "../base/UpDownToggle.js";
-import html from "../core/html.js";
-import * as template from "../core/template.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
+import { replace } from "../core/template.js";
 
 /**
  * An expand/collapse toggle in the Plain reference design system
@@ -12,12 +12,12 @@ import * as template from "../core/template.js";
  * @part toggle-icon - both of the default icons used to expand/collapse the panel
  */
 class PlainExpandCollapseToggle extends UpDownToggle {
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     // Replace the icons with our up/down glyphs.
     const downIcon = result.content.getElementById("downIcon");
-    const downIconGlyph = html`
+    const downIconGlyph = fragmentFrom.html`
       <svg
         id="downIcon"
         part="toggle-icon expand-icon"
@@ -30,10 +30,10 @@ class PlainExpandCollapseToggle extends UpDownToggle {
       </svg>
     `.firstElementChild;
     if (downIcon && downIconGlyph) {
-      template.replace(downIcon, downIconGlyph);
+      replace(downIcon, downIconGlyph);
     }
     const upIcon = result.content.getElementById("upIcon");
-    const upIconGlyph = html`
+    const upIconGlyph = fragmentFrom.html`
       <svg
         id="upIcon"
         part="toggle-icon collapse-icon"
@@ -46,11 +46,11 @@ class PlainExpandCollapseToggle extends UpDownToggle {
       </svg>
     `.children[0];
     if (upIcon && upIconGlyph) {
-      template.replace(upIcon, upIconGlyph);
+      replace(upIcon, upIconGlyph);
     }
 
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           :host([disabled]) {
             opacity: 0.5;

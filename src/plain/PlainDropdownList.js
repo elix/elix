@@ -1,5 +1,5 @@
 import DropdownList from "../base/DropdownList.js";
-import * as internal from "../base/internal.js";
+import { defaultState } from "../base/internal.js";
 import PlainBorderButton from "./PlainBorderButton.js";
 import PlainMenu from "./PlainMenu.js";
 import PlainOpenCloseToggle from "./PlainOpenCloseToggle.js";
@@ -15,8 +15,8 @@ import PlainPopup from "./PlainPopup.js";
  * @part {PlainOpenCloseToggle} popup-toggle
  */
 class PlainDropdownList extends DropdownList {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       menuPartType: PlainMenu,
       popupPartType: PlainPopup,
       sourcePartType: PlainBorderButton,

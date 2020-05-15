@@ -1,5 +1,12 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  keydown,
+  render,
+  rendering,
+  setState,
+  state,
+} from "./internal.js";
 
 // Symbols for private data members.
 /** @type {any} */
@@ -25,13 +32,13 @@ const previousDocumentMarginRightKey = Symbol("previousDocumentMarginRight");
  */
 export default function DialogModalityMixin(Base) {
   return class DialogModality extends Base {
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         role: "dialog",
       });
     }
 
-    [internal.keydown](/** @type {KeyboardEvent} */ event) {
+    [keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
 
       switch (event.key) {
@@ -45,19 +52,15 @@ export default function DialogModalityMixin(Base) {
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return (
-        handled ||
-        (super[internal.keydown] && super[internal.keydown](event)) ||
-        false
-      );
+      return handled || (super[keydown] && super[keydown](event)) || false;
     }
 
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      if (super[render]) {
+        super[render](changed);
       }
       if (changed.opened) {
-        if (this[internal.state].opened && document.documentElement) {
+        if (this[state].opened && document.documentElement) {
           // Disable body scrolling to absorb space bar keypresses and other
           // means of scrolling the top-level document.
           const documentWidth = document.documentElement.clientWidth;
@@ -87,7 +90,7 @@ export default function DialogModalityMixin(Base) {
       }
       if (changed.role) {
         // Apply top-level role.
-        const { role } = this[internal.state];
+        const { role } = this[state];
         this.setAttribute("role", role);
       }
     }
@@ -99,8 +102,8 @@ export default function DialogModalityMixin(Base) {
     }
     set role(role) {
       super.role = role;
-      if (!this[internal.rendering]) {
-        this[internal.setState]({ role });
+      if (!this[rendering]) {
+        this[setState]({ role });
       }
     }
   };

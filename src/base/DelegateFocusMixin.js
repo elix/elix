@@ -1,6 +1,6 @@
 import { firstFocusableElement } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import { delegatesFocus, focusTarget, shadowRoot } from "./internal.js";
 
 /**
  * Delegates a component's focus to its first focusable shadow element.
@@ -23,7 +23,7 @@ export default function DelegateFocusMixin(Base) {
      * @type {boolean}
      * @default true
      */
-    get [internal.delegatesFocus]() {
+    get [delegatesFocus]() {
       return true;
     }
 
@@ -35,19 +35,19 @@ export default function DelegateFocusMixin(Base) {
      * @param {FocusOptions=} focusOptions
      */
     focus(focusOptions) {
-      /** @type {any} */ const cast = this[internal.shadowRoot];
+      /** @type {any} */ const cast = this[shadowRoot];
       if (cast.delegatesFocus) {
         // Native support for delegatesFocus, so don't need to do anything.
         super.focus(focusOptions);
         return;
       }
-      const focusElement = this[internal.focusTarget];
+      const focusElement = this[focusTarget];
       if (focusElement) {
         focusElement.focus(focusOptions);
       }
     }
 
-    get [internal.focusTarget]() {
+    get [focusTarget]() {
       // HACK: The commented-out code lets us rely on the browser to indicate
       // which element should be focused on in browsers that don't support
       // native delegatesFocus. However, this code creates subtle focus problems
@@ -60,11 +60,11 @@ export default function DelegateFocusMixin(Base) {
       // to fully explore that, we workaround the bug by providing the polyfill
       // behavior even in browsers that have delegatesFocus.
 
-      // /** @type {any} */ const cast = this[internal.shadowRoot];
+      // /** @type {any} */ const cast = this[shadowRoot];
       // return cast.delegatesFocus
       //   ? this
-      //   : firstFocusableElement(this[internal.shadowRoot]);
-      return firstFocusableElement(this[internal.shadowRoot]);
+      //   : firstFocusableElement(this[shadowRoot]);
+      return firstFocusableElement(this[shadowRoot]);
     }
   }
 

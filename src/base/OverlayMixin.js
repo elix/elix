@@ -1,6 +1,13 @@
 import { deepContains, firstFocusableElement } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  firstRender,
+  render,
+  rendered,
+  setState,
+  state,
+} from "./internal.js";
 
 /** @type {any} */
 const appendedToDocumentKey = Symbol("appendedToDocument");
@@ -24,21 +31,21 @@ export default function OverlayMixin(Base) {
   class Overlay extends Base {
     // TODO: Document
     get autoFocus() {
-      return this[internal.state].autoFocus;
+      return this[state].autoFocus;
     }
     set autoFocus(autoFocus) {
-      this[internal.setState]({ autoFocus });
+      this[setState]({ autoFocus });
     }
 
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         autoFocus: true,
         persistent: false,
       });
     }
 
     async open() {
-      if (!this[internal.state].persistent && !this.isConnected) {
+      if (!this[state].persistent && !this.isConnected) {
         // Overlay isn't in document yet.
         this[appendedToDocumentKey] = true;
         document.body.append(this);
@@ -48,12 +55,12 @@ export default function OverlayMixin(Base) {
       }
     }
 
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      if (super[render]) {
+        super[render](changed);
       }
 
-      if (this[internal.firstRender]) {
+      if (this[firstRender]) {
         this.addEventListener("blur", (event) => {
           // What has the focus now?
           const newFocusedElement =
@@ -83,7 +90,7 @@ export default function OverlayMixin(Base) {
       }
 
       if (changed.effectPhase || changed.opened || changed.persistent) {
-        if (!this[internal.state].persistent) {
+        if (!this[state].persistent) {
           // Temporary overlay
           const closed =
             typeof this.closeFinished === "undefined"
@@ -114,21 +121,21 @@ export default function OverlayMixin(Base) {
       }
     }
 
-    [internal.rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [rendered](/** @type {ChangedFlags} */ changed) {
+      if (super[rendered]) {
+        super[rendered](changed);
       }
 
-      if (this[internal.firstRender]) {
+      if (this[firstRender]) {
         // Perform one-time check to see if component needs a default z-index.
-        if (this[internal.state].persistent && !hasZIndex(this)) {
+        if (this[state].persistent && !hasZIndex(this)) {
           bringToFront(this);
         }
       }
 
       if (changed.opened) {
-        if (this[internal.state].autoFocus) {
-          if (this[internal.state].opened) {
+        if (this[state].autoFocus) {
+          if (this[state].opened) {
             // Opened
             if (
               !this[restoreFocusToElementKey] &&
@@ -166,8 +173,8 @@ export default function OverlayMixin(Base) {
       // updates, not when it mounts, because we don't want an automatically-added
       // element to be immediately removed during its connectedCallback.
       if (
-        !this[internal.firstRender] &&
-        !this[internal.state].persistent &&
+        !this[firstRender] &&
+        !this[state].persistent &&
         this.closeFinished &&
         this[appendedToDocumentKey]
       ) {

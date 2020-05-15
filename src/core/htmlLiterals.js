@@ -16,7 +16,7 @@
  * This function is called `html` so that it can be easily used with HTML
  * syntax-highlighting extensions for various popular code editors.
  *
- * See also [template.html](template#html), which returns a similar result but
+ * See also [templateFrom.html](template#html), which returns a similar result but
  * as an HTMLTemplateElement.
  *
  * @param {TemplateStringsArray} strings - the strings passed to the JavaScript template

@@ -5,12 +5,12 @@
 
 import ReactiveElement from "../core/ReactiveElement.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
-import * as internal from "./internal.js";
+import { defaultTabIndex } from "./internal.js";
 
 export default class WrappedStandardElement extends DelegateFocusMixin(
   ReactiveElement
 ) {
-  [internal.defaultTabIndex]: number;
+  [defaultTabIndex]: number;
   readonly inner: HTMLElement;
   setInnerProperty(name: string, value: any): void;
   static wrap(extendsTag: string): Constructor<WrappedStandardElement>;

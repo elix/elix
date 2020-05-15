@@ -1,6 +1,6 @@
-import * as internal from "../base/internal.js";
+import { template } from "../base/internal.js";
 import MenuItem from "../base/MenuItem.js";
-import * as template from "../core/template.js";
+import { templateFrom } from "../core/htmlLiterals.js";
 
 /**
  * MenuItem component in the Plain reference design system
@@ -8,9 +8,9 @@ import * as template from "../core/template.js";
  * @inherits MenuItem
  */
 class PlainMenuItem extends MenuItem {
-  get [internal.template]() {
+  get [template]() {
     /* Variety of system fonts */
-    return template.html`
+    return templateFrom.html`
       <style>
         :host {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;

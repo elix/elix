@@ -1,5 +1,5 @@
 import CalendarDays from "../base/CalendarDays.js";
-import * as internal from "../base/internal.js";
+import { defaultState } from "../base/internal.js";
 import PlainCalendarDay from "./PlainCalendarDay.js";
 
 /**
@@ -9,8 +9,8 @@ import PlainCalendarDay from "./PlainCalendarDay.js";
  * @part {PlainCalendarDay} day
  */
 class PlainCalendarDays extends CalendarDays {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       dayPartType: PlainCalendarDay,
     });
   }

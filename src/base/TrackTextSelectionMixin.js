@@ -1,5 +1,14 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  firstRender,
+  raiseChangeEvents,
+  render,
+  rendered,
+  setState,
+  state,
+  stateEffects,
+} from "./internal.js";
 
 /**
  * Track the selection state of an inner input-like element
@@ -21,17 +30,17 @@ import * as internal from "./internal.js";
 export default function TrackTextSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class TrackTextSelection extends Base {
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+    get [defaultState]() {
+      return Object.assign(super[defaultState], {
         selectionEnd: null,
         selectionStart: null,
       });
     }
 
-    [internal.render](changed) {
-      super[internal.render](changed);
+    [render](changed) {
+      super[render](changed);
 
-      if (this[internal.firstRender]) {
+      if (this[firstRender]) {
         // The user can manually update the selection with the keyboard or
         // mouse. We listen to keydown and mousedown events, wait for the
         // browser to perform its default action, and then check refresh our
@@ -42,9 +51,9 @@ export default function TrackTextSelectionMixin(Base) {
           // work, but that feels gross.
           const delay = 10; // milliseconds
           setTimeout(() => {
-            this[internal.raiseChangeEvents] = true;
+            this[raiseChangeEvents] = true;
             refreshSelectionState(this);
-            this[internal.raiseChangeEvents] = false;
+            this[raiseChangeEvents] = false;
           }, delay);
         }).bind(this);
         this.addEventListener("keydown", refreshListener);
@@ -52,26 +61,26 @@ export default function TrackTextSelectionMixin(Base) {
       }
     }
 
-    [internal.rendered](changed) {
-      super[internal.rendered](changed);
+    [rendered](changed) {
+      super[rendered](changed);
 
       // If either selection property is null, pick up its rendered value now.
-      const { selectionEnd, selectionStart } = this[internal.state];
+      const { selectionEnd, selectionStart } = this[state];
       if (selectionEnd === null) {
-        this[internal.setState]({
+        this[setState]({
           selectionEnd: this.inner.selectionEnd,
         });
       }
       if (selectionStart === null) {
-        this[internal.setState]({
+        this[setState]({
           selectionStart: this.inner.selectionStart,
         });
       }
     }
 
-    [internal.stateEffects](state, changed) {
-      const effects = super[internal.stateEffects]
-        ? super[internal.stateEffects](state, changed)
+    [stateEffects](state, changed) {
+      const effects = super[stateEffects]
+        ? super[stateEffects](state, changed)
         : {};
 
       // Setting the value will implicitly update the selection. Clear out the
@@ -95,7 +104,7 @@ export default function TrackTextSelectionMixin(Base) {
 function refreshSelectionState(element) {
   const inner = element.inner;
   const { selectionEnd, selectionStart } = inner;
-  element[internal.setState]({
+  element[setState]({
     selectionEnd,
     selectionStart,
   });

@@ -1,12 +1,21 @@
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
+import { transmute } from "../core/template.js";
 import * as calendar from "./calendar.js";
 import CalendarDay from "./CalendarDay.js";
 import CalendarDayNamesHeader from "./CalendarDayNamesHeader.js";
 import CalendarDays from "./CalendarDays.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
 import CalendarMonthYearHeader from "./CalendarMonthYearHeader.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  ids,
+  render,
+  setState,
+  shadowRoot,
+  state,
+  template,
+} from "./internal.js";
 
 const Base = CalendarElementMixin(ReactiveElement);
 
@@ -39,7 +48,7 @@ class CalendarMonth extends Base {
    */
   dayElementForDate(date) {
     /** @type {any} */
-    const monthDays = this[internal.ids].monthDays;
+    const monthDays = this[ids].monthDays;
     return (
       monthDays &&
       "dayElementForDate" in monthDays &&
@@ -55,10 +64,10 @@ class CalendarMonth extends Base {
    * @default CalendarDayNamesHeader
    */
   get dayNamesHeaderPartType() {
-    return this[internal.state].dayNamesHeaderPartType;
+    return this[state].dayNamesHeaderPartType;
   }
   set dayNamesHeaderPartType(dayNamesHeaderPartType) {
-    this[internal.setState]({ dayNamesHeaderPartType });
+    this[setState]({ dayNamesHeaderPartType });
   }
 
   /**
@@ -69,10 +78,10 @@ class CalendarMonth extends Base {
    * @default CalendarDay
    */
   get dayPartType() {
-    return this[internal.state].dayPartType;
+    return this[state].dayPartType;
   }
   set dayPartType(dayPartType) {
-    this[internal.setState]({ dayPartType });
+    this[setState]({ dayPartType });
   }
 
   /**
@@ -83,8 +92,8 @@ class CalendarMonth extends Base {
    * @type {Element[]}
    */
   get days() {
-    return this[internal.shadowRoot]
-      ? /** @type {any} */ (this[internal.ids].monthDays).days
+    return this[shadowRoot]
+      ? /** @type {any} */ (this[ids].monthDays).days
       : [];
   }
 
@@ -98,14 +107,14 @@ class CalendarMonth extends Base {
    * @default 'short'
    */
   get daysOfWeekFormat() {
-    return this[internal.state].daysOfWeekFormat;
+    return this[state].daysOfWeekFormat;
   }
   set daysOfWeekFormat(daysOfWeekFormat) {
-    this[internal.setState]({ daysOfWeekFormat });
+    this[setState]({ daysOfWeekFormat });
   }
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       date: calendar.today(),
       dayNamesHeaderPartType: CalendarDayNamesHeader,
       dayPartType: CalendarDay,
@@ -129,10 +138,10 @@ class CalendarMonth extends Base {
    * @default 'long'
    */
   get monthFormat() {
-    return this[internal.state].monthFormat;
+    return this[state].monthFormat;
   }
   set monthFormat(monthFormat) {
-    this[internal.setState]({ monthFormat });
+    this[setState]({ monthFormat });
   }
 
   /**
@@ -142,10 +151,10 @@ class CalendarMonth extends Base {
    * @default CalendarDays
    */
   get monthDaysPartType() {
-    return this[internal.state].monthDaysPartType;
+    return this[state].monthDaysPartType;
   }
   set monthDaysPartType(monthDaysPartType) {
-    this[internal.setState]({ monthDaysPartType });
+    this[setState]({ monthDaysPartType });
   }
 
   /**
@@ -156,19 +165,19 @@ class CalendarMonth extends Base {
    * @default CalendarMonthYearHeader
    */
   get monthYearHeaderPartType() {
-    return this[internal.state].monthYearHeaderPartType;
+    return this[state].monthYearHeaderPartType;
   }
   set monthYearHeaderPartType(monthYearHeaderPartType) {
-    this[internal.setState]({ monthYearHeaderPartType });
+    this[setState]({ monthYearHeaderPartType });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
-    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
+    renderParts(this[shadowRoot], this[state], changed);
 
     if (changed.dayPartType || changed.monthDaysPartType) {
-      /** @type {any} */ (this[internal.ids].monthDays).dayPartType = this[
-        internal.state
+      /** @type {any} */ (this[ids].monthDays).dayPartType = this[
+        state
       ].dayPartType;
     }
 
@@ -178,75 +187,72 @@ class CalendarMonth extends Base {
       changed.monthYearHeaderPartType ||
       changed.dayNamesHeaderPartType
     ) {
-      const locale = this[internal.state].locale;
-      /** @type {any} */ (this[internal.ids].monthDays).locale = locale;
-      /** @type {any} */ (this[internal.ids].monthYearHeader).locale = locale;
-      /** @type {any} */ (this[internal.ids].dayNamesHeader).locale = locale;
+      const locale = this[state].locale;
+      /** @type {any} */ (this[ids].monthDays).locale = locale;
+      /** @type {any} */ (this[ids].monthYearHeader).locale = locale;
+      /** @type {any} */ (this[ids].dayNamesHeader).locale = locale;
     }
 
     if (changed.date || changed.monthDaysPartType) {
-      const { date } = this[internal.state];
+      const { date } = this[state];
       if (date) {
         const startDate = calendar.firstDateOfMonth(date);
         const endDate = calendar.lastDateOfMonth(date);
         const dayCount = endDate.getDate();
-        Object.assign(this[internal.ids].monthDays, {
+        Object.assign(this[ids].monthDays, {
           date,
           dayCount,
           startDate,
         });
-        /** @type {any} */ (this[internal.ids]
+        /** @type {any} */ (this[ids]
           .monthYearHeader).date = calendar.firstDateOfMonth(date);
       }
     }
 
     if (changed.daysOfWeekFormat || changed.dayNamesHeaderPartType) {
-      const { daysOfWeekFormat } = this[internal.state];
-      /** @type {any} */ (this[internal.ids]
-        .dayNamesHeader).format = daysOfWeekFormat;
+      const { daysOfWeekFormat } = this[state];
+      /** @type {any} */ (this[ids].dayNamesHeader).format = daysOfWeekFormat;
     }
 
     if (changed.showCompleteWeeks || changed.monthDaysPartType) {
-      const { showCompleteWeeks } = this[internal.state];
-      /** @type {any} */ (this[internal.ids]
+      const { showCompleteWeeks } = this[state];
+      /** @type {any} */ (this[ids]
         .monthDays).showCompleteWeeks = showCompleteWeeks;
     }
 
     if (changed.showSelectedDay || changed.monthDaysPartType) {
-      const { showSelectedDay } = this[internal.state];
-      /** @type {any} */ (this[internal.ids]
+      const { showSelectedDay } = this[state];
+      /** @type {any} */ (this[ids]
         .monthDays).showSelectedDay = showSelectedDay;
     }
 
     if (changed.monthFormat || changed.monthYearHeaderPartType) {
-      const { monthFormat } = this[internal.state];
-      /** @type {any} */ (this[internal.ids]
-        .monthYearHeader).monthFormat = monthFormat;
+      const { monthFormat } = this[state];
+      /** @type {any} */ (this[ids].monthYearHeader).monthFormat = monthFormat;
     }
 
     if (changed.yearFormat || changed.monthYearHeaderPartType) {
-      const { yearFormat } = this[internal.state];
-      /** @type {any} */ (this[internal.ids]
-        .monthYearHeader).yearFormat = yearFormat;
+      const { yearFormat } = this[state];
+      /** @type {any} */ (this[ids].monthYearHeader).yearFormat = yearFormat;
     }
   }
 
   get showCompleteWeeks() {
-    return this[internal.state].showCompleteWeeks;
+    return this[state].showCompleteWeeks;
   }
   set showCompleteWeeks(showCompleteWeeks) {
-    this[internal.setState]({ showCompleteWeeks });
+    this[setState]({ showCompleteWeeks });
   }
 
   get showSelectedDay() {
-    return this[internal.state].showSelectedDay;
+    return this[state].showSelectedDay;
   }
   set showSelectedDay(showSelectedDay) {
-    this[internal.setState]({ showSelectedDay });
+    this[setState]({ showSelectedDay });
   }
 
-  get [internal.template]() {
-    const result = template.html`
+  get [template]() {
+    const result = templateFrom.html`
       <style>
         :host {
           display: inline-block;
@@ -274,7 +280,7 @@ class CalendarMonth extends Base {
       ></div>
       <div id="monthDays" part="month-days" exportparts="day"></div>
     `;
-    renderParts(result.content, this[internal.state]);
+    renderParts(result.content, this[state]);
     return result;
   }
 
@@ -288,10 +294,10 @@ class CalendarMonth extends Base {
    * @default 'numeric'
    */
   get yearFormat() {
-    return this[internal.state].yearFormat;
+    return this[state].yearFormat;
   }
   set yearFormat(yearFormat) {
-    this[internal.setState]({ yearFormat });
+    this[setState]({ yearFormat });
   }
 }
 
@@ -308,21 +314,21 @@ function renderParts(root, state, changed) {
     const { dayNamesHeaderPartType } = state;
     const dayNamesHeader = root.getElementById("dayNamesHeader");
     if (dayNamesHeader) {
-      template.transmute(dayNamesHeader, dayNamesHeaderPartType);
+      transmute(dayNamesHeader, dayNamesHeaderPartType);
     }
   }
   if (!changed || changed.monthYearHeaderPartType) {
     const { monthYearHeaderPartType } = state;
     const monthYearHeader = root.getElementById("monthYearHeader");
     if (monthYearHeader) {
-      template.transmute(monthYearHeader, monthYearHeaderPartType);
+      transmute(monthYearHeader, monthYearHeaderPartType);
     }
   }
   if (!changed || changed.monthDaysPartType) {
     const { monthDaysPartType } = state;
     const monthDays = root.getElementById("monthDays");
     if (monthDays) {
-      template.transmute(monthDays, monthDaysPartType);
+      transmute(monthDays, monthDaysPartType);
     }
   }
 }

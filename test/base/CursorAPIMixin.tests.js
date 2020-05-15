@@ -1,5 +1,10 @@
 import CursorAPIMixin from "../../src/base/CursorAPIMixin.js";
-import * as internal from "../../src/base/internal.js";
+import {
+  defaultState,
+  raiseChangeEvents,
+  setState,
+  state,
+} from "../../src/base/internal.js";
 import ItemsCursorMixin from "../../src/base/ItemsCursorMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import { assert } from "../testHelpers.js";
@@ -7,17 +12,17 @@ import { assert } from "../testHelpers.js";
 class CursorAPITest extends ItemsCursorMixin(
   CursorAPIMixin(ReactiveMixin(HTMLElement))
 ) {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       items: ["Zero", "One", "Two"],
     });
   }
 
   get items() {
-    return this[internal.state].items;
+    return this[state].items;
   }
   set items(items) {
-    this[internal.setState]({ items });
+    this[setState]({ items });
   }
 }
 customElements.define("cursor-api-test", CursorAPITest);
@@ -66,7 +71,7 @@ describe("CursorAPIMixin", () => {
   it("can wrap from the last to the first item", () => {
     const fixture = new CursorAPITest();
     fixture.cursorOperationsWrap = true;
-    fixture[internal.setState]({ currentIndex: 2 });
+    fixture[setState]({ currentIndex: 2 });
     fixture.goNext();
     assert.equal(fixture.currentIndex, 0);
   });
@@ -74,7 +79,7 @@ describe("CursorAPIMixin", () => {
   it("can wrap from the first to the last item", () => {
     const fixture = new CursorAPITest();
     fixture.cursorOperationsWrap = true;
-    fixture[internal.setState]({ currentIndex: 0 });
+    fixture[setState]({ currentIndex: 0 });
     fixture.goPrevious();
     assert.equal(fixture.currentIndex, 2);
   });
@@ -133,9 +138,9 @@ describe("CursorAPIMixin", () => {
     });
     container.appendChild(fixture);
 
-    fixture[internal.raiseChangeEvents] = true; // Simulate user interaction
+    fixture[raiseChangeEvents] = true; // Simulate user interaction
     fixture.currentIndex = 1;
-    fixture[internal.raiseChangeEvents] = false;
+    fixture[raiseChangeEvents] = false;
   });
 
   it("changing currentIndex programmatically does not raise the current-index-changed event", (done) => {

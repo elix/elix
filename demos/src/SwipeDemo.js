@@ -1,55 +1,62 @@
-import * as internal from "../../src/base/internal.js";
+import {
+  defaultState,
+  ids,
+  render,
+  setState,
+  state,
+  template,
+} from "../../src/base/internal.js";
 import TouchSwipeMixin from "../../src/base/TouchSwipeMixin.js";
 import TrackpadSwipeMixin from "../../src/base/TrackpadSwipeMixin.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
-import * as template from "../../src/core/template.js";
 
 const Base = TouchSwipeMixin(TrackpadSwipeMixin(ReactiveElement));
 
 class SwipeDemo extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       swipeAxis: "horizontal",
     });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
-    super[internal.render](changed);
-    const { swipeAxis, swipeFraction } = this[internal.state];
+  [render](/** @type {PlainObject} */ changed) {
+    super[render](changed);
+    const { swipeAxis, swipeFraction } = this[state];
     const vertical = swipeAxis === "vertical";
     if (changed.swipeAxis) {
       this.style.flexDirection = vertical ? "row" : "column";
-      Object.assign(this[internal.ids].block.style, {
+      Object.assign(this[ids].block.style, {
         height: vertical ? "100%" : "1em",
         width: vertical ? "1em" : "100%",
       });
-      Object.assign(this[internal.ids].container.style, {
+      Object.assign(this[ids].container.style, {
         "flex-direction": vertical ? "row-reverse" : "column",
         "justify-content": vertical ? "flex-end" : "center",
       });
-      this[internal.ids].empty.style.display = vertical ? "none" : "block";
-      this[internal.ids].space.style.display = vertical ? "none" : "block";
+      this[ids].empty.style.display = vertical ? "none" : "block";
+      this[ids].space.style.display = vertical ? "none" : "block";
     }
     if (changed.swipeFraction) {
       const axis = vertical ? "Y" : "X";
-      this[internal.ids].block.style.transform =
+      this[ids].block.style.transform =
         swipeFraction !== null
           ? `translate${axis}(${swipeFraction * 100}%)`
           : "";
-      this[internal.ids].swipeFraction.textContent =
+      this[ids].swipeFraction.textContent =
         swipeFraction !== null ? swipeFraction.toFixed(3) : "—";
     }
   }
 
   get swipeAxis() {
-    return this[internal.state].swipeAxis;
+    return this[state].swipeAxis;
   }
   set swipeAxis(swipeAxis) {
-    this[internal.setState]({ swipeAxis });
+    this[setState]({ swipeAxis });
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           display: flex;

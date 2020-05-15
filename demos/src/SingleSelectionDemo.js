@@ -1,5 +1,11 @@
 import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
-import * as internal from "../../src/base/internal.js";
+import {
+  defaultState,
+  raiseChangeEvents,
+  render,
+  setState,
+  state,
+} from "../../src/base/internal.js";
 import ItemsCursorMixin from "../../src/base/ItemsCursorMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 
@@ -18,37 +24,37 @@ class SingleSelectionDemo extends Base {
     /* Clicking an item selects it. */
     this.addEventListener("mousedown", (event) => {
       if (event.target instanceof Element) {
-        this[internal.raiseChangeEvents] = true;
+        this[raiseChangeEvents] = true;
         const item = event.target;
-        const currentIndex = this[internal.state].content.indexOf(item);
-        this[internal.setState]({ currentIndex });
+        const currentIndex = this[state].content.indexOf(item);
+        this[setState]({ currentIndex });
         event.stopPropagation();
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = false;
       }
     });
 
     // Simplistic tracking of element children as items.
     // For real applications, use SlotItemsMixin.
     const observer = new MutationObserver(() => {
-      this[internal.setState]({
+      this[setState]({
         content: [...this.children],
       });
     });
     observer.observe(this, { childList: true });
   }
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       content: [...this.children],
     });
   }
 
   // Map item selection to a `selected` CSS class.
-  [internal.render](/** @type {PlainObject} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {PlainObject} */ changed) {
+    super[render](changed);
 
     // Apply a `selected` attribute to the selected item only.
-    const { currentIndex, items } = this[internal.state];
+    const { currentIndex, items } = this[state];
     if (changed.items || (changed.currentIndex && items)) {
       items.forEach((item, index) => {
         item.toggleAttribute("selected", index === currentIndex);

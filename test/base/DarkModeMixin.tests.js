@@ -1,5 +1,5 @@
 import DarkModeMixin from "../../src/base/DarkModeMixin.js";
-import * as internal from "../../src/base/internal.js";
+import { state } from "../../src/base/internal.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import { assert } from "../testHelpers.js";
 
@@ -24,7 +24,7 @@ describe("DarkModeMixin", () => {
     parent.appendChild(fixture);
     container.appendChild(parent);
     await Promise.resolve();
-    assert(fixture[internal.state].dark);
+    assert(fixture[state].dark);
   });
 
   it("infers no dark mode when the element or ancestor has a light background color", async () => {
@@ -34,6 +34,6 @@ describe("DarkModeMixin", () => {
     parent.appendChild(fixture);
     container.appendChild(parent);
     await Promise.resolve();
-    assert(!fixture[internal.state].dark);
+    assert(!fixture[state].dark);
   });
 });

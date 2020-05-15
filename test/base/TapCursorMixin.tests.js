@@ -1,4 +1,4 @@
-import * as internal from "../../src/base/internal.js";
+import { setState, state } from "../../src/base/internal.js";
 import TapCursorMixin from "../../src/base/TapCursorMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import ShadowTemplateMixin from "../../src/core/ShadowTemplateMixin.js";
@@ -11,7 +11,7 @@ class TapCursorTest extends TapCursorMixin(
   connectedCallback() {
     super.connectedCallback();
     const items = Array.prototype.slice.call(this.children);
-    this[internal.setState]({
+    this[setState]({
       items,
       currentIndex: -1,
     });
@@ -33,10 +33,10 @@ describe("TapCursorMixin", function () {
   it("sets the tapped item as the selected item", (done) => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    assert.equal(fixture[internal.state].currentIndex, -1);
-    const item = fixture[internal.state].items[0];
+    assert.equal(fixture[state].currentIndex, -1);
+    const item = fixture[state].items[0];
     fixture.addEventListener("mousedown", () => {
-      assert.equal(fixture[internal.state].currentIndex, 0);
+      assert.equal(fixture[state].currentIndex, 0);
       done();
     });
     mockInteractions.dispatchSyntheticMouseEvent(item, "mousedown");
@@ -45,11 +45,11 @@ describe("TapCursorMixin", function () {
   it("ignores right clicks", (done) => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    assert.equal(fixture[internal.state].currentIndex, -1);
-    const item = fixture[internal.state].items[0];
+    assert.equal(fixture[state].currentIndex, -1);
+    const item = fixture[state].items[0];
     fixture.addEventListener("mousedown", () => {
       assert.equal(
-        fixture[internal.state].currentIndex,
+        fixture[state].currentIndex,
         -1,
         "handled mousedown even when right button was pressed"
       );

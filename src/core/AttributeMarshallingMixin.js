@@ -1,5 +1,5 @@
 import { booleanAttributeValue, standardBooleanAttributes } from "./dom.js";
-import * as internal from "./internal.js";
+import { rendering } from "./internal.js";
 
 // Memoized maps of attribute to property names and vice versa.
 // We initialize this with the special case of the tabindex (lowercase "i")
@@ -72,7 +72,7 @@ export default function AttributeMarshallingMixin(Base) {
       // We also skip setting properties if we're rendering. A component may
       // want to reflect property values to attributes during rendering, but
       // such attribute changes shouldn't trigger property updates.
-      if (newValue !== oldValue && !this[internal.rendering]) {
+      if (newValue !== oldValue && !this[rendering]) {
         const propertyName = attributeToPropertyName(attributeName);
         // If the attribute name corresponds to a property name, set the property.
         if (propertyName in this) {

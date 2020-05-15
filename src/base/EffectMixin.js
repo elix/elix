@@ -1,5 +1,5 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import { defaultState, firstRender, rendered, setState } from "./internal.js";
 
 /**
  * Simple foundation for component with visual effects
@@ -13,21 +13,21 @@ import * as internal from "./internal.js";
 export default function EffectMixin(Base) {
   // The class prototype added by the mixin.
   class Transition extends Base {
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         enableEffects: false,
       });
     }
 
-    [internal.rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [rendered](/** @type {ChangedFlags} */ changed) {
+      if (super[rendered]) {
+        super[rendered](changed);
       }
 
-      if (this[internal.firstRender]) {
+      if (this[firstRender]) {
         // Once everything's finished rendering, enable transition effects.
         setTimeout(() => {
-          this[internal.setState]({ enableEffects: true });
+          this[setState]({ enableEffects: true });
         });
       }
     }

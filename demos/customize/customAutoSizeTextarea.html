@@ -12,15 +12,76 @@
     <link rel="stylesheet" href="../demos.css" />
 
     <script type="module">
-      import * as internal from "../../src/base/internal.js";
-      import * as template from "../../src/core/template.js";
+      import {
+        checkSize,
+        contentSlot,
+        defaultState,
+        defaultTabIndex,
+        delegatesFocus,
+        effectEndTarget,
+        firstRender,
+        focusTarget,
+        getItemText,
+        goDown,
+        goEnd,
+        goFirst,
+        goLast,
+        goLeft,
+        goNext,
+        goPrevious,
+        goRight,
+        goStart,
+        goToItemWithPrefix,
+        goUp,
+        hasDynamicTemplate,
+        ids,
+        inputDelegate,
+        itemMatchesState,
+        itemsDelegate,
+        keydown,
+        mouseenter,
+        mouseleave,
+        nativeInternals,
+        event,
+        raiseChangeEvents,
+        render,
+        renderChanges,
+        renderDataToElement,
+        rendered,
+        rendering,
+        scrollTarget,
+        setState,
+        shadowRoot,
+        shadowRootMode,
+        startEffect,
+        state,
+        stateEffects,
+        swipeDown,
+        swipeDownComplete,
+        swipeLeft,
+        swipeLeftTransitionEnd,
+        swipeRight,
+        swipeRightTransitionEnd,
+        swipeUp,
+        swipeUpComplete,
+        swipeStart,
+        swipeTarget,
+        tap,
+        template,
+        toggleSelectedFlag,
+      } from "../../src/base/internal.js";
+      import {
+        createElement,
+        replace,
+        transmute,
+      } from "../../src/core/template.js";
       import AutoSizeTextarea from "../../src/base/AutoSizeTextarea.js";
 
       class CustomAutoSizeTextarea extends AutoSizeTextarea {
-        get [internal.template]() {
-          const result = super[internal.template];
+        get [template]() {
+          const result = super[template];
           result.content.append(
-            template.html`
+            templateFrom.html`
               <style>
                 [part~="inner"] {
                   border: none;

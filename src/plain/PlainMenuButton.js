@@ -1,6 +1,6 @@
-import * as internal from "../base/internal.js";
+import { defaultState, template } from "../base/internal.js";
 import MenuButton from "../base/MenuButton.js";
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import PlainBorderButton from "./PlainBorderButton.js";
 import PlainMenu from "./PlainMenu.js";
 import PlainOpenCloseToggle from "./PlainOpenCloseToggle.js";
@@ -16,8 +16,8 @@ import PlainPopup from "./PlainPopup.js";
  * @part {PlainBorderButton} source
  */
 class PlainMenuButton extends MenuButton {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       menuPartType: PlainMenu,
       popupPartType: PlainPopup,
       popupTogglePartType: PlainOpenCloseToggle,
@@ -25,10 +25,10 @@ class PlainMenuButton extends MenuButton {
     });
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           [part~="menu"] {
             background: window;

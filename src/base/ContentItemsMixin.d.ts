@@ -3,16 +3,13 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-import * as internal from "./internal.js";
+import { itemMatchesState } from "./internal.js";
 
 declare const ContentItemsMixin: StateMixin<
   {},
   {},
   {
-    [internal.itemMatchesState](
-      item: ListItemElement,
-      state: PlainObject
-    ): boolean;
+    [itemMatchesState](item: ListItemElement, state: PlainObject): boolean;
   },
   {
     items: ListItemElement[];

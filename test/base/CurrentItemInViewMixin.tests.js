@@ -1,5 +1,5 @@
 import CurrentItemInViewMixin from "../../src/base/CurrentItemInViewMixin.js";
-import * as internal from "../../src/base/internal.js";
+import { setState, state } from "../../src/base/internal.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import ShadowTemplateMixin from "../../src/core/ShadowTemplateMixin.js";
 import { assert } from "../testHelpers.js";
@@ -12,14 +12,14 @@ class CurrentItemInViewTest extends CurrentItemInViewMixin(
   connectedCallback() {
     super.connectedCallback();
     const items = Array.prototype.slice.call(this.children);
-    this[internal.setState]({
+    this[setState]({
       items,
       currentIndex: -1,
     });
   }
 
   get items() {
-    return this[internal.state].items;
+    return this[state].items;
   }
 }
 customElements.define("current-item-in-view-test", CurrentItemInViewTest);
@@ -44,7 +44,7 @@ describe("CurrentItemInViewMixin", function () {
       assert.equal(fixture.scrollTop, 50);
       done();
     });
-    fixture[internal.setState]({ currentItem: fixture.items[1] });
+    fixture[setState]({ currentItem: fixture.items[1] });
   });
 
   it("Scrolls down to bring item below bottom edge fully into view", (done) => {
@@ -54,7 +54,7 @@ describe("CurrentItemInViewMixin", function () {
       assert.equal(fixture.scrollTop, 150);
       done();
     });
-    fixture[internal.setState]({ currentItem: fixture.items[2] });
+    fixture[setState]({ currentItem: fixture.items[2] });
   });
 
   it("Scrolls up to bring item above top edge fully into view", (done) => {
@@ -65,7 +65,7 @@ describe("CurrentItemInViewMixin", function () {
       assert.equal(fixture.scrollTop, 0);
       done();
     });
-    fixture[internal.setState]({ currentItem: fixture.items[0] });
+    fixture[setState]({ currentItem: fixture.items[0] });
   });
 });
 

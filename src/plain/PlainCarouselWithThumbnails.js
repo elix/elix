@@ -1,7 +1,7 @@
 import CarouselWithThumbnails from "../base/CarouselWithThumbnails.js";
 import DarkModeMixin from "../base/DarkModeMixin.js";
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { defaultState, template } from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import PlainArrowDirectionButton from "./PlainArrowDirectionButton.js";
 import PlainArrowDirectionMixin from "./PlainArrowDirectionMixin.js";
 import PlainCarouselMixin from "./PlainCarouselMixin.js";
@@ -19,17 +19,17 @@ import PlainCarouselMixin from "./PlainCarouselMixin.js";
 class PlainCarouselWithThumbnails extends DarkModeMixin(
   PlainArrowDirectionMixin(PlainCarouselMixin(CarouselWithThumbnails))
 ) {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       arrowButtonPartType: PlainArrowDirectionButton,
     });
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           [part~="proxy"] {
             height: var(--elix-thumbnail-height, 4em);

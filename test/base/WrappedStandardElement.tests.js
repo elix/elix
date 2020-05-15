@@ -1,4 +1,4 @@
-import * as internal from "../../src/base/internal.js";
+import { renderChanges, setState } from "../../src/base/internal.js";
 import WrappedStandardElement from "../../src/base/WrappedStandardElement.js";
 import { assert } from "../testHelpers.js";
 
@@ -30,7 +30,7 @@ describe("WrappedStandardElement", () => {
 
   it("creates an instance of the wrapped element", () => {
     const fixture = new WrappedA();
-    fixture[internal.renderChanges]();
+    fixture[renderChanges]();
     assert(fixture.inner instanceof HTMLAnchorElement);
   });
 
@@ -48,7 +48,7 @@ describe("WrappedStandardElement", () => {
     const fixture = new WrappedA();
     container.appendChild(fixture);
     fixture.setAttribute("href", "http://example.com/");
-    fixture[internal.renderChanges]();
+    fixture[renderChanges]();
     assert.propertyVal(fixture.inner, "href", "http://example.com/");
   });
 
@@ -72,7 +72,7 @@ describe("WrappedStandardElement", () => {
     });
     fixture.click();
     fixture.disabled = true;
-    fixture[internal.renderChanges]();
+    fixture[renderChanges]();
     fixture.click();
     assert.equal(count, 1);
   });
@@ -92,22 +92,22 @@ describe("WrappedStandardElement", () => {
 
     // Disable via property.
     fixture.disabled = true;
-    fixture[internal.renderChanges]();
+    fixture[renderChanges]();
     assert.propertyVal(fixture.inner, "disabled", true);
 
     // // Re-enable via property.
     fixture.disabled = false;
-    fixture[internal.renderChanges]();
+    fixture[renderChanges]();
     assert.propertyVal(fixture.inner, "disabled", false);
 
     // Disable via attribute.
     fixture.setAttribute("disabled", "");
-    fixture[internal.renderChanges]();
+    fixture[renderChanges]();
     assert.propertyVal(fixture.inner, "disabled", true);
 
     // Re-enable via attribute.
     fixture.removeAttribute("disabled");
-    fixture[internal.renderChanges]();
+    fixture[renderChanges]();
     assert.propertyVal(fixture.inner, "disabled", false);
   });
 
@@ -116,7 +116,7 @@ describe("WrappedStandardElement", () => {
     container.appendChild(fixture);
     // NB: tabIndex is not part of WrappedInput's regular state; we're just
     // defining it. WrappedStandardElement should respect that.
-    await fixture[internal.setState]({ tabIndex: 1 });
+    await fixture[setState]({ tabIndex: 1 });
     assert.equal(fixture.inner.tabIndex, 1);
   });
 
@@ -136,7 +136,7 @@ describe("WrappedStandardElement", () => {
   it("delegates attributes that don't correspond to properties", async () => {
     const fixture = new WrappedInput();
     fixture.setAttribute("readonly", "");
-    fixture[internal.renderChanges]();
+    fixture[renderChanges]();
     assert.equal(fixture.inner.getAttribute("readonly"), "");
   });
 });

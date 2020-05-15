@@ -1,6 +1,6 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import { TYPING_TIMEOUT_DURATION } from "./constants.js";
-import * as internal from "./internal.js";
+import { goToItemWithPrefix, keydown, setState, state } from "./internal.js";
 
 // Symbols for private data members on an element.
 const typedPrefixKey = Symbol("typedPrefix");
@@ -59,29 +59,29 @@ export default function KeyboardPrefixCursorMixin(Base) {
      * @param {string} prefix - The prefix string to search for
      * @returns {boolean}
      */
-    [internal.goToItemWithPrefix](prefix) {
-      if (super[internal.goToItemWithPrefix]) {
-        super[internal.goToItemWithPrefix](prefix);
+    [goToItemWithPrefix](prefix) {
+      if (super[goToItemWithPrefix]) {
+        super[goToItemWithPrefix](prefix);
       }
       if (prefix == null || prefix.length === 0) {
         return false;
       }
       // Find item that begins with the prefix. Ignore case.
       const searchText = prefix.toLowerCase();
-      /** @type {string[]} */ const texts = this[internal.state].texts;
+      /** @type {string[]} */ const texts = this[state].texts;
       const index = texts.findIndex(
         (text) => text.substr(0, prefix.length).toLowerCase() === searchText
       );
       if (index >= 0) {
-        const previousIndex = this[internal.state].currentIndex;
-        this[internal.setState]({ currentIndex: index });
-        return this[internal.state].currentIndex !== previousIndex;
+        const previousIndex = this[state].currentIndex;
+        this[setState]({ currentIndex: index });
+        return this[state].currentIndex !== previousIndex;
       } else {
         return false;
       }
     }
 
-    [internal.keydown](/** @type {KeyboardEvent} */ event) {
+    [keydown](/** @type {KeyboardEvent} */ event) {
       let handled;
 
       switch (event.key) {
@@ -107,9 +107,7 @@ export default function KeyboardPrefixCursorMixin(Base) {
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return (
-        handled || (super[internal.keydown] && super[internal.keydown](event))
-      );
+      return handled || (super[keydown] && super[keydown](event));
     }
   }
 
@@ -128,7 +126,7 @@ function handleBackspace(element) {
   if (length > 0) {
     cast[typedPrefixKey] = cast[typedPrefixKey].substr(0, length - 1);
   }
-  element[internal.goToItemWithPrefix](cast[typedPrefixKey]);
+  element[goToItemWithPrefix](cast[typedPrefixKey]);
   setPrefixTimeout(element);
 }
 
@@ -143,7 +141,7 @@ function handlePlainCharacter(element, char) {
   /** @type {any} */ const cast = element;
   const prefix = cast[typedPrefixKey] || "";
   cast[typedPrefixKey] = prefix + char;
-  element[internal.goToItemWithPrefix](cast[typedPrefixKey]);
+  element[goToItemWithPrefix](cast[typedPrefixKey]);
   setPrefixTimeout(element);
 }
 

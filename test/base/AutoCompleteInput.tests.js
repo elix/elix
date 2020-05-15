@@ -2,7 +2,7 @@ import {
   autoComplete,
   default as AutoCompleteInput,
 } from "../../src/base/AutoCompleteInput.js";
-import * as internal from "../../src/base/internal.js";
+import { renderChanges } from "../../src/base/internal.js";
 import { assert } from "../testHelpers.js";
 
 customElements.define("auto-complete-input", AutoCompleteInput);
@@ -13,7 +13,7 @@ describe("AutoCompleteInput", () => {
     fixture.texts = ["Canary", "Cat", "Dog"];
     fixture.value = "C";
     autoComplete(fixture);
-    fixture[internal.renderChanges]();
+    fixture[renderChanges]();
     assert.equal(fixture.value, "Canary");
   });
 });

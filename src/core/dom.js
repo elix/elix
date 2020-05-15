@@ -1,4 +1,4 @@
-import * as internal from "./internal.js";
+import { focusTarget, nativeInternals } from "./internal.js";
 
 /**
  * Miscellaneous DOM helpers for web components
@@ -44,7 +44,7 @@ export function closestFocusableNode(node) {
   for (const current of selfAndComposedAncestors(node)) {
     // If the current element defines a focusTarget (e.g., via
     // DelegateFocusMixin), use that, otherwise use the element itself.
-    const focusTarget = current[internal.focusTarget] || current;
+    const focusTarget = current[focusTarget] || current;
     // We want an element that has a tabIndex of 0 or more. We ignore disabled
     // elements, and slot elements (which oddly have a tabIndex of 0).
     /** @type {any} */ const cast = focusTarget;
@@ -172,7 +172,7 @@ export function forwardFocus(origin, target) {
         return;
       }
       // What element wants the focus?
-      const desiredTarget = target[internal.focusTarget] || target;
+      const desiredTarget = target[focusTarget] || target;
       // What ancestor can actually take the focus?
       const focusableTarget = closestFocusableNode(desiredTarget);
       if (focusableTarget) {
@@ -293,11 +293,8 @@ export function* selfAndComposedAncestors(node) {
  */
 export function setInternalState(element, name, value) {
   element.toggleAttribute(name, value);
-  if (
-    element[internal.nativeInternals] &&
-    element[internal.nativeInternals].states
-  ) {
-    element[internal.nativeInternals].states.toggle(name, value);
+  if (element[nativeInternals] && element[nativeInternals].states) {
+    element[nativeInternals].states.toggle(name, value);
   }
 }
 

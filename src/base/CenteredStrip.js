@@ -1,8 +1,15 @@
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import EffectMixin from "./EffectMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  ids,
+  render,
+  setState,
+  state,
+  template,
+} from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
@@ -45,22 +52,22 @@ const Base = CursorAPIMixin(
  * @mixes TapCursorMixin
  */
 class CenteredStrip extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       currentItemRequired: true,
       orientation: "horizontal",
     });
   }
 
   get orientation() {
-    return this[internal.state].orientation;
+    return this[state].orientation;
   }
   set orientation(orientation) {
-    this[internal.setState]({ orientation });
+    this[setState]({ orientation });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
     if (
       changed.clientWidth ||
       changed.enableEffects ||
@@ -68,10 +75,10 @@ class CenteredStrip extends Base {
       changed.currentIndex ||
       changed.swipeFraction
     ) {
-      const { orientation, rightToLeft, currentIndex } = this[internal.state];
+      const { orientation, rightToLeft, currentIndex } = this[state];
       const sign = rightToLeft ? 1 : -1;
-      const swiping = this[internal.state].swipeFraction != null;
-      const swipeFraction = this[internal.state].swipeFraction || 0;
+      const swiping = this[state].swipeFraction != null;
+      const swipeFraction = this[state].swipeFraction || 0;
       const selectionFraction = currentIndex + sign * swipeFraction;
 
       const vertical = orientation === "vertical";
@@ -79,11 +86,9 @@ class CenteredStrip extends Base {
       const dimension = vertical ? "offsetHeight" : "offsetWidth";
 
       // @ts-ignore
-      const stripContainerDimension = this[internal.ids].stripContainer[
-        dimension
-      ];
+      const stripContainerDimension = this[ids].stripContainer[dimension];
       // @ts-ignore
-      const stripDimension = this[internal.ids].strip[dimension];
+      const stripDimension = this[ids].strip[dimension];
 
       // It seems this method can be invoked before the strip any height/width.
       // We only render if the height/width is positive.
@@ -143,18 +148,18 @@ class CenteredStrip extends Base {
 
         const axis = vertical ? "Y" : "X";
         const transform = `translate${axis}(${translation}px)`;
-        const showTransition = this[internal.state].enableEffects && !swiping;
-        Object.assign(this[internal.ids].strip.style, {
+        const showTransition = this[state].enableEffects && !swiping;
+        Object.assign(this[ids].strip.style, {
           transform,
           transition: showTransition ? "transform 0.25s" : "none",
         });
 
-        this[internal.ids].stripContainer.style.justifyContent = justifyContent;
+        this[ids].stripContainer.style.justifyContent = justifyContent;
       }
     }
     if (changed.items || changed.currentIndex) {
       // Apply `selected` style to the selected item only.
-      const { currentIndex, items } = this[internal.state];
+      const { currentIndex, items } = this[state];
       if (items) {
         items.forEach((item, index) => {
           item.toggleAttribute("selected", index === currentIndex);
@@ -163,21 +168,21 @@ class CenteredStrip extends Base {
     }
     if (changed.orientation) {
       const flexDirection =
-        this[internal.state].orientation === "horizontal" ? "" : "column";
-      this[internal.ids].stripContainer.style.flexDirection = flexDirection;
-      this[internal.ids].strip.style.flexDirection = flexDirection;
+        this[state].orientation === "horizontal" ? "" : "column";
+      this[ids].stripContainer.style.flexDirection = flexDirection;
+      this[ids].strip.style.flexDirection = flexDirection;
     }
   }
 
   get swipeFraction() {
-    return this[internal.state].swipeFraction;
+    return this[state].swipeFraction;
   }
   set swipeFraction(swipeFraction) {
-    this[internal.setState]({ swipeFraction });
+    this[setState]({ swipeFraction });
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           cursor: default;

@@ -1,6 +1,6 @@
 import HamburgerMenuButton from "../base/HamburgerMenuButton.js";
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { defaultState, template } from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import PlainDrawer from "./PlainDrawer.js";
 
 /**
@@ -11,14 +11,14 @@ import PlainDrawer from "./PlainDrawer.js";
  * @part {PlainDrawer} menu
  */
 class PlainHamburgerMenuButton extends HamburgerMenuButton {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       menuPartType: PlainDrawer,
     });
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     // Fill the menuButton slot with our icon.
     const menuButtonSlot = result.content.querySelector(
@@ -26,7 +26,7 @@ class PlainHamburgerMenuButton extends HamburgerMenuButton {
     );
     if (menuButtonSlot) {
       menuButtonSlot.append(
-        html`
+        fragmentFrom.html`
           <slot name="menuIcon">
             <svg
               id="menuIcon"
@@ -44,7 +44,7 @@ class PlainHamburgerMenuButton extends HamburgerMenuButton {
     }
 
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           :host {
             height: 1em;

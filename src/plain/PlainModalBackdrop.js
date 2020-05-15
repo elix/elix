@@ -1,6 +1,6 @@
-import * as internal from "../base/internal.js";
+import { template } from "../base/internal.js";
 import ModalBackdrop from "../base/ModalBackdrop.js";
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 
 /**
  * ModalBackdrop component in the Plain reference design system
@@ -8,10 +8,10 @@ import html from "../core/html.js";
  * @inherits ModalBackdrop
  */
 class PlainModalBackdrop extends ModalBackdrop {
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           :host {
             background: rgba(0, 0, 0, 0.2);

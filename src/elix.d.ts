@@ -148,40 +148,39 @@ export { default as WrappedStandardElement } from "./base/WrappedStandardElement
 import * as accessibilityImport from "./base/accessibility.js";
 // @ts-ignore
 export const accessibility = accessibilityImport;
-  
+
 import * as calendarImport from "./base/calendar.js";
 // @ts-ignore
 export const calendar = calendarImport;
-  
+
 import * as constantsImport from "./base/constants.js";
 // @ts-ignore
 export const constants = constantsImport;
-  
+
 import * as contentImport from "./base/content.js";
 // @ts-ignore
 export const content = contentImport;
-  
+
 import * as fractionalSelectionImport from "./base/fractionalSelection.js";
 // @ts-ignore
 export const fractionalSelection = fractionalSelectionImport;
-  
+
 import * as internalImport from "./base/internal.js";
 // @ts-ignore
 export const internal = internalImport;
-  
+
 import * as scrollingImport from "./base/scrolling.js";
 // @ts-ignore
 export const scrolling = scrollingImport;
-  
+
 import * as domImport from "./core/dom.js";
 // @ts-ignore
 export const dom = domImport;
-  
-import * as htmlImport from "./core/html.js";
+
+import * as htmlImport from "./core/htmlLiterals.js";
 // @ts-ignore
 export const html = htmlImport;
-  
+
 import * as templateImport from "./core/template.js";
 // @ts-ignore
 export const template = templateImport;
-  

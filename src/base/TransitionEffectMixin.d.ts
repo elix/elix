@@ -3,13 +3,13 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-import * as internal from "./internal.js";
+import { effectEndTarget } from "./internal.js";
 
 declare const TransitionEffectMixin: StateMixin<
   {},
   {},
   {
-    readonly [internal.effectEndTarget]: Element;
+    readonly [effectEndTarget]: Element;
     startEffect(effect: string): Promise<void>;
   },
   {

@@ -1,32 +1,37 @@
 import NumberSpinBox from "../../src/base/NumberSpinBox.js";
 import RepeatButton from "../../src/base/RepeatButton.js";
-import html from "../../src/core/html.js";
-import * as internal from "../../src/core/internal.js";
+import { fragmentFrom } from "../../src/core/htmlLiterals.js";
+import {
+  defaultState,
+  render,
+  state,
+  template,
+} from "../../src/core/internal.js";
 
 export default class CustomSpinBox extends NumberSpinBox {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       buttonPartType: RepeatButton,
     });
   }
 
-  [internal.render](changed) {
-    super[internal.render](changed);
+  [render](changed) {
+    super[render](changed);
     if (changed.value) {
-      const { value } = this[internal.state];
+      const { value } = this[state];
       const negative = parseInt(value) < 0;
       this.style.borderColor = negative ? "rgb(255, 0, 255)" : "";
       this.style.backgroundColor = negative ? "rgba(255, 0, 255, 0.1)" : "";
     }
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     const upButton = result.content.getElementById("upButton");
     upButton.textContent = "▲";
     const downButton = result.content.getElementById("downButton");
     downButton.textContent = "▼";
-    result.content.append(html`
+    result.content.append(fragmentFrom.html`
       <style>
         :host {
           border: 2px solid #6e00ff;

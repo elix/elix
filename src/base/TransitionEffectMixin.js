@@ -1,5 +1,14 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  effectEndTarget,
+  firstRender,
+  render,
+  rendered,
+  setState,
+  shadowRoot,
+  startEffect,
+  state,
+} from "./internal.js";
 
 /**
  * Update state before, during, and after CSS transitions
@@ -18,40 +27,36 @@ export default function TransitionEffectMixin(Base) {
      * If you will be applying CSS transitions to other elements, override this
      * property and return an array containing the implicated elements.
      *
-     * See [internal.effectEndTarget](internal#internal.effectEndTarget)
+     * See [effectEndTarget](internal#internal.effectEndTarget)
      * for details.
      *
      * @type {HTMLElement}
      */
-    get [internal.effectEndTarget]() {
-      return super[internal.effectEndTarget] || this;
+    get [effectEndTarget]() {
+      return super[effectEndTarget] || this;
     }
 
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      if (super[render]) {
+        super[render](changed);
       }
-      if (this[internal.firstRender]) {
+      if (this[firstRender]) {
         // Listen for `transitionend` events so we can check to see whether an
         // effect has completed. If the component defines an `effectEndTarget`
         // that's the host, listen to events on that. Otherwise, we assume the
         // target is either in the shadow or an element that will be slotted into
         // a slot in the shadow, so we'll listen to events that reach the shadow
         // root.
-        const target =
-          this[internal.effectEndTarget] === this
-            ? this
-            : this[internal.shadowRoot];
+        const target = this[effectEndTarget] === this ? this : this[shadowRoot];
         target.addEventListener("transitionend", (event) => {
           // See if the event target is our expected `effectEndTarget`. If the
           // component defines a `effectEndTarget` state, we use that; otherwise,
           // we use the element identified with `internal.effectEndTarget`.
           const effectEndTarget =
-            this[internal.state].effectEndTarget ||
-            this[internal.effectEndTarget];
+            this[state].effectEndTarget || this[effectEndTarget];
           if (event.target === effectEndTarget) {
             // Advance to the next phase.
-            this[internal.setState]({
+            this[setState]({
               effectPhase: "after",
             });
           }
@@ -59,19 +64,19 @@ export default function TransitionEffectMixin(Base) {
       }
     }
 
-    [internal.rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [rendered](/** @type {ChangedFlags} */ changed) {
+      if (super[rendered]) {
+        super[rendered](changed);
       }
       if (changed.effect || changed.effectPhase) {
-        const { effect, effectPhase } = this[internal.state];
+        const { effect, effectPhase } = this[state];
         /**
          * Raised when [state.effect](TransitionEffectMixin#effect-phases) or
          * [state.effectPhase](TransitionEffectMixin#effect-phases) changes.
          *
          * Note: In general, Elix components do not raise events in response to
          * outside manipulation. (See
-         * [internal.raiseChangeEvents](internal#internal.raiseChangeEvents).) However, for
+         * [raiseChangeEvents](internal#internal.raiseChangeEvents).) However, for
          * a component using `TransitionEffectMixin`, a single invocation of the
          * `startEffect` method will cause the element to pass through multiple
          * visual states. This makes it hard for external hosts of this
@@ -100,7 +105,7 @@ export default function TransitionEffectMixin(Base) {
           }
           if (effectPhase === "before") {
             // Advance to the next phase.
-            this[internal.setState]({
+            this[setState]({
               effectPhase: "during",
             });
           }
@@ -109,12 +114,12 @@ export default function TransitionEffectMixin(Base) {
     }
 
     /**
-     * See [internal.startEffect](internal#internal.startEffect).
+     * See [startEffect](internal#internal.startEffect).
      *
      * @param {string} effect
      */
-    async [internal.startEffect](effect) {
-      await this[internal.setState]({
+    async [startEffect](effect) {
+      await this[setState]({
         effect,
         effectPhase: "before",
       });

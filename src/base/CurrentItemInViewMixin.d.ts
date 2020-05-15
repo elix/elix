@@ -3,13 +3,13 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-import * as internal from "./internal.js";
+import { scrollTarget } from "./internal.js";
 
 declare const CurrentItemInViewMixin: Mixin<
   {},
   {
     scrollCurrentItemIntoView(): void;
-    readonly [internal.scrollTarget]: Element;
+    readonly [scrollTarget]: Element;
   }
 >;
 

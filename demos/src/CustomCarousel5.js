@@ -1,6 +1,6 @@
-import * as internal from "../../src/base/internal.js";
+import { defaultState, template } from "../../src/base/internal.js";
 import PageNumbersMixin from "../../src/base/PageNumbersMixin.js";
-import * as template from "../../src/core/template.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 import PlainCarousel from "../../src/plain/PlainCarousel.js";
 import CustomArrowButton from "./CustomArrowButton.js";
 import CustomPageDot from "./CustomPageDot.js";
@@ -9,15 +9,15 @@ const Base = PageNumbersMixin(PlainCarousel);
 
 // Customize everything.
 class CustomCarousel extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       arrowButtonPartType: CustomArrowButton,
       proxyPartType: CustomPageDot,
     });
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     // Replace icons with glyphs.
     const previousSlot = result.content.querySelector(
@@ -43,7 +43,7 @@ class CustomCarousel extends Base {
     }
 
     result.content.append(
-      template.html`
+      templateFrom.html`
         <style>
           .arrowButton {
             padding: 0.5em;

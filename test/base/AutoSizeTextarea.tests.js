@@ -1,5 +1,5 @@
 import AutoSizeTextarea from "../../define/AutoSizeTextarea.js";
-import * as internal from "../../src/base/internal.js";
+import { renderChanges, state } from "../../src/base/internal.js";
 import { assert } from "../testHelpers.js";
 
 describe("AutoSizeTextarea", () => {
@@ -25,7 +25,7 @@ describe("AutoSizeTextarea", () => {
   it("applies its value to the inner textarea", () => {
     const fixture = new AutoSizeTextarea();
     fixture.value = "beaver";
-    fixture[internal.renderChanges]();
+    fixture[renderChanges]();
     assert.propertyVal(fixture.inner, "value", "beaver");
   });
 
@@ -44,16 +44,16 @@ describe("AutoSizeTextarea", () => {
     container.appendChild(fixture);
     // Give content time to change.
     await Promise.resolve();
-    assert(fixture[internal.state].valueTracksContent);
+    assert(fixture[state].valueTracksContent);
     assert.equal(fixture.value, "dingo");
     fixture.value = "echidna";
     // Give content time to change. Value should track content.
-    assert(!fixture[internal.state].valueTracksContent);
+    assert(!fixture[state].valueTracksContent);
     assert.equal(fixture.value, "echidna");
     fixture.textContent = "fox";
     // Give content time to change. Value should remain unchanged.
     await Promise.resolve();
-    assert(!fixture[internal.state].valueTracksContent);
+    assert(!fixture[state].valueTracksContent);
     assert.equal(fixture.value, "echidna");
   });
 

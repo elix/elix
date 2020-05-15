@@ -1,5 +1,5 @@
 import NumberSpinBox from "../../define/NumberSpinBox.js";
-import * as internal from "../../src/base/internal.js";
+import { state } from "../../src/base/internal.js";
 import { assert } from "../testHelpers.js";
 
 const formElementsSupported = "ElementInternals" in window;
@@ -55,18 +55,18 @@ describe("NumberSpinBox", () => {
     const fixture = new NumberSpinBox();
     fixture.value = 0;
     // If no max/min, can always go up/down.
-    assert(fixture[internal.state].canGoUp);
-    assert(fixture[internal.state].canGoDown);
+    assert(fixture[state].canGoUp);
+    assert(fixture[state].canGoDown);
     fixture.min = 0;
     fixture.max = 10;
-    assert(fixture[internal.state].canGoUp);
-    assert(!fixture[internal.state].canGoDown);
+    assert(fixture[state].canGoUp);
+    assert(!fixture[state].canGoDown);
     fixture.value = 1;
-    assert(fixture[internal.state].canGoUp);
-    assert(fixture[internal.state].canGoDown);
+    assert(fixture[state].canGoUp);
+    assert(fixture[state].canGoDown);
     fixture.value = 10;
-    assert(!fixture[internal.state].canGoUp);
-    assert(fixture[internal.state].canGoDown);
+    assert(!fixture[state].canGoUp);
+    assert(fixture[state].canGoDown);
   });
 
   (formElementsSupported ? it : it.skip)(

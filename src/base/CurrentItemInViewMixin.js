@@ -1,5 +1,5 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import { rendered, scrollTarget, state } from "./internal.js";
 import { defaultScrollTarget } from "./scrolling.js";
 
 /**
@@ -20,9 +20,9 @@ import { defaultScrollTarget } from "./scrolling.js";
 export default function CurrentItemInViewMixin(Base) {
   // The class prototype added by the mixin.
   class CurrentItemInView extends Base {
-    [internal.rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [rendered](/** @type {ChangedFlags} */ changed) {
+      if (super[rendered]) {
+        super[rendered](changed);
       }
 
       if (changed.currentItem) {
@@ -46,8 +46,8 @@ export default function CurrentItemInViewMixin(Base) {
         super.scrollCurrentItemIntoView();
       }
 
-      const scrollTarget = this[internal.scrollTarget];
-      const { currentItem, items } = this[internal.state];
+      const scrollTarget = this[scrollTarget];
+      const { currentItem, items } = this[state];
       if (!currentItem || !items) {
         return;
       }
@@ -67,7 +67,7 @@ export default function CurrentItemInViewMixin(Base) {
       // Scroll the target as necessary to bring the item into view.
       // If an `orientation` state member is defined, only scroll along that
       // axis. Otherwise, assume the orientation is "both".
-      const orientation = this[internal.state].orientation || "both";
+      const orientation = this[state].orientation || "both";
       if (orientation === "horizontal" || orientation === "both") {
         if (rightDelta > 0) {
           scrollTarget.scrollLeft += rightDelta; // Scroll right
@@ -91,10 +91,10 @@ export default function CurrentItemInViewMixin(Base) {
      * helper to find the most likely candidate for scrolling. You can override
      * this property to directly identify which element should be scrolled.
      *
-     * See also [internal.scrollTarget](internal#internal.scrollTarget).
+     * See also [scrollTarget](internal#internal.scrollTarget).
      */
-    get [internal.scrollTarget]() {
-      const base = super[internal.scrollTarget];
+    get [scrollTarget]() {
+      const base = super[scrollTarget];
       /** @type {any} */
       const element = this;
       return base || defaultScrollTarget(element);

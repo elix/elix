@@ -1,22 +1,28 @@
 import DrawerWithGrip from "../../src/base/DrawerWithGrip.js";
-import * as internal from "../../src/base/internal.js";
-import * as template from "../../src/core/template.js";
+import {
+  defaultState,
+  ids,
+  render,
+  state,
+  template,
+} from "../../src/base/internal.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 
 export default class CustomDrawer extends DrawerWithGrip {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       fromEdge: "right",
     });
   }
 
-  [internal.render](changed) {
-    super[internal.render](changed);
+  [render](changed) {
+    super[render](changed);
     if (
       (changed.gripSize || changed.opened || changed.swipeFraction) &&
-      this[internal.ids].plusIcon
+      this[ids].plusIcon
     ) {
       // Rotate the toggle button as the drawer is opened.
-      const { opened, swipeFraction } = this[internal.state];
+      const { opened, swipeFraction } = this[state];
       const rotationFraction = (opened ? 1 : 0) - swipeFraction;
       const boundedRotationFraction = Math.max(
         Math.min(rotationFraction, 1),
@@ -24,14 +30,14 @@ export default class CustomDrawer extends DrawerWithGrip {
       );
       const rotation = -boundedRotationFraction * 45;
       const transform = `rotate(${rotation}deg)`;
-      this[internal.ids].plusIcon.style.transform = transform;
+      this[ids].plusIcon.style.transform = transform;
     }
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
-    const gripTemplate = template.html`
+    const gripTemplate = templateFrom.html`
       <div id="plusIcon">+</div>
     `;
     const gripSlot = result.content.querySelector('slot[name="grip"]');
@@ -39,7 +45,7 @@ export default class CustomDrawer extends DrawerWithGrip {
     gripSlot.append(gripTemplate.content);
 
     result.content.append(
-      template.html`
+      templateFrom.html`
         <style>
           [part~="frame"] {
             background: rgba(26,36,46,0.9);

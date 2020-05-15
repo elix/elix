@@ -1,4 +1,4 @@
-import * as internal from "../../src/base/internal.js";
+import { state } from "../../src/base/internal.js";
 import LanguageDirectionMixin from "../../src/base/LanguageDirectionMixin.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
 import { assert } from "../testHelpers.js";
@@ -20,7 +20,7 @@ describe("LanguageDirectionMixin", () => {
   it("sets state.rightToLeft to false in left-to-right context", () => {
     const fixture = new LanguageDirectionTest();
     container.appendChild(fixture);
-    assert(fixture[internal.state].rightToLeft === false);
+    assert(fixture[state].rightToLeft === false);
   });
 
   it("sets state.rightToLeft to true in right-to-left context", () => {
@@ -29,6 +29,6 @@ describe("LanguageDirectionMixin", () => {
     div.setAttribute("dir", "rtl");
     div.appendChild(fixture);
     container.appendChild(div);
-    assert(fixture[internal.state].rightToLeft);
+    assert(fixture[state].rightToLeft);
   });
 });

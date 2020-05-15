@@ -1,7 +1,12 @@
 import AriaListMixin from "./AriaListMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
-import * as internal from "./internal.js";
+import {
+  firstRender,
+  raiseChangeEvents,
+  render,
+  template,
+} from "./internal.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
@@ -55,21 +60,21 @@ const Base = AriaListMixin(
  * @mixes TrackpadSwipeMixin
  */
 class SlideshowWithPlayControls extends Base {
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
-    if (this[internal.firstRender]) {
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
+    if (this[firstRender]) {
       // Clicking the slideshow toggles the playing state.
       this.addEventListener("click", () => {
-        this[internal.raiseChangeEvents] = true;
+        this[raiseChangeEvents] = true;
         // @ts-ignore
         this.playing = !this.playing;
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = false;
       });
     }
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     const crossfadeContainer = result.content.querySelector(
       "#crossfadeContainer"
     );

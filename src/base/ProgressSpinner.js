@@ -1,6 +1,12 @@
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  rendered,
+  setState,
+  state,
+  template,
+} from "./internal.js";
 
 /**
  * Spinning progress indicator
@@ -11,8 +17,8 @@ import * as internal from "./internal.js";
  * @inherits ReactiveElement
  */
 class ProgressSpinner extends ReactiveElement {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       count: -1,
       playing: true,
       rotationsPerSecond: 10,
@@ -26,21 +32,21 @@ class ProgressSpinner extends ReactiveElement {
    * @default true
    */
   get playing() {
-    return this[internal.state].playing;
+    return this[state].playing;
   }
   set playing(playing) {
-    this[internal.setState]({ playing });
+    this[setState]({ playing });
   }
 
-  [internal.rendered](/** @type {ChangedFlags} */ changed) {
-    super[internal.rendered](changed);
-    if (changed.count || (changed.playing && this[internal.state].playing)) {
+  [rendered](/** @type {ChangedFlags} */ changed) {
+    super[rendered](changed);
+    if (changed.count || (changed.playing && this[state].playing)) {
       tick(this);
     }
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           display: inline-block;
@@ -53,12 +59,12 @@ class ProgressSpinner extends ReactiveElement {
 
 function tick(/** @type {ProgressSpinner} */ element) {
   // Complete a full rotation in a second (1000 milliseconds).
-  const delay = 1000 / element[internal.state].rotationsPerSecond;
-  if (element.isConnected && element[internal.state].playing) {
+  const delay = 1000 / element[state].rotationsPerSecond;
+  if (element.isConnected && element[state].playing) {
     setTimeout(() => {
       requestAnimationFrame(() => {
-        element[internal.setState]({
-          count: element[internal.state].count + 1,
+        element[setState]({
+          count: element[state].count + 1,
         });
       });
     }, delay);

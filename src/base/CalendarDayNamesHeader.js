@@ -1,7 +1,14 @@
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
 import * as calendar from "./calendar.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  render,
+  setState,
+  shadowRoot,
+  state,
+  template,
+} from "./internal.js";
 
 /**
  * Header showing the localized days of the week
@@ -24,8 +31,8 @@ import * as internal from "./internal.js";
  * @part day-name - any of the names for the days of the week
  */
 class CalendarDayNamesHeader extends ReactiveElement {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       format: "short",
       locale: navigator.language,
     });
@@ -38,10 +45,10 @@ class CalendarDayNamesHeader extends ReactiveElement {
    * @default 'short'
    */
   get format() {
-    return this[internal.state].format;
+    return this[state].format;
   }
   set format(format) {
-    this[internal.setState]({ format });
+    this[setState]({ format });
   }
 
   /**
@@ -52,16 +59,16 @@ class CalendarDayNamesHeader extends ReactiveElement {
    * @type {string}
    */
   get locale() {
-    return this[internal.state].locale;
+    return this[state].locale;
   }
   set locale(locale) {
-    this[internal.setState]({ locale });
+    this[setState]({ locale });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
     if (changed.format || changed.locale) {
-      const { format, locale } = this[internal.state];
+      const { format, locale } = this[state];
       const formatter = calendar.dateTimeFormat(locale, {
         weekday: format,
       });
@@ -69,7 +76,7 @@ class CalendarDayNamesHeader extends ReactiveElement {
       const weekendStart = calendar.weekendStart(locale);
       const weekendEnd = calendar.weekendEnd(locale);
       const date = new Date(2017, 0, 1); // A Sunday
-      const dayNameParts = this[internal.shadowRoot].querySelectorAll(
+      const dayNameParts = this[shadowRoot].querySelectorAll(
         '[part~="day-name"]'
       );
       for (let i = 0; i <= 6; i++) {
@@ -84,8 +91,8 @@ class CalendarDayNamesHeader extends ReactiveElement {
     }
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           direction: ltr;

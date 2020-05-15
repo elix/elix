@@ -1,5 +1,5 @@
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as internal from "./internal.js";
+import { firstRender, render } from "./internal.js";
 
 /**
  * An element with no visible appearance
@@ -13,9 +13,9 @@ import * as internal from "./internal.js";
  * @inherits ReactiveElement
  */
 class Hidden extends ReactiveElement {
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
-    if (this[internal.firstRender]) {
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
+    if (this[firstRender]) {
       this.setAttribute("hidden", "");
     }
   }

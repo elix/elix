@@ -1,5 +1,5 @@
 import Carousel from "./Carousel.js";
-import * as internal from "./internal.js";
+import { defaultState, render, state } from "./internal.js";
 
 /**
  * Carousel showing a thumbnail for each image
@@ -8,19 +8,19 @@ import * as internal from "./internal.js";
  * @part {img} proxy
  */
 class CarouselWithThumbnails extends Carousel {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       proxyListOverlap: false,
       proxyPartType: "img",
     });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
-    /** @type {Element[]} */ const proxies = this[internal.state].proxies;
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
+    /** @type {Element[]} */ const proxies = this[state].proxies;
     if ((changed.items || changed.proxies) && proxies) {
       // Update thumbnails.
-      const { items } = this[internal.state];
+      const { items } = this[state];
       proxies.forEach((proxy, index) => {
         /** @type {any} */ const item = items[index];
         /** @type {any} */ const cast = proxy;

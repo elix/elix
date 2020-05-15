@@ -1,5 +1,13 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  firstRender,
+  raiseChangeEvents,
+  render,
+  setState,
+  state,
+  stateEffects,
+} from "./internal.js";
 
 // Used to distinguish our synthetic events from a real one.
 class SyntheticMouseEvent extends MouseEvent {}
@@ -15,8 +23,8 @@ class SyntheticMouseEvent extends MouseEvent {}
  */
 export default function RepeatMousedownMixin(Base) {
   return class RepeatMousedown extends Base {
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         repeatDelayDuration: 500, // In ms. Wait a bit before starting repeats.
         repeatInterval: null,
         repeatIntervalDuration: 50, // In ms. Once repeats start, they go fast.
@@ -24,51 +32,51 @@ export default function RepeatMousedownMixin(Base) {
       });
     }
 
-    [internal.render](changed) {
-      super[internal.render](changed);
+    [render](changed) {
+      super[render](changed);
 
       // Wire up event handlers.
-      if (this[internal.firstRender]) {
+      if (this[firstRender]) {
         // Only listen to mouse events with the primary (usually left) button.
         this.addEventListener("mousedown", (event) => {
           if (!(event instanceof SyntheticMouseEvent) && event.button === 0) {
-            this[internal.raiseChangeEvents] = true;
+            this[raiseChangeEvents] = true;
             repeatStart(this);
-            this[internal.raiseChangeEvents] = false;
+            this[raiseChangeEvents] = false;
           }
         });
         this.addEventListener("mouseup", (event) => {
           if (event.button === 0) {
-            this[internal.raiseChangeEvents] = true;
+            this[raiseChangeEvents] = true;
             repeatStop(this);
-            this[internal.raiseChangeEvents] = false;
+            this[raiseChangeEvents] = false;
           }
         });
         this.addEventListener("mouseleave", (event) => {
           if (event.button === 0) {
-            this[internal.raiseChangeEvents] = true;
+            this[raiseChangeEvents] = true;
             repeatStop(this);
-            this[internal.raiseChangeEvents] = false;
+            this[raiseChangeEvents] = false;
           }
         });
 
         // Treat touch events like mouse events.
         this.addEventListener("touchstart", () => {
-          this[internal.raiseChangeEvents] = true;
+          this[raiseChangeEvents] = true;
           repeatStart(this);
-          this[internal.raiseChangeEvents] = false;
+          this[raiseChangeEvents] = false;
         });
         this.addEventListener("touchend", () => {
-          this[internal.raiseChangeEvents] = true;
+          this[raiseChangeEvents] = true;
           repeatStop(this);
-          this[internal.raiseChangeEvents] = false;
+          this[raiseChangeEvents] = false;
         });
       }
     }
 
-    [internal.stateEffects](state, changed) {
-      const effects = super[internal.stateEffects]
-        ? super[internal.stateEffects](state, changed)
+    [stateEffects](state, changed) {
+      const effects = super[stateEffects]
+        ? super[stateEffects](state, changed)
         : {};
 
       if (changed.disabled) {
@@ -87,34 +95,32 @@ export default function RepeatMousedownMixin(Base) {
 }
 
 function clearRepeat(element) {
-  if (element[internal.state].repeatTimeout) {
-    clearTimeout(element[internal.state].repeatTimeout);
+  if (element[state].repeatTimeout) {
+    clearTimeout(element[state].repeatTimeout);
   }
-  if (element[internal.state].repeatInterval) {
-    clearInterval(element[internal.state].repeatInterval);
+  if (element[state].repeatInterval) {
+    clearInterval(element[state].repeatInterval);
   }
 }
 
 function repeatStart(element) {
   // Start initial wait.
-  const { repeatIntervalDuration, repeatDelayDuration } = element[
-    internal.state
-  ];
+  const { repeatIntervalDuration, repeatDelayDuration } = element[state];
   const repeatTimeout = setTimeout(() => {
     // Initial wait complete; start repeat interval.
     const repeatInterval = setInterval(() => {
       // Repeat interval passed; raise a mousedown event.
       raiseMousedown(element);
     }, repeatIntervalDuration);
-    element[internal.setState]({ repeatInterval });
+    element[setState]({ repeatInterval });
   }, repeatDelayDuration - repeatIntervalDuration);
-  element[internal.setState]({ repeatTimeout });
+  element[setState]({ repeatTimeout });
 }
 
 // Stop timeout and/or interval in progress.
 function repeatStop(element) {
   clearRepeat(element);
-  element[internal.setState]({
+  element[setState]({
     repeatTimeout: null,
     repeatInterval: null,
   });

@@ -3,13 +3,13 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-import * as internal from "./internal.js";
+import { contentSlot } from "./internal.js";
 
 declare const SlotItemsMixin: StateMixin<
   {},
   {},
   {
-    [internal.contentSlot]: HTMLSlotElement;
+    [contentSlot]: HTMLSlotElement;
   },
   {
     content: Node[];

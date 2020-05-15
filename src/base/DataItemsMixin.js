@@ -1,4 +1,4 @@
-import * as template from "../../src/core/template.js";
+import { createElement } from "../../src/core/template.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import { defaultState, renderDataToElement, stateEffects } from "./internal.js";
 
@@ -35,7 +35,7 @@ export default function DataItemsMixin(Base) {
             data == null
               ? null
               : data.map((entry) => {
-                  const item = template.createElement(itemPartType);
+                  const item = createElement(itemPartType);
                   this[renderDataToElement](entry, item);
                   return item;
                 });

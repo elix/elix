@@ -1,7 +1,13 @@
-import * as internal from "../../src/base/internal.js";
+import {
+  defaultState,
+  render,
+  startEffect,
+  state,
+  template,
+} from "../../src/base/internal.js";
 import TransitionEffectMixin from "../../src/base/TransitionEffectMixin.js";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
-import * as template from "../../src/core/template.js";
 import { assert } from "../testHelpers.js";
 
 const Base = TransitionEffectMixin(ReactiveElement);
@@ -10,17 +16,17 @@ const Base = TransitionEffectMixin(ReactiveElement);
 // is hidden. We test both effects because we can encounter different conditions
 // when showing or hiding an element during an effect.
 class TransitionEffectTest extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       effect: "close",
       effectPhase: "after",
     });
   }
 
-  [internal.render](changed) {
-    super[internal.render](changed);
-    const effect = this[internal.state].effect;
-    const phase = this[internal.state].effectPhase;
+  [render](changed) {
+    super[render](changed);
+    const effect = this[state].effect;
+    const phase = this[state].effectPhase;
     const display = effect === "close" && phase === "after" ? "none" : "block";
     const opacity =
       (effect === "open" && phase !== "before") ||
@@ -33,8 +39,8 @@ class TransitionEffectTest extends Base {
     });
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           transition: opacity 0.01s;
@@ -67,7 +73,7 @@ describe("TransitionEffectMixin", function () {
         done();
       }
     });
-    fixture[internal.startEffect]("open");
+    fixture[startEffect]("open");
   });
 
   it("goes through effect phases when closed", (done) => {
@@ -82,6 +88,6 @@ describe("TransitionEffectMixin", function () {
         done();
       }
     });
-    fixture[internal.startEffect]("close");
+    fixture[startEffect]("close");
   });
 });

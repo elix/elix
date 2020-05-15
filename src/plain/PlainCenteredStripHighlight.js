@@ -1,6 +1,6 @@
 import CenteredStrip from "../base/CenteredStrip.js";
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { template } from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 
 /**
  * Centered strip showing selected item with a highlight color
@@ -13,10 +13,10 @@ import html from "../core/html.js";
  * @inherits CenteredStrip
  */
 class PlainCenteredStripHighlight extends CenteredStrip {
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           ::slotted(*) {
             padding: 0.25em;

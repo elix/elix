@@ -1,7 +1,15 @@
 import * as calendar from "./calendar.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
 import Input from "./Input.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  ids,
+  raiseChangeEvents,
+  rendered,
+  setState,
+  state,
+  stateEffects,
+} from "./internal.js";
 
 const Base = CalendarElementMixin(Input);
 
@@ -17,25 +25,25 @@ class DateInput extends Base {
   }
   set date(date) {
     super.date = date;
-    this[internal.setState]({
+    this[setState]({
       datePriority: true,
     });
   }
 
   get dateTimeFormatOptions() {
-    return this[internal.state].dateTimeFormatOptions;
+    return this[state].dateTimeFormatOptions;
   }
   set dateTimeFormatOptions(dateTimeFormatOptions) {
-    this[internal.setState]({ dateTimeFormatOptions });
+    this[setState]({ dateTimeFormatOptions });
   }
 
-  get [internal.defaultState]() {
+  get [defaultState]() {
     const dateTimeFormatOptions = {
       day: "numeric",
       month: "numeric",
       year: "numeric",
     };
-    return Object.assign(super[internal.defaultState], {
+    return Object.assign(super[defaultState], {
       dateSelected: false,
       dateTimeFormat: null,
       dateTimeFormatOptions,
@@ -62,10 +70,10 @@ class DateInput extends Base {
   set locale(locale) {
     // If external code sets the locale, it's impossible for that code to predict
     // the effects on the value, so we'll need to raise change events.
-    const saveRaiseChangesEvents = this[internal.raiseChangeEvents];
-    this[internal.raiseChangeEvents] = true;
+    const saveRaiseChangesEvents = this[raiseChangeEvents];
+    this[raiseChangeEvents] = true;
     super.locale = locale;
-    this[internal.raiseChangeEvents] = saveRaiseChangesEvents;
+    this[raiseChangeEvents] = saveRaiseChangesEvents;
   }
 
   /**
@@ -80,26 +88,26 @@ class DateInput extends Base {
     return calendar.parseWithOptionalYear(text, dateTimeFormat, timeBias);
   }
 
-  [internal.rendered](/** @type {ChangedFlags} */ changed) {
-    super[internal.rendered](changed);
-    this[internal.ids].inner.addEventListener("blur", () => {
-      this[internal.raiseChangeEvents] = true;
-      this[internal.setState]({
+  [rendered](/** @type {ChangedFlags} */ changed) {
+    super[rendered](changed);
+    this[ids].inner.addEventListener("blur", () => {
+      this[raiseChangeEvents] = true;
+      this[setState]({
         focused: false,
       });
-      this[internal.raiseChangeEvents] = false;
+      this[raiseChangeEvents] = false;
     });
-    this[internal.ids].inner.addEventListener("focus", () => {
-      this[internal.raiseChangeEvents] = true;
-      this[internal.setState]({
+    this[ids].inner.addEventListener("focus", () => {
+      this[raiseChangeEvents] = true;
+      this[setState]({
         focused: true,
       });
-      this[internal.raiseChangeEvents] = false;
+      this[raiseChangeEvents] = false;
     });
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     // If the date changed while focused, assume user changed date.
     if (changed.date && state.focused) {
@@ -179,10 +187,10 @@ class DateInput extends Base {
    * @type {'future'|'past'|null}
    */
   get timeBias() {
-    return this[internal.state].timeBias;
+    return this[state].timeBias;
   }
   set timeBias(timeBias) {
-    this[internal.setState]({ timeBias });
+    this[setState]({ timeBias });
   }
 
   get value() {
@@ -191,13 +199,13 @@ class DateInput extends Base {
   set value(value) {
     // If external code sets the value, it's impossible for that code to predict
     // the effects on the date, so we'll need to raise change events.
-    const saveRaiseChangesEvents = this[internal.raiseChangeEvents];
-    this[internal.raiseChangeEvents] = true;
+    const saveRaiseChangesEvents = this[raiseChangeEvents];
+    this[raiseChangeEvents] = true;
     super.value = value;
-    this[internal.setState]({
+    this[setState]({
       datePriority: false,
     });
-    this[internal.raiseChangeEvents] = saveRaiseChangesEvents;
+    this[raiseChangeEvents] = saveRaiseChangesEvents;
   }
 }
 

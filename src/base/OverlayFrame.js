@@ -1,6 +1,6 @@
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
-import * as internal from "./internal.js";
+import { template } from "./internal.js";
 
 /**
  * A simple frame for overlay content.
@@ -11,8 +11,8 @@ import * as internal from "./internal.js";
  * @inherits ReactiveElement
  */
 class OverlayFrame extends ReactiveElement {
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           display: inline-block;

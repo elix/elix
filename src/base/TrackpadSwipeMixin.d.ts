@@ -3,13 +3,13 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-import * as internal from "./internal.js";
+import { swipeTarget } from "./internal.js";
 
 declare const TrackpadSwipeMixin: StateMixin<
   {},
   {},
   {
-    readonly [internal.swipeTarget]: HTMLElement;
+    readonly [swipeTarget]: HTMLElement;
   },
   {
     swipeFraction: number;

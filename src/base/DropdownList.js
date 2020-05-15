@@ -1,9 +1,18 @@
 import { updateChildNodes } from "../core/dom.js";
-import html from "../core/html.js";
-import * as template from "../core/template.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
+import { replace, transmute } from "../core/template.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  ids,
+  render,
+  setState,
+  shadowRoot,
+  state,
+  stateEffects,
+  template,
+} from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import MenuButton from "./MenuButton.js";
@@ -37,41 +46,39 @@ class DropdownList extends Base {
   // By default, opening the menu re-selects the component item that's currently
   // selected.
   get defaultMenuSelectedIndex() {
-    return this[internal.state].currentIndex;
+    return this[state].currentIndex;
   }
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       currentItemRequired: true,
       itemRole: "menuitemradio",
       valuePartType: "div",
     });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
-    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+    renderParts(this[shadowRoot], this[state], changed);
 
     if (changed.itemRole) {
-      if ("itemRole" in this[internal.ids].menu) {
-        /** @type {any} */ (this[internal.ids].menu).itemRole = this[
-          internal.state
-        ].itemRole;
+      if ("itemRole" in this[ids].menu) {
+        /** @type {any} */ (this[ids].menu).itemRole = this[state].itemRole;
       }
     }
 
     if (changed.currentIndex) {
-      const items = this[internal.state].items || [];
-      const selectedItem = items[this[internal.state].currentIndex];
+      const items = this[state].items || [];
+      const selectedItem = items[this[state].currentIndex];
       const clone = selectedItem ? selectedItem.cloneNode(true) : null;
       const childNodes = clone ? clone.childNodes : [];
-      updateChildNodes(this[internal.ids].value, childNodes);
+      updateChildNodes(this[ids].value, childNodes);
     }
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     // When the menu closes, update our selection from the menu selection.
     if (changed.opened) {
@@ -97,16 +104,19 @@ class DropdownList extends Base {
     return effects;
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     // Replace the source slot with an element to show the value.
     const sourceSlot = result.content.querySelector('slot[name="source"]');
     if (sourceSlot) {
-      template.replace(sourceSlot, html` <div id="value" part="value"></div> `);
+      replace(
+        sourceSlot,
+        fragmentFrom.html` <div id="value" part="value"></div> `
+      );
     }
 
-    renderParts(result.content, this[internal.state]);
+    renderParts(result.content, this[state]);
 
     return result;
   }
@@ -119,10 +129,10 @@ class DropdownList extends Base {
    * @default 'div'
    */
   get valuePartType() {
-    return this[internal.state].valuePartType;
+    return this[state].valuePartType;
   }
   set valuePartType(valuePartType) {
-    this[internal.setState]({ valuePartType });
+    this[setState]({ valuePartType });
   }
 }
 
@@ -139,7 +149,7 @@ function renderParts(root, state, changed) {
     const { valuePartType } = state;
     const value = root.getElementById("value");
     if (value) {
-      template.transmute(value, valuePartType);
+      transmute(value, valuePartType);
     }
   }
 }

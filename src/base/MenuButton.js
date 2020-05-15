@@ -1,7 +1,20 @@
 import { deepContains, indexOfItemContainingTarget } from "../core/dom.js";
-import html from "../core/html.js";
-import * as template from "../core/template.js";
-import * as internal from "./internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
+import { transmute } from "../core/template.js";
+import {
+  defaultState,
+  firstRender,
+  ids,
+  keydown,
+  raiseChangeEvents,
+  render,
+  rendered,
+  setState,
+  shadowRoot,
+  state,
+  stateEffects,
+  template,
+} from "./internal.js";
 import Menu from "./Menu.js";
 import PopupButton from "./PopupButton.js";
 import UpDownToggle from "./UpDownToggle.js";
@@ -29,8 +42,8 @@ class MenuButton extends PopupButton {
     return -1;
   }
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       dragSelect: true,
       menuPartType: Menu,
       menuSelectedIndex: -1,
@@ -52,24 +65,24 @@ class MenuButton extends PopupButton {
    * Highlight the selected item (if one exists), then close the menu.
    */
   async highlightSelectedItemAndClose() {
-    const raiseChangeEvents = this[internal.raiseChangeEvents];
-    const selectionDefined = this[internal.state].menuSelectedIndex >= 0;
+    const raiseChangeEvents = this[raiseChangeEvents];
+    const selectionDefined = this[state].menuSelectedIndex >= 0;
     const closeResult = selectionDefined
-      ? this.items[this[internal.state].menuSelectedIndex]
+      ? this.items[this[state].menuSelectedIndex]
       : undefined;
-    /** @type {any} */ const menu = this[internal.ids].menu;
+    /** @type {any} */ const menu = this[ids].menu;
     if (selectionDefined && "highlightSelectedItem" in menu) {
       await menu.highlightSelectedItem();
     }
-    const saveRaiseChangeEvents = this[internal.raiseChangeEvents];
-    this[internal.raiseChangeEvents] = raiseChangeEvents;
+    const saveRaiseChangeEvents = this[raiseChangeEvents];
+    this[raiseChangeEvents] = raiseChangeEvents;
     await this.close(closeResult);
-    this[internal.raiseChangeEvents] = saveRaiseChangeEvents;
+    this[raiseChangeEvents] = saveRaiseChangeEvents;
   }
 
   get items() {
     /** @type {any} */
-    const menu = this[internal.ids] && this[internal.ids].menu;
+    const menu = this[ids] && this[ids].menu;
     return menu ? menu.items : null;
   }
 
@@ -79,7 +92,7 @@ class MenuButton extends PopupButton {
    * @param {ListItemElement} item
    */
   itemSelected(item) {
-    if (this[internal.raiseChangeEvents]) {
+    if (this[raiseChangeEvents]) {
       /**
        * Raised when the user has moved the selection to a new menu item. This
        * event is raised while the menu is still open. To check which item the
@@ -98,7 +111,7 @@ class MenuButton extends PopupButton {
     }
   }
 
-  [internal.keydown](/** @type {KeyboardEvent} */ event) {
+  [keydown](/** @type {KeyboardEvent} */ event) {
     switch (event.key) {
       // Enter toggles popup.
       case "Enter":
@@ -112,7 +125,7 @@ class MenuButton extends PopupButton {
     }
 
     // Give superclass a chance to handle.
-    const base = super[internal.keydown] && super[internal.keydown](event);
+    const base = super[keydown] && super[keydown](event);
     if (base) {
       return true;
     }
@@ -146,10 +159,10 @@ class MenuButton extends PopupButton {
    * @default Menu
    */
   get menuPartType() {
-    return this[internal.state].menuPartType;
+    return this[state].menuPartType;
   }
   set menuPartType(menuPartType) {
-    this[internal.setState]({ menuPartType });
+    this[setState]({ menuPartType });
   }
 
   /**
@@ -160,18 +173,18 @@ class MenuButton extends PopupButton {
    * @default UpDownToggle
    */
   get popupTogglePartType() {
-    return this[internal.state].popupTogglePartType;
+    return this[state].popupTogglePartType;
   }
   set popupTogglePartType(popupTogglePartType) {
-    this[internal.setState]({ popupTogglePartType });
+    this[setState]({ popupTogglePartType });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
-    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+    renderParts(this[shadowRoot], this[state], changed);
 
-    if (this[internal.firstRender]) {
+    if (this[firstRender]) {
       // If the user hovers over an item, select it.
       this.addEventListener("mousemove", (event) => {
         // Treat the deepest element in the composed event path as the target.
@@ -181,34 +194,31 @@ class MenuButton extends PopupButton {
 
         if (target && target instanceof Node) {
           const hoverIndex = indexOfItemContainingTarget(this.items, target);
-          if (hoverIndex !== this[internal.state].menuSelectedIndex) {
-            this[internal.raiseChangeEvents] = true;
-            this[internal.setState]({
+          if (hoverIndex !== this[state].menuSelectedIndex) {
+            this[raiseChangeEvents] = true;
+            this[setState]({
               menuSelectedIndex: hoverIndex,
             });
-            this[internal.raiseChangeEvents] = false;
+            this[raiseChangeEvents] = false;
           }
         }
       });
     }
 
     if (changed.popupPartType) {
-      this[internal.ids].popup.tabIndex = -1;
+      this[ids].popup.tabIndex = -1;
     }
 
     if (changed.menuPartType) {
       // Close the popup if menu loses focus.
-      this[internal.ids].menu.addEventListener("blur", async (event) => {
+      this[ids].menu.addEventListener("blur", async (event) => {
         /** @type {any} */
         const cast = event;
         const newFocusedElement = cast.relatedTarget || document.activeElement;
-        if (
-          this.opened &&
-          !deepContains(this[internal.ids].menu, newFocusedElement)
-        ) {
-          this[internal.raiseChangeEvents] = true;
+        if (this.opened && !deepContains(this[ids].menu, newFocusedElement)) {
+          this[raiseChangeEvents] = true;
           await this.close();
-          this[internal.raiseChangeEvents] = false;
+          this[raiseChangeEvents] = false;
         }
       });
 
@@ -217,7 +227,7 @@ class MenuButton extends PopupButton {
       // both to permit keyboard use, and to avoid closing the menu on blur (see
       // separate blur handler). To keep the focus on the menu, we prevent the
       // default event behavior.
-      this[internal.ids].menu.addEventListener("mousedown", (event) => {
+      this[ids].menu.addEventListener("mousedown", (event) => {
         // Only process events for the main (usually left) button.
         if (/** @type {MouseEvent} */ (event).button !== 0) {
           return;
@@ -230,74 +240,71 @@ class MenuButton extends PopupButton {
 
       // If the user mouses up on a menu item, close the menu with that item as
       // the close result.
-      this[internal.ids].menu.addEventListener("mouseup", async (event) => {
+      this[ids].menu.addEventListener("mouseup", async (event) => {
         // If we're doing a drag-select (user moused down on button, dragged
         // mouse into menu, and released), we close. If we're not doing a
         // drag-select (the user opened the menu with a complete click), and
         // there's a selection, they clicked on an item, so also close.
         // Otherwise, the user clicked the menu open, then clicked on a menu
         // separator or menu padding; stay open.
-        const menuSelectedIndex = this[internal.state].menuSelectedIndex;
-        if (this[internal.state].dragSelect || menuSelectedIndex >= 0) {
+        const menuSelectedIndex = this[state].menuSelectedIndex;
+        if (this[state].dragSelect || menuSelectedIndex >= 0) {
           // We don't want the document mouseup handler to close
           // before we've asked the menu to highlight the selection.
           // We need to stop event propagation here, before we enter
           // any async code, to actually stop propagation.
           event.stopPropagation();
-          this[internal.raiseChangeEvents] = true;
+          this[raiseChangeEvents] = true;
           await this.highlightSelectedItemAndClose();
-          this[internal.raiseChangeEvents] = false;
+          this[raiseChangeEvents] = false;
         } else {
           event.stopPropagation();
         }
       });
 
       // Track changes in the menu's selection state.
-      this[internal.ids].menu.addEventListener(
-        "selected-index-changed",
-        (event) => {
-          this[internal.raiseChangeEvents] = true;
-          /** @type {any} */
-          const cast = event;
-          this[internal.setState]({
-            menuSelectedIndex: cast.detail.selectedIndex,
-          });
-          this[internal.raiseChangeEvents] = false;
-        }
-      );
+      this[ids].menu.addEventListener("selected-index-changed", (event) => {
+        this[raiseChangeEvents] = true;
+        /** @type {any} */
+        const cast = event;
+        this[setState]({
+          menuSelectedIndex: cast.detail.selectedIndex,
+        });
+        this[raiseChangeEvents] = false;
+      });
     }
 
     // Tell the toggle which direction it should point to depending on which
     // direction the popup will open.
     if (changed.popupPosition || changed.popupTogglePartType) {
-      const { popupPosition } = this[internal.state];
+      const { popupPosition } = this[state];
       const direction = popupPosition === "below" ? "down" : "up";
-      /** @type {any} */ const popupToggle = this[internal.ids].popupToggle;
+      /** @type {any} */ const popupToggle = this[ids].popupToggle;
       if ("direction" in popupToggle) {
         popupToggle.direction = direction;
       }
     }
 
     if (changed.disabled) {
-      const { disabled } = this[internal.state];
-      /** @type {any} */ (this[internal.ids].popupToggle).disabled = disabled;
+      const { disabled } = this[state];
+      /** @type {any} */ (this[ids].popupToggle).disabled = disabled;
     }
 
     if (changed.menuSelectedIndex) {
-      const menu = /** @type {any} */ (this[internal.ids].menu);
+      const menu = /** @type {any} */ (this[ids].menu);
       if ("selectedIndex" in menu) {
-        menu.selectedIndex = this[internal.state].menuSelectedIndex;
+        menu.selectedIndex = this[state].menuSelectedIndex;
       }
     }
   }
 
-  [internal.rendered](/** @type {ChangedFlags} */ changed) {
-    super[internal.rendered](changed);
+  [rendered](/** @type {ChangedFlags} */ changed) {
+    super[rendered](changed);
 
     if (changed.menuSelectedIndex) {
       const selectedItem =
-        this[internal.state].menuSelectedIndex >= 0
-          ? this.items[this[internal.state].menuSelectedIndex]
+        this[state].menuSelectedIndex >= 0
+          ? this.items[this[state].menuSelectedIndex]
           : null;
       this.itemSelected(selectedItem);
     }
@@ -307,8 +314,8 @@ class MenuButton extends PopupButton {
     }
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     // Set things when opening, or reset things when closing.
     if (changed.opened) {
@@ -340,13 +347,13 @@ class MenuButton extends PopupButton {
     return effects;
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     // Wrap default slot with a menu.
     const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
-      defaultSlot.replaceWith(html`
+      defaultSlot.replaceWith(fragmentFrom.html`
         <div id="menu" part="menu">
           <slot></slot>
         </div>
@@ -356,7 +363,7 @@ class MenuButton extends PopupButton {
     // Inject a toggle button into the source slot.
     const sourceSlot = result.content.querySelector('slot[name="source"]');
     if (sourceSlot) {
-      sourceSlot.append(html`
+      sourceSlot.append(fragmentFrom.html`
         <div
           id="popupToggle"
           part="popup-toggle"
@@ -368,9 +375,9 @@ class MenuButton extends PopupButton {
       `);
     }
 
-    renderParts(result.content, this[internal.state]);
+    renderParts(result.content, this[state]);
 
-    result.content.append(html`
+    result.content.append(fragmentFrom.html`
       <style>
         [part~="menu"] {
           max-height: 100%;
@@ -394,34 +401,34 @@ class MenuButton extends PopupButton {
 async function handleMouseup(/** @type {MouseEvent} */ event) {
   // @ts-ignore
   const element = this;
-  const hitTargets = element[internal.shadowRoot].elementsFromPoint(
+  const hitTargets = element[shadowRoot].elementsFromPoint(
     event.clientX,
     event.clientY
   );
-  const overSource = hitTargets.indexOf(element[internal.ids].source) >= 0;
+  const overSource = hitTargets.indexOf(element[ids].source) >= 0;
   if (element.opened) {
     if (overSource) {
       // User released the mouse over the source button (behind the
       // backdrop), so we're no longer doing a drag-select.
-      if (element[internal.state].dragSelect) {
-        element[internal.raiseChangeEvents] = true;
-        element[internal.setState]({
+      if (element[state].dragSelect) {
+        element[raiseChangeEvents] = true;
+        element[setState]({
           dragSelect: false,
         });
-        element[internal.raiseChangeEvents] = false;
+        element[raiseChangeEvents] = false;
       }
     } else {
       // If we get to this point, the user released over the backdrop with
       // the popup open, so close.
-      element[internal.raiseChangeEvents] = true;
+      element[raiseChangeEvents] = true;
       await element.close();
-      element[internal.raiseChangeEvents] = false;
+      element[raiseChangeEvents] = false;
     }
   }
 }
 
 function listenIfOpenAndConnected(element) {
-  if (element[internal.state].opened && element.isConnected) {
+  if (element[state].opened && element.isConnected) {
     // If the popup is open and user releases the mouse over the backdrop, close
     // the popup. We need to listen to mouseup on the document, not this
     // element. If the user mouses down on the source, then moves the mouse off
@@ -463,14 +470,14 @@ function renderParts(root, state, changed) {
     const { menuPartType } = state;
     const menu = root.getElementById("menu");
     if (menu) {
-      template.transmute(menu, menuPartType);
+      transmute(menu, menuPartType);
     }
   }
   if (!changed || changed.popupTogglePartType) {
     const { popupTogglePartType } = state;
     const popupToggle = root.getElementById("popupToggle");
     if (popupToggle) {
-      template.transmute(popupToggle, popupTogglePartType);
+      transmute(popupToggle, popupTogglePartType);
     }
   }
 }

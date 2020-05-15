@@ -1,6 +1,15 @@
 import { deepContains, ownEvent } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  keydown,
+  raiseChangeEvents,
+  render,
+  rendered,
+  rendering,
+  setState,
+  state,
+} from "./internal.js";
 
 /** @type {any} */
 const implicitCloseListenerKey = Symbol("implicitCloseListener");
@@ -43,21 +52,21 @@ export default function PopupModalityMixin(Base) {
      * @default true
      */
     get closeOnWindowResize() {
-      return this[internal.state].closeOnWindowResize;
+      return this[state].closeOnWindowResize;
     }
     set closeOnWindowResize(closeOnWindowResize) {
-      this[internal.setState]({ closeOnWindowResize });
+      this[setState]({ closeOnWindowResize });
     }
 
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         closeOnWindowResize: true,
         role: "alert",
       });
     }
 
     // Close on Esc key.
-    [internal.keydown](/** @type {KeyboardEvent} */ event) {
+    [keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
 
       switch (event.key) {
@@ -73,20 +82,20 @@ export default function PopupModalityMixin(Base) {
       return handled || (super.keydown && super.keydown(event)) || false;
     }
 
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      if (super[render]) {
+        super[render](changed);
       }
       if (changed.role) {
         // Apply top-level role.
-        const { role } = this[internal.state];
+        const { role } = this[state];
         this.setAttribute("role", role);
       }
     }
 
-    [internal.rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [rendered](/** @type {ChangedFlags} */ changed) {
+      if (super[rendered]) {
+        super[rendered](changed);
       }
 
       if (changed.opened) {
@@ -121,8 +130,8 @@ export default function PopupModalityMixin(Base) {
     }
     set role(role) {
       super.role = role;
-      if (!this[internal.rendering]) {
-        this[internal.setState]({ role });
+      if (!this[rendering]) {
+        this[setState]({ role });
       }
     }
   }
@@ -160,9 +169,9 @@ async function blurHandler(/** @type {Event} */ event) {
     newFocusedElement instanceof Element &&
     !deepContains(element, newFocusedElement)
   ) {
-    element[internal.raiseChangeEvents] = true;
+    element[raiseChangeEvents] = true;
     await element.close();
-    element[internal.raiseChangeEvents] = false;
+    element[raiseChangeEvents] = false;
   }
 }
 
@@ -170,10 +179,10 @@ async function closeHandler(/** @type {Event} */ event) {
   // @ts-ignore
   /** @type {any} */ const element = this;
   const handleEvent =
-    event.type !== "resize" || element[internal.state].closeOnWindowResize;
+    event.type !== "resize" || element[state].closeOnWindowResize;
   if (!ownEvent(element, event) && handleEvent) {
-    element[internal.raiseChangeEvents] = true;
+    element[raiseChangeEvents] = true;
     await element.close();
-    element[internal.raiseChangeEvents] = false;
+    element[raiseChangeEvents] = false;
   }
 }

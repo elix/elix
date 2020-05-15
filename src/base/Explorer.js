@@ -1,8 +1,21 @@
 import { updateChildNodes } from "../core/dom.js";
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
+import { createElement, transmute } from "../core/template.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
-import * as internal from "./internal.js";
+import {
+  checkSize,
+  defaultState,
+  firstRender,
+  ids,
+  raiseChangeEvents,
+  render,
+  setState,
+  shadowRoot,
+  state,
+  stateEffects,
+  template,
+} from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
@@ -52,20 +65,20 @@ class Explorer extends Base {
     }
   }
 
-  [internal.checkSize]() {
-    if (super[internal.checkSize]) {
-      super[internal.checkSize]();
+  [checkSize]() {
+    if (super[checkSize]) {
+      super[checkSize]();
     }
-    if (this[internal.ids].stage[internal.checkSize]) {
-      this[internal.ids].stage[internal.checkSize]();
+    if (this[ids].stage[checkSize]) {
+      this[ids].stage[checkSize]();
     }
-    if (this[internal.ids].proxyList[internal.checkSize]) {
-      this[internal.ids].proxyList[internal.checkSize]();
+    if (this[ids].proxyList[checkSize]) {
+      this[ids].proxyList[checkSize]();
     }
   }
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       currentItemRequired: true,
       proxies: [],
       proxiesAssigned: false,
@@ -77,26 +90,26 @@ class Explorer extends Base {
     });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
-    if (this[internal.firstRender]) {
+    if (this[firstRender]) {
       // When proxy slot's assigned nodes change, determine whether we need to
       // generate default proxies or (if assigned nodes are present) treat the
       // assigned nodes as the proxies.
-      this[internal.ids].proxySlot.addEventListener("slotchange", () => {
-        const proxySlot = /** @type {any} */ (this[internal.ids].proxySlot);
+      this[ids].proxySlot.addEventListener("slotchange", () => {
+        const proxySlot = /** @type {any} */ (this[ids].proxySlot);
         const proxies = proxySlot.assignedNodes({ flatten: true });
         const proxiesAssigned = proxies.length > 0;
         if (proxiesAssigned) {
           // Nodes assigned to slot become proxies.
-          this[internal.setState]({
+          this[setState]({
             proxiesAssigned,
             proxies,
           });
         } else {
           // No nodes assigned -- we'll need to generate proxies.
-          this[internal.setState]({ proxiesAssigned });
+          this[setState]({ proxiesAssigned });
         }
       });
     }
@@ -111,62 +124,59 @@ class Explorer extends Base {
       if (cast && this.items.length === cast.items.length) {
         const selectedIndex = event.detail.selectedIndex;
         if (this.selectedIndex !== selectedIndex) {
-          this[internal.raiseChangeEvents] = true;
+          this[raiseChangeEvents] = true;
           this.selectedIndex = selectedIndex;
-          this[internal.raiseChangeEvents] = false;
+          this[raiseChangeEvents] = false;
         }
       }
     };
 
-    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+    renderParts(this[shadowRoot], this[state], changed);
 
     if (changed.proxyListPartType) {
-      this[internal.ids].proxyList.addEventListener(
+      this[ids].proxyList.addEventListener(
         "selected-index-changed",
         handleSelectedIndexChanged
       );
     }
 
     if (changed.stagePartType) {
-      this[internal.ids].stage.addEventListener(
+      this[ids].stage.addEventListener(
         "selected-index-changed",
         handleSelectedIndexChanged
       );
-      this[internal.ids].stage.addEventListener(
-        "selection-effect-finished",
-        (event) => {
-          const { selectedIndex } = /** @type {any} */ (event).detail;
-          /**
-           * This event is raised if the current `stage` applies a transition
-           * effect when changing the selection, and the selection effect has
-           * completed. [CrossfadeStage](CrossfadeStage) applies such an effect,
-           * for example.
-           *
-           * The order of events when the `selectedIndex` property changes is
-           * therefore: `selected-index-changed` (occurs immediately when the
-           * index changes), followed by `selection-effect-finished` (occurs
-           * some time later).
-           *
-           * @event selection-effect-finished
-           */
-          const finishedEvent = new CustomEvent("selection-effect-finished", {
-            bubbles: true,
-            detail: { selectedIndex },
-          });
-          this.dispatchEvent(finishedEvent);
-        }
-      );
+      this[ids].stage.addEventListener("selection-effect-finished", (event) => {
+        const { selectedIndex } = /** @type {any} */ (event).detail;
+        /**
+         * This event is raised if the current `stage` applies a transition
+         * effect when changing the selection, and the selection effect has
+         * completed. [CrossfadeStage](CrossfadeStage) applies such an effect,
+         * for example.
+         *
+         * The order of events when the `selectedIndex` property changes is
+         * therefore: `selected-index-changed` (occurs immediately when the
+         * index changes), followed by `selection-effect-finished` (occurs
+         * some time later).
+         *
+         * @event selection-effect-finished
+         */
+        const finishedEvent = new CustomEvent("selection-effect-finished", {
+          bubbles: true,
+          detail: { selectedIndex },
+        });
+        this.dispatchEvent(finishedEvent);
+      });
     }
 
-    const proxyList = this[internal.ids].proxyList;
-    const stage = this[internal.ids].stage;
+    const proxyList = this[ids].proxyList;
+    const stage = this[ids].stage;
     if (changed.proxies || changed.proxiesAssigned) {
       // Render the default proxies.
-      const { proxies, proxiesAssigned } = this[internal.state];
+      const { proxies, proxiesAssigned } = this[state];
       const childNodes = proxiesAssigned
-        ? [this[internal.ids].proxySlot]
-        : [this[internal.ids].proxySlot, ...proxies];
-      updateChildNodes(this[internal.ids].proxyList, childNodes);
+        ? [this[ids].proxySlot]
+        : [this[ids].proxySlot, ...proxies];
+      updateChildNodes(this[ids].proxyList, childNodes);
     }
 
     if (
@@ -174,7 +184,7 @@ class Explorer extends Base {
       changed.proxyListPosition ||
       changed.proxyListPartType
     ) {
-      const { proxyListOverlap, proxyListPosition } = this[internal.state];
+      const { proxyListOverlap, proxyListPosition } = this[state];
       const lateralPosition = lateralPositions[proxyListPosition];
       Object.assign(proxyList.style, {
         height: lateralPosition ? "100%" : null,
@@ -189,7 +199,7 @@ class Explorer extends Base {
       // from the perspective of the list.
       const cast = /** @type {any} */ (proxyList);
       if ("position" in cast) {
-        const { proxyListPosition, rightToLeft } = this[internal.state];
+        const { proxyListPosition, rightToLeft } = this[state];
         let position;
         switch (proxyListPosition) {
           case "end":
@@ -207,10 +217,10 @@ class Explorer extends Base {
     }
 
     if (changed.proxyListPosition || changed.proxyListPartType) {
-      setListAndStageOrder(this, this[internal.state]);
-      const { proxyListPosition } = this[internal.state];
+      setListAndStageOrder(this, this[state]);
+      const { proxyListPosition } = this[state];
       const lateralPosition = lateralPositions[proxyListPosition];
-      this[internal.ids].explorerContainer.style.flexDirection = lateralPosition
+      this[ids].explorerContainer.style.flexDirection = lateralPosition
         ? "row"
         : "column";
       Object.assign(proxyList.style, {
@@ -223,35 +233,35 @@ class Explorer extends Base {
 
     if (changed.currentIndex || changed.proxyListPartType) {
       if ("selectedIndex" in proxyList) {
-        const { currentIndex } = this[internal.state];
+        const { currentIndex } = this[state];
         /** @type {any} */ (proxyList).selectedIndex = currentIndex;
       }
     }
 
     if (changed.currentIndex || changed.stagePartType) {
       if ("selectedIndex" in stage) {
-        const { currentIndex } = this[internal.state];
+        const { currentIndex } = this[state];
         /** @type {any} */ (stage).selectedIndex = currentIndex;
       }
     }
 
     if (changed.currentItemRequired || changed.proxyListPartType) {
       if ("selectionRequired" in proxyList) {
-        const { selectionRequired } = this[internal.state];
+        const { selectionRequired } = this[state];
         /** @type {any} */ (proxyList).selectionRequired = selectionRequired;
       }
     }
 
     if (changed.swipeFraction || changed.proxyListPartType) {
       if ("swipeFraction" in proxyList) {
-        const { swipeFraction } = this[internal.state];
+        const { swipeFraction } = this[state];
         /** @type {any} */ (proxyList).swipeFraction = swipeFraction;
       }
     }
 
     if (changed.swipeFraction || changed.stagePartType) {
       if ("swipeFraction" in stage) {
-        const { swipeFraction } = this[internal.state];
+        const { swipeFraction } = this[state];
         /** @type {any} */ (stage).swipeFraction = swipeFraction;
       }
     }
@@ -267,7 +277,7 @@ class Explorer extends Base {
    * @type {Element[]}
    */
   get proxies() {
-    return this[internal.state].proxies;
+    return this[state].proxies;
   }
 
   /**
@@ -277,10 +287,10 @@ class Explorer extends Base {
    * @default false
    */
   get proxyListOverlap() {
-    return this[internal.state].proxyListOverlap;
+    return this[state].proxyListOverlap;
   }
   set proxyListOverlap(proxyListOverlap) {
-    this[internal.setState]({ proxyListOverlap });
+    this[setState]({ proxyListOverlap });
   }
 
   /**
@@ -294,10 +304,10 @@ class Explorer extends Base {
    * @default 'start'
    */
   get proxyListPosition() {
-    return this[internal.state].proxyListPosition;
+    return this[state].proxyListPosition;
   }
   set proxyListPosition(proxyListPosition) {
-    this[internal.setState]({ proxyListPosition });
+    this[setState]({ proxyListPosition });
   }
 
   /**
@@ -308,10 +318,10 @@ class Explorer extends Base {
    * @default ListBox
    */
   get proxyListPartType() {
-    return this[internal.state].proxyListPartType;
+    return this[state].proxyListPartType;
   }
   set proxyListPartType(proxyListPartType) {
-    this[internal.setState]({ proxyListPartType });
+    this[setState]({ proxyListPartType });
   }
 
   /**
@@ -322,10 +332,10 @@ class Explorer extends Base {
    * @default 'div'
    */
   get proxyPartType() {
-    return this[internal.state].proxyPartType;
+    return this[state].proxyPartType;
   }
   set proxyPartType(proxyPartType) {
-    this[internal.setState]({ proxyPartType });
+    this[setState]({ proxyPartType });
   }
 
   /**
@@ -336,14 +346,14 @@ class Explorer extends Base {
    * @default Modes
    */
   get stagePartType() {
-    return this[internal.state].stagePartType;
+    return this[state].stagePartType;
   }
   set stagePartType(stagePartType) {
-    this[internal.setState]({ stagePartType });
+    this[setState]({ stagePartType });
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     // If items for default proxies have changed, recreate the proxies.
     // If nodes have been assigned to the proxy slot, use those instead.
@@ -360,8 +370,8 @@ class Explorer extends Base {
     return effects;
   }
 
-  get [internal.template]() {
-    const result = template.html`
+  get [template]() {
+    const result = templateFrom.html`
       <style>
         :host {
           display: inline-flex;
@@ -388,7 +398,7 @@ class Explorer extends Base {
       </div>
     `;
 
-    renderParts(result.content, this[internal.state]);
+    renderParts(result.content, this[state]);
 
     return result;
   }
@@ -402,9 +412,7 @@ class Explorer extends Base {
  * @param {PartDescriptor} proxyPartType
  */
 function createDefaultProxies(items, proxyPartType) {
-  const proxies = items
-    ? items.map(() => template.createElement(proxyPartType))
-    : [];
+  const proxies = items ? items.map(() => createElement(proxyPartType)) : [];
   proxies.forEach((proxy) => {
     // As of February 2020, the `part` property is not available in all
     // browsers, so we set it as an attribute instead.
@@ -445,14 +453,14 @@ function renderParts(root, state, changed) {
     const proxyList = root.getElementById("proxyList");
     if (proxyList) {
       const { proxyListPartType } = state;
-      template.transmute(proxyList, proxyListPartType);
+      transmute(proxyList, proxyListPartType);
     }
   }
   if (!changed || changed.stagePartType) {
     const stage = root.getElementById("stage");
     if (stage) {
       const { stagePartType } = state;
-      template.transmute(stage, stagePartType);
+      transmute(stage, stagePartType);
     }
   }
 }
@@ -475,22 +483,16 @@ function setListAndStageOrder(element, state) {
     proxyListPosition === "start" ||
     (proxyListPosition === "left" && !rightToLeft) ||
     (proxyListPosition === "right" && rightToLeft);
-  const container = element[internal.ids].explorerContainer;
-  const stage = findChildContainingNode(container, element[internal.ids].stage);
-  const list = findChildContainingNode(
-    container,
-    element[internal.ids].proxyList
-  );
+  const container = element[ids].explorerContainer;
+  const stage = findChildContainingNode(container, element[ids].stage);
+  const list = findChildContainingNode(container, element[ids].proxyList);
   const firstElement = listInInitialPosition ? list : stage;
   const lastElement = listInInitialPosition ? stage : list;
   if (firstElement && lastElement) {
     const nextElementSibling = /** @type {any} */ (firstElement)
       .nextElementSibling;
     if (nextElementSibling !== lastElement) {
-      element[internal.ids].explorerContainer.insertBefore(
-        firstElement,
-        lastElement
-      );
+      element[ids].explorerContainer.insertBefore(firstElement, lastElement);
     }
   }
 }

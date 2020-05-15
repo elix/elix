@@ -9,7 +9,7 @@ import {
   template,
 } from "../../src/base/internal.js";
 import * as dom from "../../src/core/dom.js";
-import html from "../../src/core/html.js";
+import { fragmentFrom } from "../../src/core/htmlLiterals.js";
 import PlainListBox from "../../src/plain/PlainListBox.js";
 
 class DataListBox extends DataItemsMixin(PlainListBox) {
@@ -53,10 +53,10 @@ class DataListBox extends DataItemsMixin(PlainListBox) {
 
     const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
-      defaultSlot.replaceWith(html`<div id="slot"></div>`);
+      defaultSlot.replaceWith(fragmentFrom.html`<div id="slot"></div>`);
     }
 
-    result.content.append(html`
+    result.content.append(fragmentFrom.html`
       <style>
         #slot {
           display: contents;

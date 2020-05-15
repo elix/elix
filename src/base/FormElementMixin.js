@@ -1,5 +1,12 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  nativeInternals,
+  render,
+  rendered,
+  setState,
+  state,
+} from "./internal.js";
 
 /**
  * Allows a component to participate in HTML form submission.
@@ -16,17 +23,17 @@ export default function FormElementMixin(Base) {
     constructor() {
       super();
       /** @type {any} */ const cast = this;
-      if (!this[internal.nativeInternals] && cast.attachInternals) {
-        this[internal.nativeInternals] = cast.attachInternals();
+      if (!this[nativeInternals] && cast.attachInternals) {
+        this[nativeInternals] = cast.attachInternals();
       }
     }
 
     checkValidity() {
-      return this[internal.nativeInternals].checkValidity();
+      return this[nativeInternals].checkValidity();
     }
 
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         validationMessage: "",
         valid: true,
       });
@@ -34,7 +41,7 @@ export default function FormElementMixin(Base) {
 
     // Uncomment for debugging only
     get internals() {
-      return this[internal.nativeInternals];
+      return this[nativeInternals];
     }
 
     static get formAssociated() {
@@ -51,7 +58,7 @@ export default function FormElementMixin(Base) {
      * @type {string}
      */
     get form() {
-      return this[internal.nativeInternals].form;
+      return this[nativeInternals].form;
     }
 
     /**
@@ -63,33 +70,33 @@ export default function FormElementMixin(Base) {
      * @type {string}
      */
     get name() {
-      return this[internal.state].name;
+      return this[state].name;
     }
     set name(name) {
       if ("name" in Base.prototype) {
         super.name = name;
       }
-      this[internal.setState]({ name });
+      this[setState]({ name });
     }
 
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      if (super[render]) {
+        super[render](changed);
       }
 
       // Reflect name property to attribute so form will pick it up.
       if (changed.name) {
-        this.setAttribute("name", this[internal.state].name);
+        this.setAttribute("name", this[state].name);
       }
 
-      if (this[internal.nativeInternals]) {
+      if (this[nativeInternals]) {
         // Reflect validity state to internals.
         if (changed.valid || changed.validationMessage) {
-          const { valid, validationMessage } = this[internal.state];
+          const { valid, validationMessage } = this[state];
           if (valid) {
-            this[internal.nativeInternals].setValidity({});
+            this[nativeInternals].setValidity({});
           } else {
-            this[internal.nativeInternals].setValidity(
+            this[nativeInternals].setValidity(
               {
                 customError: true,
               },
@@ -100,22 +107,19 @@ export default function FormElementMixin(Base) {
       }
     }
 
-    [internal.rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [rendered](/** @type {ChangedFlags} */ changed) {
+      if (super[rendered]) {
+        super[rendered](changed);
       }
       if (changed.value) {
-        if (this[internal.nativeInternals]) {
-          this[internal.nativeInternals].setFormValue(
-            this[internal.state].value,
-            this[internal.state]
-          );
+        if (this[nativeInternals]) {
+          this[nativeInternals].setFormValue(this[state].value, this[state]);
         }
       }
     }
 
     reportValidity() {
-      return this[internal.nativeInternals].reportValidity();
+      return this[nativeInternals].reportValidity();
     }
 
     /**
@@ -132,15 +136,15 @@ export default function FormElementMixin(Base) {
     }
 
     get validationMessage() {
-      return this[internal.state].validationMessage;
+      return this[state].validationMessage;
     }
 
     get validity() {
-      return this[internal.nativeInternals].validity;
+      return this[nativeInternals].validity;
     }
 
     get willValidate() {
-      return this[internal.nativeInternals].willValidate;
+      return this[nativeInternals].willValidate;
     }
   }
 

@@ -1,4 +1,9 @@
-import * as internal from "../../src/base/internal.js";
+import {
+  defaultState,
+  keydown,
+  setState,
+  state,
+} from "../../src/base/internal.js";
 import ItemsTextMixin from "../../src/base/ItemsTextMixin.js";
 import KeyboardPrefixCursorMixin from "../../src/base/KeyboardPrefixCursorMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
@@ -9,17 +14,17 @@ const Base = ItemsTextMixin(
 );
 
 class KeyboardPagedCursorTest extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       selectedIndex: -1,
     });
   }
 
   get items() {
-    return this[internal.state].items;
+    return this[state].items;
   }
   set items(items) {
-    this[internal.setState]({ items });
+    this[setState]({ items });
   }
 }
 customElements.define("keyboard-prefix-cursor-test", KeyboardPagedCursorTest);
@@ -41,15 +46,15 @@ describe("KeyboardPrefixCursorMixin", () => {
 
     // Typing "b" moves to "Banana".
     simulateKeydown(fixture, prefix[0]);
-    assert.equal(fixture[internal.state].currentIndex, 4);
+    assert.equal(fixture[state].currentIndex, 4);
 
     // Typing "l" moves to "Blackberry".
     simulateKeydown(fixture, prefix[1]);
-    assert.equal(fixture[internal.state].currentIndex, 5);
+    assert.equal(fixture[state].currentIndex, 5);
 
     // Typing "u" moves to "Blueberry".
     simulateKeydown(fixture, prefix[2]);
-    assert.equal(fixture[internal.state].currentIndex, 6);
+    assert.equal(fixture[state].currentIndex, 6);
   });
 
   it("backspace removes the last character added to the prefix", () => {
@@ -58,22 +63,22 @@ describe("KeyboardPrefixCursorMixin", () => {
 
     // Typing "b" moves to "Banana".
     simulateKeydown(fixture, prefix[0]);
-    assert.equal(fixture[internal.state].currentIndex, 4);
+    assert.equal(fixture[state].currentIndex, 4);
 
     // Typing "l" moves to "Blackberry".
     simulateKeydown(fixture, prefix[1]);
-    assert.equal(fixture[internal.state].currentIndex, 5);
+    assert.equal(fixture[state].currentIndex, 5);
 
     // Typing Backspace moves back to "Banana".
     simulateKeydown(fixture, "Backspace");
-    assert.equal(fixture[internal.state].currentIndex, 4);
+    assert.equal(fixture[state].currentIndex, 4);
   });
 
   it("ignores typed keys that don't match", () => {
     const fixture = createSampleElement();
     // Typing "x" leaves selection alone (since it doesn't match).
     simulateKeydown(fixture, "x");
-    assert.equal(fixture[internal.state].currentIndex, undefined);
+    assert.equal(fixture[state].currentIndex, undefined);
   });
 
   it("treats spaces in the typed prefix like regular characters", () => {
@@ -86,24 +91,24 @@ describe("KeyboardPrefixCursorMixin", () => {
     simulateKeydown(fixture, prefix[2]);
     simulateKeydown(fixture, prefix[3]);
     simulateKeydown(fixture, prefix[4]);
-    assert.equal(fixture[internal.state].currentIndex, 10);
+    assert.equal(fixture[state].currentIndex, 10);
 
     // Typing " " stays on "Dried Apricot".
     simulateKeydown(fixture, prefix[5]);
-    assert.equal(fixture[internal.state].currentIndex, 10);
+    assert.equal(fixture[state].currentIndex, 10);
 
     // Typing "c" moves to "Dried Cherry".
     simulateKeydown(fixture, "c");
-    assert.equal(fixture[internal.state].currentIndex, 11);
+    assert.equal(fixture[state].currentIndex, 11);
   });
 
   it("is case-insensitive in matching prefixes", () => {
     const fixture = createSampleElement();
     simulateKeydown(fixture, "c");
-    assert.equal(fixture[internal.state].currentIndex, 7); // Cherry
+    assert.equal(fixture[state].currentIndex, 7); // Cherry
     simulateKeydown(fixture, "Escape"); // Escape key resets prefix
     simulateKeydown(fixture, "B");
-    assert.equal(fixture[internal.state].currentIndex, 4); // Banana
+    assert.equal(fixture[state].currentIndex, 4); // Banana
   });
 });
 
@@ -134,7 +139,7 @@ function createSampleElement() {
 
 function simulateKeydown(fixture, key) {
   const keyCode = key.length === 1 ? key.charCodeAt(0) : null;
-  fixture[internal.keydown]({
+  fixture[keydown]({
     key,
     keyCode,
   });

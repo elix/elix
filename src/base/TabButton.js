@@ -1,6 +1,6 @@
 import Button from "./Button.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
-import * as internal from "./internal.js";
+import { defaultState, setState, state } from "./internal.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SelectableMixin from "./SelectableMixin.js";
 import SlotContentMixin from "./SlotContentMixin.js";
@@ -22,8 +22,8 @@ const Base = FocusVisibleMixin(
  * @mixes SlotContentMixin
  */
 class TabButton extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       treatEnterAsClick: false, // Let tab strip handle Enter.
       treatSpaceAsClick: false, // Let tab strip handle Space.
       position: "top",
@@ -43,10 +43,10 @@ class TabButton extends Base {
    * @default 'top'
    */
   get position() {
-    return this[internal.state].position;
+    return this[state].position;
   }
   set position(position) {
-    this[internal.setState]({ position });
+    this[setState]({ position });
   }
 }
 

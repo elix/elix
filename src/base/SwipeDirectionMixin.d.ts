@@ -7,8 +7,8 @@ declare const SwipeDirectionMixin: Mixin<
   {},
   {
     // Uncomment these once TypeScript can deal with them.
-    // [internal.swipeLeft](): void;
-    // [internal.swipeRight](): void;
+    // [swipeLeft](): void;
+    // [swipeRight](): void;
   }
 >;
 

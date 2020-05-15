@@ -1,5 +1,5 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import { inputDelegate } from "./internal.js";
 
 /**
  * Delegates text selection methods and properties to an inner input-type element
@@ -25,7 +25,7 @@ export default function DelegateInputSelectionMixin(Base) {
      * documentation for details.
      */
     select() {
-      this[internal.inputDelegate].select();
+      this[inputDelegate].select();
     }
 
     /**
@@ -35,10 +35,10 @@ export default function DelegateInputSelectionMixin(Base) {
      * element documentation for details.
      */
     get selectionEnd() {
-      return this[internal.inputDelegate].selectionEnd;
+      return this[inputDelegate].selectionEnd;
     }
     set selectionEnd(selectionEnd) {
-      this[internal.inputDelegate].selectionEnd = selectionEnd;
+      this[inputDelegate].selectionEnd = selectionEnd;
     }
 
     /**
@@ -48,10 +48,10 @@ export default function DelegateInputSelectionMixin(Base) {
      * element documentation for details.
      */
     get selectionStart() {
-      return this[internal.inputDelegate].selectionStart;
+      return this[inputDelegate].selectionStart;
     }
     set selectionStart(selectionStart) {
-      this[internal.inputDelegate].selectionStart = selectionStart;
+      this[inputDelegate].selectionStart = selectionStart;
     }
 
     /**
@@ -61,7 +61,7 @@ export default function DelegateInputSelectionMixin(Base) {
      * documentation for details.
      */
     setRangeText(...params) {
-      this[internal.inputDelegate].setRangeText(...params);
+      this[inputDelegate].setRangeText(...params);
     }
 
     /**
@@ -71,7 +71,7 @@ export default function DelegateInputSelectionMixin(Base) {
      * documentation for details.
      */
     setSelectionRange(...params) {
-      this[internal.inputDelegate].setSelectionRange(...params);
+      this[inputDelegate].setSelectionRange(...params);
       /** @type {HTMLInputElement} */ const e = document.createElement("input");
       e.select;
     }

@@ -1,6 +1,15 @@
 import { booleanAttributeValue } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import {
+  goFirst,
+  goLast,
+  goNext,
+  goPrevious,
+  raiseChangeEvents,
+  rendered,
+  setState,
+  state,
+} from "./internal.js";
 
 /**
  * Exposes a public API for navigating a cursor over a set of items
@@ -44,7 +53,7 @@ export default function CursorAPIMixin(Base) {
      * @type {boolean}
      */
     get canGoNext() {
-      return this[internal.state].canGoNext;
+      return this[state].canGoNext;
     }
 
     /**
@@ -54,7 +63,7 @@ export default function CursorAPIMixin(Base) {
      * @type {boolean}
      */
     get canGoPrevious() {
-      return this[internal.state].canGoPrevious;
+      return this[state].canGoPrevious;
     }
 
     /**
@@ -63,12 +72,12 @@ export default function CursorAPIMixin(Base) {
      * @type {number}
      */
     get currentIndex() {
-      const { items, currentIndex } = this[internal.state];
+      const { items, currentIndex } = this[state];
       return items && items.length > 0 ? currentIndex : -1;
     }
     set currentIndex(currentIndex) {
       if (!isNaN(currentIndex)) {
-        this[internal.setState]({ currentIndex });
+        this[setState]({ currentIndex });
       }
     }
 
@@ -78,17 +87,17 @@ export default function CursorAPIMixin(Base) {
      * @type {Element}
      */
     get currentItem() {
-      const { items, currentIndex } = this[internal.state];
+      const { items, currentIndex } = this[state];
       return items && items[currentIndex];
     }
     set currentItem(currentItem) {
-      const { items } = this[internal.state];
+      const { items } = this[state];
       if (!items) {
         return;
       }
       const currentIndex = items.indexOf(currentItem);
       if (currentIndex >= 0) {
-        this[internal.setState]({ currentIndex });
+        this[setState]({ currentIndex });
       }
     }
 
@@ -99,10 +108,10 @@ export default function CursorAPIMixin(Base) {
      * @default false
      */
     get currentItemRequired() {
-      return this[internal.state].currentItemRequired;
+      return this[state].currentItemRequired;
     }
     set currentItemRequired(currentItemRequired) {
-      this[internal.setState]({ currentItemRequired });
+      this[setState]({ currentItemRequired });
     }
 
     /**
@@ -112,10 +121,10 @@ export default function CursorAPIMixin(Base) {
      * @default false
      */
     get cursorOperationsWrap() {
-      return this[internal.state].cursorOperationsWrap;
+      return this[state].cursorOperationsWrap;
     }
     set cursorOperationsWrap(cursorOperationsWrap) {
-      this[internal.setState]({ cursorOperationsWrap });
+      this[setState]({ cursorOperationsWrap });
     }
 
     /**
@@ -127,7 +136,7 @@ export default function CursorAPIMixin(Base) {
       if (super.goFirst) {
         super.goFirst();
       }
-      return this[internal.goFirst]();
+      return this[goFirst]();
     }
 
     /**
@@ -139,7 +148,7 @@ export default function CursorAPIMixin(Base) {
       if (super.goLast) {
         super.goLast();
       }
-      return this[internal.goLast]();
+      return this[goLast]();
     }
 
     /**
@@ -153,7 +162,7 @@ export default function CursorAPIMixin(Base) {
       if (super.goNext) {
         super.goNext();
       }
-      return this[internal.goNext]();
+      return this[goNext]();
     }
 
     /**
@@ -167,15 +176,15 @@ export default function CursorAPIMixin(Base) {
       if (super.goPrevious) {
         super.goPrevious();
       }
-      return this[internal.goPrevious]();
+      return this[goPrevious]();
     }
 
-    [internal.rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [rendered](/** @type {ChangedFlags} */ changed) {
+      if (super[rendered]) {
+        super[rendered](changed);
       }
-      if (changed.currentIndex && this[internal.raiseChangeEvents]) {
-        const { currentIndex } = this[internal.state];
+      if (changed.currentIndex && this[raiseChangeEvents]) {
+        const { currentIndex } = this[state];
         /**
          * Raised when the `currentIndex` property changes.
          *

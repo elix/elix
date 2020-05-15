@@ -1,11 +1,24 @@
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as template from "../core/template.js";
 import AriaMenuMixin from "./AriaMenuMixin.js";
 import CurrentItemInViewMixin from "./CurrentItemInViewMixin.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  firstRender,
+  ids,
+  itemMatchesState,
+  render,
+  rendered,
+  scrollTarget,
+  setState,
+  state,
+  stateEffects,
+  tap,
+  template,
+} from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
@@ -77,8 +90,8 @@ const Base = AriaMenuMixin(
  * @mixes TapCursorMixin
  */
 class Menu extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       highlightSelection: true,
       orientation: "vertical",
       selectionFocused: false,
@@ -94,13 +107,13 @@ class Menu extends Base {
    * nothing.
    */
   async highlightSelectedItem() {
-    const keyboardActive = this[internal.state].focusVisible;
+    const keyboardActive = this[state].focusVisible;
     const probablyDesktop = matchMedia("(pointer: fine)").matches;
     if (keyboardActive || probablyDesktop) {
       const flashDuration = 75; // milliseconds
-      this[internal.setState]({ highlightSelection: false });
+      this[setState]({ highlightSelection: false });
       await new Promise((resolve) => setTimeout(resolve, flashDuration));
-      this[internal.setState]({ highlightSelection: true });
+      this[setState]({ highlightSelection: true });
       await new Promise((resolve) => setTimeout(resolve, flashDuration));
     }
   }
@@ -111,34 +124,30 @@ class Menu extends Base {
    * @param {ListItemElement} item
    * @param {PlainObject} state
    */
-  [internal.itemMatchesState](item, state) {
-    const base = super[internal.itemMatchesState]
-      ? super[internal.itemMatchesState](item, state)
+  [itemMatchesState](item, state) {
+    const base = super[itemMatchesState]
+      ? super[itemMatchesState](item, state)
       : true;
     /** @type {any} */ const cast = item;
     return base && !cast.disabled;
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
-    if (this[internal.firstRender]) {
+    if (this[firstRender]) {
       // Treat a pointerdown event as a tap.
       if ("PointerEvent" in window) {
         // Prefer listening to standard pointer events.
-        this.addEventListener("pointerdown", (event) =>
-          this[internal.tap](event)
-        );
+        this.addEventListener("pointerdown", (event) => this[tap](event));
       } else {
-        this.addEventListener("touchstart", (event) =>
-          this[internal.tap](event)
-        );
+        this.addEventListener("touchstart", (event) => this[tap](event));
       }
 
       this.removeAttribute("tabindex");
     }
 
-    const { currentIndex, items } = this[internal.state];
+    const { currentIndex, items } = this[state];
     if ((changed.items || changed.currentIndex) && items) {
       // Reflect the selection state to the item.
       items.forEach((item, index) => {
@@ -169,7 +178,7 @@ class Menu extends Base {
       items.forEach((item, index) => {
         const selected = index === currentIndex;
         const isDefaultFocusableItem = currentIndex < 0 && index === 0;
-        if (!this[internal.state].selectionFocused) {
+        if (!this[state].selectionFocused) {
           // Phase 1: Add tabindex to newly-selected item.
           if (selected || isDefaultFocusableItem) {
             item.tabIndex = 0;
@@ -184,12 +193,12 @@ class Menu extends Base {
     }
   }
 
-  [internal.rendered](/** @type {ChangedFlags} */ changed) {
-    super[internal.rendered](changed);
+  [rendered](/** @type {ChangedFlags} */ changed) {
+    super[rendered](changed);
     if (
-      !this[internal.firstRender] &&
+      !this[firstRender] &&
       changed.currentIndex &&
-      !this[internal.state].selectionFocused
+      !this[state].selectionFocused
     ) {
       // The selected item needs the focus, but this is complicated. See notes
       // in render.
@@ -199,18 +208,18 @@ class Menu extends Base {
 
       // Now that the selection has been focused, we can remove/reset the
       // tabindex on any item that had previously been selected.
-      this[internal.setState]({
+      this[setState]({
         selectionFocused: true,
       });
     }
   }
 
-  get [internal.scrollTarget]() {
-    return this[internal.ids].content;
+  get [scrollTarget]() {
+    return this[ids].content;
   }
 
-  [internal.stateEffects](state, changed) {
-    const effects = super[internal.stateEffects](state, changed);
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
 
     // When selection changes, we'll need to focus on it in rendered.
     if (changed.currentIndex) {
@@ -222,8 +231,8 @@ class Menu extends Base {
     return effects;
   }
 
-  get [internal.template]() {
-    return template.html`
+  get [template]() {
+    return templateFrom.html`
       <style>
         :host {
           box-sizing: border-box;

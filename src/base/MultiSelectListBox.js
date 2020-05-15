@@ -1,4 +1,4 @@
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import AriaListMixin from "./AriaListMixin.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
@@ -163,8 +163,8 @@ class MultiSelectListBox extends Base {
   }
 
   get [template]() {
-    const result = super[template] || html``;
-    result.content.append(html`
+    const result = super[template] || fragmentFrom.html``;
+    result.content.append(fragmentFrom.html`
       <style>
         :host {
           box-sizing: border-box;

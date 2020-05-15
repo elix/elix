@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { defaultState, render, state, template } from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import PlainCenteredStripOpacity from "./PlainCenteredStripOpacity.js";
 
@@ -12,14 +12,14 @@ import PlainCenteredStripOpacity from "./PlainCenteredStripOpacity.js";
  */
 export default function PlainCarouselMixin(Base) {
   return class PlainCarousel extends Base {
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         proxyListPartType: PlainCenteredStripOpacity,
       });
     }
 
-    [internal.render](changed) {
-      super[internal.render](changed);
+    [render](changed) {
+      super[render](changed);
 
       const proxies = this.proxies;
       if (
@@ -27,7 +27,7 @@ export default function PlainCarouselMixin(Base) {
         proxies
       ) {
         // Apply dark mode to proxies.
-        const { dark, detectDarkMode } = this[internal.state];
+        const { dark, detectDarkMode } = this[state];
         proxies.forEach((proxy) => {
           /** @type {any} */ const cast = proxy;
           if ("dark" in cast) {
@@ -40,10 +40,10 @@ export default function PlainCarouselMixin(Base) {
       }
     }
 
-    get [internal.template]() {
-      const result = super[internal.template];
+    get [template]() {
+      const result = super[template];
       result.content.append(
-        html`
+        fragmentFrom.html`
           <style>
             [part~="arrow-icon"] {
               font-size: 48px;

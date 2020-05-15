@@ -1,6 +1,6 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import { isSubstantiveElement } from "./content.js";
-import * as internal from "./internal.js";
+import { defaultState, itemMatchesState, stateEffects } from "./internal.js";
 
 /**
  * Treats an element's content nodes as list items.
@@ -29,8 +29,8 @@ import * as internal from "./internal.js";
  */
 export default function ContentItemsMixin(Base) {
   return class ContentItems extends Base {
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState] || {}, {
+    get [defaultState]() {
+      return Object.assign(super[defaultState] || {}, {
         items: null,
       });
     }
@@ -42,16 +42,16 @@ export default function ContentItemsMixin(Base) {
      * @param {PlainObject} state
      * @returns {boolean}
      */
-    [internal.itemMatchesState](item, state) {
-      const base = super[internal.itemMatchesState]
-        ? super[internal.itemMatchesState](item, state)
+    [itemMatchesState](item, state) {
+      const base = super[itemMatchesState]
+        ? super[itemMatchesState](item, state)
         : true;
       return base && isSubstantiveElement(item);
     }
 
-    [internal.stateEffects](state, changed) {
-      const effects = super[internal.stateEffects]
-        ? super[internal.stateEffects](state, changed)
+    [stateEffects](state, changed) {
+      const effects = super[stateEffects]
+        ? super[stateEffects](state, changed)
         : {};
 
       // Regenerate items when content changes, or if items has been nullified
@@ -63,7 +63,7 @@ export default function ContentItemsMixin(Base) {
           const items = content
             ? Array.prototype.filter.call(content, (/** @type {Node} */ item) =>
                 item instanceof HTMLElement || item instanceof SVGElement
-                  ? this[internal.itemMatchesState](item, state)
+                  ? this[itemMatchesState](item, state)
                   : false
               )
             : null;

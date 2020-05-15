@@ -1,6 +1,6 @@
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import * as internal from "./internal.js";
+import { ids, render, state } from "./internal.js";
 
 const wrap = Symbol("wrap");
 
@@ -16,17 +16,17 @@ const wrap = Symbol("wrap");
  */
 function PageNumbersMixin(Base) {
   class PageNumbers extends Base {
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
+    [render](/** @type {ChangedFlags} */ changed) {
+      if (super[render]) {
+        super[render](changed);
       }
       if (changed.currentIndex) {
-        const { items, currentIndex } = this[internal.state];
+        const { items, currentIndex } = this[state];
         const textContent =
           currentIndex >= 0 && items
             ? `${currentIndex + 1} / ${items.length}`
             : "";
-        this[internal.ids].pageNumber.textContent = textContent;
+        this[ids].pageNumber.textContent = textContent;
       }
     }
 
@@ -36,7 +36,7 @@ function PageNumbersMixin(Base) {
      * @param {Element} target - the element that should be wrapped by page numbers
      */
     [wrap](target) {
-      const pageNumbers = html`
+      const pageNumbers = fragmentFrom.html`
         <div
           id="pageNumbers"
           role="none"

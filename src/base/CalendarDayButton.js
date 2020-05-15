@@ -1,9 +1,16 @@
-import html from "../core/html.js";
-import * as template from "../core/template.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
+import { createElement, transmute } from "../core/template.js";
 import * as calendar from "./calendar.js";
 import CalendarDay from "./CalendarDay.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  ids,
+  render,
+  setState,
+  state,
+  template,
+} from "./internal.js";
 import SelectableButton from "./SelectableButton.js";
 
 const Base = CalendarElementMixin(SelectableButton);
@@ -16,8 +23,8 @@ const Base = CalendarElementMixin(SelectableButton);
  * @part {CalendarDay} day - the day shown in the button
  */
 class CalendarDayButton extends Base {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       date: calendar.today(),
       dayPartType: CalendarDay,
       outsideRange: false,
@@ -33,61 +40,61 @@ class CalendarDayButton extends Base {
    * @default CalendarDay
    */
   get dayPartType() {
-    return this[internal.state].dayPartType;
+    return this[state].dayPartType;
   }
   set dayPartType(dayPartType) {
-    this[internal.setState]({ dayPartType });
+    this[setState]({ dayPartType });
   }
 
   get outsideRange() {
-    return this[internal.state].outsideRange;
+    return this[state].outsideRange;
   }
   set outsideRange(outsideRange) {
-    this[internal.setState]({ outsideRange });
+    this[setState]({ outsideRange });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
     if (changed.dayPartType) {
-      const { dayPartType } = this[internal.state];
-      template.transmute(this[internal.ids].day, dayPartType);
+      const { dayPartType } = this[state];
+      transmute(this[ids].day, dayPartType);
     }
 
-    /** @type {any} */ const day = this[internal.ids].day;
+    /** @type {any} */ const day = this[ids].day;
     if (changed.dayPartType || changed.date) {
-      day.date = this[internal.state].date;
+      day.date = this[state].date;
     }
 
     if (changed.dayPartType || changed.locale) {
-      day.locale = this[internal.state].locale;
+      day.locale = this[state].locale;
     }
 
     if (changed.dayPartType || changed.outsideRange) {
-      day.outsideRange = this[internal.state].outsideRange;
+      day.outsideRange = this[state].outsideRange;
     }
 
     if (changed.dayPartType || changed.selected) {
       // Reflect selected state to inner CalendarDay.
-      day.selected = this[internal.state].selected;
+      day.selected = this[state].selected;
     }
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     // Replace default slot with calendar day.
     const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
-      const dayPartType = this[internal.state].dayPartType;
-      const day = template.createElement(dayPartType);
+      const dayPartType = this[state].dayPartType;
+      const day = createElement(dayPartType);
       day.id = "day";
       defaultSlot.replaceWith(day);
     }
 
     // Style outer button.
     result.content.appendChild(
-      html`
+      fragmentFrom.html`
         <style>
           [part~="day"] {
             width: 100%;

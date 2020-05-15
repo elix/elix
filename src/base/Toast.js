@@ -1,4 +1,12 @@
-import * as internal from "./internal.js";
+import {
+  defaultState,
+  effectEndTarget,
+  ids,
+  render,
+  rendered,
+  setState,
+  state,
+} from "./internal.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import Popup from "./Popup.js";
 import TransitionEffectMixin from "./TransitionEffectMixin.js";
@@ -36,8 +44,8 @@ class Toast extends Base {
     }
   }
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       duration: null,
       fromEdge: "bottom",
     });
@@ -54,16 +62,16 @@ class Toast extends Base {
    * @default null
    */
   get duration() {
-    return this[internal.state].duration;
+    return this[state].duration;
   }
   set duration(duration) {
     if (!isNaN(duration)) {
-      this[internal.setState]({ duration });
+      this[setState]({ duration });
     }
   }
 
-  get [internal.effectEndTarget]() {
-    return this[internal.ids].frame;
+  get [effectEndTarget]() {
+    return this[ids].frame;
   }
 
   /**
@@ -77,14 +85,14 @@ class Toast extends Base {
    * @default 'bottom'
    */
   get fromEdge() {
-    return this[internal.state].fromEdge;
+    return this[state].fromEdge;
   }
   set fromEdge(fromEdge) {
-    this[internal.setState]({ fromEdge });
+    this[setState]({ fromEdge });
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
     if (changed.fromEdge) {
       // Host
       /** @type {IndexedObject<any>} */
@@ -114,7 +122,7 @@ class Toast extends Base {
           justifyContent: null,
         },
       };
-      Object.assign(this.style, hostEdgeStyles[this[internal.state].fromEdge]);
+      Object.assign(this.style, hostEdgeStyles[this[state].fromEdge]);
     }
     if (
       changed.effect ||
@@ -122,9 +130,7 @@ class Toast extends Base {
       changed.fromEdge ||
       changed.rightToLeft
     ) {
-      const { effect, effectPhase, fromEdge, rightToLeft } = this[
-        internal.state
-      ];
+      const { effect, effectPhase, fromEdge, rightToLeft } = this[state];
       /** @type {IndexedObject<string>} */
       const oppositeEdge = {
         "bottom-left": "bottom-right",
@@ -165,15 +171,15 @@ class Toast extends Base {
         ? openEdgeTransforms[languageAdjustedEdge]
         : edgeTransforms[languageAdjustedEdge];
 
-      Object.assign(this[internal.ids].frame.style, {
+      Object.assign(this[ids].frame.style, {
         opacity,
         transform,
       });
     }
   }
 
-  [internal.rendered](/** @type {ChangedFlags} */ changed) {
-    super[internal.rendered](changed);
+  [rendered](/** @type {ChangedFlags} */ changed) {
+    super[rendered](changed);
     startTimerIfOpened(this);
   }
 }
@@ -188,7 +194,7 @@ function clearTimer(/** @type {Toast} */ element) {
 
 function startTimer(/** @type {Toast} */ element) {
   clearTimer(element);
-  const duration = element[internal.state].duration;
+  const duration = element[state].duration;
   if (duration !== null && duration > 0) {
     /** @type {any} */ (element)[timeoutKey] = setTimeout(() => {
       element.close();

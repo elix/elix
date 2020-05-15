@@ -6,62 +6,117 @@
     <title>Reactive web component example with subclassing</title>
 
     <script type="module">
-      import * as internal from "../src/base/internal.js";
-      import * as template from "../src/core/template.js";
+      import {
+        checkSize,
+        contentSlot,
+        defaultState,
+        defaultTabIndex,
+        delegatesFocus,
+        effectEndTarget,
+        firstRender,
+        focusTarget,
+        getItemText,
+        goDown,
+        goEnd,
+        goFirst,
+        goLast,
+        goLeft,
+        goNext,
+        goPrevious,
+        goRight,
+        goStart,
+        goToItemWithPrefix,
+        goUp,
+        hasDynamicTemplate,
+        ids,
+        inputDelegate,
+        itemMatchesState,
+        itemsDelegate,
+        keydown,
+        mouseenter,
+        mouseleave,
+        nativeInternals,
+        event,
+        raiseChangeEvents,
+        render,
+        renderChanges,
+        renderDataToElement,
+        rendered,
+        rendering,
+        scrollTarget,
+        setState,
+        shadowRoot,
+        shadowRootMode,
+        startEffect,
+        state,
+        stateEffects,
+        swipeDown,
+        swipeDownComplete,
+        swipeLeft,
+        swipeLeftTransitionEnd,
+        swipeRight,
+        swipeRightTransitionEnd,
+        swipeUp,
+        swipeUpComplete,
+        swipeStart,
+        swipeTarget,
+        tap,
+        template,
+        toggleSelectedFlag,
+      } from "../src/base/internal.js";
+      import {
+        createElement,
+        replace,
+        transmute,
+      } from "../src/core/template.js";
       import ReactiveElement from "../src/core/ReactiveElement.js";
 
       class IncrementDecrement extends ReactiveElement {
         get buttonPartType() {
-          return this[internal.state].button;
+          return this[state].button;
         }
         set buttonPartType(buttonPartType) {
-          this[internal.setState]({ buttonPartType });
+          this[setState]({ buttonPartType });
         }
 
-        get [internal.defaultState]() {
-          return Object.assign(super[internal.defaultState], {
+        get [defaultState]() {
+          return Object.assign(super[defaultState], {
             buttonPartType: "button",
-            value: 0
+            value: 0,
           });
         }
 
-        [internal.render](changed) {
-          super[internal.render](changed);
+        [render](changed) {
+          super[render](changed);
           if (changed.buttonPartType) {
-            template.transmute(
-              this[internal.ids].decrement,
-              this[internal.state].buttonPartType
-            );
-            this[internal.ids].decrement.addEventListener("click", () => {
+            transmute(this[ids].decrement, this[state].buttonPartType);
+            this[ids].decrement.addEventListener("click", () => {
               this.value--;
             });
-            template.transmute(
-              this[internal.ids].increment,
-              this[internal.state].buttonPartType
-            );
-            this[internal.ids].increment.addEventListener("click", () => {
+            transmute(this[ids].increment, this[state].buttonPartType);
+            this[ids].increment.addEventListener("click", () => {
               this.value++;
             });
           }
           if (changed.value) {
-            const { value } = this[internal.state];
+            const { value } = this[state];
             this.style.color = value < 0 ? "red" : null;
-            this[internal.ids].visibleValue.textContent = value;
+            this[ids].visibleValue.textContent = value;
           }
         }
 
         // Provide a public property that gets/sets state.
         get value() {
-          return this[internal.state].value;
+          return this[state].value;
         }
         set value(value) {
-          this[internal.setState]({
-            value: parseInt(value)
+          this[setState]({
+            value: parseInt(value),
           });
         }
 
-        get [internal.template]() {
-          return template.html`
+        get [template]() {
+          return templateFrom.html`
             <button id="decrement">-</button>
             <span id="visibleValue"></span>
             <button id="increment">+</button>
@@ -72,8 +127,8 @@
       customElements.define("increment-decrement", IncrementDecrement);
 
       class CustomButton extends ReactiveElement {
-        get [internal.template]() {
-          return template.html`
+        get [template]() {
+          return templateFrom.html`
           <style>
             button {
               border: 1px solid gray;
@@ -88,9 +143,9 @@
       customElements.define("custom-button", CustomButton);
 
       class CustomIncrementDecrement extends IncrementDecrement {
-        get [internal.defaultState]() {
-          return Object.assign(super[internal.defaultState], {
-            buttonPartType: CustomButton
+        get [defaultState]() {
+          return Object.assign(super[defaultState], {
+            buttonPartType: CustomButton,
           });
         }
       }

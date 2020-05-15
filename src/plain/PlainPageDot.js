@@ -1,7 +1,7 @@
 import DarkModeMixin from "../base/DarkModeMixin.js";
-import * as internal from "../base/internal.js";
+import { firstRender, render, template } from "../base/internal.js";
 import SelectableButton from "../base/SelectableButton.js";
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 
 const Base = DarkModeMixin(SelectableButton);
 
@@ -15,18 +15,18 @@ const Base = DarkModeMixin(SelectableButton);
  * @mixes DarkModeMixin
  */
 class PlainPageDot extends Base {
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
 
-    if (this[internal.firstRender]) {
+    if (this[firstRender]) {
       this.setAttribute("role", "none");
     }
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           :host {
             background-color: black;

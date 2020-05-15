@@ -1,6 +1,6 @@
 import AlertDialog from "../base/AlertDialog.js";
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { defaultState, template } from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import PlainBorderButton from "./PlainBorderButton.js";
 import PlainModalOverlayMixin from "./PlainModalOverlayMixin.js";
 
@@ -12,16 +12,16 @@ import PlainModalOverlayMixin from "./PlainModalOverlayMixin.js";
  * @part {PlainBorderButton} choice-button
  */
 class PlainAlertDialog extends PlainModalOverlayMixin(AlertDialog) {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
       choiceButtonPartType: PlainBorderButton,
     });
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           [part~="frame"] {
             padding: 1em;

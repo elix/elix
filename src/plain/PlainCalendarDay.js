@@ -1,6 +1,6 @@
 import CalendarDay from "../base/CalendarDay.js";
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
+import { template } from "../base/internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 
 /**
  * CalendarDay component in the Plain reference design system
@@ -8,10 +8,10 @@ import html from "../core/html.js";
  * @inherits CalendarDay
  */
 class PlainCalendarDay extends CalendarDay {
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
     result.content.append(
-      html`
+      fragmentFrom.html`
         <style>
           :host {
             padding: 0.3em;
