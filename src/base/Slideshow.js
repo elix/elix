@@ -1,6 +1,6 @@
-import html from "../core/html.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import CrossfadeStage from "./CrossfadeStage.js";
-import { defaultState } from "./internal.js";
+import { defaultState, template } from "./internal.js";
 import TimerCursorMixin from "./TimerCursorMixin.js";
 
 const Base = TimerCursorMixin(CrossfadeStage);
@@ -32,10 +32,10 @@ class Slideshow extends Base {
     });
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
-    result.content.append(html`
+    result.content.append(fragmentFrom.html`
       <style>
         #crossfadeContainer {
           align-items: stretch;
