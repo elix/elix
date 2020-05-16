@@ -174,13 +174,12 @@ function getIndexOfItemAtY(items, y, downward) {
  * @param {boolean} downward
  */
 function scrollOnePage(element, downward) {
-  const scrollTarget = element[scrollTarget];
   const items = element[state].items;
   const currentIndex = element[state].currentIndex;
 
   // Determine the item visible just at the edge of direction we're heading.
   // We'll move to that item if it's not already current.
-  const targetRect = scrollTarget.getBoundingClientRect();
+  const targetRect = element[scrollTarget].getBoundingClientRect();
   const edge = downward ? targetRect.bottom : targetRect.top;
   const indexOfItemAtEdge = getIndexOfItemAtY(items, edge, downward);
 
@@ -191,7 +190,7 @@ function scrollOnePage(element, downward) {
     // Leave the new item at that edge current.
     const currentItem = items[currentIndex];
     const currentRect = currentItem.getBoundingClientRect();
-    const pageHeight = scrollTarget.clientHeight;
+    const pageHeight = element[scrollTarget].clientHeight;
     const y = downward
       ? currentRect.bottom + pageHeight
       : currentRect.top - pageHeight;

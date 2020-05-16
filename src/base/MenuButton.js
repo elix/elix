@@ -65,7 +65,7 @@ class MenuButton extends PopupButton {
    * Highlight the selected item (if one exists), then close the menu.
    */
   async highlightSelectedItemAndClose() {
-    const raiseChangeEvents = this[raiseChangeEvents];
+    const originalRaiseChangeEvents = this[raiseChangeEvents];
     const selectionDefined = this[state].menuSelectedIndex >= 0;
     const closeResult = selectionDefined
       ? this.items[this[state].menuSelectedIndex]
@@ -75,7 +75,7 @@ class MenuButton extends PopupButton {
       await menu.highlightSelectedItem();
     }
     const saveRaiseChangeEvents = this[raiseChangeEvents];
-    this[raiseChangeEvents] = raiseChangeEvents;
+    this[raiseChangeEvents] = originalRaiseChangeEvents;
     await this.close(closeResult);
     this[raiseChangeEvents] = saveRaiseChangeEvents;
   }

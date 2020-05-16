@@ -490,10 +490,9 @@ function getSwipeFraction(element, x, y) {
   /** @type {any} */ const cast = element;
   const vertical = swipeAxis === "vertical";
   const dragDistance = vertical ? y - cast[startYKey] : x - cast[startXKey];
-  const swipeTarget = element[swipeTarget];
   const swipeTargetSize = vertical
-    ? swipeTarget.offsetHeight
-    : swipeTarget.offsetWidth;
+    ? element[swipeTarget].offsetHeight
+    : element[swipeTarget].offsetWidth;
   const fraction = swipeTargetSize > 0 ? dragDistance / swipeTargetSize : 0;
   return fraction;
 }

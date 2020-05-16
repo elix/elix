@@ -1,5 +1,12 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import { defaultState, render, rendered, setState, state } from "./internal.js";
+import {
+  defaultState,
+  itemsDelegate,
+  render,
+  rendered,
+  setState,
+  state,
+} from "./internal.js";
 
 /** @type {any} */
 const itemsChangedListenerKey = Symbol("itemsChangedListener");
@@ -63,12 +70,11 @@ export default function DelegateItemsMixin(Base) {
         super[render](changed);
       }
       if (changed.currentIndex) {
-        const itemsDelegate = this[itemsDelegate];
-        if (typeof itemsDelegate === "undefined") {
+        if (typeof this[itemsDelegate] === "undefined") {
           throw `To use DelegateItemsMixin, ${this.constructor.name} must define a getter for [itemsDelegate].`;
         }
-        if ("currentIndex" in itemsDelegate) {
-          itemsDelegate.currentIndex = this[state].currentIndex;
+        if ("currentIndex" in this[itemsDelegate]) {
+          this[itemsDelegate].currentIndex = this[state].currentIndex;
         }
       }
     }
@@ -79,9 +85,8 @@ export default function DelegateItemsMixin(Base) {
       }
 
       // If the delegate changed, wire up event handlers.
-      const itemsDelegate = this[itemsDelegate];
       const previousItemsDelegate = this[previousItemsDelegateKey];
-      if (itemsDelegate !== previousItemsDelegate) {
+      if (this[itemsDelegate] !== previousItemsDelegate) {
         if (previousItemsDelegate) {
           // Stop listening to events on previous delegate.
           previousItemsDelegate.removeEventListener(
@@ -92,11 +97,11 @@ export default function DelegateItemsMixin(Base) {
           );
         }
         // Start listening to events on new delegate.
-        itemsDelegate.addEventListener(
+        this[itemsDelegate].addEventListener(
           "items-changed",
           this[itemsChangedListenerKey]
         );
-        itemsDelegate.addEventListener(
+        this[itemsDelegate].addEventListener(
           "current-index-changed",
           this[currentIndexChangedListenerKey]
         );

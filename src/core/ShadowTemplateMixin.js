@@ -1,4 +1,13 @@
-import { ids, render, shadowRoot, shadowRootMode } from "./internal.js";
+import {
+  delegatesFocus,
+  firstRender,
+  hasDynamicTemplate,
+  ids,
+  render,
+  shadowRoot,
+  shadowRootMode,
+  template,
+} from "./internal.js";
 
 // A cache of processed templates, indexed by element class.
 const classTemplateMap = new Map();
@@ -94,16 +103,16 @@ export default function ShadowTemplateMixin(Base) {
 
       // We only need to render the shadow root the first time the component is
       // rendered.
-      const firstRender = this[firstRender] === undefined || this[firstRender];
-      if (firstRender) {
+      if (this[firstRender] === undefined || this[firstRender]) {
         // If this type of element defines a template, prepare it for use.
         const template = getTemplate(this);
 
         if (template) {
           // Stamp the template into a new shadow root.
-          const delegatesFocus = this[delegatesFocus];
-          const mode = this[shadowRootMode];
-          const root = this.attachShadow({ delegatesFocus, mode });
+          const root = this.attachShadow({
+            delegatesFocus: this[delegatesFocus],
+            mode: this[shadowRootMode],
+          });
           const clone = document.importNode(template.content, true);
           root.append(clone);
 
@@ -142,26 +151,25 @@ export default function ShadowTemplateMixin(Base) {
  * @returns {HTMLTemplateElement}
  */
 function getTemplate(element) {
-  const hasDynamicTemplate = element[hasDynamicTemplate];
-  let template = hasDynamicTemplate
+  let t = element[hasDynamicTemplate]
     ? undefined // Always retrieve template
     : classTemplateMap.get(element.constructor); // See if we've cached it
-  if (template === undefined) {
+  if (t === undefined) {
     // Ask the component for its template.
-    template = element[template];
+    t = element[template];
     // A component using this mixin isn't required to supply a template --
     // if they don't, they simply won't end up with a shadow root.
-    if (template) {
+    if (t) {
       // But if the component does supply a template, it needs to be an
       // HTMLTemplateElement instance.
-      if (!(template instanceof HTMLTemplateElement)) {
+      if (!(t instanceof HTMLTemplateElement)) {
         throw `Warning: the [template] property for ${element.constructor.name} must return an HTMLTemplateElement.`;
       }
-      if (!hasDynamicTemplate) {
+      if (!element[hasDynamicTemplate]) {
         // Store prepared template for next creation of same type of element.
-        classTemplateMap.set(element.constructor, template);
+        classTemplateMap.set(element.constructor, t);
       }
     }
   }
-  return template;
+  return t;
 }

@@ -8,7 +8,6 @@ import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import {
   defaultState,
   firstRender,
-  getItemText,
   goDown,
   goEnd,
   goStart,
@@ -25,6 +24,7 @@ import {
   template,
 } from "./internal.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
+import { getDefaultItemText } from "./ItemsTextMixin.js";
 import ListBox from "./ListBox.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
@@ -196,7 +196,7 @@ class ListComboBox extends Base {
       if (items && value != null) {
         const searchText = value.toLowerCase();
         const currentIndex = items.findIndex((item) => {
-          const itemText = getItemText(item);
+          const itemText = getDefaultItemText(item);
           return itemText.toLowerCase() === searchText;
         });
         Object.assign(effects, { currentIndex });
@@ -215,7 +215,7 @@ class ListComboBox extends Base {
       ) {
         const currentItem = items[currentIndex];
         if (currentItem) {
-          const currentItemText = getItemText(currentItem);
+          const currentItemText = getDefaultItemText(currentItem);
           // See notes on mobile at ComboBox.defaultState.
           const probablyMobile = matchMedia("(pointer: coarse)").matches;
           const selectText = !probablyMobile;

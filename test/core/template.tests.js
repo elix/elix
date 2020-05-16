@@ -15,7 +15,7 @@ import { assert } from "../testHelpers.js";
 class TemplateTest extends HTMLElement {}
 customElements.define("template-test", TemplateTest);
 
-// A component with a template with a role applied to a single element.
+// A component with a template with a single part.
 class DynamicSingle extends ReactiveElement {
   get [defaultState]() {
     return Object.assign(super[defaultState], {

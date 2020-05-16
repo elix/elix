@@ -25,7 +25,7 @@ class ListExplorer extends Explorer {
    * @returns {string}
    */
   [getItemText](item) {
-    return getItemText(item);
+    return getDefaultItemText(item);
   }
 
   [render](/** @type {ChangedFlags} */ changed) {
@@ -51,7 +51,7 @@ class ListExplorer extends Explorer {
  * @private
  * @param {ListItemElement} item
  */
-export function getItemText(item) {
+export function getDefaultItemText(item) {
   return (
     item.getAttribute("aria-label") ||
     item.getAttribute("alt") ||

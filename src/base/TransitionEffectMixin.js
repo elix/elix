@@ -52,9 +52,9 @@ export default function TransitionEffectMixin(Base) {
           // See if the event target is our expected `effectEndTarget`. If the
           // component defines a `effectEndTarget` state, we use that; otherwise,
           // we use the element identified with `internal.effectEndTarget`.
-          const effectEndTarget =
+          const effectTarget =
             this[state].effectEndTarget || this[effectEndTarget];
-          if (event.target === effectEndTarget) {
+          if (event.target === effectTarget) {
             // Advance to the next phase.
             this[setState]({
               effectPhase: "after",

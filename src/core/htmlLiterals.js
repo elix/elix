@@ -27,9 +27,7 @@
  */
 export const fragmentFrom = {
   html(strings, ...substitutions) {
-    const template = document.createElement("template");
-    template.innerHTML = String.raw(strings, ...substitutions);
-    return template.content;
+    return templateFrom.html(strings, ...substitutions).content;
   },
 };
 

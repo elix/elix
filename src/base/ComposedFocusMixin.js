@@ -1,12 +1,6 @@
 import { closestFocusableNode } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import {
-  defaultState,
-  firstRender,
-  render,
-  shadowRoot,
-  state,
-} from "./internal.js";
+import { defaultState, firstRender, render, state } from "./internal.js";
 
 // Quick detection of whether we'll need to handle focus.
 // As of February 2019, we don't need to handle this in Chrome, perhaps because
@@ -14,8 +8,8 @@ import {
 const focusTest = document.createElement("div");
 focusTest.attachShadow({ mode: "open", delegatesFocus: true });
 /** @type {any} */
-const shadowRoot = focusTest.shadowRoot;
-const nativeDelegatesFocus = shadowRoot.delegatesFocus;
+const focusTestShadowRoot = focusTest.shadowRoot;
+const nativeDelegatesFocus = focusTestShadowRoot.delegatesFocus;
 
 /**
  * Normalizes focus treatment for custom elements with Shadow DOM

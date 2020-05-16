@@ -44,17 +44,17 @@ export function closestFocusableNode(node) {
   for (const current of selfAndComposedAncestors(node)) {
     // If the current element defines a focusTarget (e.g., via
     // DelegateFocusMixin), use that, otherwise use the element itself.
-    const focusTarget = current[focusTarget] || current;
+    const target = current[focusTarget] || current;
     // We want an element that has a tabIndex of 0 or more. We ignore disabled
     // elements, and slot elements (which oddly have a tabIndex of 0).
-    /** @type {any} */ const cast = focusTarget;
+    /** @type {any} */ const cast = target;
     const focusable =
-      focusTarget instanceof HTMLElement &&
-      focusTarget.tabIndex >= 0 &&
+      target instanceof HTMLElement &&
+      target.tabIndex >= 0 &&
       !cast.disabled &&
-      !(focusTarget instanceof HTMLSlotElement);
+      !(target instanceof HTMLSlotElement);
     if (focusable) {
-      return focusTarget;
+      return target;
     }
   }
   return null;

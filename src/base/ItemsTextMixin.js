@@ -27,7 +27,7 @@ export default function ItemsTextMixin(Base) {
      * @returns {string}
      */
     [getItemText](item) {
-      return getItemText(item);
+      return getDefaultItemText(item);
     }
 
     [stateEffects](state, changed) {
@@ -58,7 +58,7 @@ export default function ItemsTextMixin(Base) {
  * @private
  * @param {ListItemElement} item
  */
-export function getItemText(item) {
+export function getDefaultItemText(item) {
   return (
     item.getAttribute("aria-label") ||
     item.getAttribute("alt") ||
@@ -73,6 +73,6 @@ export function getItemText(item) {
  * @private
  * @param {ListItemElement[]} items
  */
-export function getTextsFromItems(items, getText = getItemText) {
+export function getTextsFromItems(items, getText = getDefaultItemText) {
   return items ? Array.from(items, (item) => getText(item)) : null;
 }

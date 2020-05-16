@@ -46,7 +46,6 @@ export default function CurrentItemInViewMixin(Base) {
         super.scrollCurrentItemIntoView();
       }
 
-      const scrollTarget = this[scrollTarget];
       const { currentItem, items } = this[state];
       if (!currentItem || !items) {
         return;
@@ -55,7 +54,7 @@ export default function CurrentItemInViewMixin(Base) {
       // Determine the bounds of the scroll target and item. We use
       // getBoundingClientRect instead of .offsetTop, etc., because the latter
       // round values, and we want to handle fractional values.
-      const scrollTargetRect = scrollTarget.getBoundingClientRect();
+      const scrollTargetRect = this[scrollTarget].getBoundingClientRect();
       const itemRect = currentItem.getBoundingClientRect();
 
       // Determine how far the item is outside the viewport.
@@ -70,16 +69,16 @@ export default function CurrentItemInViewMixin(Base) {
       const orientation = this[state].orientation || "both";
       if (orientation === "horizontal" || orientation === "both") {
         if (rightDelta > 0) {
-          scrollTarget.scrollLeft += rightDelta; // Scroll right
+          this[scrollTarget].scrollLeft += rightDelta; // Scroll right
         } else if (leftDelta < 0) {
-          scrollTarget.scrollLeft += Math.ceil(leftDelta); // Scroll left
+          this[scrollTarget].scrollLeft += Math.ceil(leftDelta); // Scroll left
         }
       }
       if (orientation === "vertical" || orientation === "both") {
         if (bottomDelta > 0) {
-          scrollTarget.scrollTop += bottomDelta; // Scroll down
+          this[scrollTarget].scrollTop += bottomDelta; // Scroll down
         } else if (topDelta < 0) {
-          scrollTarget.scrollTop += Math.ceil(topDelta); // Scroll up
+          this[scrollTarget].scrollTop += Math.ceil(topDelta); // Scroll up
         }
       }
     }

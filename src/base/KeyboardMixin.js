@@ -1,6 +1,7 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import {
   defaultState,
+  defaultTabIndex,
   delegatesFocus,
   keydown,
   raiseChangeEvents,
@@ -113,8 +114,7 @@ export default function KeyboardMixin(Base) {
       // Parse the passed value, which could be a string or null.
       let parsed = tabIndex !== null ? Number(tabIndex) : null;
       if (parsed !== null && isNaN(parsed)) {
-        const defaultTabIndex = this[defaultTabIndex];
-        parsed = defaultTabIndex ? defaultTabIndex : 0;
+        parsed = this[defaultTabIndex] ? this[defaultTabIndex] : 0;
       }
 
       // If parsed value isn't null and has changed, invoke the super setter.

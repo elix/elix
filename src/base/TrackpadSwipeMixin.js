@@ -2,6 +2,7 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 import {
   defaultState,
   raiseChangeEvents,
+  scrollTarget,
   setState,
   state,
   stateEffects,
@@ -192,17 +193,13 @@ function handleWheel(element, event) {
   }
 
   // Scrolling initially takes precedence over swiping.
-  const scrollTarget = element[scrollTarget] || element;
   if (cast[deferToScrollingKey]) {
     // Predict whether the browser's default behavior for this event would cause
     // the swipe target or any of its ancestors to scroll.
+    const target = element[scrollTarget] || element;
     const deltaAlongAxis = vertical ? deltaY : deltaX;
     const downOrRight = deltaAlongAxis > 0;
-    const willScroll = canScrollInDirection(
-      scrollTarget,
-      swipeAxis,
-      downOrRight
-    );
+    const willScroll = canScrollInDirection(target, swipeAxis, downOrRight);
     if (willScroll) {
       // Don't interfere with scrolling.
       return false;
@@ -227,10 +224,9 @@ function handleWheel(element, event) {
   cast[wheelDistanceKey] -= vertical ? deltaY : deltaX;
 
   // Update the travel fraction of the component being navigated.
-  const swipeTarget = cast[swipeTarget];
   const targetDimension = vertical
-    ? swipeTarget.offsetHeight
-    : swipeTarget.offsetWidth;
+    ? cast[swipeTarget].offsetHeight
+    : cast[swipeTarget].offsetWidth;
   let fraction =
     targetDimension > 0 ? cast[wheelDistanceKey] / targetDimension : 0;
   fraction = Math.sign(fraction) * Math.min(Math.abs(fraction), 1);
