@@ -140,39 +140,44 @@ export { default as WrappedStandardElement } from "../src/base/WrappedStandardEl
 import * as accessibilityImport from "../src/base/accessibility.js";
 // @ts-ignore
 export const accessibility = accessibilityImport;
-
+  
 import * as calendarImport from "../src/base/calendar.js";
 // @ts-ignore
 export const calendar = calendarImport;
-
+  
 import * as constantsImport from "../src/base/constants.js";
 // @ts-ignore
 export const constants = constantsImport;
-
+  
 import * as contentImport from "../src/base/content.js";
 // @ts-ignore
 export const content = contentImport;
-
+  
 import * as fractionalSelectionImport from "../src/base/fractionalSelection.js";
 // @ts-ignore
 export const fractionalSelection = fractionalSelectionImport;
-
+  
 import * as internalImport from "../src/base/internal.js";
 // @ts-ignore
 export const internal = internalImport;
-
+  
 import * as scrollingImport from "../src/base/scrolling.js";
 // @ts-ignore
 export const scrolling = scrollingImport;
-
+  
 import * as domImport from "../src/core/dom.js";
 // @ts-ignore
 export const dom = domImport;
-
-import * as htmlImport from "../src/core/htmlLiterals.js";
+  
+import * as htmlImport from "../src/core/html.js";
 // @ts-ignore
 export const html = htmlImport;
-
+  
+import * as htmlLiteralsImport from "../src/core/htmlLiterals.js";
+// @ts-ignore
+export const htmlLiterals = htmlLiteralsImport;
+  
 import * as templateImport from "../src/core/template.js";
 // @ts-ignore
 export const template = templateImport;
+  
