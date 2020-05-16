@@ -161,7 +161,7 @@ class Carousel extends Base {
 
     const proxyList = result.content.getElementById("proxyList");
     if (proxyList) {
-      proxyList.setAttribute("tabindex", "");
+      proxyList.removeAttribute("tabindex");
     }
 
     result.content.append(
