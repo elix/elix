@@ -33,20 +33,27 @@ function FocusCaptureMixin(Base) {
       // the user is tabbing through light DOM nodes assigned to a slot) and the
       // shadow active element (to handle case where the user is tabbing through
       // shadow nodes).
-      const shadowActiveElement = this[shadowRoot].activeElement;
-      const firstElementIsActive =
-        firstElement &&
-        (document.activeElement === firstElement ||
-          (shadowActiveElement &&
-            deepContains(shadowActiveElement, firstElement)));
-      if (firstElementIsActive && event.key === "Tab" && event.shiftKey) {
-        // Set focus to focus catcher.
-        // The Shift+Tab keydown event should continue bubbling, and the default
-        // behavior should cause it to end up on the last focusable element.
-        this[wrappingFocusKey] = true;
-        this[ids].focusCatcher.focus();
-        this[wrappingFocusKey] = false;
-        // Don't mark the event as handled, since we want it to keep bubbling up.
+      if (firstElement) {
+        const firstElementIsDocumentActive =
+          document.activeElement &&
+          (document.activeElement === firstElement ||
+            document.activeElement.contains(firstElement));
+        const shadowActiveElement = this[shadowRoot].activeElement;
+        const firstElementIsShadowActive =
+          shadowActiveElement &&
+          (shadowActiveElement === firstElement ||
+            deepContains(shadowActiveElement, firstElement));
+        const firstElementIsActive =
+          firstElementIsDocumentActive || firstElementIsShadowActive;
+        if (firstElementIsActive && event.key === "Tab" && event.shiftKey) {
+          // Set focus to focus catcher.
+          // The Shift+Tab keydown event should continue bubbling, and the default
+          // behavior should cause it to end up on the last focusable element.
+          this[wrappingFocusKey] = true;
+          this[ids].focusCatcher.focus();
+          this[wrappingFocusKey] = false;
+          // Don't mark the event as handled, since we want it to keep bubbling up.
+        }
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
