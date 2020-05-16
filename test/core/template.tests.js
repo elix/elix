@@ -40,12 +40,6 @@ class DynamicSingle extends ReactiveElement {
 customElements.define("dynamic-part-type", DynamicSingle);
 
 describe("templates", () => {
-  it("html template function returns an HTMLTemplateElement", () => {
-    const fixture = templateFrom.html`<div>Hello</div>`;
-    assert(fixture instanceof HTMLTemplateElement);
-    assert.equal(fixture.innerHTML, `<div>Hello</div>`);
-  });
-
   it("can create an element from a string descriptor", () => {
     const fixture = createElement("div");
     assert(fixture instanceof HTMLDivElement);
@@ -77,7 +71,7 @@ describe("templates", () => {
     assert.equal(replacement.textContent, "Hello");
   });
 
-  it("supports an element with a role during initial rendering", async () => {
+  it("lets an element replace a part during initial rendering", async () => {
     const fixture = new DynamicSingle();
     fixture[renderChanges]();
     assert(fixture[ids].static instanceof HTMLDivElement);
@@ -87,7 +81,7 @@ describe("templates", () => {
     assert(fixture[ids].dynamic.classList.contains("foo"));
   });
 
-  it("lets an element change a role after initial rendering", async () => {
+  it("lets an element replace a part after initial rendering", async () => {
     const fixture = new DynamicSingle();
     fixture[renderChanges]();
     assert(fixture[ids].static instanceof HTMLDivElement);

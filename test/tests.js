@@ -36,6 +36,7 @@ import "./base/TransitionEffectMixin.tests.js";
 import "./base/WrappedStandardElement.tests.js";
 import "./core/AttributeMarshallingMixin.tests.js";
 import "./core/dom.tests.js";
+import "./core/htmlLiterals.tests.js";
 import "./core/ReactiveMixin.tests.js";
 import "./core/ShadowTemplateMixin.tests.js";
 import "./core/template.tests.js";
