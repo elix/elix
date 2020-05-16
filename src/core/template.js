@@ -59,7 +59,13 @@ export function createElement(descriptor) {
   }
 }
 
-export const html = templateFrom.html;
+export function html(strings, ...substitutions) {
+  /* eslint-disable no-console */
+  console.warn(
+    `The template.html helper has moved to htmlLiterals.js, and is now called \`templateFrom.html\`. Please update your imports.`
+  );
+  return templateFrom.html(strings, ...substitutions);
+}
 
 /**
  * Register the indicated constructor as a custom element class.
