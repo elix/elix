@@ -73,6 +73,26 @@ export default function KeyboardMixin(Base) {
       });
     }
 
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (name === "tabindex") {
+        // Parse the passed value, which could be a string or null.
+        let parsed;
+        if (newValue === null) {
+          // tabindex attribute was removed.
+          parsed = -1;
+        } else {
+          parsed = Number(newValue);
+          if (isNaN(parsed)) {
+            // Non-numeric tabindex falls back to default value (if defined).
+            parsed = this[defaultTabIndex] ? this[defaultTabIndex] : 0;
+          }
+        }
+        this.tabIndex = parsed;
+      } else {
+        super.attributeChangedCallback(name, oldValue, newValue);
+      }
+    }
+
     get [defaultState]() {
       // If we're using DelegateFocusMixin, we don't need or want to set a
       // tabindex on the host; we'll rely on the inner shadow elements to take
@@ -111,15 +131,9 @@ export default function KeyboardMixin(Base) {
       return super.tabIndex;
     }
     set tabIndex(tabIndex) {
-      // Parse the passed value, which could be a string or null.
-      let parsed = tabIndex !== null ? Number(tabIndex) : null;
-      if (parsed !== null && isNaN(parsed)) {
-        parsed = this[defaultTabIndex] ? this[defaultTabIndex] : 0;
-      }
-
-      // If parsed value isn't null and has changed, invoke the super setter.
-      if (parsed !== null && super.tabIndex !== parsed) {
-        super.tabIndex = parsed;
+      // If value has changed, invoke the super setter.
+      if (super.tabIndex !== tabIndex) {
+        super.tabIndex = tabIndex;
       }
 
       // The tabIndex setter can get called during rendering when we render our
@@ -128,7 +142,7 @@ export default function KeyboardMixin(Base) {
       if (!this[rendering]) {
         // Record the new tabIndex in our state.
         this[setState]({
-          tabIndex: parsed,
+          tabIndex,
         });
       }
     }
