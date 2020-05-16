@@ -1,4 +1,4 @@
-import { firstFocusableElement } from "../core/dom.js";
+import { deepContains, firstFocusableElement } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import { firstRender, ids, keydown, render, shadowRoot } from "./internal.js";
@@ -29,10 +29,17 @@ function FocusCaptureMixin(Base) {
   class FocusCapture extends Base {
     [keydown](/** @type {KeyboardEvent} */ event) {
       const firstElement = firstFocusableElement(this[shadowRoot]);
-      const onFirstElement =
-        document.activeElement === firstElement ||
-        this[shadowRoot].activeElement === firstElement;
-      if (onFirstElement && event.key === "Tab" && event.shiftKey) {
+      // We need to check both the document active element (to handle case where
+      // the user is tabbing through light DOM nodes assigned to a slot) and the
+      // shadow active element (to handle case where the user is tabbing through
+      // shadow nodes).
+      const shadowActiveElement = this[shadowRoot].activeElement;
+      const firstElementIsActive =
+        firstElement &&
+        (document.activeElement === firstElement ||
+          (shadowActiveElement &&
+            deepContains(shadowActiveElement, firstElement)));
+      if (firstElementIsActive && event.key === "Tab" && event.shiftKey) {
         // Set focus to focus catcher.
         // The Shift+Tab keydown event should continue bubbling, and the default
         // behavior should cause it to end up on the last focusable element.
