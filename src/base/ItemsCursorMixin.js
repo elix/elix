@@ -5,6 +5,7 @@ import {
   goLast,
   goNext,
   goPrevious,
+  itemMatchesState,
   setState,
   state,
   stateEffects,
@@ -28,6 +29,8 @@ export default function ItemsCursorMixin(Base) {
         currentItem: null,
         currentItemRequired: false,
         cursorOperationsWrap: false,
+        nextItemIndex: -1,
+        previousItemIndex: -1,
       });
     }
 
@@ -117,6 +120,19 @@ export default function ItemsCursorMixin(Base) {
         return false;
       }
       return moveToIndex(this, index);
+    }
+
+    /**
+     * Returns true if the given item should be shown in the indicated state.
+     *
+     * @param {ListItemElement} item
+     * @param {PlainObject} state
+     * @returns {boolean}
+     */
+    [itemMatchesState](item, state) {
+      return super[itemMatchesState]
+        ? super[itemMatchesState](item, state)
+        : true;
     }
 
     [stateEffects](state, changed) {
@@ -215,11 +231,63 @@ export default function ItemsCursorMixin(Base) {
         }
       }
 
+      // Update computed state members nextItemIndex/previousItemIndex.
+      if (
+        changed.currentIndex ||
+        changed.cursorOperationsWrap ||
+        changed.items
+      ) {
+        const nextItemIndex = findClosestItemMatchingState(this, state, 1);
+        const previousItemIndex = findClosestItemMatchingState(this, state, -1);
+        Object.assign(effects, {
+          nextItemIndex,
+          previousItemIndex,
+        });
+      }
+
       return effects;
     }
   }
 
   return ItemsCursor;
+}
+
+function findClosestItemMatchingState(element, state, direction) {
+  const { currentIndex, cursorOperationsWrap, items } = state;
+  const count = items ? items.length : 0;
+
+  if (count === 0) {
+    // No items
+    return -1;
+  }
+
+  // Special cases
+  let start;
+  if (currentIndex === -1) {
+    start = direction > 0 ? 0 : count - 1;
+  } else {
+    start = currentIndex + direction;
+  }
+
+  if (cursorOperationsWrap) {
+    // Modulus taking into account negative numbers.
+    let i = ((start % count) + count) % count;
+    while (i !== currentIndex) {
+      if (element[itemMatchesState](items[i], state)) {
+        return i;
+      }
+      // Modulus taking into account negative numbers.
+      i = (((i + direction) % count) + count) % count;
+    }
+  } else {
+    for (let i = start; i >= 0 && i < count; i += direction) {
+      if (element[itemMatchesState](items[i], state)) {
+        return i;
+      }
+    }
+  }
+
+  return -1;
 }
 
 /**
