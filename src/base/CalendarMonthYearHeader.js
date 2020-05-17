@@ -1,5 +1,5 @@
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import * as templating from "../core/template.js";
 import * as calendar from "./calendar.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
 import {
@@ -79,7 +79,7 @@ class CalendarMonthYearHeader extends Base {
   }
 
   get [template]() {
-    return templating.html`
+    return templateFrom.html`
       <style>
         :host {
           display: inline-block;
