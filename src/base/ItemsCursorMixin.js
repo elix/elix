@@ -72,23 +72,8 @@ export default function ItemsCursorMixin(Base) {
       if (super[goNext]) {
         super[goNext]();
       }
-      let index;
-      const { items, currentIndex, cursorOperationsWrap } = this[state];
-      if (
-        (items && currentIndex === -1) ||
-        (cursorOperationsWrap && currentIndex === items.length - 1)
-      ) {
-        // No item is current, or we're on the last item and cursor operations
-        // wrap. Move to the first item.
-        index = 0;
-      } else if (currentIndex < items.length - 1) {
-        // Move to the next item.
-        index = currentIndex + 1;
-      } else {
-        // Already on last item, can't go next.
-        return false;
-      }
-      return moveToIndex(this, index);
+      const { nextItemIndex } = this[state];
+      return nextItemIndex < 0 ? false : moveToIndex(this, nextItemIndex);
     }
 
     /**
@@ -103,23 +88,8 @@ export default function ItemsCursorMixin(Base) {
       if (super[goPrevious]) {
         super[goPrevious]();
       }
-      let index;
-      const { items, currentIndex, cursorOperationsWrap } = this[state];
-      if (
-        (items && currentIndex === -1) ||
-        (cursorOperationsWrap && currentIndex === 0)
-      ) {
-        // No item is current, or we're on the first item and cursor operations
-        // wrap. Move to the last item.
-        index = items.length - 1;
-      } else if (currentIndex > 0) {
-        // Move to the previous item.
-        index = currentIndex - 1;
-      } else {
-        // Already on first item, can't go previous.
-        return false;
-      }
-      return moveToIndex(this, index);
+      const { previousItemIndex } = this[state];
+      return previousItemIndex < 0 ? false : moveToIndex(this, previousItemIndex);
     }
 
     /**
@@ -235,6 +205,7 @@ export default function ItemsCursorMixin(Base) {
       if (
         changed.currentIndex ||
         changed.cursorOperationsWrap ||
+        changed.filter ||
         changed.items
       ) {
         const nextItemIndex = findClosestItemMatchingState(this, state, 1);

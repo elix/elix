@@ -91,38 +91,24 @@ class FilterListBox extends ListBox {
 
   [render](/** @type {ChangedFlags} */ changed) {
     super[render](changed);
-    const { content, filter } = this[state];
-    // We inspect `content` instead of `items` so that we can render even those
-    // elements that don't match the current filter.
-    if ((changed.filter || changed.content) && content) {
-      content.forEach((content) => {
-        if (content instanceof HTMLElement || content instanceof SVGElement) {
-          // Hide content elements that don't match the filter.
-          const matches = this[itemMatchesState](content, this[state]);
-          content.style.display = matches ? "" : "none";
-
-          // For matching items, highlight the matching text.
+    
+    // Hide items that don't match state.
+    // For matching items, highlight the matching text.
+    if (changed.filter || changed.items) {
+      const { filter, items } = this[state];
+      if (items) {
+        items.forEach((item) => {
+          const matches = this[itemMatchesState](item, this[state]);
+          item.style.display = matches ? "" : "none";          
           if (matches) {
-            const childNodes = this.highlightTextInItem(filter, content);
-            updateChildNodes(content, childNodes);
+            const childNodes = this.highlightTextInItem(filter, item);
+            updateChildNodes(item, childNodes);
           }
-        }
-      });
+        });
+      }
     }
   }
 
-  [stateEffects](state, changed) {
-    const effects = super[stateEffects](state, changed);
-
-    // When filter changes, let other mixins know items should be recalculated.
-    if (changed.filter) {
-      Object.assign(effects, {
-        items: null,
-      });
-    }
-
-    return effects;
-  }
 }
 
 export default FilterListBox;
