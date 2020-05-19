@@ -7,15 +7,14 @@ import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
-import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FilterListBox from "./FilterListBox.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import {
   defaultState,
-  goDown,
-  goEnd,
-  goStart,
-  goUp,
+  goFirst,
+  goLast,
+  goNext,
+  goPrevious,
   ids,
   inputDelegate,
   itemsDelegate,
@@ -27,7 +26,6 @@ import {
   state,
   template,
 } from "./internal.js";
-import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
@@ -38,14 +36,10 @@ const Base = ComposedFocusMixin(
       DelegateInputLabelMixin(
         DelegateInputSelectionMixin(
           DelegateItemsMixin(
-            DirectionCursorMixin(
-              FocusVisibleMixin(
-                ItemsCursorMixin(
-                  KeyboardMixin(
-                    SelectedItemTextValueMixin(
-                      SingleSelectAPIMixin(ReactiveElement)
-                    )
-                  )
+            FocusVisibleMixin(
+              KeyboardMixin(
+                SelectedItemTextValueMixin(
+                  SingleSelectAPIMixin(ReactiveElement)
                 )
               )
             )
@@ -66,9 +60,7 @@ const Base = ComposedFocusMixin(
  * @mixes DelegateInputLabelMixin
  * @mixes DelegateInputSelectionMixin
  * @mixes DelegateItemsMixin
- * @mixes DirectionCursorMixin
  * @mixes FocusVisibleMixin
- * @mixes ItemsCursorMixin
  * @mixes KeyboardMixin
  * @mixes SelectedItemTextValueMixin
  * @mixes SingleSelectAPIMixin
@@ -83,6 +75,22 @@ class ListWithSearch extends Base {
       listPartType: FilterListBox,
       placeholder: "Search",
     });
+  }
+
+  [goFirst]() {
+    return delegateCursorOperation(this, goFirst);
+  }
+
+  [goLast]() {
+    return delegateCursorOperation(this, goLast);
+  }
+
+  [goNext]() {
+    return delegateCursorOperation(this, goNext);
+  }
+
+  [goPrevious]() {
+    return delegateCursorOperation(this, goPrevious);
   }
 
   get filter() {
@@ -126,10 +134,10 @@ class ListWithSearch extends Base {
       // handle them. We also need to forward PageDown/PageUp to the list
       // element.
       case "ArrowDown":
-        handled = event.altKey ? this[goEnd]() : this[goDown]();
+        handled = event.altKey ? this[goLast]() : this[goNext]();
         break;
       case "ArrowUp":
-        handled = event.altKey ? this[goStart]() : this[goUp]();
+        handled = event.altKey ? this[goFirst]() : this[goPrevious]();
         break;
 
       // Forward Page Down/Page Up to the list element.
@@ -156,6 +164,7 @@ class ListWithSearch extends Base {
           }
         }
         break;
+
       case "PageUp":
         if (list.pageUp) {
           setTimeout(() => list.pageUp());
@@ -218,6 +227,7 @@ class ListWithSearch extends Base {
 
   get [template]() {
     const result = super[template];
+
     result.content.append(fragmentFrom.html`
       <style>
         :host {
@@ -243,6 +253,21 @@ class ListWithSearch extends Base {
 
     return result;
   }
+}
+
+function delegateCursorOperation(element, operation) {
+  /** @type {any} */ const cast = element[itemsDelegate];
+  if (!cast[operation]) {
+    return false;
+  }
+
+  const changed = cast[operation]();
+  if (changed) {
+    const currentIndex = cast.currentIndex;
+    element[setState]({ currentIndex });
+  }
+
+  return changed;
 }
 
 /**
