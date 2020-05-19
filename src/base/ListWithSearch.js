@@ -3,6 +3,7 @@ import ReactiveElement from "../core/ReactiveElement.js";
 import { transmute } from "../core/template.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
+import DelegateCursorMixin from "./DelegateCursorMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
@@ -32,14 +33,16 @@ import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 const Base = ComposedFocusMixin(
   CursorAPIMixin(
-    DelegateFocusMixin(
-      DelegateInputLabelMixin(
-        DelegateInputSelectionMixin(
-          DelegateItemsMixin(
-            FocusVisibleMixin(
-              KeyboardMixin(
-                SelectedItemTextValueMixin(
-                  SingleSelectAPIMixin(ReactiveElement)
+    DelegateCursorMixin(
+      DelegateFocusMixin(
+        DelegateInputLabelMixin(
+          DelegateInputSelectionMixin(
+            DelegateItemsMixin(
+              FocusVisibleMixin(
+                KeyboardMixin(
+                  SelectedItemTextValueMixin(
+                    SingleSelectAPIMixin(ReactiveElement)
+                  )
                 )
               )
             )
@@ -56,6 +59,7 @@ const Base = ComposedFocusMixin(
  * @inherits ReactiveElement
  * @mixes ComposedFocusMixin
  * @mixes CursorAPIMixin
+ * @mixes DelegateCursorMixin
  * @mixes DelegateFocusMixin
  * @mixes DelegateInputLabelMixin
  * @mixes DelegateInputSelectionMixin
@@ -75,22 +79,6 @@ class ListWithSearch extends Base {
       listPartType: FilterListBox,
       placeholder: "Search",
     });
-  }
-
-  [goFirst]() {
-    return delegateCursorOperation(this, goFirst);
-  }
-
-  [goLast]() {
-    return delegateCursorOperation(this, goLast);
-  }
-
-  [goNext]() {
-    return delegateCursorOperation(this, goNext);
-  }
-
-  [goPrevious]() {
-    return delegateCursorOperation(this, goPrevious);
   }
 
   get filter() {
@@ -253,21 +241,6 @@ class ListWithSearch extends Base {
 
     return result;
   }
-}
-
-function delegateCursorOperation(element, operation) {
-  /** @type {any} */ const cast = element[itemsDelegate];
-  if (!cast[operation]) {
-    return false;
-  }
-
-  const changed = cast[operation]();
-  if (changed) {
-    const currentIndex = cast.currentIndex;
-    element[setState]({ currentIndex });
-  }
-
-  return changed;
 }
 
 /**

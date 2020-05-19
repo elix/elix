@@ -3,15 +3,15 @@ import { fragmentFrom } from "../core/htmlLiterals.js";
 import { transmute } from "../core/template.js";
 import ComboBox from "./ComboBox.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
+import DelegateCursorMixin from "./DelegateCursorMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
-import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import {
   defaultState,
   firstRender,
-  goDown,
-  goEnd,
-  goStart,
-  goUp,
+  goFirst,
+  goLast,
+  goNext,
+  goPrevious,
   ids,
   itemsDelegate,
   keydown,
@@ -23,25 +23,21 @@ import {
   stateEffects,
   template,
 } from "./internal.js";
-import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import { getDefaultItemText } from "./ItemsTextMixin.js";
 import ListBox from "./ListBox.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 const Base = CursorAPIMixin(
-  DelegateItemsMixin(
-    DirectionCursorMixin(ItemsCursorMixin(SingleSelectAPIMixin(ComboBox)))
-  )
+  DelegateCursorMixin(DelegateItemsMixin(SingleSelectAPIMixin(ComboBox)))
 );
 
 /**
  * A combo box whose popup presents a list of choices
  *
  * @inherits ComboBox
+ * @mixes DelegateCursorMixin
  * @mixes CursorAPIMixin
  * @mixes DelegateItemsMixin
- * @mixes DirectionCursorMixin
- * @mixes ItemsCursorMixin
  * @mixes SingleSelectAPIMixin
  * @part {ListBox} list - the list of choices
  */
@@ -66,13 +62,13 @@ class ListComboBox extends Base {
     switch (event.key) {
       case "ArrowDown":
         if (this.opened) {
-          handled = event.altKey ? this[goEnd]() : this[goDown]();
+          handled = event.altKey ? this[goLast]() : this[goNext]();
         }
         break;
 
       case "ArrowUp":
         if (this.opened) {
-          handled = event.altKey ? this[goStart]() : this[goUp]();
+          handled = event.altKey ? this[goFirst]() : this[goPrevious]();
         }
         break;
 

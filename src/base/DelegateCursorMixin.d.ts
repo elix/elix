@@ -5,23 +5,14 @@
 
 import { goFirst, goLast, goNext, goPrevious } from "./internal.js";
 
-declare const ItemsCursorMixin: StateMixin<
-  {},
+declare const DelegateCursorMixin: Mixin<
   {},
   {
     [goNext](): boolean;
     [goPrevious](): boolean;
     [goFirst](): boolean;
     [goLast](): boolean;
-  },
-  {
-    canGoNext: boolean;
-    canGoPrevious: boolean;
-    currentIndex: number;
-    currentItem: Element | null;
-    currentItemRequired: boolean;
-    cursorOperationsWrap: boolean;
   }
 >;
 
-export default ItemsCursorMixin;
+export default DelegateCursorMixin;
