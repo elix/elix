@@ -7,7 +7,6 @@ import {
   render,
   setState,
   state,
-  stateEffects,
 } from "./internal.js";
 import ListBox from "./ListBox.js";
 
@@ -91,7 +90,7 @@ class FilterListBox extends ListBox {
 
   [render](/** @type {ChangedFlags} */ changed) {
     super[render](changed);
-    
+
     // Hide items that don't match state.
     // For matching items, highlight the matching text.
     if (changed.filter || changed.items) {
@@ -99,7 +98,7 @@ class FilterListBox extends ListBox {
       if (items) {
         items.forEach((item) => {
           const matches = this[itemMatchesState](item, this[state]);
-          item.style.display = matches ? "" : "none";          
+          item.style.display = matches ? "" : "none";
           if (matches) {
             const childNodes = this.highlightTextInItem(filter, item);
             updateChildNodes(item, childNodes);
@@ -108,7 +107,6 @@ class FilterListBox extends ListBox {
       }
     }
   }
-
 }
 
 export default FilterListBox;
