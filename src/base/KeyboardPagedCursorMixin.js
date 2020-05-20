@@ -1,5 +1,6 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import {
+  itemMatchesState,
   keydown,
   raiseChangeEvents,
   scrollTarget,
@@ -111,15 +112,15 @@ export default function KeyboardPagedCursorMixin(Base) {
  *
  * If downward is true, move down the list of items to find the first item
  * found at the given y position; if downward is false, move up the list of
- *
  * items to find the last item at that position.
  *
  * @private
- * @param {ListItemElement[]} items
+ * @param {ReactiveElement} element
  * @param {number} y
  * @param {boolean} downward
  */
-function getIndexOfItemAtY(items, y, downward) {
+function getIndexOfItemAtY(element, y, downward) {
+  const items = element[state].items;
   const start = downward ? 0 : items.length - 1;
   const end = downward ? items.length : 0;
   const step = downward ? 1 : -1;
@@ -129,11 +130,17 @@ function getIndexOfItemAtY(items, y, downward) {
   /** @type {HTMLElement|SVGElement|null} */ let item = null;
   let itemRect;
   for (index = start; index !== end; index += step) {
-    itemRect = items[index].getBoundingClientRect();
-    if (itemRect.top <= y && y <= itemRect.bottom) {
-      // Item spans the indicated y coordinate.
-      item = items[index];
-      break;
+    // Only consider items that match the element's current state.
+    const matches = element[itemMatchesState]
+      ? element[itemMatchesState](items[index], element[state])
+      : true;
+    if (matches) {
+      itemRect = items[index].getBoundingClientRect();
+      if (itemRect.top <= y && y <= itemRect.bottom) {
+        // Item spans the indicated y coordinate.
+        item = items[index];
+        break;
+      }
     }
   }
 
@@ -181,7 +188,7 @@ function scrollOnePage(element, downward) {
   // We'll move to that item if it's not already current.
   const targetRect = element[scrollTarget].getBoundingClientRect();
   const edge = downward ? targetRect.bottom : targetRect.top;
-  const indexOfItemAtEdge = getIndexOfItemAtY(items, edge, downward);
+  const indexOfItemAtEdge = getIndexOfItemAtY(element, edge, downward);
 
   let newIndex;
   if (indexOfItemAtEdge && currentIndex === indexOfItemAtEdge) {
@@ -194,7 +201,7 @@ function scrollOnePage(element, downward) {
     const y = downward
       ? currentRect.bottom + pageHeight
       : currentRect.top - pageHeight;
-    newIndex = getIndexOfItemAtY(items, y, downward);
+    newIndex = getIndexOfItemAtY(element, y, downward);
   } else {
     // The item at the edge wasn't current yet. Instead of scrolling, we'll just
     // move to that item. That is, the first attempt to page up/down usually
