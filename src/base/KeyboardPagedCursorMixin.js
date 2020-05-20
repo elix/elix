@@ -210,9 +210,16 @@ function scrollOnePage(element, downward) {
   }
 
   if (!newIndex) {
-    // We can't find an item in the direction we want to travel. Move to the
+    // We went past the first/last item without finding an item. Move to the
     // last item (if moving downward) or first item (if moving upward).
-    newIndex = downward ? items.length - 1 : 0;
+    // newIndex = downward ? items.length - 1 : 0;
+    const start = -1;
+    const direction = downward ? -1 /* Work up */ : 1; /* Work down */
+    newIndex = element.closestItemMatchingState(
+      element[state],
+      start,
+      direction
+    );
   }
 
   // If external code causes an operation that scrolls the page, it's impossible

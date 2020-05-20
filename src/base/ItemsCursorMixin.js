@@ -20,6 +20,11 @@ import {
 export default function ItemsCursorMixin(Base) {
   // The class prototype added by the mixin.
   class ItemsCursor extends Base {
+    // TODO: Define with Symbol
+    closestItemMatchingState(state, index, direction) {
+      return findClosestItemMatchingState(this, state, index, direction);
+    }
+
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         canGoNext: false,
@@ -210,8 +215,19 @@ export default function ItemsCursorMixin(Base) {
         changed.filter ||
         changed.items
       ) {
-        const nextItemIndex = findClosestItemMatchingState(this, state, 1);
-        const previousItemIndex = findClosestItemMatchingState(this, state, -1);
+        const { currentIndex } = state;
+        const nextItemIndex = findClosestItemMatchingState(
+          this,
+          state,
+          currentIndex,
+          1
+        );
+        const previousItemIndex = findClosestItemMatchingState(
+          this,
+          state,
+          currentIndex,
+          -1
+        );
         Object.assign(effects, {
           nextItemIndex,
           previousItemIndex,
@@ -225,8 +241,8 @@ export default function ItemsCursorMixin(Base) {
   return ItemsCursor;
 }
 
-function findClosestItemMatchingState(element, state, direction) {
-  const { currentIndex, cursorOperationsWrap, items } = state;
+function findClosestItemMatchingState(element, state, index, direction) {
+  const { cursorOperationsWrap, items } = state;
   const count = items ? items.length : 0;
 
   if (count === 0) {
@@ -234,25 +250,28 @@ function findClosestItemMatchingState(element, state, direction) {
     return -1;
   }
 
-  // Special cases
   let start;
-  if (currentIndex === -1) {
+  if (index === -1) {
+    // Special cases if there's no cursor
     start = direction > 0 ? 0 : count - 1;
   } else {
-    start = currentIndex + direction;
+    start = index + direction;
   }
 
   if (cursorOperationsWrap) {
+    // Search with wrapping.
+
     // Modulus taking into account negative numbers.
     let i = ((start % count) + count) % count;
-    while (i !== currentIndex) {
+    while (i !== index) {
       if (element[itemMatchesState](items[i], state)) {
         return i;
       }
-      // Modulus taking into account negative numbers.
+      // See modulus note above.
       i = (((i + direction) % count) + count) % count;
     }
   } else {
+    // Search without wrapping.
     for (let i = start; i >= 0 && i < count; i += direction) {
       if (element[itemMatchesState](items[i], state)) {
         return i;
