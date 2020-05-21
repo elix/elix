@@ -7,7 +7,7 @@ import { raiseChangeEvents, rendered, setState, state } from "./internal.js";
  * This mixin expects a component to provide an `items` Array of all elements in
  * the list. This mixin also expects the component to apply
  * [ItemsCursorMixin](ItemsCursorMixin) and
- * [SelectCurrentMixin](SelectCurrentMixin) or otherwise define a compatible
+ * [CursorSelectMixin](CursorSelectMixin) or otherwise define a compatible
  * `selectedIndex` state and other state members for navigating the current
  * item.
  *

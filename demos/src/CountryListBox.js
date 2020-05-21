@@ -6,6 +6,7 @@ import AriaListMixin from "../../src/base/AriaListMixin.js";
 import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
 import CurrentItemInViewMixin from "../../src/base/CurrentItemInViewMixin.js";
 import CursorAPIMixin from "../../src/base/CursorAPIMixin.js";
+import CursorSelectMixin from "../../src/base/CursorSelectMixin.js";
 import DirectionCursorMixin from "../../src/base/DirectionCursorMixin.js";
 import {
   defaultState,
@@ -26,7 +27,6 @@ import KeyboardMixin from "../../src/base/KeyboardMixin.js";
 import KeyboardPagedCursorMixin from "../../src/base/KeyboardPagedCursorMixin.js";
 import KeyboardPrefixCursorMixin from "../../src/base/KeyboardPrefixCursorMixin.js";
 import LanguageDirectionMixin from "../../src/base/LanguageDirectionMixin.js";
-import SelectCurrentMixin from "../../src/base/SelectCurrentMixin.js";
 import SelectedItemTextValueMixin from "../../src/base/SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "../../src/base/SingleSelectAPIMixin.js";
 import TapCursorMixin from "../../src/base/TapCursorMixin.js";
@@ -34,21 +34,23 @@ import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
 
 const Base = AriaListMixin(
-  CurrentItemInViewMixin(
-    CursorAPIMixin(
-      DirectionCursorMixin(
-        ItemsAPIMixin(
-          ItemsCursorMixin(
-            ItemsTextMixin(
-              KeyboardDirectionMixin(
-                KeyboardMixin(
-                  KeyboardPagedCursorMixin(
-                    KeyboardPrefixCursorMixin(
-                      LanguageDirectionMixin(
-                        SelectCurrentMixin(
-                          SelectedItemTextValueMixin(
-                            SingleSelectAPIMixin(
-                              ContentItemsMixin(TapCursorMixin(ReactiveElement))
+  ContentItemsMixin(
+    CurrentItemInViewMixin(
+      CursorAPIMixin(
+        CursorSelectMixin(
+          DirectionCursorMixin(
+            ItemsAPIMixin(
+              ItemsCursorMixin(
+                ItemsTextMixin(
+                  KeyboardDirectionMixin(
+                    KeyboardMixin(
+                      KeyboardPagedCursorMixin(
+                        KeyboardPrefixCursorMixin(
+                          LanguageDirectionMixin(
+                            SelectedItemTextValueMixin(
+                              SingleSelectAPIMixin(
+                                TapCursorMixin(ReactiveElement)
+                              )
                             )
                           )
                         )

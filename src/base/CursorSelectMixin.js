@@ -7,12 +7,12 @@ import { defaultState, stateEffects } from "./internal.js";
  * This can be used to connect [ItemsCursorMixin](ItemsCursorMixin) with
  * [SingleSelectAPIMixin](SingleSelectAPIMixin).
  *
- * @module SelectCurrentMixin
+ * @module CursorSelectMixin
  * @param {Constructor<ReactiveElement>} Base
  */
-export default function SelectCurrentMixin(Base) {
+export default function CursorSelectMixin(Base) {
   // The class prototype added by the mixin.
-  return class SelectCurrent extends Base {
+  return class CursorSelect extends Base {
     get [defaultState]() {
       return Object.assign(super[defaultState], {
         selectedIndex: -1,

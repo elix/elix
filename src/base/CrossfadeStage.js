@@ -1,6 +1,7 @@
 import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
+import CursorSelectMixin from "./CursorSelectMixin.js";
 import EffectMixin from "./EffectMixin.js";
 import {
   defaultState,
@@ -13,16 +14,15 @@ import {
 } from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
-import SelectCurrentMixin from "./SelectCurrentMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TransitionEffectMixin from "./TransitionEffectMixin.js";
 
 const Base = CursorAPIMixin(
-  EffectMixin(
-    ItemsAPIMixin(
-      ItemsCursorMixin(
-        SelectCurrentMixin(
+  CursorSelectMixin(
+    EffectMixin(
+      ItemsAPIMixin(
+        ItemsCursorMixin(
           SingleSelectAPIMixin(
             SlotItemsMixin(TransitionEffectMixin(ReactiveElement))
           )

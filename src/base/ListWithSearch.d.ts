@@ -4,25 +4,25 @@
 import ReactiveElement from "../core/ReactiveElement.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
+import CursorSelectMixin from "./CursorSelectMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
-import SelectCurrentMixin from "./SelectCurrentMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 export default class ListWithSearch extends ComposedFocusMixin(
   CursorAPIMixin(
-    DelegateFocusMixin(
-      DelegateInputLabelMixin(
-        DelegateInputSelectionMixin(
-          DelegateItemsMixin(
-            FocusVisibleMixin(
-              KeyboardMixin(
-                SelectCurrentMixin(
+    CursorSelectMixin(
+      DelegateFocusMixin(
+        DelegateInputLabelMixin(
+          DelegateInputSelectionMixin(
+            DelegateItemsMixin(
+              FocusVisibleMixin(
+                KeyboardMixin(
                   SelectedItemTextValueMixin(
                     SingleSelectAPIMixin(ReactiveElement)
                   )

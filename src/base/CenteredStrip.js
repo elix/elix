@@ -1,6 +1,7 @@
 import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
+import CursorSelectMixin from "./CursorSelectMixin.js";
 import EffectMixin from "./EffectMixin.js";
 import {
   defaultState,
@@ -14,18 +15,17 @@ import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import ResizeMixin from "./ResizeMixin.js";
-import SelectCurrentMixin from "./SelectCurrentMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapCursorMixin from "./TapCursorMixin.js";
 
 const Base = CursorAPIMixin(
-  EffectMixin(
-    ItemsAPIMixin(
-      ItemsCursorMixin(
-        LanguageDirectionMixin(
-          ResizeMixin(
-            SelectCurrentMixin(
+  CursorSelectMixin(
+    EffectMixin(
+      ItemsAPIMixin(
+        ItemsCursorMixin(
+          LanguageDirectionMixin(
+            ResizeMixin(
               SingleSelectAPIMixin(
                 SlotItemsMixin(TapCursorMixin(ReactiveElement))
               )

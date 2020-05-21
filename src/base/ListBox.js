@@ -4,6 +4,7 @@ import AriaListMixin from "./AriaListMixin.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import CurrentItemInViewMixin from "./CurrentItemInViewMixin.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
+import CursorSelectMixin from "./CursorSelectMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
@@ -24,7 +25,6 @@ import KeyboardMixin from "./KeyboardMixin.js";
 import KeyboardPagedCursorMixin from "./KeyboardPagedCursorMixin.js";
 import KeyboardPrefixCursorMixin from "./KeyboardPrefixCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
-import SelectCurrentMixin from "./SelectCurrentMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
@@ -34,18 +34,18 @@ const Base = AriaListMixin(
   ComposedFocusMixin(
     CurrentItemInViewMixin(
       CursorAPIMixin(
-        DirectionCursorMixin(
-          FocusVisibleMixin(
-            FormElementMixin(
-              ItemsAPIMixin(
-                ItemsCursorMixin(
-                  ItemsTextMixin(
-                    KeyboardDirectionMixin(
-                      KeyboardMixin(
-                        KeyboardPagedCursorMixin(
-                          KeyboardPrefixCursorMixin(
-                            LanguageDirectionMixin(
-                              SelectCurrentMixin(
+        CursorSelectMixin(
+          DirectionCursorMixin(
+            FocusVisibleMixin(
+              FormElementMixin(
+                ItemsAPIMixin(
+                  ItemsCursorMixin(
+                    ItemsTextMixin(
+                      KeyboardDirectionMixin(
+                        KeyboardMixin(
+                          KeyboardPagedCursorMixin(
+                            KeyboardPrefixCursorMixin(
+                              LanguageDirectionMixin(
                                 SelectedItemTextValueMixin(
                                   SingleSelectAPIMixin(
                                     SlotItemsMixin(

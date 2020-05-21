@@ -3,6 +3,7 @@ import { fragmentFrom } from "../core/htmlLiterals.js";
 import { transmute } from "../core/template.js";
 import ComboBox from "./ComboBox.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
+import CursorSelectMixin from "./CursorSelectMixin.js";
 import DelegateCursorMixin from "./DelegateCursorMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import {
@@ -25,12 +26,11 @@ import {
 } from "./internal.js";
 import { getDefaultItemText } from "./ItemsTextMixin.js";
 import ListBox from "./ListBox.js";
-import SelectCurrentMixin from "./SelectCurrentMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 const Base = CursorAPIMixin(
-  DelegateCursorMixin(
-    DelegateItemsMixin(SelectCurrentMixin(SingleSelectAPIMixin(ComboBox)))
+  CursorSelectMixin(
+    DelegateCursorMixin(DelegateItemsMixin(SingleSelectAPIMixin(ComboBox)))
   )
 );
 

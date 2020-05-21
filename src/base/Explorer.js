@@ -3,6 +3,7 @@ import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import { createElement, transmute } from "../core/template.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
+import CursorSelectMixin from "./CursorSelectMixin.js";
 import {
   checkSize,
   defaultState,
@@ -21,7 +22,6 @@ import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import ListBox from "./ListBox.js";
 import Modes from "./Modes.js";
-import SelectCurrentMixin from "./SelectCurrentMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
@@ -35,10 +35,10 @@ const lateralPositions = {
 };
 
 const Base = CursorAPIMixin(
-  ItemsAPIMixin(
-    ItemsCursorMixin(
-      LanguageDirectionMixin(
-        SelectCurrentMixin(
+  CursorSelectMixin(
+    ItemsAPIMixin(
+      ItemsCursorMixin(
+        LanguageDirectionMixin(
           SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
         )
       )
