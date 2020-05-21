@@ -9,8 +9,6 @@ import { templateFrom } from "../core/htmlLiterals.js";
  */
 class PlainChoice extends MenuItem {
   get [template]() {
-    // Apply variety of system fonts.
-    // Checkmark icon from Material Design.
     return templateFrom.html`
       <style>
         :host {
