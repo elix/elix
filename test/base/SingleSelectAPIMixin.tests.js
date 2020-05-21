@@ -1,3 +1,4 @@
+import CursorSelectMixin from "../../src/base/CursorSelectMixin.js";
 import {
   defaultState,
   raiseChangeEvents,
@@ -9,8 +10,8 @@ import SingleSelectAPIMixin from "../../src/base/SingleSelectAPIMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import { assert } from "../testHelpers.js";
 
-class SingleSelectAPITest extends ItemsCursorMixin(
-  SingleSelectAPIMixin(ReactiveMixin(HTMLElement))
+class SingleSelectAPITest extends CursorSelectMixin(
+  ItemsCursorMixin(SingleSelectAPIMixin(ReactiveMixin(HTMLElement)))
 ) {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
