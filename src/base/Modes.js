@@ -4,12 +4,15 @@ import CursorAPIMixin from "./CursorAPIMixin.js";
 import { defaultState, render, state, template } from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
+import SelectCurrentMixin from "./SelectCurrentMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
 const Base = CursorAPIMixin(
   ItemsAPIMixin(
-    ItemsCursorMixin(SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement)))
+    ItemsCursorMixin(
+      SelectCurrentMixin(SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement)))
+    )
   )
 );
 

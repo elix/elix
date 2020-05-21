@@ -24,6 +24,7 @@ import KeyboardMixin from "./KeyboardMixin.js";
 import KeyboardPagedCursorMixin from "./KeyboardPagedCursorMixin.js";
 import KeyboardPrefixCursorMixin from "./KeyboardPrefixCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
+import SelectCurrentMixin from "./SelectCurrentMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
@@ -44,10 +45,12 @@ const Base = AriaListMixin(
                         KeyboardPagedCursorMixin(
                           KeyboardPrefixCursorMixin(
                             LanguageDirectionMixin(
-                              SelectedItemTextValueMixin(
-                                SingleSelectAPIMixin(
-                                  SlotItemsMixin(
-                                    TapCursorMixin(ReactiveElement)
+                              SelectCurrentMixin(
+                                SelectedItemTextValueMixin(
+                                  SingleSelectAPIMixin(
+                                    SlotItemsMixin(
+                                      TapCursorMixin(ReactiveElement)
+                                    )
                                   )
                                 )
                               )

@@ -25,10 +25,13 @@ import {
 } from "./internal.js";
 import { getDefaultItemText } from "./ItemsTextMixin.js";
 import ListBox from "./ListBox.js";
+import SelectCurrentMixin from "./SelectCurrentMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 const Base = CursorAPIMixin(
-  DelegateCursorMixin(DelegateItemsMixin(SingleSelectAPIMixin(ComboBox)))
+  DelegateCursorMixin(
+    DelegateItemsMixin(SelectCurrentMixin(SingleSelectAPIMixin(ComboBox)))
+  )
 );
 
 /**

@@ -28,6 +28,7 @@ import {
   template,
 } from "./internal.js";
 import KeyboardMixin from "./KeyboardMixin.js";
+import SelectCurrentMixin from "./SelectCurrentMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
@@ -40,8 +41,10 @@ const Base = ComposedFocusMixin(
             DelegateItemsMixin(
               FocusVisibleMixin(
                 KeyboardMixin(
-                  SelectedItemTextValueMixin(
-                    SingleSelectAPIMixin(ReactiveElement)
+                  SelectCurrentMixin(
+                    SelectedItemTextValueMixin(
+                      SingleSelectAPIMixin(ReactiveElement)
+                    )
                   )
                 )
               )

@@ -26,6 +26,7 @@ import KeyboardMixin from "../../src/base/KeyboardMixin.js";
 import KeyboardPagedCursorMixin from "../../src/base/KeyboardPagedCursorMixin.js";
 import KeyboardPrefixCursorMixin from "../../src/base/KeyboardPrefixCursorMixin.js";
 import LanguageDirectionMixin from "../../src/base/LanguageDirectionMixin.js";
+import SelectCurrentMixin from "../../src/base/SelectCurrentMixin.js";
 import SelectedItemTextValueMixin from "../../src/base/SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "../../src/base/SingleSelectAPIMixin.js";
 import TapCursorMixin from "../../src/base/TapCursorMixin.js";
@@ -33,7 +34,7 @@ import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
 
 const Base = AriaListMixin(
-  ContentItemsMixin(
+  CurrentItemInViewMixin(
     CursorAPIMixin(
       DirectionCursorMixin(
         ItemsAPIMixin(
@@ -44,10 +45,10 @@ const Base = AriaListMixin(
                   KeyboardPagedCursorMixin(
                     KeyboardPrefixCursorMixin(
                       LanguageDirectionMixin(
-                        SelectedItemTextValueMixin(
-                          CurrentItemInViewMixin(
+                        SelectCurrentMixin(
+                          SelectedItemTextValueMixin(
                             SingleSelectAPIMixin(
-                              TapCursorMixin(ReactiveElement)
+                              ContentItemsMixin(TapCursorMixin(ReactiveElement))
                             )
                           )
                         )

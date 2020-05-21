@@ -6,8 +6,10 @@ import { raiseChangeEvents, rendered, setState, state } from "./internal.js";
  *
  * This mixin expects a component to provide an `items` Array of all elements in
  * the list. This mixin also expects the component to apply
- * [ItemsCursorMixin](ItemsCursorMixin) or otherwise define a compatible
- * `currentIndex` state and other state members for navigating the current item.
+ * [ItemsCursorMixin](ItemsCursorMixin) and
+ * [SelectCurrentMixin](SelectCurrentMixin) or otherwise define a compatible
+ * `selectedIndex` state and other state members for navigating the current
+ * item.
  *
  * Given the above, this mixin exposes a consistent public API for reading and
  * manipulating the current item as a selection. This includes public members
@@ -35,8 +37,8 @@ export default function SingleSelectAPIMixin(Base) {
       if (super[rendered]) {
         super[rendered](changed);
       }
-      if (changed.currentIndex && this[raiseChangeEvents]) {
-        const selectedIndex = this[state].currentIndex;
+      if (changed.selectedIndex && this[raiseChangeEvents]) {
+        const selectedIndex = this[state].selectedIndex;
         /**
          * Raised when the `selectedIndex` property changes.
          *
@@ -51,30 +53,28 @@ export default function SingleSelectAPIMixin(Base) {
     }
 
     /**
-     * The index of the currently-selected item, or -1 if no item is selected.
+     * The index of the selected item, or -1 if no item is selected.
      *
      * @type {number}
      */
     get selectedIndex() {
-      const { items, currentIndex } = this[state];
-      return items && items.length > 0 ? currentIndex : -1;
+      const { items, selectedIndex } = this[state];
+      return items && items.length > 0 ? selectedIndex : -1;
     }
     set selectedIndex(selectedIndex) {
       if (!isNaN(selectedIndex)) {
-        this[setState]({
-          currentIndex: selectedIndex,
-        });
+        this[setState]({ selectedIndex });
       }
     }
 
     /**
-     * The currently-selected item, or null if no item is selected.
+     * The selected item, or null if no item is selected.
      *
      * @type {Element}
      */
     get selectedItem() {
-      const { items, currentIndex } = this[state];
-      return items && items[currentIndex];
+      const { items, selectedIndex } = this[state];
+      return items && items[selectedIndex];
     }
     set selectedItem(selectedItem) {
       const { items } = this[state];
@@ -83,7 +83,7 @@ export default function SingleSelectAPIMixin(Base) {
       }
       const index = items.indexOf(selectedItem);
       if (index >= 0) {
-        this[setState]({ currentIndex: index });
+        this[setState]({ selectedIndex: index });
       }
     }
   }

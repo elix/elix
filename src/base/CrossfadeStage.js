@@ -13,6 +13,7 @@ import {
 } from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
+import SelectCurrentMixin from "./SelectCurrentMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TransitionEffectMixin from "./TransitionEffectMixin.js";
@@ -21,8 +22,10 @@ const Base = CursorAPIMixin(
   EffectMixin(
     ItemsAPIMixin(
       ItemsCursorMixin(
-        SingleSelectAPIMixin(
-          SlotItemsMixin(TransitionEffectMixin(ReactiveElement))
+        SelectCurrentMixin(
+          SingleSelectAPIMixin(
+            SlotItemsMixin(TransitionEffectMixin(ReactiveElement))
+          )
         )
       )
     )

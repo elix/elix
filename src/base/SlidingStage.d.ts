@@ -7,6 +7,7 @@ import EffectMixin from "./EffectMixin.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
+import SelectCurrentMixin from "./SelectCurrentMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
@@ -15,7 +16,9 @@ export default class SlidingStage extends CursorAPIMixin(
     ItemsAPIMixin(
       ItemsCursorMixin(
         LanguageDirectionMixin(
-          SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+          SelectCurrentMixin(
+            SingleSelectAPIMixin(SlotItemsMixin(ReactiveElement))
+          )
         )
       )
     )
