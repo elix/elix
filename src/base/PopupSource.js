@@ -44,6 +44,7 @@ const Base = AriaRoleMixin(
 class PopupSource extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
+      ariaHasPopup: "true",
       horizontalAlign: "start",
       popupHeight: null,
       popupMeasured: false,
@@ -89,8 +90,8 @@ class PopupSource extends Base {
 
     renderParts(this[shadowRoot], this[state], changed);
 
-    if (this[firstRender]) {
-      this.setAttribute("aria-haspopup", "true");
+    if (this[firstRender] || changed.ariaHasPopup) {
+      this.setAttribute("aria-haspopup", this[state].ariaHasPopup);
     }
 
     if (changed.popupPartType) {

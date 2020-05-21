@@ -1,6 +1,7 @@
 import { updateChildNodes } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import { replace, transmute } from "../core/template.js";
+import AriaListMixin from "./AriaListMixin.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import {
@@ -20,12 +21,14 @@ import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
-const Base = CursorAPIMixin(
-  FormElementMixin(
-    ItemsAPIMixin(
-      ItemsCursorMixin(
-        SelectedItemTextValueMixin(
-          SingleSelectAPIMixin(SlotItemsMixin(MenuButton))
+const Base = AriaListMixin(
+  CursorAPIMixin(
+    FormElementMixin(
+      ItemsAPIMixin(
+        ItemsCursorMixin(
+          SelectedItemTextValueMixin(
+            SingleSelectAPIMixin(SlotItemsMixin(MenuButton))
+          )
         )
       )
     )
@@ -51,8 +54,8 @@ class DropdownList extends Base {
 
   get [defaultState]() {
     return Object.assign(super[defaultState], {
+      ariaHasPopup: "listbox",
       currentItemRequired: true,
-      itemRole: "menuitemradio",
       selectedIndex: -1,
       selectedItem: null,
       valuePartType: "div",

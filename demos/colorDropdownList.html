@@ -13,35 +13,37 @@
 
   <body role="main">
     <div class="demo padded">
-      <label>
-        Pick a color:
-        <elix-dropdown-list value="Red">
-          <elix-choice>
-            <labeled-color-swatch>Black</labeled-color-swatch>
-          </elix-choice>
-          <elix-choice>
-            <labeled-color-swatch>Blue</labeled-color-swatch>
-          </elix-choice>
-          <elix-choice>
-            <labeled-color-swatch>Green</labeled-color-swatch>
-          </elix-choice>
-          <elix-choice>
-            <labeled-color-swatch>Orange</labeled-color-swatch>
-          </elix-choice>
-          <elix-choice>
-            <labeled-color-swatch>Purple</labeled-color-swatch>
-          </elix-choice>
-          <elix-choice>
-            <labeled-color-swatch>Red</labeled-color-swatch>
-          </elix-choice>
-          <elix-choice>
-            <labeled-color-swatch>White</labeled-color-swatch>
-          </elix-choice>
-          <elix-choice>
-            <labeled-color-swatch>Yellow</labeled-color-swatch>
-          </elix-choice>
-        </elix-dropdown-list>
-      </label>
+      <label id="colorLabel">Pick a color:</label>
+      <elix-dropdown-list
+        id="colorDropdown"
+        aria-labelledby="colorLabel colorDropdown"
+        value="Red"
+      >
+        <elix-choice>
+          <labeled-color-swatch>Black</labeled-color-swatch>
+        </elix-choice>
+        <elix-choice>
+          <labeled-color-swatch>Blue</labeled-color-swatch>
+        </elix-choice>
+        <elix-choice>
+          <labeled-color-swatch>Green</labeled-color-swatch>
+        </elix-choice>
+        <elix-choice>
+          <labeled-color-swatch>Orange</labeled-color-swatch>
+        </elix-choice>
+        <elix-choice>
+          <labeled-color-swatch>Purple</labeled-color-swatch>
+        </elix-choice>
+        <elix-choice>
+          <labeled-color-swatch>Red</labeled-color-swatch>
+        </elix-choice>
+        <elix-choice>
+          <labeled-color-swatch>White</labeled-color-swatch>
+        </elix-choice>
+        <elix-choice>
+          <labeled-color-swatch>Yellow</labeled-color-swatch>
+        </elix-choice>
+      </elix-dropdown-list>
     </div>
   </body>
 </html>

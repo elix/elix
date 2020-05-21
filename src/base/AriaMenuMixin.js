@@ -36,10 +36,11 @@ export default function AriaMenuMixin(Base) {
       if (super[render]) {
         super[render](changed);
       }
-      const { currentIndex, itemRole } = this[state];
+
       /** @type {ListItemElement[]} */ const items = this[state].items;
       if ((changed.items || changed.itemRole) && items) {
         // Give each item a role.
+        const { itemRole } = this[state];
         items.forEach((item) => {
           if (itemRole === defaultAriaRole[item.localName]) {
             item.removeAttribute("role");
@@ -48,13 +49,7 @@ export default function AriaMenuMixin(Base) {
           }
         });
       }
-      if ((changed.items || changed.currentIndex) && items) {
-        // Reflect the selection state to each item.
-        items.forEach((item, index) => {
-          const selected = index === currentIndex;
-          item.setAttribute("aria-checked", selected.toString());
-        });
-      }
+
       if (changed.role) {
         // Apply top-level role.
         const { role } = this[state];

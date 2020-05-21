@@ -24,9 +24,9 @@
         <elix-menu-item>Zoom</elix-menu-item>
         <elix-menu-item>Settings</elix-menu-item>
       </elix-menu-button>
-      <p id="result"></p>
+      <p id="result" role="alert"></p>
       <script>
-        sampleMenuButton.addEventListener("closed", event => {
+        sampleMenuButton.addEventListener("closed", (event) => {
           const selectedItem = event.detail.closeResult;
           result.textContent = selectedItem
             ? `You picked: ${selectedItem.textContent}`

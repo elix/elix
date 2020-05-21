@@ -12,14 +12,15 @@
 
   <body role="main">
     <div class="demo padded">
-      <label>
-        Skill level:
-        <elix-dropdown-list>
-          <elix-choice>Beginner</elix-choice>
-          <elix-choice>Intermediate</elix-choice>
-          <elix-choice>Expert</elix-choice>
-        </elix-dropdown-list>
-      </label>
+      <label id="skillLabel">Skill level:</label>
+      <elix-dropdown-list
+        id="skillDropdown"
+        aria-labelledby="skillLabel skillDropdown"
+      >
+        <elix-choice>Beginner</elix-choice>
+        <elix-choice>Intermediate</elix-choice>
+        <elix-choice>Expert</elix-choice>
+      </elix-dropdown-list>
     </div>
   </body>
 </html>

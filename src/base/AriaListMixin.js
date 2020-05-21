@@ -67,7 +67,7 @@ export default function AriaListMixin(Base) {
         super[render](changed);
       }
 
-      const { currentIndex, itemRole } = this[state];
+      const { itemRole } = this[state];
       /** @type {ListItemElement[]} */ const items = this[state].items;
 
       // Give each item an ID.
@@ -91,28 +91,29 @@ export default function AriaListMixin(Base) {
       }
 
       // Reflect the selected state to each item.
-      if (changed.items || changed.currentIndex || changed.selectedFlags) {
+      if (changed.items || changed.selectedIndex || changed.selectedFlags) {
         // Does the list support multi-selection?
-        const { selectedFlags } = this[state];
+        const { selectedFlags, selectedIndex } = this[state];
         if (items) {
           items.forEach((item, index) => {
             const selected = selectedFlags
               ? selectedFlags[index] // Multi-select
-              : index === currentIndex; // Single-select
+              : index === selectedIndex; // Single-select
             item.setAttribute("aria-selected", selected.toString());
           });
         }
       }
 
       // Indicate on the host that the current item is active.
-      if (changed.items || changed.currentIndex) {
-        const currentItem =
-          currentIndex >= 0 && items ? items[currentIndex] : null;
-        if (currentItem) {
-          if (!currentItem.id) {
-            currentItem.id = ensureId(currentItem);
+      if (changed.items || changed.selectedIndex) {
+        const { selectedIndex } = this[state];
+        const selectedItem =
+          selectedIndex >= 0 && items ? items[selectedIndex] : null;
+        if (selectedItem) {
+          if (!selectedItem.id) {
+            selectedItem.id = ensureId(selectedItem);
           }
-          this.setAttribute("aria-activedescendant", currentItem.id);
+          this.setAttribute("aria-activedescendant", selectedItem.id);
         } else {
           this.removeAttribute("aria-activedescendant");
         }
