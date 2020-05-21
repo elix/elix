@@ -32,19 +32,19 @@ import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapCursorMixin from "./TapCursorMixin.js";
 
 const Base = AriaMenuMixin(
-  CursorAPIMixin(
-    DelegateFocusMixin(
-      DirectionCursorMixin(
-        ItemsAPIMixin(
-          ItemsCursorMixin(
-            ItemsTextMixin(
-              KeyboardDirectionMixin(
-                KeyboardMixin(
-                  KeyboardPagedCursorMixin(
-                    KeyboardPrefixCursorMixin(
-                      LanguageDirectionMixin(
-                        SelectedItemTextValueMixin(
-                          CurrentItemInViewMixin(
+  CurrentItemInViewMixin(
+    CursorAPIMixin(
+      DelegateFocusMixin(
+        DirectionCursorMixin(
+          ItemsAPIMixin(
+            ItemsCursorMixin(
+              ItemsTextMixin(
+                KeyboardDirectionMixin(
+                  KeyboardMixin(
+                    KeyboardPagedCursorMixin(
+                      KeyboardPrefixCursorMixin(
+                        LanguageDirectionMixin(
+                          SelectedItemTextValueMixin(
                             SlotItemsMixin(TapCursorMixin(ReactiveElement))
                           )
                         )

@@ -1,5 +1,5 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import { stateEffects } from "./internal.js";
+import { defaultState, stateEffects } from "./internal.js";
 
 /**
  * Keeps the current item and selected item in sync.
@@ -13,6 +13,13 @@ import { stateEffects } from "./internal.js";
 export default function SelectCurrentMixin(Base) {
   // The class prototype added by the mixin.
   return class SelectCurrent extends Base {
+    get [defaultState]() {
+      return Object.assign(super[defaultState], {
+        selectedIndex: -1,
+        selectedItem: null,
+      });
+    }
+
     [stateEffects](state, changed) {
       const effects = super[stateEffects]
         ? super[stateEffects](state, changed)
@@ -31,6 +38,8 @@ export default function SelectCurrentMixin(Base) {
       }
 
       // Current item tracks selection.
+      // Since this step happens second, if both current item and selected item
+      // are changed, the current item wins.
       if (changed.selectedIndex) {
         Object.assign(effects, {
           currentIndex: state.selectedIndex,

@@ -16,7 +16,6 @@ import {
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import MenuButton from "./MenuButton.js";
-import SelectCurrentMixin from "./SelectCurrentMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
@@ -25,10 +24,8 @@ const Base = CursorAPIMixin(
   FormElementMixin(
     ItemsAPIMixin(
       ItemsCursorMixin(
-        SelectCurrentMixin(
-          SelectedItemTextValueMixin(
-            SingleSelectAPIMixin(SlotItemsMixin(MenuButton))
-          )
+        SelectedItemTextValueMixin(
+          SingleSelectAPIMixin(SlotItemsMixin(MenuButton))
         )
       )
     )
@@ -49,13 +46,15 @@ class DropdownList extends Base {
   // By default, opening the menu re-selects the component item that's currently
   // selected.
   get defaultMenuSelectedIndex() {
-    return this[state].currentIndex;
+    return this[state].selectedIndex;
   }
 
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       currentItemRequired: true,
       itemRole: "menuitemradio",
+      selectedIndex: -1,
+      selectedItem: null,
       valuePartType: "div",
     });
   }
@@ -71,12 +70,24 @@ class DropdownList extends Base {
       }
     }
 
-    if (changed.currentIndex) {
-      const items = this[state].items || [];
-      const selectedItem = items[this[state].currentIndex];
+    // Update selection.
+    if (changed.items || changed.selectedIndex) {
+      const { items, selectedIndex } = this[state];
+      const selectedItem = items ? items[selectedIndex] : null;
+
+      // Show selection in value part.
       const clone = selectedItem ? selectedItem.cloneNode(true) : null;
       const childNodes = clone ? clone.childNodes : [];
       updateChildNodes(this[ids].value, childNodes);
+
+      // Mark only the selected item as selected.
+      if (items) {
+        items.forEach((/** @type {any} */ item) => {
+          if ("selected" in item) {
+            item.selected = item === selectedItem;
+          }
+        });
+      }
     }
   }
 
@@ -87,8 +98,20 @@ class DropdownList extends Base {
     if (changed.opened) {
       const { closeResult, items, opened } = state;
       if (!opened && items && closeResult !== undefined) {
-        const currentIndex = items.indexOf(closeResult);
-        Object.assign(effects, { currentIndex });
+        const selectedIndex = items.indexOf(closeResult);
+        Object.assign(effects, {
+          selectedIndex,
+        });
+      }
+    }
+
+    // If we get items and don't have a selection, select the first item.
+    if (changed.items || changed.selectedIndex) {
+      const { items, selectedIndex } = state;
+      if (selectedIndex < 0 && items && items.length > 0) {
+        Object.assign(effects, {
+          selectedIndex: 0,
+        });
       }
     }
 
