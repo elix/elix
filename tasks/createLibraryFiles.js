@@ -39,7 +39,11 @@ async function createLibraryFile(destination, header, sourceFiles) {
   const sorted = sortByBaseName(componentsAndMixins);
   const defaultExports = sorted
     .map((file) => {
-      const relativePath = path.relative(destinationFolder, file);
+      let relativePath = path.relative(destinationFolder, file);
+      if (path.sep === "\\") {
+        // On Windows: convert backslashes to web-friendly slashes.
+        relativePath = relativePath.replace(/\\/g, "/");
+      }
       const fullClassName = path.basename(file, ".js");
       // Strip 'Plain' from beginning of class name.
       const plainRegex = /^Plain(?<name>.+)/;
@@ -55,7 +59,11 @@ async function createLibraryFile(destination, header, sourceFiles) {
   const helperFiles = sourceFiles.helpers.sort();
   const multipleExports = helperFiles
     .map((file) => {
-      const relativePath = path.relative(destinationFolder, file);
+      let relativePath = path.relative(destinationFolder, file);
+      if (path.sep === "\\") {
+        // On Windows: convert backslashes to web-friendly slashes.
+        relativePath = relativePath.replace(/\\/g, "/");
+      }
       const name = path.basename(file, ".js");
       // Include a "." if there's not already a "." at the beginning.
       const importPath =
