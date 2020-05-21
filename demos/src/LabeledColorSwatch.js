@@ -1,9 +1,10 @@
 import { ids, render, state, template } from "../../src/base/internal.js";
+import SelectableMixin from "../../src/base/SelectableMixin.js";
 import SlotContentMixin from "../../src/base/SlotContentMixin.js";
 import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
 
-const Base = SlotContentMixin(ReactiveElement);
+const Base = SelectableMixin(SlotContentMixin(ReactiveElement));
 
 class LabeledColorSwatch extends Base {
   [render](/** @type {PlainObject} */ changed) {
@@ -33,12 +34,6 @@ class LabeledColorSwatch extends Base {
           height: 1em;
           margin-right: 0.25em;
           width: 1em;
-        }
-
-        @media (pointer: coarse) {
-          #swatch {
-            margin-right: 0.5em;
-          }
         }
       </style>
       <span id="swatch"></span>

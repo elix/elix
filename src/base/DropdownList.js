@@ -45,7 +45,7 @@ const Base = CursorAPIMixin(
 class DropdownList extends Base {
   // By default, opening the menu re-selects the component item that's currently
   // selected.
-  get defaultMenuSelectedIndex() {
+  get defaultMenuItemIndex() {
     return this[state].selectedIndex;
   }
 

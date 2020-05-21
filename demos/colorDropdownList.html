@@ -6,23 +6,40 @@
     <title>Elix DropdownList with custom value representation</title>
 
     <link rel="stylesheet" href="demos.css" />
-    <script type="module" src="../define/DropdownList.js"></script>
+    <script type="module" src="../define/Choice.js"></script>
     <script type="module" src="./src/LabeledColorSwatch.js"></script>
+    <script type="module" src="../define/DropdownList.js"></script>
   </head>
 
   <body role="main">
     <div class="demo padded">
       <label>
         Pick a color:
-        <elix-dropdown-list value-part-type="labeled-color-swatch" value="Red">
-          <labeled-color-swatch>Black</labeled-color-swatch>
-          <labeled-color-swatch>Blue</labeled-color-swatch>
-          <labeled-color-swatch>Green</labeled-color-swatch>
-          <labeled-color-swatch>Orange</labeled-color-swatch>
-          <labeled-color-swatch>Purple</labeled-color-swatch>
-          <labeled-color-swatch>Red</labeled-color-swatch>
-          <labeled-color-swatch>White</labeled-color-swatch>
-          <labeled-color-swatch>Yellow</labeled-color-swatch>
+        <elix-dropdown-list value="Red">
+          <elix-choice>
+            <labeled-color-swatch>Black</labeled-color-swatch>
+          </elix-choice>
+          <elix-choice>
+            <labeled-color-swatch>Blue</labeled-color-swatch>
+          </elix-choice>
+          <elix-choice>
+            <labeled-color-swatch>Green</labeled-color-swatch>
+          </elix-choice>
+          <elix-choice>
+            <labeled-color-swatch>Orange</labeled-color-swatch>
+          </elix-choice>
+          <elix-choice>
+            <labeled-color-swatch>Purple</labeled-color-swatch>
+          </elix-choice>
+          <elix-choice>
+            <labeled-color-swatch>Red</labeled-color-swatch>
+          </elix-choice>
+          <elix-choice>
+            <labeled-color-swatch>White</labeled-color-swatch>
+          </elix-choice>
+          <elix-choice>
+            <labeled-color-swatch>Yellow</labeled-color-swatch>
+          </elix-choice>
         </elix-dropdown-list>
       </label>
     </div>

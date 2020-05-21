@@ -13,9 +13,19 @@ class PlainMenu extends Menu {
     result.content.append(
       fragmentFrom.html`
         <style>
+          :host ::slotted(*) {
+            padding: 0.25em 1em;
+          }
+          
           :host ::slotted([current]) {
             background: highlight;
             color: highlighttext;
+          }
+
+          @media (pointer: coarse) {
+            ::slotted(*) {
+              padding: 1em;
+            }
           }
         </style>
       `

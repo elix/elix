@@ -14,7 +14,6 @@ class PlainChoice extends MenuItem {
     return templateFrom.html`
       <style>
         :host {
-          padding: 0.25em 2em 0.25em 1em;
           white-space: nowrap;
         }
 

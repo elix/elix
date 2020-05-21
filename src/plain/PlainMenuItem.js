@@ -16,7 +16,6 @@ class PlainMenuItem extends MenuItem {
         :host {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
           font-size: 10pt;
-          padding: 0.25em 2em 0.25em 1em;
           white-space: nowrap;
         }
 
