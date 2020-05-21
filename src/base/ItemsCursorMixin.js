@@ -89,7 +89,9 @@ export default function ItemsCursorMixin(Base) {
         super[goPrevious]();
       }
       const { previousItemIndex } = this[state];
-      return previousItemIndex < 0 ? false : moveToIndex(this, previousItemIndex);
+      return previousItemIndex < 0
+        ? false
+        : moveToIndex(this, previousItemIndex);
     }
 
     /**
@@ -148,7 +150,7 @@ export default function ItemsCursorMixin(Base) {
           // For now, force the index to be within bounds. If items array is
           // null or empty, this will be -1 (no selection).
           newIndex = count - 1;
-        } else if (currentIndexPending !== null) {
+        } else if (changed.items && currentIndexPending !== null) {
           if (currentIndexPending < count) {
             // The items array has increased in size to the point where a pending
             // index can be applied and then discarded.
