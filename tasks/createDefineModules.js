@@ -17,7 +17,11 @@ async function createDefineModules(defineFolder, componentFiles) {
 
     const tag = tagFromClassName(className);
 
-    const relativePath = path.relative(defineFolder, componentFile);
+    let relativePath = path.relative(defineFolder, componentFile);
+    if (path.sep === "\\") {
+      // On Windows: convert backslashes to web-friendly slashes.
+      relativePath = relativePath.replace(/\\/g, "/");
+    }
     // Include a "." if there's not already a "." at the beginning.
     const importPath =
       relativePath[0] === "." ? relativePath : `./${relativePath}`;
