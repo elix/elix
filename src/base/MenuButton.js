@@ -38,17 +38,17 @@ class MenuButton extends PopupButton {
   }
 
   // The index that will be selected by default when the menu opens.
-  get defaultMenuSelectedIndex() {
+  get defaultMenuItemIndex() {
     return -1;
   }
 
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       dragSelect: true,
+      menuCurrentIndex: -1,
       menuPartType: Menu,
-      menuSelectedIndex: -1,
-      selectedItem: null,
       popupTogglePartType: UpDownToggle,
+      selectedItem: null,
       touchstartX: null,
       touchstartY: null,
     });
@@ -64,15 +64,15 @@ class MenuButton extends PopupButton {
   /**
    * Highlight the selected item (if one exists), then close the menu.
    */
-  async highlightSelectedItemAndClose() {
+  async selectCurrentItemAndClose() {
     const originalRaiseChangeEvents = this[raiseChangeEvents];
-    const selectionDefined = this[state].menuSelectedIndex >= 0;
+    const selectionDefined = this[state].menuCurrentIndex >= 0;
     const closeResult = selectionDefined
-      ? this.items[this[state].menuSelectedIndex]
+      ? this.items[this[state].menuCurrentIndex]
       : undefined;
     /** @type {any} */ const menu = this[ids].menu;
-    if (selectionDefined && "highlightSelectedItem" in menu) {
-      await menu.highlightSelectedItem();
+    if (selectionDefined && "flashCurrentItem" in menu) {
+      await menu.flashCurrentItem();
     }
     const saveRaiseChangeEvents = this[raiseChangeEvents];
     this[raiseChangeEvents] = originalRaiseChangeEvents;
@@ -86,37 +86,12 @@ class MenuButton extends PopupButton {
     return menu ? menu.items : null;
   }
 
-  /**
-   * Invoked when a new item is selected.
-   *
-   * @param {ListItemElement} item
-   */
-  itemSelected(item) {
-    if (this[raiseChangeEvents]) {
-      /**
-       * Raised when the user has moved the selection to a new menu item. This
-       * event is raised while the menu is still open. To check which item the
-       * user selected from a menu, listen to the `closed` event and inspect the
-       * event `details` object for its `closeResult` member.
-       *
-       * @event menu-item-selected
-       */
-      const event = new CustomEvent("menu-item-selected", {
-        bubbles: true,
-        detail: {
-          selectedItem: item,
-        },
-      });
-      this.dispatchEvent(event);
-    }
-  }
-
   [keydown](/** @type {KeyboardEvent} */ event) {
     switch (event.key) {
       // Enter toggles popup.
       case "Enter":
         if (this.opened) {
-          this.highlightSelectedItemAndClose();
+          this.selectCurrentItemAndClose();
           return true;
         } else {
           this.open();
@@ -194,10 +169,10 @@ class MenuButton extends PopupButton {
 
         if (target && target instanceof Node) {
           const hoverIndex = indexOfItemContainingTarget(this.items, target);
-          if (hoverIndex !== this[state].menuSelectedIndex) {
+          if (hoverIndex !== this[state].menuCurrentIndex) {
             this[raiseChangeEvents] = true;
             this[setState]({
-              menuSelectedIndex: hoverIndex,
+              menuCurrentIndex: hoverIndex,
             });
             this[raiseChangeEvents] = false;
           }
@@ -247,15 +222,15 @@ class MenuButton extends PopupButton {
         // there's a selection, they clicked on an item, so also close.
         // Otherwise, the user clicked the menu open, then clicked on a menu
         // separator or menu padding; stay open.
-        const menuSelectedIndex = this[state].menuSelectedIndex;
-        if (this[state].dragSelect || menuSelectedIndex >= 0) {
+        const menuCurrentIndex = this[state].menuCurrentIndex;
+        if (this[state].dragSelect || menuCurrentIndex >= 0) {
           // We don't want the document mouseup handler to close
           // before we've asked the menu to highlight the selection.
           // We need to stop event propagation here, before we enter
           // any async code, to actually stop propagation.
           event.stopPropagation();
           this[raiseChangeEvents] = true;
-          await this.highlightSelectedItemAndClose();
+          await this.selectCurrentItemAndClose();
           this[raiseChangeEvents] = false;
         } else {
           event.stopPropagation();
@@ -263,12 +238,12 @@ class MenuButton extends PopupButton {
       });
 
       // Track changes in the menu's selection state.
-      this[ids].menu.addEventListener("selected-index-changed", (event) => {
+      this[ids].menu.addEventListener("current-index-changed", (event) => {
         this[raiseChangeEvents] = true;
         /** @type {any} */
         const cast = event;
         this[setState]({
-          menuSelectedIndex: cast.detail.selectedIndex,
+          menuCurrentIndex: cast.detail.currentIndex,
         });
         this[raiseChangeEvents] = false;
       });
@@ -290,24 +265,16 @@ class MenuButton extends PopupButton {
       /** @type {any} */ (this[ids].popupToggle).disabled = disabled;
     }
 
-    if (changed.menuSelectedIndex) {
+    if (changed.menuCurrentIndex) {
       const menu = /** @type {any} */ (this[ids].menu);
-      if ("selectedIndex" in menu) {
-        menu.selectedIndex = this[state].menuSelectedIndex;
+      if ("currentIndex" in menu) {
+        menu.currentIndex = this[state].menuCurrentIndex;
       }
     }
   }
 
   [rendered](/** @type {ChangedFlags} */ changed) {
     super[rendered](changed);
-
-    if (changed.menuSelectedIndex) {
-      const selectedItem =
-        this[state].menuSelectedIndex >= 0
-          ? this.items[this[state].menuSelectedIndex]
-          : null;
-      this.itemSelected(selectedItem);
-    }
 
     if (changed.opened) {
       listenIfOpenAndConnected(this);
@@ -326,7 +293,7 @@ class MenuButton extends PopupButton {
           dragSelect: true,
 
           // Select the default item in the menu.
-          menuSelectedIndex: this.defaultMenuSelectedIndex,
+          menuCurrentIndex: this.defaultMenuItemIndex,
 
           // Clear any previously selected item.
           selectedItem: null,
@@ -339,7 +306,7 @@ class MenuButton extends PopupButton {
         // Closing
         Object.assign(effects, {
           // Clear menu selection.
-          menuSelectedIndex: -1,
+          menuCurrentIndex: -1,
         });
       }
     }

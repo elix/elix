@@ -5,7 +5,7 @@ import PopupButton from "./PopupButton.js";
 
 export default class MenuButton extends PopupButton {
   defaultMenuSelectedIndex: number;
-  highlightSelectedItemAndClose(): Promise<void>;
+  flashCurrentItemAndClose(): Promise<void>;
   readonly items: ListItemElement[];
   menuPartType: PartDescriptor;
 }

@@ -28,7 +28,6 @@ import KeyboardPagedCursorMixin from "./KeyboardPagedCursorMixin.js";
 import KeyboardPrefixCursorMixin from "./KeyboardPrefixCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
-import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapCursorMixin from "./TapCursorMixin.js";
 
@@ -46,9 +45,7 @@ const Base = AriaMenuMixin(
                       LanguageDirectionMixin(
                         SelectedItemTextValueMixin(
                           CurrentItemInViewMixin(
-                            SingleSelectAPIMixin(
-                              SlotItemsMixin(TapCursorMixin(ReactiveElement))
-                            )
+                            SlotItemsMixin(TapCursorMixin(ReactiveElement))
                           )
                         )
                       )
@@ -92,28 +89,28 @@ const Base = AriaMenuMixin(
 class Menu extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
-      highlightSelection: true,
+      highlightCurrentItem: true,
       orientation: "vertical",
-      selectionFocused: false,
+      currentItemFocused: false,
     });
   }
 
   /**
-   * Highlight the selected item.
+   * Flash the current item.
    *
    * By default, this uses a heuristic to guess whether the menu was closed by a
-   * keyboard or mouse. If so, the menu flashes the selected item off then back
-   * on, emulating the menu item selection effect in macOS. Otherwise, it does
-   * nothing.
+   * keyboard or mouse (on desktop). If so, the menu flashes the current item
+   * off then back on, emulating the menu item selection effect in macOS.
+   * Otherwise, it does nothing.
    */
-  async highlightSelectedItem() {
+  async flashCurrentItem() {
     const keyboardActive = this[state].focusVisible;
     const probablyDesktop = matchMedia("(pointer: fine)").matches;
     if (keyboardActive || probablyDesktop) {
       const flashDuration = 75; // milliseconds
-      this[setState]({ highlightSelection: false });
+      this[setState]({ highlightCurrentItem: false });
       await new Promise((resolve) => setTimeout(resolve, flashDuration));
-      this[setState]({ highlightSelection: true });
+      this[setState]({ highlightCurrentItem: true });
       await new Promise((resolve) => setTimeout(resolve, flashDuration));
     }
   }
@@ -148,21 +145,29 @@ class Menu extends Base {
     }
 
     const { currentIndex, items } = this[state];
-    if ((changed.items || changed.currentIndex) && items) {
-      // Reflect the selection state to the item.
+
+    // Highlight the current item.
+    if (
+      (changed.items || changed.currentIndex || changed.highlightCurrentItem) &&
+      items
+    ) {
+      const { highlightCurrentItem } = this[state];
       items.forEach((item, index) => {
-        item.toggleAttribute("selected", index === currentIndex);
+        item.toggleAttribute(
+          "current",
+          highlightCurrentItem && index === currentIndex
+        );
       });
     }
 
     if (
       (changed.items ||
         changed.currentIndex ||
-        changed.selectionFocused ||
+        changed.currentItemFocused ||
         changed.focusVisible) &&
       items
     ) {
-      // A menu has a complicated focus arrangement in which the selected item has
+      // A menu has a complicated focus arrangement in which the current item has
       // focus, which means it needs a tabindex. However, we don't want any other
       // item in the menu to have a tabindex, so that if the user presses Tab or
       // Shift+Tab, they move away from the menu entirely (rather than just moving
@@ -172,20 +177,20 @@ class Menu extends Base {
       // tabindex from an item that has the focus, the focus gets moved to the
       // document. In popup menus, the popup will conclude it's lost the focus,
       // and implicitly close. So we want to move the focus in two phases: 1)
-      // set tabindex on a newly-selected item so we can focus on it, 2) after
+      // set tabindex on a newly-current item so we can focus on it, 2) after
       // the new item has been focused, remove the tabindex from any
-      // previously-selected item.
+      // previous item.
       items.forEach((item, index) => {
-        const selected = index === currentIndex;
+        const current = index === currentIndex;
         const isDefaultFocusableItem = currentIndex < 0 && index === 0;
-        if (!this[state].selectionFocused) {
-          // Phase 1: Add tabindex to newly-selected item.
-          if (selected || isDefaultFocusableItem) {
+        if (!this[state].currentItemFocused) {
+          // Phase 1: Add tabindex to newly-current item.
+          if (current || isDefaultFocusableItem) {
             item.tabIndex = 0;
           }
         } else {
-          // Phase 2: Remove tabindex from any previously-selected item.
-          if (!(selected || isDefaultFocusableItem)) {
+          // Phase 2: Remove tabindex from any previous item.
+          if (!(current || isDefaultFocusableItem)) {
             item.removeAttribute("tabindex");
           }
         }
@@ -198,18 +203,19 @@ class Menu extends Base {
     if (
       !this[firstRender] &&
       changed.currentIndex &&
-      !this[state].selectionFocused
+      !this[state].currentItemFocused
     ) {
-      // The selected item needs the focus, but this is complicated. See notes
+      // The current item needs the focus, but this is complicated. See notes
       // in render.
+      const { currentItem } = this[state];
       const focusElement =
-        this.selectedItem instanceof HTMLElement ? this.selectedItem : this;
+        currentItem instanceof HTMLElement ? currentItem : this;
       focusElement.focus();
 
-      // Now that the selection has been focused, we can remove/reset the
-      // tabindex on any item that had previously been selected.
+      // Now that the current item has been focused, we can remove/reset the
+      // tabindex on any item that had previously been current.
       this[setState]({
-        selectionFocused: true,
+        currentItemFocused: true,
       });
     }
   }
@@ -221,10 +227,10 @@ class Menu extends Base {
   [stateEffects](state, changed) {
     const effects = super[stateEffects](state, changed);
 
-    // When selection changes, we'll need to focus on it in rendered.
+    // When current item changes, we'll need to focus on it in rendered.
     if (changed.currentIndex) {
       Object.assign(effects, {
-        selectionFocused: false,
+        currentItemFocused: false,
       });
     }
 

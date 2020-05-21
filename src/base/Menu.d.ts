@@ -16,7 +16,6 @@ import KeyboardPagedCursorMixin from "./KeyboardPagedCursorMixin.js";
 import KeyboardPrefixCursorMixin from "./KeyboardPrefixCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
-import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapCursorMixin from "./TapCursorMixin.js";
 
@@ -34,9 +33,7 @@ export default class MenuBase extends AriaMenuMixin(
                       LanguageDirectionMixin(
                         SelectedItemTextValueMixin(
                           CurrentItemInViewMixin(
-                            SingleSelectAPIMixin(
-                              SlotItemsMixin(TapCursorMixin(ReactiveElement))
-                            )
+                            SlotItemsMixin(TapCursorMixin(ReactiveElement))
                           )
                         )
                       )
@@ -51,5 +48,5 @@ export default class MenuBase extends AriaMenuMixin(
     )
   )
 ) {
-  highlightSelectedItem(): Promise<void>;
+  flashCurrentItem(): Promise<void>;
 }
