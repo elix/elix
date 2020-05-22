@@ -1,7 +1,7 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import {
   closestAvailableItem,
-  itemMatchesState,
+  isItemAvailable,
   keydown,
   raiseChangeEvents,
   scrollTarget,
@@ -132,8 +132,8 @@ function getIndexOfItemAtY(element, y, downward) {
   let itemRect;
   for (index = start; index !== end; index += step) {
     // Only consider items that match the element's current state.
-    const matches = element[itemMatchesState]
-      ? element[itemMatchesState](items[index], element[state])
+    const matches = element[isItemAvailable]
+      ? element[isItemAvailable](items[index], element[state])
       : true;
     if (matches) {
       itemRect = items[index].getBoundingClientRect();

@@ -9,7 +9,7 @@ import {
   defaultState,
   firstRender,
   ids,
-  itemMatchesState,
+  isItemAvailable,
   render,
   rendered,
   scrollTarget,
@@ -116,14 +116,14 @@ class Menu extends Base {
   }
 
   /**
-   * Returns true if the given item should be shown in the indicated state.
+   * Returns true if the given item is available in the given state.
    *
    * @param {ListItemElement} item
    * @param {PlainObject} state
    */
-  [itemMatchesState](item, state) {
-    const base = super[itemMatchesState]
-      ? super[itemMatchesState](item, state)
+  [isItemAvailable](item, state) {
+    const base = super[isItemAvailable]
+      ? super[isItemAvailable](item, state)
       : true;
     /** @type {any} */ const cast = item;
     return base && !cast.disabled;

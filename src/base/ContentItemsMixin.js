@@ -1,6 +1,6 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import { isSubstantiveElement } from "./content.js";
-import { defaultState, itemMatchesState, stateEffects } from "./internal.js";
+import { defaultState, isItemAvailable, stateEffects } from "./internal.js";
 
 /**
  * Treats an element's content nodes as list items.
@@ -42,9 +42,9 @@ export default function ContentItemsMixin(Base) {
      * @param {PlainObject} state
      * @returns {boolean}
      */
-    [itemMatchesState](item, state) {
-      const base = super[itemMatchesState]
-        ? super[itemMatchesState](item, state)
+    [isItemAvailable](item, state) {
+      const base = super[isItemAvailable]
+        ? super[isItemAvailable](item, state)
         : true;
       return base && isSubstantiveElement(item);
     }
@@ -63,7 +63,7 @@ export default function ContentItemsMixin(Base) {
           const items = content
             ? Array.prototype.filter.call(content, (/** @type {Node} */ item) =>
                 item instanceof HTMLElement || item instanceof SVGElement
-                  ? this[itemMatchesState](item, state)
+                  ? this[isItemAvailable](item, state)
                   : false
               )
             : null;

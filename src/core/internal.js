@@ -12,9 +12,9 @@
  * [ShadowTemplateMixin](ShadowTemplateMixin) expects a component to define
  * a property called [template](#template):
  *
- *     import { checkSize, contentSlot, defaultState, defaultTabIndex, delegatesFocus, effectEndTarget, firstRender, focusTarget, getItemText, goDown, goEnd, goFirst, goLast, goLeft, goNext, goPrevious, goRight, goStart, goToItemWithPrefix, goUp, hasDynamicTemplate, ids, inputDelegate, itemMatchesState, itemsDelegate, keydown, mouseenter, mouseleave, nativeInternals, event, raiseChangeEvents, render, renderChanges, renderDataToElement, rendered, rendering, scrollTarget, setState, shadowRoot, shadowRootMode, startEffect, state, stateEffects, swipeDown, swipeDownComplete, swipeLeft, swipeLeftTransitionEnd, swipeRight, swipeRightTransitionEnd, swipeUp, swipeUpComplete, swipeStart, swipeTarget, tap, template, toggleSelectedFlag } from 'elix/src/internal.js';
- *     import { createElement, replace, transmute } from 'elix/src/template.js'
- *     import ShadowTemplateMixin from 'elix/src/ShadowTemplateMixin.js';
+ *     import { template } from 'elix/src/core/internal.js';
+ *     import { templateFrom } from 'elix/src/core/htmlLiterals.js'
+ *     import ShadowTemplateMixin from 'elix/src/core/ShadowTemplateMixin.js';
  *
  *     class MyElement extends ShadowTemplateMixin(HTMLElement) {
  *       [template]() {
@@ -22,10 +22,10 @@
  *       }
  *     }
  *
- * The above use of `internal.template` lets the mixin find the component's
- * template in a way that will not pollute the component's public API or
- * interfere with other component logic. For example, if for some reason the
- * component wants to define a separate property with the plain string name,
+ * The above use of the internal `template` member lets the mixin find the
+ * component's template in a way that will not pollute the component's public
+ * API or interfere with other component logic. For example, if for some reason
+ * the component wants to define a separate property with the plain string name,
  * "template", it can do so without affecting the above property setter.
  *
  * @module internal

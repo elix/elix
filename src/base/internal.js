@@ -12,7 +12,7 @@
  * [ShadowTemplateMixin](ShadowTemplateMixin) expects a component to define
  * a property called [template](#template):
  *
- *     import { checkSize, contentSlot, defaultState, defaultTabIndex, delegatesFocus, effectEndTarget, firstRender, focusTarget, getItemText, goDown, goEnd, goFirst, goLast, goLeft, goNext, goPrevious, goRight, goStart, goToItemWithPrefix, goUp, hasDynamicTemplate, ids, inputDelegate, itemMatchesState, itemsDelegate, keydown, mouseenter, mouseleave, nativeInternals, event, raiseChangeEvents, render, renderChanges, renderDataToElement, rendered, rendering, scrollTarget, setState, shadowRoot, shadowRootMode, startEffect, state, stateEffects, swipeDown, swipeDownComplete, swipeLeft, swipeLeftTransitionEnd, swipeRight, swipeRightTransitionEnd, swipeUp, swipeUpComplete, swipeStart, swipeTarget, tap, template, toggleSelectedFlag } from 'elix/src/internal.js';
+ *     import { checkSize, contentSlot, defaultState, defaultTabIndex, delegatesFocus, effectEndTarget, firstRender, focusTarget, getItemText, goDown, goEnd, goFirst, goLast, goLeft, goNext, goPrevious, goRight, goStart, goToItemWithPrefix, goUp, hasDynamicTemplate, ids, inputDelegate, isItemAvailable, itemsDelegate, keydown, mouseenter, mouseleave, nativeInternals, event, raiseChangeEvents, render, renderChanges, renderDataToElement, rendered, rendering, scrollTarget, setState, shadowRoot, shadowRootMode, startEffect, state, stateEffects, swipeDown, swipeDownComplete, swipeLeft, swipeLeftTransitionEnd, swipeRight, swipeRightTransitionEnd, swipeUp, swipeUpComplete, swipeStart, swipeTarget, tap, template, toggleSelectedFlag } from 'elix/src/internal.js';
  *     import { createElement, replace, transmute } from 'elix/src/template.js'
  *     import ShadowTemplateMixin from 'elix/src/ShadowTemplateMixin.js';
  *
@@ -255,28 +255,22 @@ export const ids = coreInternal.ids;
 export const inputDelegate = Symbol("inputDelegate");
 
 /**
- * Symbol for the `itemMatchesState` method.
+ * Symbol for the `isItemAvailable` method.
  *
- * `ContentItemsMixin` uses this callback to determine whether a content node
- * should be included in the `items` collection in the given state. By default,
- * substantive, visible elements are considered items; other nodes (including
- * text nodes, comment nodes, processing instructions) and invisible elements
- * (including `script` and `style` tags) are not considered to be items.
- *
- * Various mixins and components override this to refine the idea of what
- * counts as an item. E.g., [Menu](Menu) overrides this to exclude disabled
- * menu items, using code similar to this:
+ * Various mixins and components override this to refine the idea of what items
+ * are available in a given state. E.g., [Menu](Menu) overrides this to exclude
+ * disabled menu items, using code similar to this:
  *
  *     // Filter the set of items to ignore disabled items.
- *     [itemMatchesState](item, state) {
- *       const base = super[itemMatchesState] ?
- *         super[itemMatchesState](item, state) :
+ *     [isItemAvailable](item, state) {
+ *       const base = super[isItemAvailable] ?
+ *         super[isItemAvailable](item, state) :
  *         true;
  *       return base && !item.disabled;
  *     }
  *
  */
-export const itemMatchesState = Symbol("itemMatchesState");
+export const isItemAvailable = Symbol("isItemAvailable");
 
 /**
  * Symbol for the `itemsDelegate` property.
@@ -628,7 +622,7 @@ if (elixdebug === "true") {
       hasDynamicTemplate,
       ids,
       inputDelegate,
-      itemMatchesState,
+      isItemAvailable,
       itemsDelegate,
       keydown,
       mouseenter,
