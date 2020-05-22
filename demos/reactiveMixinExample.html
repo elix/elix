@@ -22,63 +22,11 @@
       </template>
       <script type="module">
         import {
-          checkSize,
-          contentSlot,
           defaultState,
-          defaultTabIndex,
-          delegatesFocus,
-          effectEndTarget,
-          firstRender,
-          focusTarget,
-          getItemText,
-          goDown,
-          goEnd,
-          goFirst,
-          goLast,
-          goLeft,
-          goNext,
-          goPrevious,
-          goRight,
-          goStart,
-          goToItemWithPrefix,
-          goUp,
-          hasDynamicTemplate,
-          ids,
-          inputDelegate,
-          itemMatchesState,
-          itemsDelegate,
-          keydown,
-          mouseenter,
-          mouseleave,
-          nativeInternals,
-          event,
-          raiseChangeEvents,
           render,
-          renderChanges,
-          renderDataToElement,
-          rendered,
-          rendering,
-          scrollTarget,
           setState,
-          shadowRoot,
-          shadowRootMode,
-          startEffect,
           state,
-          stateEffects,
-          swipeDown,
-          swipeDownComplete,
-          swipeLeft,
-          swipeLeftTransitionEnd,
-          swipeRight,
-          swipeRightTransitionEnd,
-          swipeUp,
-          swipeUpComplete,
-          swipeStart,
-          swipeTarget,
-          tap,
-          template,
-          toggleSelectedFlag,
-        } from "../src/core/internal.js";
+        } from "../src/base/internal.js";
         import ReactiveMixin from "../src/core/ReactiveMixin.js";
 
         // Create a native web component with reactive behavior.
@@ -127,7 +75,7 @@
               // Render the state into the shadow.
               // @ts-ignore
               this.shadowRoot.querySelector("#value").textContent = this[
-                internal.state
+                state
               ].value;
             }
           }
