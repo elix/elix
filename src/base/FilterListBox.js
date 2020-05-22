@@ -5,6 +5,7 @@ import {
   itemAvailableInState,
   raiseChangeEvents,
   render,
+  rendered,
   setState,
   state,
 } from "./internal.js";
@@ -106,6 +107,15 @@ class FilterListBox extends ListBox {
           }
         });
       }
+    }
+  }
+
+  [rendered](changed) {
+    super[rendered](changed);
+
+    // If filter changed, we may need to scroll cursor back into view.
+    if (changed.filter) {
+      this.scrollCurrentItemIntoView();
     }
   }
 }
