@@ -5,6 +5,7 @@ import {
   defaultState,
   firstRender,
   ids,
+  itemAvailableInState,
   keydown,
   raiseChangeEvents,
   render,
@@ -62,22 +63,17 @@ class MenuButton extends PopupButton {
   }
 
   /**
-   * Highlight the selected item (if one exists), then close the menu.
+   * Returns true if the given item is available in the given state.
+   *
+   * @param {ListItemElement} item
+   * @param {PlainObject} state
    */
-  async selectCurrentItemAndClose() {
-    const originalRaiseChangeEvents = this[raiseChangeEvents];
-    const selectionDefined = this[state].menuCurrentIndex >= 0;
-    const closeResult = selectionDefined
-      ? this.items[this[state].menuCurrentIndex]
-      : undefined;
-    /** @type {any} */ const menu = this[ids].menu;
-    if (selectionDefined && "flashCurrentItem" in menu) {
-      await menu.flashCurrentItem();
-    }
-    const saveRaiseChangeEvents = this[raiseChangeEvents];
-    this[raiseChangeEvents] = originalRaiseChangeEvents;
-    await this.close(closeResult);
-    this[raiseChangeEvents] = saveRaiseChangeEvents;
+  [itemAvailableInState](item, state) {
+    const base = super[itemAvailableInState]
+      ? super[itemAvailableInState](item, state)
+      : true;
+    /** @type {any} */ const cast = item;
+    return base && !cast.disabled;
   }
 
   get items() {
@@ -168,12 +164,15 @@ class MenuButton extends PopupButton {
           : event.target;
 
         if (target && target instanceof Node) {
-          const hoverIndex = indexOfItemContainingTarget(this.items, target);
-          if (hoverIndex !== this[state].menuCurrentIndex) {
+          const items = this.items;
+          const hoverIndex = indexOfItemContainingTarget(items, target);
+          const item = items[hoverIndex];
+          const available =
+            item && this[itemAvailableInState](item, this[state]);
+          const menuCurrentIndex = available ? hoverIndex : -1;
+          if (menuCurrentIndex !== this[state].menuCurrentIndex) {
             this[raiseChangeEvents] = true;
-            this[setState]({
-              menuCurrentIndex: hoverIndex,
-            });
+            this[setState]({ menuCurrentIndex });
             this[raiseChangeEvents] = false;
           }
         }
@@ -279,6 +278,25 @@ class MenuButton extends PopupButton {
     if (changed.opened) {
       listenIfOpenAndConnected(this);
     }
+  }
+
+  /**
+   * Highlight the selected item (if one exists), then close the menu.
+   */
+  async selectCurrentItemAndClose() {
+    const originalRaiseChangeEvents = this[raiseChangeEvents];
+    const selectionDefined = this[state].menuCurrentIndex >= 0;
+    const closeResult = selectionDefined
+      ? this.items[this[state].menuCurrentIndex]
+      : undefined;
+    /** @type {any} */ const menu = this[ids].menu;
+    if (selectionDefined && "flashCurrentItem" in menu) {
+      await menu.flashCurrentItem();
+    }
+    const saveRaiseChangeEvents = this[raiseChangeEvents];
+    this[raiseChangeEvents] = originalRaiseChangeEvents;
+    await this.close(closeResult);
+    this[raiseChangeEvents] = saveRaiseChangeEvents;
   }
 
   [stateEffects](state, changed) {
