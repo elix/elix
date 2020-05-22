@@ -1,4 +1,12 @@
-import { defaultState, goFirst, goLast, goNext, goPrevious, itemAvailableInState, setState, state } from "../../src/base/internal.js";
+import {
+  defaultState,
+  goFirst,
+  goLast,
+  goNext,
+  goPrevious,
+  setState,
+  state,
+} from "../../src/base/internal.js";
 import ItemsCursorMixin from "../../src/base/ItemsCursorMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import { assert } from "../testHelpers.js";
@@ -6,18 +14,8 @@ import { assert } from "../testHelpers.js";
 class ItemsCursorTest extends ItemsCursorMixin(ReactiveMixin(HTMLElement)) {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
-      availableFlags: [true, true, true],
       items: ["Zero", "One", "Two"],
     });
-  }
-
-  [itemAvailableInState](item, state) {
-    if (state.items) {
-      const index = state.items.indexOf(item);
-      return state.availableFlags[index];
-    } else {
-      return false;
-    }
   }
 }
 customElements.define("items-cursor-test", ItemsCursorTest);
@@ -147,27 +145,27 @@ describe("ItemsCursorMixin", () => {
     const fixture = new ItemsCursorTest();
 
     fixture[setState]({
-      availableFlags: [false, true, true],
+      availableItemFlags: [false, true, true],
     });
     fixture[goFirst]();
     assert.equal(fixture[state].currentIndex, 1);
 
     fixture[setState]({
-      availableFlags: [true, false, true],
+      availableItemFlags: [true, false, true],
       currentIndex: 0,
     });
     fixture[goNext]();
     assert.equal(fixture[state].currentIndex, 2);
 
     fixture[setState]({
-      availableFlags: [true, false, true],
+      availableItemFlags: [true, false, true],
       currentIndex: 2,
     });
     fixture[goPrevious]();
     assert.equal(fixture[state].currentIndex, 0);
 
     fixture[setState]({
-      availableFlags: [true, true, false],
+      availableItemFlags: [true, true, false],
     });
     fixture[goLast]();
     assert.equal(fixture[state].currentIndex, 1);

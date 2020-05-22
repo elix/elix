@@ -2,12 +2,12 @@ import { updateChildNodes } from "../core/dom.js";
 import {
   defaultState,
   getItemText,
-  itemAvailableInState,
   raiseChangeEvents,
   render,
   rendered,
   setState,
   state,
+  stateEffects,
 } from "./internal.js";
 import ListBox from "./ListBox.js";
 
@@ -19,6 +19,7 @@ import ListBox from "./ListBox.js";
 class FilterListBox extends ListBox {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
+      availableItemFlags: null,
       filter: null,
     });
   }
@@ -76,18 +77,12 @@ class FilterListBox extends ListBox {
    * given state.
    *
    * @param {ListItemElement} item
-   * @param {PlainObject} state
+   * @param {string} filter
+   * @returns {boolean}
    */
-  [itemAvailableInState](item, state) {
-    const base = super[itemAvailableInState]
-      ? super[itemAvailableInState](item, state)
-      : true;
-    if (!base) {
-      return false;
-    }
+  itemMatchesFilter(item, filter) {
     const text = this[getItemText](item).toLowerCase();
-    const filter = state.filter && state.filter.toLowerCase();
-    return !filter ? true : !text ? false : text.includes(filter);
+    return !filter ? true : !text ? false : text.includes(filter.toLowerCase());
   }
 
   [render](/** @type {ChangedFlags} */ changed) {
@@ -96,12 +91,12 @@ class FilterListBox extends ListBox {
     // Hide items that don't match state.
     // For matching items, highlight the matching text.
     if (changed.filter || changed.items) {
-      const { filter, items } = this[state];
+      const { filter, availableItemFlags, items } = this[state];
       if (items) {
-        items.forEach((item) => {
-          const matches = this[itemAvailableInState](item, this[state]);
-          item.style.display = matches ? "" : "none";
-          if (matches) {
+        items.forEach((item, index) => {
+          const available = availableItemFlags[index];
+          item.style.display = available ? "" : "none";
+          if (available) {
             const childNodes = this.highlightTextInItem(filter, item);
             updateChildNodes(item, childNodes);
           }
@@ -117,6 +112,23 @@ class FilterListBox extends ListBox {
     if (changed.filter) {
       this.scrollCurrentItemIntoView();
     }
+  }
+
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects]
+      ? super[stateEffects](state, changed)
+      : {};
+
+    if (changed.filter || changed.items) {
+      const { filter, items } = state;
+      const availableItemFlags =
+        items === null
+          ? null
+          : items.map((item) => this.itemMatchesFilter(item, filter));
+      Object.assign(effects, { availableItemFlags });
+    }
+
+    return effects;
   }
 }
 

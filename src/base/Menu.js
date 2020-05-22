@@ -9,7 +9,7 @@ import {
   defaultState,
   firstRender,
   ids,
-  itemAvailableInState,
+  raiseChangeEvents,
   render,
   rendered,
   scrollTarget,
@@ -69,6 +69,7 @@ const Base = AriaMenuMixin(
  *
  * @inherits ReactiveElement
  * @mixes AriaMenuMixin
+ * @mixes CurrentItemInViewMixin
  * @mixes CursorAPIMixin
  * @mixes DelegateFocusMixin
  * @mixes DirectionCursorMixin
@@ -81,7 +82,6 @@ const Base = AriaMenuMixin(
  * @mixes KeyboardPrefixCursorMixin
  * @mixes LanguageDirectionMixin
  * @mixes SelectedItemTextValueMixin
- * @mixes CurrentItemInViewMixin
  * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
  * @mixes TapCursorMixin
@@ -89,6 +89,7 @@ const Base = AriaMenuMixin(
 class Menu extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
+      availableItemFlags: null,
       highlightCurrentItem: true,
       orientation: "vertical",
       currentItemFocused: false,
@@ -115,24 +116,25 @@ class Menu extends Base {
     }
   }
 
-  /**
-   * Returns true if the given item is available in the given state.
-   *
-   * @param {ListItemElement} item
-   * @param {PlainObject} state
-   */
-  [itemAvailableInState](item, state) {
-    const base = super[itemAvailableInState]
-      ? super[itemAvailableInState](item, state)
-      : true;
-    /** @type {any} */ const cast = item;
-    return base && !cast.disabled;
-  }
-
   [render](/** @type {ChangedFlags} */ changed) {
     super[render](changed);
 
     if (this[firstRender]) {
+      // Listen to changes in disabled state.
+      this.addEventListener("disabled-changed", (event) => {
+        this[raiseChangeEvents] = true;
+        /** @type {any} */ const target = event.target;
+        const { items } = this[state];
+        const index = items === null ? -1 : items.indexOf(target);
+        if (index >= 0) {
+          // Update item availability.
+          const availableItemFlags = this[state].availableItemFlags.slice();
+          availableItemFlags[index] = !target.disabled;
+          this[setState]({ availableItemFlags });
+        }
+        this[raiseChangeEvents] = false;
+      });
+
       // Treat a pointerdown event as a tap.
       if ("PointerEvent" in window) {
         // Prefer listening to standard pointer events.
@@ -232,6 +234,14 @@ class Menu extends Base {
       Object.assign(effects, {
         currentItemFocused: false,
       });
+    }
+
+    // Mark disabled items as unavailable.
+    if (changed.items) {
+      const { items } = state;
+      const availableItemFlags =
+        items === null ? null : items.map((item) => !item.disabled);
+      Object.assign(effects, { availableItemFlags });
     }
 
     return effects;

@@ -5,7 +5,6 @@ import {
   defaultState,
   firstRender,
   ids,
-  itemAvailableInState,
   keydown,
   raiseChangeEvents,
   render,
@@ -60,20 +59,6 @@ class MenuButton extends PopupButton {
       super.disconnectedCallback();
     }
     listenIfOpenAndConnected(this);
-  }
-
-  /**
-   * Returns true if the given item is available in the given state.
-   *
-   * @param {ListItemElement} item
-   * @param {PlainObject} state
-   */
-  [itemAvailableInState](item, state) {
-    const base = super[itemAvailableInState]
-      ? super[itemAvailableInState](item, state)
-      : true;
-    /** @type {any} */ const cast = item;
-    return base && !cast.disabled;
   }
 
   get items() {
@@ -156,7 +141,7 @@ class MenuButton extends PopupButton {
     renderParts(this[shadowRoot], this[state], changed);
 
     if (this[firstRender]) {
-      // If the user hovers over an item, select it.
+      // If the user hovers over an enabled item, select it.
       this.addEventListener("mousemove", (event) => {
         // Treat the deepest element in the composed event path as the target.
         const target = event.composedPath
@@ -167,9 +152,8 @@ class MenuButton extends PopupButton {
           const items = this.items;
           const hoverIndex = indexOfItemContainingTarget(items, target);
           const item = items[hoverIndex];
-          const available =
-            item && this[itemAvailableInState](item, this[state]);
-          const menuCurrentIndex = available ? hoverIndex : -1;
+          const enabled = item && !item.disabled;
+          const menuCurrentIndex = enabled ? hoverIndex : -1;
           if (menuCurrentIndex !== this[state].menuCurrentIndex) {
             this[raiseChangeEvents] = true;
             this[setState]({ menuCurrentIndex });

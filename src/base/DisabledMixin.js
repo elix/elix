@@ -1,5 +1,11 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import { defaultState, rendered, setState, state } from "./internal.js";
+import {
+  defaultState,
+  raiseChangeEvents,
+  rendered,
+  setState,
+  state,
+} from "./internal.js";
 
 /**
  * Tracks the disabled state of a component that can be disabled
@@ -51,9 +57,22 @@ export default function DisabledMixin(Base) {
       if (super[rendered]) {
         super[rendered](changed);
       }
+
       if (changed.disabled) {
         // Reflect value of disabled property to the corresponding attribute.
         this.toggleAttribute("disabled", this.disabled);
+
+        if (this[raiseChangeEvents]) {
+          /**
+           * Raised when the `disabled` property changes.
+           *
+           * @event disabled-changed
+           */
+          const event = new CustomEvent("disabled-changed", {
+            bubbles: true,
+          });
+          this.dispatchEvent(event);
+        }
       }
     }
   }

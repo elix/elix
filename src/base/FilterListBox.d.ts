@@ -5,4 +5,5 @@ import ListBox from "./ListBox.js";
 
 export default class FilterListBox extends ListBox {
   filter: string;
+  itemMatchesFilter(item: ListItemElement, filter: string): boolean;
 }

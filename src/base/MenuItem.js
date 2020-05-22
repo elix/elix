@@ -1,5 +1,6 @@
 import ReactiveElement from "../core/ReactiveElement.js";
 import CurrentMixin from "./CurrentMixin.js";
+import DisabledMixin from "./DisabledMixin.js";
 import SelectableMixin from "./SelectableMixin.js";
 
 /**
@@ -11,8 +12,12 @@ import SelectableMixin from "./SelectableMixin.js";
  * of item you want.
  *
  * @inherits ReactiveElement
+ * @mixes CurrentMixin
+ * @mixes DisabledMixin
  * @mixes SelectableMixin
  */
-class MenuItem extends CurrentMixin(SelectableMixin(ReactiveElement)) {}
+class MenuItem extends CurrentMixin(
+  DisabledMixin(SelectableMixin(ReactiveElement))
+) {}
 
 export default MenuItem;

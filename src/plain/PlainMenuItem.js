@@ -19,6 +19,10 @@ class PlainMenuItem extends MenuItem {
           white-space: nowrap;
         }
 
+        :host([disabled]) {
+          opacity: 0.5;
+        }
+
         #checkmark {
           height: 1em;
           visibility: hidden;

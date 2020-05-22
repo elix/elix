@@ -1,7 +1,6 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import {
   closestAvailableItem,
-  itemAvailableInState,
   keydown,
   raiseChangeEvents,
   scrollTarget,
@@ -130,12 +129,11 @@ function getIndexOfItemAtY(element, y, downward) {
   let index;
   /** @type {HTMLElement|SVGElement|null} */ let item = null;
   let itemRect;
+  const { availableItemFlags } = element[state];
   for (index = start; index !== end; index += step) {
-    // Only consider items that match the element's current state.
-    const matches = element[itemAvailableInState]
-      ? element[itemAvailableInState](items[index], element[state])
-      : true;
-    if (matches) {
+    // Only consider items available in the element's current state.
+    const available = availableItemFlags ? availableItemFlags[index] : true;
+    if (available) {
       itemRect = items[index].getBoundingClientRect();
       if (itemRect.top <= y && y <= itemRect.bottom) {
         // Item spans the indicated y coordinate.

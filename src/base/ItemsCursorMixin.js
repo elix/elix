@@ -6,7 +6,6 @@ import {
   goLast,
   goNext,
   goPrevious,
-  itemAvailableInState,
   setState,
   state,
   stateEffects,
@@ -47,7 +46,10 @@ export default function ItemsCursorMixin(Base) {
         let i = ((index % count) + count) % count;
         const end = (((i - direction) % count) + count) % count;
         while (i !== end) {
-          if (this[itemAvailableInState](items[i], state)) {
+          const available = state.availableItemFlags
+            ? state.availableItemFlags[i]
+            : true;
+          if (available) {
             return i;
           }
           // See modulus note above.
@@ -56,7 +58,10 @@ export default function ItemsCursorMixin(Base) {
       } else {
         // Search without wrapping.
         for (let i = index; i >= 0 && i < count; i += direction) {
-          if (this[itemAvailableInState](items[i], state)) {
+          const available = state.availableItemFlags
+            ? state.availableItemFlags[i]
+            : true;
+          if (available) {
             return i;
           }
         }
@@ -134,19 +139,6 @@ export default function ItemsCursorMixin(Base) {
       const start =
         currentIndex < 0 && items ? items.length - 1 : currentIndex - 1;
       return moveToIndex(this, start, -1);
-    }
-
-    /**
-     * Returns true if the given item is available in the indicated state.
-     *
-     * @param {ListItemElement} item
-     * @param {PlainObject} state
-     * @returns {boolean}
-     */
-    [itemAvailableInState](item, state) {
-      return super[itemAvailableInState]
-        ? super[itemAvailableInState](item, state)
-        : true;
     }
 
     [stateEffects](state, changed) {
