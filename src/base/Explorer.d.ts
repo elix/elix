@@ -22,6 +22,8 @@ export default class Explorer extends CursorAPIMixin(
     )
   )
 ) {
+  canGoNext: boolean;
+  canGoPrevious: boolean;
   [checkSize](): void;
   readonly proxies: Element[];
   proxyListOverlap: boolean;

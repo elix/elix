@@ -6,8 +6,6 @@
 declare const CursorAPIMixin: Mixin<
   {},
   {
-    canGoNext: boolean;
-    canGoPrevious: boolean;
     currentIndex: number;
     currentItem: Element | null;
     currentItemRequired: boolean;

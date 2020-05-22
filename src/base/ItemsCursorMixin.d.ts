@@ -15,8 +15,6 @@ declare const ItemsCursorMixin: StateMixin<
     [goLast](): boolean;
   },
   {
-    canGoNext: boolean;
-    canGoPrevious: boolean;
     currentIndex: number;
     currentItem: Element | null;
     currentItemRequired: boolean;

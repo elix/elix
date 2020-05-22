@@ -45,7 +45,8 @@ export default function ItemsCursorMixin(Base) {
 
         // Modulus taking into account negative numbers.
         let i = ((index % count) + count) % count;
-        while (i !== index) {
+        const end = (((i - direction) % count) + count) % count;
+        while (i !== end) {
           if (this[itemMatchesState](items[i], state)) {
             return i;
           }
@@ -66,8 +67,6 @@ export default function ItemsCursorMixin(Base) {
 
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
-        canGoNext: false,
-        canGoPrevious: false,
         currentIndex: -1,
         currentIndexPending: null,
         currentItem: null,
@@ -221,28 +220,6 @@ export default function ItemsCursorMixin(Base) {
           currentIndex: newIndex,
           currentIndexPending: newIndexPending,
           currentItem: newItem,
-        });
-      }
-
-      // Update computed state members canGoNext/canGoPrevious.
-      if (
-        changed.currentIndex ||
-        changed.cursorOperationsWrap ||
-        changed.filter ||
-        changed.items
-      ) {
-        const { currentIndex, items } = state;
-        // Can go next/previous if there are items but no cursor.
-        const specialCase = items.length > 0 && currentIndex < 0;
-        const canGoNext =
-          specialCase ||
-          this[closestAvailableItem](state, currentIndex + 1, 1) >= 0;
-        const canGoPrevious =
-          specialCase ||
-          this[closestAvailableItem](state, currentIndex - 1, -1) >= 0;
-        Object.assign(effects, {
-          canGoNext,
-          canGoPrevious,
         });
       }
 

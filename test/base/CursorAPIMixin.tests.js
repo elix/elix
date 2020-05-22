@@ -91,46 +91,6 @@ describe("CursorAPIMixin", () => {
     assert.equal(fixture.currentIndex, 0);
   });
 
-  it("sets canGoNext/canGoPrevious with no wrapping", () => {
-    const fixture = new CursorAPITest();
-    assert(!fixture.cursorOperationsWrap);
-
-    // No cursor yet
-    assert.equal(fixture.currentIndex, -1);
-    assert(fixture.canGoNext);
-    assert(fixture.canGoPrevious);
-
-    // Start of list
-    fixture.goFirst();
-    assert(fixture.canGoNext);
-    assert(!fixture.canGoPrevious);
-
-    // Middle of list
-    fixture.goNext();
-    assert(fixture.canGoNext);
-    assert(fixture.canGoPrevious);
-
-    // End of list
-    fixture.goLast();
-    assert(!fixture.canGoNext);
-    assert(fixture.canGoPrevious);
-  });
-
-  it("sets canGoNext/canGoPrevious with wrapping", () => {
-    const fixture = new CursorAPITest();
-    fixture.cursorOperationsWrap = true;
-
-    // Start of list
-    fixture.goFirst();
-    assert(fixture.canGoNext);
-    assert(fixture.canGoPrevious);
-
-    // End of list
-    fixture.goLast();
-    assert(fixture.canGoNext);
-    assert(fixture.canGoPrevious);
-  });
-
   it("changing currentIndex through (simulated) user interaction raises the current-index-changed event", (done) => {
     const fixture = new CursorAPITest();
     fixture.addEventListener("current-index-changed", () => {

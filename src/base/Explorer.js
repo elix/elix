@@ -6,6 +6,7 @@ import CursorAPIMixin from "./CursorAPIMixin.js";
 import CursorSelectMixin from "./CursorSelectMixin.js";
 import {
   checkSize,
+  closestAvailableItem,
   defaultState,
   firstRender,
   ids,
@@ -66,6 +67,26 @@ class Explorer extends Base {
     } else {
       super.attributeChangedCallback(name, oldValue, newValue);
     }
+  }
+
+  /**
+   * True if the item cursor can be moved to the next item, false if not (the
+   * current item is the last item in the list).
+   *
+   * @type {boolean}
+   */
+  get canGoNext() {
+    return this[state].canGoNext;
+  }
+
+  /**
+   * True if the item cursor can be moved to the previous item, false if not
+   * (the current item is the first one in the list).
+   *
+   * @type {boolean}
+   */
+  get canGoPrevious() {
+    return this[state].canGoPrevious;
   }
 
   [checkSize]() {
@@ -368,6 +389,28 @@ class Explorer extends Base {
           proxies: createDefaultProxies(items, proxyPartType),
         });
       }
+    }
+
+    // Update computed state members canGoNext/canGoPrevious.
+    if (
+      changed.currentIndex ||
+      changed.cursorOperationsWrap ||
+      changed.filter ||
+      changed.items
+    ) {
+      const { currentIndex, items } = state;
+      // Can go next/previous if there are items but no cursor.
+      const specialCase = items && items.length > 0 && currentIndex < 0;
+      const canGoNext =
+        specialCase ||
+        this[closestAvailableItem](state, currentIndex + 1, 1) >= 0;
+      const canGoPrevious =
+        specialCase ||
+        this[closestAvailableItem](state, currentIndex - 1, -1) >= 0;
+      Object.assign(effects, {
+        canGoNext,
+        canGoPrevious,
+      });
     }
 
     return effects;

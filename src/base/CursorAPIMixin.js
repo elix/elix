@@ -47,26 +47,6 @@ export default function CursorAPIMixin(Base) {
     }
 
     /**
-     * True if the item cursor can be moved to the next item, false if not (the
-     * current item is the last item in the list).
-     *
-     * @type {boolean}
-     */
-    get canGoNext() {
-      return this[state].canGoNext;
-    }
-
-    /**
-     * True if the item cursor can be moved to the previous item, false if not
-     * (the current item is the first one in the list).
-     *
-     * @type {boolean}
-     */
-    get canGoPrevious() {
-      return this[state].canGoPrevious;
-    }
-
-    /**
      * The index of the current item, or -1 if no item is current.
      *
      * @type {number}

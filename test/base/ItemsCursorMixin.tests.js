@@ -1,7 +1,5 @@
 import {
   defaultState,
-  goFirst,
-  goLast,
   goNext,
   goPrevious,
   setState,
@@ -139,45 +137,5 @@ describe("ItemsCursorMixin", () => {
       currentIndex: 0,
     });
     assert.equal(fixture[state].currentIndex, -1);
-  });
-
-  it("sets canGoNext/canGoPrevious with no wrapping", () => {
-    const fixture = new ItemsCursorTest();
-    assert(!fixture[state].cursorOperationsWrap);
-
-    // No current item yet
-    assert.equal(fixture[state].currentIndex, -1);
-    assert(fixture[state].canGoNext);
-    assert(fixture[state].canGoPrevious);
-
-    // Start of list
-    fixture[goFirst]();
-    assert(fixture[state].canGoNext);
-    assert(!fixture[state].canGoPrevious);
-
-    // Middle of list
-    fixture[goNext]();
-    assert(fixture[state].canGoNext);
-    assert(fixture[state].canGoPrevious);
-
-    // End of list
-    fixture[goLast]();
-    assert(!fixture[state].canGoNext);
-    assert(fixture[state].canGoPrevious);
-  });
-
-  it("sets canGoNext/canGoPrevious with wrapping", () => {
-    const fixture = new ItemsCursorTest();
-    fixture[setState]({ cursorOperationsWrap: true });
-
-    // Start of list
-    fixture[goFirst]();
-    assert(fixture[state].canGoNext);
-    assert(fixture[state].canGoPrevious);
-
-    // End of list
-    fixture[goLast]();
-    assert(fixture[state].canGoNext);
-    assert(fixture[state].canGoPrevious);
   });
 });
