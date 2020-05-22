@@ -1,6 +1,6 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import { isSubstantiveElement } from "./content.js";
-import { defaultState, isItemAvailable, stateEffects } from "./internal.js";
+import { defaultState, stateEffects } from "./internal.js";
 
 /**
  * Treats an element's content nodes as list items.
@@ -35,43 +35,23 @@ export default function ContentItemsMixin(Base) {
       });
     }
 
-    /**
-     * Returns true if the given item should be shown in the indicated state.
-     *
-     * @param {ListItemElement} item
-     * @param {PlainObject} state
-     * @returns {boolean}
-     */
-    [isItemAvailable](item, state) {
-      const base = super[isItemAvailable]
-        ? super[isItemAvailable](item, state)
-        : true;
-      return base && isSubstantiveElement(item);
-    }
-
     [stateEffects](state, changed) {
       const effects = super[stateEffects]
         ? super[stateEffects](state, changed)
         : {};
 
-      // Regenerate items when content changes, or if items has been nullified
-      // by another mixin (as a signal that items should be regenerated).
-      if (changed.content || changed.items) {
+      // Regenerate items when content changes.
+      if (changed.content) {
         /** @type {Node[]} */ const content = state.content;
-        const needsItems = content && !state.items; // Signal from other mixins
-        if (changed.content || needsItems) {
-          const items = content
-            ? Array.prototype.filter.call(content, (/** @type {Node} */ item) =>
-                item instanceof HTMLElement || item instanceof SVGElement
-                  ? this[isItemAvailable](item, state)
-                  : false
-              )
-            : null;
-          if (items) {
-            Object.freeze(items);
-          }
-          Object.assign(effects, { items });
+        const items = content
+          ? Array.prototype.filter.call(content, (/** @type {Node} */ item) =>
+              isSubstantiveElement(item)
+            )
+          : null;
+        if (items) {
+          Object.freeze(items);
         }
+        Object.assign(effects, { items });
       }
 
       return effects;

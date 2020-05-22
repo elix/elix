@@ -3,14 +3,10 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-import { isItemAvailable } from "./internal.js";
-
 declare const ContentItemsMixin: StateMixin<
   {},
   {},
-  {
-    [isItemAvailable](item: ListItemElement, state: PlainObject): boolean;
-  },
+  {},
   {
     items: ListItemElement[];
   }
