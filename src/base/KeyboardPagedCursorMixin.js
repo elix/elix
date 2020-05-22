@@ -1,5 +1,6 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import {
+  closestAvailableItem,
   itemMatchesState,
   keydown,
   raiseChangeEvents,
@@ -212,14 +213,11 @@ function scrollOnePage(element, downward) {
   if (!newIndex) {
     // We went past the first/last item without finding an item. Move to the
     // last item (if moving downward) or first item (if moving upward).
-    // newIndex = downward ? items.length - 1 : 0;
-    const start = -1;
+    const index = downward ? items.length - 1 : 0;
     const direction = downward ? -1 /* Work up */ : 1; /* Work down */
-    newIndex = element.closestItemMatchingState(
-      element[state],
-      start,
-      direction
-    );
+    newIndex = element[closestAvailableItem]
+      ? element[closestAvailableItem](element[state], index, direction)
+      : index;
   }
 
   // If external code causes an operation that scrolls the page, it's impossible

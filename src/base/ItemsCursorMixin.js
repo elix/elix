@@ -1,5 +1,6 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import {
+  closestAvailableItem,
   defaultState,
   goFirst,
   goLast,
@@ -20,9 +21,47 @@ import {
 export default function ItemsCursorMixin(Base) {
   // The class prototype added by the mixin.
   class ItemsCursor extends Base {
-    // TODO: Define with Symbol
-    closestItemMatchingState(state, index, direction) {
-      return findClosestItemMatchingState(this, state, index, direction);
+    /**
+     * Look for an item which is available in the given state. Start at the
+     * indicated index, and move in the indicated direction (-1 to move backward
+     * the items, 1 to move forward).
+     *
+     * @param {PlainObject} state
+     * @param {number} index
+     * @param {number} direction
+     * @returns {number}
+     */
+    [closestAvailableItem](state, index, direction) {
+      const { cursorOperationsWrap, items } = state;
+      const count = items ? items.length : 0;
+
+      if (count === 0) {
+        // No items
+        return -1;
+      }
+
+      if (cursorOperationsWrap) {
+        // Search with wrapping.
+
+        // Modulus taking into account negative numbers.
+        let i = ((index % count) + count) % count;
+        while (i !== index) {
+          if (this[itemMatchesState](items[i], state)) {
+            return i;
+          }
+          // See modulus note above.
+          i = (((i + direction) % count) + count) % count;
+        }
+      } else {
+        // Search without wrapping.
+        for (let i = index; i >= 0 && i < count; i += direction) {
+          if (this[itemMatchesState](items[i], state)) {
+            return i;
+          }
+        }
+      }
+
+      return -1; // No item found
     }
 
     get [defaultState]() {
@@ -34,8 +73,6 @@ export default function ItemsCursorMixin(Base) {
         currentItem: null,
         currentItemRequired: false,
         cursorOperationsWrap: false,
-        nextItemIndex: -1,
-        previousItemIndex: -1,
       });
     }
 
@@ -49,7 +86,7 @@ export default function ItemsCursorMixin(Base) {
       if (super[goFirst]) {
         super[goFirst]();
       }
-      return moveToIndex(this, 0);
+      return moveToIndex(this, 0, 1);
     }
 
     /**
@@ -62,7 +99,7 @@ export default function ItemsCursorMixin(Base) {
       if (super[goLast]) {
         super[goLast]();
       }
-      return moveToIndex(this, this[state].items.length - 1);
+      return moveToIndex(this, this[state].items.length - 1, -1);
     }
 
     /**
@@ -77,8 +114,9 @@ export default function ItemsCursorMixin(Base) {
       if (super[goNext]) {
         super[goNext]();
       }
-      const { nextItemIndex } = this[state];
-      return nextItemIndex < 0 ? false : moveToIndex(this, nextItemIndex);
+      const { currentIndex, items } = this[state];
+      const start = currentIndex < 0 && items ? 0 : currentIndex + 1;
+      return moveToIndex(this, start, 1);
     }
 
     /**
@@ -93,10 +131,10 @@ export default function ItemsCursorMixin(Base) {
       if (super[goPrevious]) {
         super[goPrevious]();
       }
-      const { previousItemIndex } = this[state];
-      return previousItemIndex < 0
-        ? false
-        : moveToIndex(this, previousItemIndex);
+      const { currentIndex, items } = this[state];
+      const start =
+        currentIndex < 0 && items ? items.length - 1 : currentIndex - 1;
+      return moveToIndex(this, start, -1);
     }
 
     /**
@@ -190,47 +228,21 @@ export default function ItemsCursorMixin(Base) {
       if (
         changed.currentIndex ||
         changed.cursorOperationsWrap ||
-        changed.items
-      ) {
-        const { items, currentIndex, cursorOperationsWrap } = state;
-        if (items) {
-          const count = items.length;
-          const canGoNext =
-            count === 0
-              ? false
-              : cursorOperationsWrap || currentIndex !== count - 1;
-          const canGoPrevious =
-            count === 0 ? false : cursorOperationsWrap || currentIndex !== 0;
-          Object.assign(effects, {
-            canGoNext,
-            canGoPrevious,
-          });
-        }
-      }
-
-      // Update computed state members nextItemIndex/previousItemIndex.
-      if (
-        changed.currentIndex ||
-        changed.cursorOperationsWrap ||
         changed.filter ||
         changed.items
       ) {
-        const { currentIndex } = state;
-        const nextItemIndex = findClosestItemMatchingState(
-          this,
-          state,
-          currentIndex,
-          1
-        );
-        const previousItemIndex = findClosestItemMatchingState(
-          this,
-          state,
-          currentIndex,
-          -1
-        );
+        const { currentIndex, items } = state;
+        // Can go next/previous if there are items but no cursor.
+        const specialCase = items.length > 0 && currentIndex < 0;
+        const canGoNext =
+          specialCase ||
+          this[closestAvailableItem](state, currentIndex + 1, 1) >= 0;
+        const canGoPrevious =
+          specialCase ||
+          this[closestAvailableItem](state, currentIndex - 1, -1) >= 0;
         Object.assign(effects, {
-          nextItemIndex,
-          previousItemIndex,
+          canGoNext,
+          canGoPrevious,
         });
       }
 
@@ -241,55 +253,20 @@ export default function ItemsCursorMixin(Base) {
   return ItemsCursor;
 }
 
-function findClosestItemMatchingState(element, state, index, direction) {
-  const { cursorOperationsWrap, items } = state;
-  const count = items ? items.length : 0;
-
-  if (count === 0) {
-    // No items
-    return -1;
-  }
-
-  let start;
-  if (index === -1) {
-    // Special cases if there's no cursor
-    start = direction > 0 ? 0 : count - 1;
-  } else {
-    start = index + direction;
-  }
-
-  if (cursorOperationsWrap) {
-    // Search with wrapping.
-
-    // Modulus taking into account negative numbers.
-    let i = ((start % count) + count) % count;
-    while (i !== index) {
-      if (element[itemMatchesState](items[i], state)) {
-        return i;
-      }
-      // See modulus note above.
-      i = (((i + direction) % count) + count) % count;
-    }
-  } else {
-    // Search without wrapping.
-    for (let i = start; i >= 0 && i < count; i += direction) {
-      if (element[itemMatchesState](items[i], state)) {
-        return i;
-      }
-    }
-  }
-
-  return -1;
-}
-
 /**
  * Update currentIndex and return true if it changed.
  *
  * @private
  * @param {Element} element
- * @param {number} index
+ * @param {number} start
+ * @param {number} direction
  */
-function moveToIndex(element, index) {
+function moveToIndex(element, start, direction) {
+  const index = element[closestAvailableItem](element[state], start, direction);
+  if (index < 0) {
+    // Couldn't find an item to move to.
+    return false;
+  }
   // Normally we don't check to see if state is going to change before setting
   // state, but the methods defined by this mixin want to be able to return true
   // if the index is actually going to change.

@@ -13,6 +13,7 @@
  */
 
 export const checkSize: "_checkSize";
+export const closestAvailableItem: "_closestAvailableItem";
 export const contentSlot: "_contentSlot";
 export const defaultState: "_defaultState";
 export const defaultTabIndex: "_defaultTabIndex";

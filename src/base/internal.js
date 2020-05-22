@@ -50,6 +50,16 @@ import * as coreInternal from "../core/internal.js";
 export const checkSize = Symbol("checkSize");
 
 /**
+ * Symbol for the `closestAvailableItem` method.
+ *
+ * This method is defined by [ItemsCursorMixin](ItemsCursorMixin). You can call
+ * this if you want to find an item at a particular location, but may need to
+ * account for the fact that the item at that position is not available, and
+ * would like to find the closest item that is available.
+ */
+export const closestAvailableItem = Symbol("closestAvailableItem");
+
+/**
  * Symbol for the `contentSlot` property.
  *
  * [SlotContentMixin](SlotContentMixin) uses this to identify which slot
