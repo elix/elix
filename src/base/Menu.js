@@ -9,7 +9,7 @@ import {
   defaultState,
   firstRender,
   ids,
-  isItemAvailable,
+  itemAvailableInState,
   render,
   rendered,
   scrollTarget,
@@ -121,9 +121,9 @@ class Menu extends Base {
    * @param {ListItemElement} item
    * @param {PlainObject} state
    */
-  [isItemAvailable](item, state) {
-    const base = super[isItemAvailable]
-      ? super[isItemAvailable](item, state)
+  [itemAvailableInState](item, state) {
+    const base = super[itemAvailableInState]
+      ? super[itemAvailableInState](item, state)
       : true;
     /** @type {any} */ const cast = item;
     return base && !cast.disabled;

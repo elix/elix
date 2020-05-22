@@ -37,7 +37,7 @@ export const goUp: "_goUp";
 export const hasDynamicTemplate: "_hasDynamicTemplate";
 export const ids: "_ids";
 export const inputDelegate: "_inputDelegate";
-export const isItemAvailable: "_isItemAvailable";
+export const itemAvailableInState: "_itemAvailableInState";
 export const itemsDelegate: "_itemsDelegate";
 export const keydown: "_keydown";
 export const mouseenter: "_mouseenter";

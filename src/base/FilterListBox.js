@@ -2,7 +2,7 @@ import { updateChildNodes } from "../core/dom.js";
 import {
   defaultState,
   getItemText,
-  isItemAvailable,
+  itemAvailableInState,
   raiseChangeEvents,
   render,
   setState,
@@ -77,9 +77,9 @@ class FilterListBox extends ListBox {
    * @param {ListItemElement} item
    * @param {PlainObject} state
    */
-  [isItemAvailable](item, state) {
-    const base = super[isItemAvailable]
-      ? super[isItemAvailable](item, state)
+  [itemAvailableInState](item, state) {
+    const base = super[itemAvailableInState]
+      ? super[itemAvailableInState](item, state)
       : true;
     if (!base) {
       return false;
@@ -98,7 +98,7 @@ class FilterListBox extends ListBox {
       const { filter, items } = this[state];
       if (items) {
         items.forEach((item) => {
-          const matches = this[isItemAvailable](item, this[state]);
+          const matches = this[itemAvailableInState](item, this[state]);
           item.style.display = matches ? "" : "none";
           if (matches) {
             const childNodes = this.highlightTextInItem(filter, item);

@@ -12,7 +12,7 @@
  * [ShadowTemplateMixin](ShadowTemplateMixin) expects a component to define
  * a property called [template](#template):
  *
- *     import { checkSize, contentSlot, defaultState, defaultTabIndex, delegatesFocus, effectEndTarget, firstRender, focusTarget, getItemText, goDown, goEnd, goFirst, goLast, goLeft, goNext, goPrevious, goRight, goStart, goToItemWithPrefix, goUp, hasDynamicTemplate, ids, inputDelegate, isItemAvailable, itemsDelegate, keydown, mouseenter, mouseleave, nativeInternals, event, raiseChangeEvents, render, renderChanges, renderDataToElement, rendered, rendering, scrollTarget, setState, shadowRoot, shadowRootMode, startEffect, state, stateEffects, swipeDown, swipeDownComplete, swipeLeft, swipeLeftTransitionEnd, swipeRight, swipeRightTransitionEnd, swipeUp, swipeUpComplete, swipeStart, swipeTarget, tap, template, toggleSelectedFlag } from 'elix/src/internal.js';
+ *     import { checkSize, contentSlot, defaultState, defaultTabIndex, delegatesFocus, effectEndTarget, firstRender, focusTarget, getItemText, goDown, goEnd, goFirst, goLast, goLeft, goNext, goPrevious, goRight, goStart, goToItemWithPrefix, goUp, hasDynamicTemplate, ids, inputDelegate, itemAvailableInState, itemsDelegate, keydown, mouseenter, mouseleave, nativeInternals, event, raiseChangeEvents, render, renderChanges, renderDataToElement, rendered, rendering, scrollTarget, setState, shadowRoot, shadowRootMode, startEffect, state, stateEffects, swipeDown, swipeDownComplete, swipeLeft, swipeLeftTransitionEnd, swipeRight, swipeRightTransitionEnd, swipeUp, swipeUpComplete, swipeStart, swipeTarget, tap, template, toggleSelectedFlag } from 'elix/src/internal.js';
  *     import { createElement, replace, transmute } from 'elix/src/template.js'
  *     import ShadowTemplateMixin from 'elix/src/ShadowTemplateMixin.js';
  *
@@ -255,22 +255,22 @@ export const ids = coreInternal.ids;
 export const inputDelegate = Symbol("inputDelegate");
 
 /**
- * Symbol for the `isItemAvailable` method.
+ * Symbol for the `itemAvailableInState` method.
  *
  * Various mixins and components override this to refine the idea of what items
  * are available in a given state. E.g., [Menu](Menu) overrides this to exclude
  * disabled menu items, using code similar to this:
  *
  *     // Filter the set of items to ignore disabled items.
- *     [isItemAvailable](item, state) {
- *       const base = super[isItemAvailable] ?
- *         super[isItemAvailable](item, state) :
+ *     [itemAvailableInState](item, state) {
+ *       const base = super[itemAvailableInState] ?
+ *         super[itemAvailableInState](item, state) :
  *         true;
  *       return base && !item.disabled;
  *     }
  *
  */
-export const isItemAvailable = Symbol("isItemAvailable");
+export const itemAvailableInState = Symbol("itemAvailableInState");
 
 /**
  * Symbol for the `itemsDelegate` property.
@@ -622,7 +622,7 @@ if (elixdebug === "true") {
       hasDynamicTemplate,
       ids,
       inputDelegate,
-      isItemAvailable,
+      itemAvailableInState,
       itemsDelegate,
       keydown,
       mouseenter,
