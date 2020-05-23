@@ -55,7 +55,7 @@ class FilterListBox extends ListBox {
   highlightTextInItem(textToHighlight, item) {
     const text = item.textContent || "";
     const start = textToHighlight
-      ? text.toLowerCase().indexOf(textToHighlight.toLowerCase())
+      ? normalize(text).indexOf(normalize(textToHighlight))
       : -1;
     if (start >= 0) {
       const end = start + textToHighlight.length;
@@ -81,8 +81,16 @@ class FilterListBox extends ListBox {
    * @returns {boolean}
    */
   itemMatchesFilter(item, filter) {
-    const text = this[getItemText](item).toLowerCase();
-    return !filter ? true : !text ? false : text.includes(filter.toLowerCase());
+    const text = this[getItemText](item);
+    if (!filter) {
+      return true;
+    } else if (!text) {
+      return false;
+    } else {
+      const normalizedText = normalize(text);
+      const normalizedFilter = normalize(filter);
+      return normalizedText.includes(normalizedFilter);
+    }
   }
 
   [render](/** @type {ChangedFlags} */ changed) {
@@ -130,6 +138,30 @@ class FilterListBox extends ListBox {
 
     return effects;
   }
+}
+
+// Normalize the given string for searching.
+//
+// The Intl.Collator object has the options we want, and even has a tempting
+// "search" usage defined for it, but as of May 2020, the only use of that
+// object seems to be comparing strings instead of searching. So for now
+// this may be the best we can do.
+function normalize(s) {
+  return removeAccents(s).toLowerCase();
+}
+
+// Replace accented characters with unaccented counterparts.
+// From https://www.datatables.net/plug-ins/filtering/type-based/accent-neutralise.
+//
+// Note: this may be good enough for our purposes, but is not strictly
+// correct, as accents can be significant in some languages and not in others.
+// Example: ä and a have the same base letter in German, but in Swedish
+// those are separate base letters.
+function removeAccents(s) {
+  // Decompose the string into the Unicode NFD (Canonical Decomposition) to
+  // separate base characters from their accent characters, then strips out the
+  // accent characters.
+  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
 export default FilterListBox;
