@@ -26,12 +26,17 @@ export default function ItemsCursorMixin(Base) {
      * the items, 1 to move forward).
      *
      * @param {PlainObject} state
-     * @param {number} index
-     * @param {number} direction
+     * @param {PlainObject} options
      * @returns {number}
      */
-    [closestAvailableItem](state, index, direction) {
-      const { cursorOperationsWrap, items } = state;
+    [closestAvailableItem](state, options = {}) {
+      const direction = options.direction !== undefined ? options.direction : 1;
+      const index =
+        options.index !== undefined ? options.index : state.currentIndex;
+      const wrap =
+        options.wrap !== undefined ? options.wrap : state.cursorOperationsWrap;
+
+      const { items } = state;
       const count = items ? items.length : 0;
 
       if (count === 0) {
@@ -39,7 +44,7 @@ export default function ItemsCursorMixin(Base) {
         return -1;
       }
 
-      if (cursorOperationsWrap) {
+      if (wrap) {
         // Search with wrapping.
 
         // Modulus taking into account negative numbers.
@@ -201,11 +206,17 @@ export default function ItemsCursorMixin(Base) {
           // First clamp index to existing array bounds.
           newIndex = Math.max(Math.min(count - 1, newDesiredIndex), 0);
           // Look for an available item, first counting up, then down.
-          // TODO: closestAvailableItem shouldn't wrap even if
-          // cursorOperationsWrap is true
-          newIndex = this[closestAvailableItem](state, newIndex, 1);
+          newIndex = this[closestAvailableItem](state, {
+            direction: 1,
+            index: newIndex,
+            wrap: false,
+          });
           if (newIndex < 0) {
-            newIndex = this[closestAvailableItem](state, newIndex - 1, -1);
+            newIndex = this[closestAvailableItem](state, {
+              direction: -1,
+              index: newIndex - 1,
+              wrap: false,
+            });
           }
         }
 
@@ -229,21 +240,26 @@ export default function ItemsCursorMixin(Base) {
  *
  * @private
  * @param {Element} element
- * @param {number} start
+ * @param {number} index
  * @param {number} direction
  */
-function moveToIndex(element, start, direction) {
-  const index = element[closestAvailableItem](element[state], start, direction);
-  if (index < 0) {
+function moveToIndex(element, index, direction) {
+  const newIndex = element[closestAvailableItem](element[state], {
+    direction,
+    index,
+  });
+  if (newIndex < 0) {
     // Couldn't find an item to move to.
     return false;
   }
   // Normally we don't check to see if state is going to change before setting
   // state, but the methods defined by this mixin want to be able to return true
   // if the index is actually going to change.
-  const changed = element[state].currentIndex !== index;
+  const changed = element[state].currentIndex !== newIndex;
   if (changed) {
-    element[setState]({ currentIndex: index });
+    element[setState]({
+      currentIndex: newIndex,
+    });
   }
   return changed;
 }

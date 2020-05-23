@@ -403,10 +403,16 @@ class Explorer extends Base {
       const specialCase = items && items.length > 0 && currentIndex < 0;
       const canGoNext =
         specialCase ||
-        this[closestAvailableItem](state, currentIndex + 1, 1) >= 0;
+        this[closestAvailableItem](state, {
+          direction: 1,
+          index: currentIndex + 1,
+        }) >= 0;
       const canGoPrevious =
         specialCase ||
-        this[closestAvailableItem](state, currentIndex - 1, -1) >= 0;
+        this[closestAvailableItem](state, {
+          direction: -1,
+          index: currentIndex - 1,
+        }) >= 0;
       Object.assign(effects, {
         canGoNext,
         canGoPrevious,

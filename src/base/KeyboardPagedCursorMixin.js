@@ -212,9 +212,11 @@ function scrollOnePage(element, downward) {
     // We went past the first/last item without finding an item. Move to the
     // last item (if moving downward) or first item (if moving upward).
     const index = downward ? items.length - 1 : 0;
-    const direction = downward ? -1 /* Work up */ : 1; /* Work down */
     newIndex = element[closestAvailableItem]
-      ? element[closestAvailableItem](element[state], index, direction)
+      ? element[closestAvailableItem](element[state], {
+          direction: downward ? -1 /* Work up */ : 1 /* Work down */,
+          index,
+        })
       : index;
   }
 
