@@ -168,11 +168,14 @@ export default function ItemsCursorMixin(Base) {
 
         const count = items ? items.length : 0;
 
+        // Determine the desired index: the one we want irrespective of whether
+        // we have items or their availability.
         // Assume we'll stick with the same desired index we already have.
         let newDesiredIndex = desiredCurrentIndex;
         if (
           changed.items &&
           !changed.currentIndex &&
+          currentItem &&
           count > 0 &&
           items[currentIndex] !== currentItem
         ) {
@@ -185,33 +188,43 @@ export default function ItemsCursorMixin(Base) {
           }
         } else if (
           changed.currentIndex &&
-          (!currentItem || (count > 0 && items[currentIndex] !== currentItem))
+          ((currentIndex < 0 && currentItem !== null) ||
+            (currentIndex >= 0 &&
+              (count === 0 || items[currentIndex] !== currentItem)) ||
+            desiredCurrentIndex === null)
         ) {
           // Someone explicitly moved the cursor, which trumps any previously
           // desired index.
           newDesiredIndex = currentIndex;
-        } else if (currentItemRequired && currentIndex < 0) {
-          // If an item is required and there's no selection, we'll implicitly
-          // try to get the first available item.
+        }
+
+        // If an item is required and there's no selection, we'll implicitly try
+        // to get the first available item.
+        if (currentItemRequired && newDesiredIndex < 0) {
           newDesiredIndex = 0;
         }
 
+        // Now that we know what index we want, see how close we can get to it.
         let newIndex;
         if (newDesiredIndex < 0) {
           // All negative indices are equivalent to -1.
           newDesiredIndex = -1;
           newIndex = -1;
+        } else if (count === 0) {
+          // No items yet.
+          newIndex = -1;
         } else {
           // See how close we can get to the desired index.
           // First clamp index to existing array bounds.
           newIndex = Math.max(Math.min(count - 1, newDesiredIndex), 0);
-          // Look for an available item, first counting up, then down.
+          // Look for an available item going forward.
           newIndex = this[closestAvailableItem](state, {
             direction: 1,
             index: newIndex,
             wrap: false,
           });
           if (newIndex < 0) {
+            // Next best: look for an available item going backward.
             newIndex = this[closestAvailableItem](state, {
               direction: -1,
               index: newIndex - 1,
@@ -220,7 +233,7 @@ export default function ItemsCursorMixin(Base) {
           }
         }
 
-        const newItem = items ? items[newIndex] : null;
+        const newItem = (items && items[newIndex]) || null;
         Object.assign(effects, {
           currentIndex: newIndex,
           desiredCurrentIndex: newDesiredIndex,
