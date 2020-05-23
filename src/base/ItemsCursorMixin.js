@@ -154,19 +154,17 @@ export default function ItemsCursorMixin(Base) {
         changed.currentItemRequired
       ) {
         const {
-          availableItemFlags,
           currentIndex,
           desiredCurrentIndex,
           currentItem,
           currentItemRequired,
-          cursorOperationsWrap,
           items,
         } = state;
 
         const count = items ? items.length : 0;
-        let newIndex = currentIndex;
-        let newDesiredIndex = desiredCurrentIndex;
 
+        // Assume we'll stick with the same desired index we already have.
+        let newDesiredIndex = desiredCurrentIndex;
         if (
           changed.items &&
           !changed.currentIndex &&
@@ -177,54 +175,37 @@ export default function ItemsCursorMixin(Base) {
           // same. See if we can find that item again in the list of items.
           const newItemIndex = items.indexOf(currentItem);
           if (newItemIndex >= 0) {
-            // Found the item again. Try to use this index (if available).
-            newIndex = newItemIndex;
+            // Found the item again; try to use its index.
+            newDesiredIndex = newItemIndex;
           }
         } else if (
           changed.currentIndex &&
-          count > 0 &&
-          items[currentIndex] !== currentItem &&
-          desiredCurrentIndex !== null
+          (!currentItem || (count > 0 && items[currentIndex] !== currentItem))
         ) {
           // Someone explicitly moved the cursor, which trumps any previously
           // desired index.
-          newDesiredIndex = null;
-        } else if (
-          desiredCurrentIndex !== null &&
-          (!availableItemFlags || availableItemFlags[desiredCurrentIndex])
-        ) {
-          // A previously desired index is now available; apply it.
-          newIndex = newDesiredIndex;
-          newDesiredIndex = null;
+          newDesiredIndex = currentIndex;
+        } else if (currentItemRequired && currentIndex < 0) {
+          // If an item is required and there's no selection, we'll implicitly
+          // try to get the first available item.
+          newDesiredIndex = 0;
         }
 
-        if (currentItemRequired && newIndex < 0 && count > 0) {
-          // We require a current item, don't have one yet, but do have items.
-          // Take the first available item.
-          newIndex = 0;
-        }
-
-        if (newIndex < 0) {
+        let newIndex;
+        if (newDesiredIndex < 0) {
           // All negative indices are equivalent to -1.
+          newDesiredIndex = -1;
           newIndex = -1;
         } else {
-          // We know what item we would like to make current, but it may not be
-          // available.
-          const attemptedIndex = newIndex;
-          // Clamp index to array bounds.
-          newIndex = Math.max(Math.min(count - 1, newIndex), 0);
+          // See how close we can get to the desired index.
+          // First clamp index to existing array bounds.
+          newIndex = Math.max(Math.min(count - 1, newDesiredIndex), 0);
           // Look for an available item, first counting up, then down.
           // TODO: closestAvailableItem shouldn't wrap even if
           // cursorOperationsWrap is true
           newIndex = this[closestAvailableItem](state, newIndex, 1);
           if (newIndex < 0) {
             newIndex = this[closestAvailableItem](state, newIndex - 1, -1);
-          }
-          if (newIndex !== attemptedIndex) {
-            // The requested index is beyond the bounds of the items array or
-            // unavailable -- but remember this as the desired index in case later
-            // the items array increases in size or the items becomes available.
-            newDesiredIndex = attemptedIndex;
           }
         }
 

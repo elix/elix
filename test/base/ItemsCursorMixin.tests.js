@@ -114,7 +114,7 @@ describe("ItemsCursorMixin", () => {
 
   it("tries to get close to a desired current index as new items are added", () => {
     const fixture = new ItemsCursorTest();
-    assert.equal(fixture[state].desiredCurrentIndex, null);
+    assert.equal(fixture[state].desiredCurrentIndex, -1);
     fixture[setState]({
       currentIndex: 4,
     });
@@ -129,7 +129,7 @@ describe("ItemsCursorMixin", () => {
       items: [...fixture[state].items, "Four", "Five"],
     });
     assert.equal(fixture[state].currentIndex, 4);
-    assert.equal(fixture[state].desiredCurrentIndex, null);
+    assert.equal(fixture[state].desiredCurrentIndex, 4);
   });
 
   it("drops cursor when the last item is removed", () => {
