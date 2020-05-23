@@ -23,7 +23,7 @@ describe("Explorer", () => {
       <div aria-label="Label two">Item two</div>
       <div aria-label="Label three">Item three</div>
     `;
-    container.appendChild(fixture);
+    container.append(fixture);
     // Wait for component to render.
     // Wait for content, which requires event/timeout timing.
     await new Promise((resolve) => {
@@ -42,7 +42,7 @@ describe("Explorer", () => {
       <div aria-label="Label two">Item two</div>
       <div aria-label="Label three">Item three</div>
     `;
-    container.appendChild(fixture);
+    container.append(fixture);
     // Wait for component to render.
     // Wait for content, which requires event/timeout timing.
     await new Promise((resolve) => {

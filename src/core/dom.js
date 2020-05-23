@@ -230,7 +230,7 @@ export function ownEvent(node, event) {
  * the new set as a delta to the existing children. Only the items in the set
  * that have actually changed will be added or removed.
  *
- * @param {Node} element - the element to update
+ * @param {Element} element - the element to update
  * @param {(NodeList|Node[])} childNodes - the set of nodes to apply
  */
 export function updateChildNodes(element, childNodes) {
@@ -247,7 +247,7 @@ export function updateChildNodes(element, childNodes) {
     const newChild = copy[i];
     if (i >= oldLength) {
       // Add new item not in old set.
-      element.appendChild(newChild);
+      element.append(newChild);
     } else if (i >= newLength) {
       // Remove old item past end of new set.
       element.removeChild(element.childNodes[newLength]);

@@ -15,7 +15,7 @@ describe("ListBox", () => {
 
   it("raises a selected-index-changed event when an item is clicked", async () => {
     const fixture = createSampleListBox();
-    container.appendChild(fixture);
+    container.append(fixture);
     // Wait for initial content.
     await Promise.resolve();
     assert.equal(fixture.selectedIndex, -1);
@@ -51,7 +51,7 @@ function createSampleListBox() {
   ["Zero", "One", "Two"].forEach((text) => {
     const div = document.createElement("div");
     div.textContent = text;
-    fixture.appendChild(div);
+    fixture.append(div);
   });
   return fixture;
 }

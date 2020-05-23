@@ -31,11 +31,11 @@ describe("AriaListMixin", () => {
     fixture.id = "test"; // Will be used as basis for assigned item IDs.
     const item1 = document.createElement("div");
     item1.id = "explicitID";
-    fixture.appendChild(item1);
+    fixture.append(item1);
     // Leave item2 without an ID.
     const item2 = document.createElement("div");
-    fixture.appendChild(item2);
-    container.appendChild(fixture);
+    fixture.append(item2);
+    container.append(fixture);
     await Promise.resolve();
     assert.equal(fixture.getAttribute("role"), "listbox"); // default role
     assert.equal(item1.id, "explicitID"); // unchanged
@@ -47,10 +47,10 @@ describe("AriaListMixin", () => {
   it("indicates the selected item on both the list and the item", async () => {
     const fixture = new AriaListTest();
     const item1 = document.createElement("div");
-    fixture.appendChild(item1);
+    fixture.append(item1);
     const item2 = document.createElement("div");
-    fixture.appendChild(item2);
-    container.appendChild(fixture);
+    fixture.append(item2);
+    container.append(fixture);
     await fixture[setState]({ selectedIndex: 0 });
     assert.equal(fixture.getAttribute("aria-activedescendant"), item1.id);
     assert.equal(item1.getAttribute("aria-selected"), "true");
@@ -68,7 +68,7 @@ describe("AriaListMixin", () => {
       document.createElement("div"),
       document.createElement("div")
     );
-    container.appendChild(fixture);
+    container.append(fixture);
     await fixture[setState]({
       selectedFlags: [true, false, true],
     });
@@ -88,7 +88,7 @@ describe("AriaListMixin", () => {
     container.innerHTML = `<aria-list-test role="tabs"></aria-list-test
   >`;
     const fixture = container.querySelector("aria-list-test");
-    container.appendChild(fixture);
+    container.append(fixture);
     assert.equal(fixture.getAttribute("role"), "tabs");
   });
 
@@ -96,9 +96,9 @@ describe("AriaListMixin", () => {
     const fixture = new AriaListTest();
     const item1 = document.createElement("option");
     const item2 = document.createElement("option");
-    fixture.appendChild(item1);
-    fixture.appendChild(item2);
-    container.appendChild(fixture);
+    fixture.append(item1);
+    fixture.append(item2);
+    container.append(fixture);
     await Promise.resolve();
     assert.isNull(item1.getAttribute("role"));
     assert.isNull(item2.getAttribute("role"));

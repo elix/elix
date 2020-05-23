@@ -31,14 +31,14 @@ describe("DOM helpers", () => {
     `;
     const shadowRoot = fixture.attachShadow({ mode: "open" });
     const shadowContent = document.importNode(fixtureTemplate.content, true);
-    shadowRoot.appendChild(shadowContent);
+    shadowRoot.append(shadowContent);
     const childrenTemplate = templateFrom.html`
       <div>
         <input>
       </div>
     `;
     const childrenContent = document.importNode(childrenTemplate.content, true);
-    fixture.appendChild(childrenContent);
+    fixture.append(childrenContent);
     const element = firstFocusableElement(shadowRoot);
     const input = fixture.querySelector("input");
     assert.equal(element, input);
@@ -47,7 +47,7 @@ describe("DOM helpers", () => {
   it("updateChildNodes updates child nodes", () => {
     const fixture = document.createElement("div");
     const existingChild = document.createTextNode("existing");
-    fixture.appendChild(existingChild);
+    fixture.append(existingChild);
     const nodes = [
       document.createTextNode("one"),
       document.createTextNode("two"),

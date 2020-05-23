@@ -37,7 +37,7 @@ describe("WrappedStandardElement", () => {
   it("exposes getter/setters that proxy to the wrapped element", () => {
     const fixture = new WrappedA();
     fixture.href = "http://localhost/foo/bar.html";
-    container.appendChild(fixture);
+    container.append(fixture);
     assert.propertyVal(fixture.inner, "href", "http://localhost/foo/bar.html");
     assert.equal(fixture.protocol, "http:");
     assert.equal(fixture.hostname, "localhost");
@@ -46,7 +46,7 @@ describe("WrappedStandardElement", () => {
 
   it("marshals attributes to properties on the inner element", () => {
     const fixture = new WrappedA();
-    container.appendChild(fixture);
+    container.append(fixture);
     fixture.setAttribute("href", "http://example.com/");
     fixture[renderChanges]();
     assert.propertyVal(fixture.inner, "href", "http://example.com/");
@@ -54,7 +54,7 @@ describe("WrappedStandardElement", () => {
 
   it("re-raises events not automatically retargetted by Shadow DOM", (done) => {
     const fixture = new WrappedImg();
-    container.appendChild(fixture);
+    container.append(fixture);
     fixture.addEventListener("load", () => {
       done();
     });
@@ -65,7 +65,7 @@ describe("WrappedStandardElement", () => {
 
   it("does not raise events if inner element is disabled", () => {
     const fixture = new WrappedButton();
-    container.appendChild(fixture);
+    container.append(fixture);
     let count = 0;
     fixture.addEventListener("click", () => {
       count++;
@@ -79,16 +79,16 @@ describe("WrappedStandardElement", () => {
 
   it("chooses an appropriate :host display style based on the wrapped element", () => {
     const fixtureA = new WrappedA();
-    container.appendChild(fixtureA);
+    container.append(fixtureA);
     const fixtureDiv = new WrappedDiv();
-    container.appendChild(fixtureDiv);
+    container.append(fixtureDiv);
     assert.equal(getComputedStyle(fixtureA).display, "inline-block");
     assert.equal(getComputedStyle(fixtureDiv).display, "block");
   });
 
   it("delegates boolean attributes", async () => {
     const fixture = new WrappedButton();
-    container.appendChild(fixture);
+    container.append(fixture);
 
     // Disable via property.
     fixture.disabled = true;
@@ -113,7 +113,7 @@ describe("WrappedStandardElement", () => {
 
   it("delegates tabindex state to inner element", async () => {
     const fixture = new WrappedInput();
-    container.appendChild(fixture);
+    container.append(fixture);
     // NB: tabIndex is not part of WrappedInput's regular state; we're just
     // defining it. WrappedStandardElement should respect that.
     await fixture[setState]({ tabIndex: 1 });
@@ -123,7 +123,7 @@ describe("WrappedStandardElement", () => {
   it("delegates methods", async () => {
     const fixture = new WrappedInput();
     fixture.value = "Hello";
-    container.appendChild(fixture);
+    container.append(fixture);
     fixture.setSelectionRange(1, 4);
     assert.equal(fixture.selectionStart, 1);
     assert.equal(fixture.selectionEnd, 4);

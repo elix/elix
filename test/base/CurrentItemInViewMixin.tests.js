@@ -37,7 +37,7 @@ describe("CurrentItemInViewMixin", function () {
 
   it("Scrolls down to bring item clipped by bottom edge fully into view", (done) => {
     const fixture = createSampleElement();
-    container.appendChild(fixture);
+    container.append(fixture);
     fixture.addEventListener("scroll", () => {
       // Just check that styles are applied, not really part of testing the fixture.
       assert.equal(fixture.style.height, "150px");
@@ -49,7 +49,7 @@ describe("CurrentItemInViewMixin", function () {
 
   it("Scrolls down to bring item below bottom edge fully into view", (done) => {
     const fixture = createSampleElement();
-    container.appendChild(fixture);
+    container.append(fixture);
     fixture.addEventListener("scroll", () => {
       assert.equal(fixture.scrollTop, 150);
       done();
@@ -59,7 +59,7 @@ describe("CurrentItemInViewMixin", function () {
 
   it("Scrolls up to bring item above top edge fully into view", (done) => {
     const fixture = createSampleElement();
-    container.appendChild(fixture);
+    container.append(fixture);
     fixture.scrollTop = 150; // Scrolled all the way to bottom.
     fixture.addEventListener("scroll", () => {
       assert.equal(fixture.scrollTop, 0);
@@ -83,7 +83,7 @@ function createSampleElement() {
     const div = document.createElement("div");
     div.textContent = text;
     div.style.height = `${itemHeight}px`;
-    fixture.appendChild(div);
+    fixture.append(div);
   });
   return fixture;
 }

@@ -56,7 +56,7 @@ describe("templates", () => {
     original.style.color = "red";
     original.textContent = "Hello";
     const fixture = document.createElement("div");
-    fixture.appendChild(original);
+    fixture.append(original);
     const replacement = document.createElement("a");
     replacement.setAttribute("id", "replacement");
     replace(original, replacement);

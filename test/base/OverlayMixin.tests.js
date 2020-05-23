@@ -27,7 +27,7 @@ describe("OverlayMixin", function () {
 
   it("sets a default z-index", async () => {
     const fixture = new OverlayTest();
-    container.appendChild(fixture);
+    container.append(fixture);
     await fixture.open();
     // Mocha test runner has element with z-index of 1, so we expect the
     // overlay to get a default z-index of 2.
@@ -39,7 +39,7 @@ describe("OverlayMixin", function () {
     // if the element creates a stacking context.
     const fixture = new OverlayTest();
     fixture.style.position = "fixed"; // Force a stacking context.
-    container.appendChild(fixture);
+    container.append(fixture);
     await fixture.open();
     // Mocha test runner has element with z-index of 1, so we expect the
     // overlay to get a default z-index of 2.
@@ -49,16 +49,16 @@ describe("OverlayMixin", function () {
   it("leaves the z-index alone if one is specified", async () => {
     const fixture = new OverlayTest();
     fixture.style.zIndex = "10";
-    container.appendChild(fixture);
+    container.append(fixture);
     await fixture.open();
     assert.equal(fixture.style.zIndex, "10");
   });
 
   it("gives overlay focus when opened, restores focus to previous element when closed", async () => {
     const fixture = new OverlayTest();
-    container.appendChild(fixture);
+    container.append(fixture);
     const input = document.createElement("input");
-    container.appendChild(input);
+    container.append(input);
     input.focus();
     assert.equal(document.activeElement, input);
     await fixture.open();
@@ -79,8 +79,8 @@ describe("OverlayMixin", function () {
   it("leaves overlay where it is, if it is already in the DOM", async () => {
     const div = document.createElement("div");
     const fixture = new OverlayTest();
-    div.appendChild(fixture);
-    container.appendChild(div);
+    div.append(fixture);
+    container.append(div);
     await fixture.open();
     assert.equal(fixture.parentNode, div);
     await fixture.close();

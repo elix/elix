@@ -93,7 +93,7 @@ class CalendarDayButton extends Base {
     }
 
     // Style outer button.
-    result.content.appendChild(
+    result.content.append(
       fragmentFrom.html`
         <style>
           [part~="day"] {

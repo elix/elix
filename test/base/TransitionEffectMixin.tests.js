@@ -64,7 +64,7 @@ describe("TransitionEffectMixin", function () {
 
   it("goes through effect phases when opened", (done) => {
     const fixture = new TransitionEffectTest();
-    container.appendChild(fixture);
+    container.append(fixture);
     const states = [];
     fixture.addEventListener("effect-phase-changed", (event) => {
       states.push(event["detail"].effectPhase);
@@ -79,7 +79,7 @@ describe("TransitionEffectMixin", function () {
   it("goes through effect phases when closed", (done) => {
     const fixture = new TransitionEffectTest();
     fixture.opened = true;
-    container.appendChild(fixture);
+    container.append(fixture);
     const states = [];
     fixture.addEventListener("effect-phase-changed", (event) => {
       states.push(event["detail"].effectPhase);

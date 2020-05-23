@@ -28,7 +28,7 @@ describe("ItemsAPIMixin", () => {
 
   it("raises items-changed event", async () => {
     const fixture = new ItemsAPITest();
-    container.appendChild(fixture);
+    container.append(fixture);
     await new Promise((resolve) => {
       fixture.addEventListener("items-changed", () => {
         resolve();

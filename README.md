@@ -50,9 +50,9 @@ const carousel = new Carousel();
 // Add images, etc., to the carousel.
 const image1 = new Image();
 image1.src = "image1.jpg";
-carousel.appendChild(image1);
+carousel.append(image1);
 // Add the carousel to the page.
-document.body.appendChild(carousel);
+document.body.append(carousel);
 ```
 
 The Elix project itself _requires no build step_. You are free to use your preferred tools to bundle the Elix modules for better network performance.

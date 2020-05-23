@@ -50,7 +50,7 @@ describe("KeyboardMixin", () => {
       done();
       return true;
     };
-    container.appendChild(fixture);
+    container.append(fixture);
     mockInteractions.dispatchSyntheticKeyboardEvent(fixture, "keydown");
   });
 });

@@ -21,8 +21,8 @@ describe("DarkModeMixin", () => {
     const fixture = new DarkModeTest();
     const parent = document.createElement("div");
     parent.style.backgroundColor = "#222";
-    parent.appendChild(fixture);
-    container.appendChild(parent);
+    parent.append(fixture);
+    container.append(parent);
     await Promise.resolve();
     assert(fixture[state].dark);
   });
@@ -31,8 +31,8 @@ describe("DarkModeMixin", () => {
     const fixture = new DarkModeTest();
     const parent = document.createElement("div");
     parent.style.backgroundColor = "#aaa";
-    parent.appendChild(fixture);
-    container.appendChild(parent);
+    parent.append(fixture);
+    container.append(parent);
     await Promise.resolve();
     assert(!fixture[state].dark);
   });

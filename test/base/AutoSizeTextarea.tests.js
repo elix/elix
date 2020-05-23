@@ -31,7 +31,7 @@ describe("AutoSizeTextarea", () => {
 
   it("updates value when innerHTML changes", async () => {
     const fixture = new AutoSizeTextarea();
-    container.appendChild(fixture);
+    container.append(fixture);
     fixture.innerHTML = "chihuahua";
     // Give content time to change.
     await Promise.resolve();
@@ -41,7 +41,7 @@ describe("AutoSizeTextarea", () => {
   it("value property tracks content until value is directly set", async () => {
     const fixture = new AutoSizeTextarea();
     fixture.textContent = "dingo";
-    container.appendChild(fixture);
+    container.append(fixture);
     // Give content time to change.
     await Promise.resolve();
     assert(fixture[state].valueTracksContent);
@@ -71,7 +71,7 @@ describe("AutoSizeTextarea", () => {
 
   it("autosizes to fit its contents", async () => {
     const fixture = new AutoSizeTextarea();
-    container.appendChild(fixture);
+    container.append(fixture);
     const originalHeight = fixture.clientHeight;
     fixture.value = "One\nTwo\nThree";
     // Height with three lines of text should be over twice as big.
@@ -81,7 +81,7 @@ describe("AutoSizeTextarea", () => {
 
   it("applies minimumRows when text isn't tall enough", async () => {
     const fixture = new AutoSizeTextarea();
-    container.appendChild(fixture);
+    container.append(fixture);
     // Original height should be sufficient to hold single line of text.
     const originalHeight = fixture.clientHeight;
     fixture.minimumRows = 3;
@@ -92,7 +92,7 @@ describe("AutoSizeTextarea", () => {
 
   it("autosizes works when its text content is HTML", async () => {
     const fixture = new AutoSizeTextarea();
-    container.appendChild(fixture);
+    container.append(fixture);
     const originalHeight = fixture.clientHeight;
     fixture.value = `<html>\n<body>\n<p>\nThis is a test\n</p>\n<div>\nSome more tests\n</div>\n</body>\n</html>`;
     await Promise.resolve();
@@ -102,7 +102,7 @@ describe("AutoSizeTextarea", () => {
   it("autosizes works with text wrapping", async () => {
     const fixture = new AutoSizeTextarea();
     fixture.style.width = "400px";
-    container.appendChild(fixture);
+    container.append(fixture);
     const originalHeight = fixture.clientHeight;
     fixture.value =
       "Lots of words to force wrapping. Lots of words to force wrapping. Lots of words to force wrapping. Lots of words to force wrapping. Lots of words to force wrapping. Lots of words to force wrapping. Lots of words to force wrapping. Lots of words to force wrapping. Lots of words to force wrapping.";
@@ -113,7 +113,7 @@ describe("AutoSizeTextarea", () => {
   it("autosizes works with long string with no whitespace", async () => {
     const fixture = new AutoSizeTextarea();
     fixture.style.width = "400px";
-    container.appendChild(fixture);
+    container.append(fixture);
     const originalHeight = fixture.clientHeight;
     fixture.value =
       "abcdefghijklmnopqrstuvwxyz.,;:+-abcdefghijklmnopqrstuvwxyz.,;:+-abcdefghijklmnopqrstuvwxyz.,;:+-abcdefghijklmnopqrstuvwxyz.,;:+-abcdefghijklmnopqrstuvwxyz.,;:+-abcdefghijklmnopqrstuvwxyz.,;:+-abcdefghijklmnopqrstuvwxyz.,;:+-abcdefghijklmnopqrstuvwxyz.,;:+-";
@@ -123,7 +123,7 @@ describe("AutoSizeTextarea", () => {
 
   it("applies its placeholder property to the inner textarea", async () => {
     const fixture = new AutoSizeTextarea();
-    container.appendChild(fixture);
+    container.append(fixture);
     fixture.placeholder = "Placeholder";
     await Promise.resolve();
     assert.propertyVal(fixture.inner, "placeholder", "Placeholder");

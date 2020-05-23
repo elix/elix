@@ -49,7 +49,7 @@ describe("SingleSelectAPIMixin", () => {
     fixture.addEventListener("selected-index-changed", () => {
       done();
     });
-    container.appendChild(fixture);
+    container.append(fixture);
 
     fixture[raiseChangeEvents] = true; // Simulate user interaction
     fixture.selectedIndex = 1;
@@ -65,7 +65,7 @@ describe("SingleSelectAPIMixin", () => {
         "selected-index-changed event should not have been raised in response to programmatic property change"
       );
     });
-    container.appendChild(fixture);
+    container.append(fixture);
     fixture.selectedIndex = 1; // This should not trigger events.
     // Give event handler a chance to run (but it shouldn't).
     setTimeout(done);

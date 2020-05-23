@@ -203,7 +203,7 @@ class CalendarMonthNavigator extends Base {
         }
       </style>
     `;
-    result.content.appendChild(styleTemplate.content);
+    result.content.append(styleTemplate.content);
 
     return result;
   }

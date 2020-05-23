@@ -27,7 +27,7 @@ describe("DelegateFocusMixin", () => {
 
   it("delegates focus to an inner element", () => {
     const fixture = new DelegateFocusTest();
-    container.appendChild(fixture);
+    container.append(fixture);
     fixture.focus();
     const root = fixture.shadowRoot;
     const activeElement = root && root.activeElement;

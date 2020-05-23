@@ -61,7 +61,7 @@ describe("CursorAPIMixin", () => {
 
   it("can move to the previous item", () => {
     const fixture = new CursorAPITest();
-    container.appendChild(fixture);
+    container.append(fixture);
     fixture.goPrevious();
     assert.equal(fixture.currentIndex, 2); // last item
     fixture.goPrevious();
@@ -96,7 +96,7 @@ describe("CursorAPIMixin", () => {
     fixture.addEventListener("current-index-changed", () => {
       done();
     });
-    container.appendChild(fixture);
+    container.append(fixture);
 
     fixture[raiseChangeEvents] = true; // Simulate user interaction
     fixture.currentIndex = 1;
@@ -112,7 +112,7 @@ describe("CursorAPIMixin", () => {
         "current-index-changed event should not have been raised in response to programmatic property change"
       );
     });
-    container.appendChild(fixture);
+    container.append(fixture);
     fixture.currentIndex = 1; // This should not trigger events.
     // Give event handler a chance to run (but it shouldn't).
     setTimeout(done);

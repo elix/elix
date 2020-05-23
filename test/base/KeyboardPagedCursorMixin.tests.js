@@ -31,7 +31,7 @@ describe("KeyboardPagedCursorMixin", function () {
 
   it("If bottom item not selected, Page Down selects bottom item", () => {
     const fixture = createSampleElement();
-    container.appendChild(fixture);
+    container.append(fixture);
     fixture[setState]({ currentIndex: 0 });
     const handled = fixture[keydown]({
       key: "PageDown",
@@ -42,7 +42,7 @@ describe("KeyboardPagedCursorMixin", function () {
 
   it("If bottom item selected, Page Down advances selection by one page", () => {
     const fixture = createSampleElement();
-    container.appendChild(fixture);
+    container.append(fixture);
     fixture[setState]({ currentIndex: 1 });
     const handled = fixture[keydown]({
       key: "PageDown",
@@ -53,7 +53,7 @@ describe("KeyboardPagedCursorMixin", function () {
 
   it("If less than one page remaining, Page Down selects last item", (done) => {
     const fixture = createSampleElement();
-    container.appendChild(fixture);
+    container.append(fixture);
     fixture[setState]({ currentIndex: 3 });
     fixture.addEventListener("scroll", () => {
       const handled = fixture[keydown]({
@@ -68,7 +68,7 @@ describe("KeyboardPagedCursorMixin", function () {
 
   it("If last item already selected, Page Down has no effect", (done) => {
     const fixture = createSampleElement();
-    container.appendChild(fixture);
+    container.append(fixture);
     fixture[setState]({ currentIndex: 4 });
     fixture.addEventListener("scroll", () => {
       const handled = fixture[keydown]({
@@ -96,7 +96,7 @@ function createSampleElement() {
     const div = document.createElement("div");
     div.textContent = text;
     div.style.height = `${itemHeight}px`;
-    fixture.appendChild(div);
+    fixture.append(div);
   });
   return fixture;
 }

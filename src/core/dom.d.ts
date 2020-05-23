@@ -37,6 +37,6 @@ export function setInternalState(
 export const standardBooleanAttributes: { [key: string]: boolean };
 
 export function updateChildNodes(
-  element: Node,
+  element: Element,
   childNodes: NodeList | Node[]
 ): void;

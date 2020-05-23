@@ -120,7 +120,7 @@ describe("ReactiveMixin", function () {
 
   it("setState invokes render if component is in document", async () => {
     const fixture = new ReactiveTest();
-    container.appendChild(fixture);
+    container.append(fixture);
     const renderSpy = sinon.spy(fixture, render);
     await fixture[setState]({
       message: "echidna",
@@ -131,7 +131,7 @@ describe("ReactiveMixin", function () {
 
   it("consecutive[setState] calls batched into single render call", async () => {
     const fixture = new ReactiveTest();
-    container.appendChild(fixture);
+    container.append(fixture);
     const renderSpy = sinon.spy(fixture, render);
     /* Do *not* await first call - invoke it synchronously. */
     fixture[setState]({
@@ -147,7 +147,7 @@ describe("ReactiveMixin", function () {
   it("render invokes rendered method if defined", async () => {
     const fixture = new ReactiveTest();
     const renderedSpy = sinon.spy(fixture, rendered);
-    container.appendChild(fixture);
+    container.append(fixture);
     // connectedCallback should trigger first render with promise timing.
     await Promise.resolve();
     assert.equal(renderedSpy.callCount, 1);
@@ -160,14 +160,14 @@ describe("ReactiveMixin", function () {
   it("[firstRender] is true only in first rendered callback", async () => {
     const fixture = new ReactiveTest();
     assert(typeof fixture[firstRender] === "undefined");
-    container.appendChild(fixture);
+    container.append(fixture);
     // connectedCallback should trigger first render with promise timing.
     await Promise.resolve();
     assert(fixture._firstRender);
     // Remove element, touch it, then put it back.
     container.removeChild(fixture);
     fixture[setState]({ message: "gerbil" });
-    container.appendChild(fixture);
+    container.append(fixture);
     await Promise.resolve();
     assert(!fixture._firstRender);
   });

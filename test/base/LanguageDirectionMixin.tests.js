@@ -19,7 +19,7 @@ describe("LanguageDirectionMixin", () => {
 
   it("sets state.rightToLeft to false in left-to-right context", () => {
     const fixture = new LanguageDirectionTest();
-    container.appendChild(fixture);
+    container.append(fixture);
     assert(fixture[state].rightToLeft === false);
   });
 
@@ -27,8 +27,8 @@ describe("LanguageDirectionMixin", () => {
     const fixture = new LanguageDirectionTest();
     const div = document.createElement("div");
     div.setAttribute("dir", "rtl");
-    div.appendChild(fixture);
-    container.appendChild(div);
+    div.append(fixture);
+    container.append(div);
     assert(fixture[state].rightToLeft);
   });
 });

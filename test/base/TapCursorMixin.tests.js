@@ -32,7 +32,7 @@ describe("TapCursorMixin", function () {
 
   it("sets the tapped item as the selected item", (done) => {
     const fixture = createSampleElement();
-    container.appendChild(fixture);
+    container.append(fixture);
     assert.equal(fixture[state].currentIndex, -1);
     const item = fixture[state].items[0];
     fixture.addEventListener("mousedown", () => {
@@ -44,7 +44,7 @@ describe("TapCursorMixin", function () {
 
   it("ignores right clicks", (done) => {
     const fixture = createSampleElement();
-    container.appendChild(fixture);
+    container.append(fixture);
     assert.equal(fixture[state].currentIndex, -1);
     const item = fixture[state].items[0];
     fixture.addEventListener("mousedown", () => {
@@ -66,7 +66,7 @@ function createSampleElement() {
   ["Zero", "One", "Two"].forEach((text) => {
     const div = document.createElement("div");
     div.textContent = text;
-    fixture.appendChild(div);
+    fixture.append(div);
   });
   return fixture;
 }
