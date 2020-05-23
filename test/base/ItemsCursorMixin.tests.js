@@ -114,22 +114,22 @@ describe("ItemsCursorMixin", () => {
 
   it("tries to get close to a desired current index as new items are added", () => {
     const fixture = new ItemsCursorTest();
-    assert.equal(fixture[state].currentIndexPending, null);
+    assert.equal(fixture[state].desiredCurrentIndex, null);
     fixture[setState]({
       currentIndex: 4,
     });
     assert.equal(fixture[state].currentIndex, 2);
-    assert.equal(fixture[state].currentIndexPending, 4);
+    assert.equal(fixture[state].desiredCurrentIndex, 4);
     fixture[setState]({
       items: [...fixture[state].items, "Three"],
     });
     assert.equal(fixture[state].currentIndex, 3);
-    assert.equal(fixture[state].currentIndexPending, 4);
+    assert.equal(fixture[state].desiredCurrentIndex, 4);
     fixture[setState]({
       items: [...fixture[state].items, "Four", "Five"],
     });
     assert.equal(fixture[state].currentIndex, 4);
-    assert.equal(fixture[state].currentIndexPending, null);
+    assert.equal(fixture[state].desiredCurrentIndex, null);
   });
 
   it("drops cursor when the last item is removed", () => {
@@ -169,5 +169,27 @@ describe("ItemsCursorMixin", () => {
     });
     fixture[goLast]();
     assert.equal(fixture[state].currentIndex, 1);
+  });
+
+  it("selects a nearby item when an item becomes unavailable", () => {
+    const fixture = new ItemsCursorTest();
+
+    fixture[setState]({
+      availableItemFlags: [true, true, true],
+      currentIndex: 0,
+    });
+    assert.equal(fixture[state].currentIndex, 0);
+
+    // Make 0th item unavailable.
+    fixture[setState]({
+      availableItemFlags: [false, true, true],
+    });
+    assert.equal(fixture[state].currentIndex, 1);
+
+    // Make 0th item available again.
+    fixture[setState]({
+      availableItemFlags: [true, true, true],
+    });
+    assert.equal(fixture[state].currentIndex, 0);
   });
 });
