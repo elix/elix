@@ -220,18 +220,17 @@ function scrollOnePage(element, downward) {
       : index;
   }
 
-  // If external code causes an operation that scrolls the page, it's impossible
-  // for it to predict where the currentIndex is going to end up. Accordingly,
-  // we raise change events.
-  const saveRaiseChangesEvents = element[raiseChangeEvents];
-  element[raiseChangeEvents] = true;
-
-  element[setState]({
-    currentIndex: newIndex,
-  });
-
-  element[raiseChangeEvents] = saveRaiseChangesEvents;
-
-  const changed = element[state].currentIndex !== currentIndex;
+  const changed = newIndex !== currentIndex;
+  if (changed) {
+    // If external code causes an operation that scrolls the page, it's
+    // impossible for it to predict where the currentIndex is going to end up.
+    // Accordingly, we raise change events.
+    const saveRaiseChangesEvents = element[raiseChangeEvents];
+    element[raiseChangeEvents] = true;
+    element[setState]({
+      currentIndex: newIndex,
+    });
+    element[raiseChangeEvents] = saveRaiseChangesEvents;
+  }
   return changed;
 }
