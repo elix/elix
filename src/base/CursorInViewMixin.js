@@ -14,12 +14,12 @@ import { defaultScrollTarget } from "./scrolling.js";
  * can supply that yourself, or use
  * [ItemsCursorMixin](ItemsCursorMixin).
  *
- * @module CurrentItemInViewMixin
+ * @module CursorInViewMixin
  * @param {Constructor<ReactiveElement>} Base
  */
-export default function CurrentItemInViewMixin(Base) {
+export default function CursorInViewMixin(Base) {
   // The class prototype added by the mixin.
-  class CurrentItemInView extends Base {
+  class CursorInView extends Base {
     [rendered](/** @type {ChangedFlags} */ changed) {
       if (super[rendered]) {
         super[rendered](changed);
@@ -100,5 +100,5 @@ export default function CurrentItemInViewMixin(Base) {
     }
   }
 
-  return CurrentItemInView;
+  return CursorInView;
 }

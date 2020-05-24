@@ -53,7 +53,7 @@ export function canScrollInDirection(target, orientation, downOrRight) {
 
 /**
  * This helper returns a guess as to what portion of the given element can be
- * scrolled. This is used by [CurrentItemInViewMixin](CurrentItemInViewMixin) to
+ * scrolled. This is used by [CursorInViewMixin](CursorInViewMixin) to
  * provide a default implementation of [scrollTarget].
  *
  * If the element has a shadow root containing a default (unnamed) slot, this

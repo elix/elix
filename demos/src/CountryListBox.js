@@ -4,8 +4,8 @@
 
 import AriaListMixin from "../../src/base/AriaListMixin.js";
 import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
-import CurrentItemInViewMixin from "../../src/base/CurrentItemInViewMixin.js";
 import CursorAPIMixin from "../../src/base/CursorAPIMixin.js";
+import CursorInViewMixin from "../../src/base/CursorInViewMixin.js";
 import CursorSelectMixin from "../../src/base/CursorSelectMixin.js";
 import DirectionCursorMixin from "../../src/base/DirectionCursorMixin.js";
 import {
@@ -35,8 +35,8 @@ import ReactiveElement from "../../src/core/ReactiveElement.js";
 
 const Base = AriaListMixin(
   ContentItemsMixin(
-    CurrentItemInViewMixin(
-      CursorAPIMixin(
+    CursorAPIMixin(
+      CursorInViewMixin(
         CursorSelectMixin(
           DirectionCursorMixin(
             ItemsAPIMixin(

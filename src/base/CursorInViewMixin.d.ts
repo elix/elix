@@ -5,7 +5,7 @@
 
 import { scrollTarget } from "./internal.js";
 
-declare const CurrentItemInViewMixin: Mixin<
+declare const CursorInViewMixin: Mixin<
   {},
   {
     scrollCurrentItemIntoView(): void;
@@ -13,4 +13,4 @@ declare const CurrentItemInViewMixin: Mixin<
   }
 >;
 
-export default CurrentItemInViewMixin;
+export default CursorInViewMixin;

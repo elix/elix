@@ -2,8 +2,8 @@ import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import AriaListMixin from "./AriaListMixin.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
-import CurrentItemInViewMixin from "./CurrentItemInViewMixin.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
+import CursorInViewMixin from "./CursorInViewMixin.js";
 import CursorSelectMixin from "./CursorSelectMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
@@ -32,8 +32,8 @@ import TapCursorMixin from "./TapCursorMixin.js";
 
 const Base = AriaListMixin(
   ComposedFocusMixin(
-    CurrentItemInViewMixin(
-      CursorAPIMixin(
+    CursorAPIMixin(
+      CursorInViewMixin(
         CursorSelectMixin(
           DirectionCursorMixin(
             FocusVisibleMixin(
@@ -82,7 +82,7 @@ const Base = AriaListMixin(
  * @inherits ReactiveElement
  * @mixes AriaListMixin
  * @mixes ComposedFocusMixin
- * @mixes CurrentItemInViewMixin
+ * @mixes CursorInViewMixin
  * @mixes CursorAPIMixin
  * @mixes DirectionCursorMixin
  * @mixes FocusVisibleMixin

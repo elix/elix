@@ -1,8 +1,8 @@
 import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import AriaMenuMixin from "./AriaMenuMixin.js";
-import CurrentItemInViewMixin from "./CurrentItemInViewMixin.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
+import CursorInViewMixin from "./CursorInViewMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DirectionCursorMixin from "./DirectionCursorMixin.js";
 import {
@@ -32,8 +32,8 @@ import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapCursorMixin from "./TapCursorMixin.js";
 
 const Base = AriaMenuMixin(
-  CurrentItemInViewMixin(
-    CursorAPIMixin(
+  CursorAPIMixin(
+    CursorInViewMixin(
       DelegateFocusMixin(
         DirectionCursorMixin(
           ItemsAPIMixin(
@@ -69,7 +69,7 @@ const Base = AriaMenuMixin(
  *
  * @inherits ReactiveElement
  * @mixes AriaMenuMixin
- * @mixes CurrentItemInViewMixin
+ * @mixes CursorInViewMixin
  * @mixes CursorAPIMixin
  * @mixes DelegateFocusMixin
  * @mixes DirectionCursorMixin

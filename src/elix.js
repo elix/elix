@@ -19,9 +19,9 @@ export { default as AttributeMarshallingMixin } from "./core/AttributeMarshallin
 export { default as CalendarElementMixin } from "./base/CalendarElementMixin.js";
 export { default as ComposedFocusMixin } from "./base/ComposedFocusMixin.js";
 export { default as ContentItemsMixin } from "./base/ContentItemsMixin.js";
-export { default as CurrentItemInViewMixin } from "./base/CurrentItemInViewMixin.js";
 export { default as CurrentMixin } from "./base/CurrentMixin.js";
 export { default as CursorAPIMixin } from "./base/CursorAPIMixin.js";
+export { default as CursorInViewMixin } from "./base/CursorInViewMixin.js";
 export { default as CursorSelectMixin } from "./base/CursorSelectMixin.js";
 export { default as DarkModeMixin } from "./base/DarkModeMixin.js";
 export { default as DataItemsMixin } from "./base/DataItemsMixin.js";
