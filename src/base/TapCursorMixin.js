@@ -80,16 +80,16 @@ export default function TapCursorMixin(Base) {
         ? event.composedPath()[0]
         : event.target;
 
-      // Find which item was clicked on and, if found, make it current. For
-      // elements which don't require a cursor, a background click will
+      // Find which item was clicked on and, if found, make it current. Ignore
+      // clicks on disabled items.
+      //
+      // For elements which don't require a cursor, a background click will
       // determine the item was null, in which we case we'll remove the cursor.
-      const { items, currentIndex, currentItemRequired } = this[state];
+      const { items, currentItemRequired } = this[state];
       if (items && target instanceof Node) {
         const targetIndex = indexOfItemContainingTarget(items, target);
-        if (
-          targetIndex >= 0 ||
-          (!currentItemRequired && currentIndex !== targetIndex)
-        ) {
+        const item = targetIndex >= 0 ? items[targetIndex] : null;
+        if ((item && !item.disabled) || (!item && !currentItemRequired)) {
           this[setState]({
             currentIndex: targetIndex,
           });
