@@ -37,12 +37,16 @@ export default function MultiSelectAPIMixin(Base) {
 
       // Raise selected-flags-changed event
       if (changed.selectedFlags && this[raiseChangeEvents]) {
+        const oldEvent = new CustomEvent("selected-flags-changed", {
+          bubbles: true,
+        });
+        this.dispatchEvent(oldEvent);
         /**
          * Raised when the `selectedFlags` property changes.
          *
-         * @event selected-flags-changed
+         * @event selectedflagschange
          */
-        const event = new CustomEvent("selected-flags-changed", {
+        const event = new CustomEvent("selectedflagschange", {
           bubbles: true,
         });
         this.dispatchEvent(event);

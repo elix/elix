@@ -69,7 +69,7 @@ export default function DelegateItemsMixin(Base) {
       if (super[render]) {
         super[render](changed);
       }
-      
+
       if (changed.currentIndex) {
         if (typeof this[itemsDelegate] === "undefined") {
           throw `To use DelegateItemsMixin, ${this.constructor.name} must define a getter for [itemsDelegate].`;
@@ -99,11 +99,11 @@ export default function DelegateItemsMixin(Base) {
         }
         // Start listening to events on new delegate.
         this[itemsDelegate].addEventListener(
-          "items-changed",
+          "itemschange",
           this[itemsChangedListenerKey]
         );
         this[itemsDelegate].addEventListener(
-          "current-index-changed",
+          "currentindexchange",
           this[currentIndexChangedListenerKey]
         );
       }

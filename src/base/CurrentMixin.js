@@ -60,12 +60,17 @@ export default function CurrentMixin(Base) {
       // TODO: How do we know whether to raise this if selection is set by Menu? */
       if (changed.current /* && this[raiseChangeEvents] */) {
         const { current } = this[state];
+        const oldEvent = new CustomEvent("current-changed", {
+          bubbles: true,
+          detail: { current },
+        });
+        this.dispatchEvent(oldEvent);
         /**
          * Raised when the `current` property changes.
          *
-         * @event current-changed
+         * @event currentchange
          */
-        const event = new CustomEvent("current-changed", {
+        const event = new CustomEvent("currentchange", {
           bubbles: true,
           detail: { current },
         });

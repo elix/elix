@@ -54,16 +54,13 @@ class RefreshAppDemo extends ReactiveElement {
     super[render](changed);
 
     if (this[firstRender]) {
-      this[ids].pullToRefresh.addEventListener(
-        "refreshing-changed",
-        (event) => {
-          /** @type {any} */
-          const cast = event;
-          if (cast.detail.refreshing) {
-            this.refresh();
-          }
+      this[ids].pullToRefresh.addEventListener("refreshingchange", (event) => {
+        /** @type {any} */
+        const cast = event;
+        if (cast.detail.refreshing) {
+          this.refresh();
         }
-      );
+      });
     }
 
     if (changed.paragraphs) {

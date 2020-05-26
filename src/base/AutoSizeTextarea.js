@@ -160,12 +160,17 @@ class AutoSizeTextarea extends Base {
 
     if (changed.value && this[raiseChangeEvents]) {
       const { value } = this[state];
+      const oldEvent = new CustomEvent("value-changed", {
+        bubbles: true,
+        detail: { value },
+      });
+      this.dispatchEvent(oldEvent);
       /**
        * Raised when the `value` property changes.
        *
-       * @event value-changed
+       * @event valuechange
        */
-      const event = new CustomEvent("value-changed", {
+      const event = new CustomEvent("valuechange", {
         bubbles: true,
         detail: { value },
       });

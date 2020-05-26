@@ -129,7 +129,7 @@ class HamburgerMenuButton extends Base {
     }
 
     if (changed.menuPartType) {
-      this[ids].menu.addEventListener("closed", (event) => {
+      this[ids].menu.addEventListener("close", (event) => {
         /** @type {any} */
         const cast = event;
         this[setState]({
@@ -137,7 +137,7 @@ class HamburgerMenuButton extends Base {
           opened: false,
         });
       });
-      this[ids].menu.addEventListener("opened", () => {
+      this[ids].menu.addEventListener("open", () => {
         this[setState]({
           opened: true,
         });

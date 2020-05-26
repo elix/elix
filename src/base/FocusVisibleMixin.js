@@ -56,7 +56,7 @@ export default function FocusVisibleMixin(Base) {
             });
             // No longer need to listen for changes in focus visibility.
             document.removeEventListener(
-              "focus-visible-changed",
+              "focusvisiblechange",
               this[focusVisibleChangedListenerKey]
             );
             this[focusVisibleChangedListenerKey] = null;
@@ -75,7 +75,7 @@ export default function FocusVisibleMixin(Base) {
             // Listen to subsequent changes in focus visibility.
             this[focusVisibleChangedListenerKey] = () => refreshFocus(this);
             document.addEventListener(
-              "focus-visible-changed",
+              "focusvisiblechange",
               this[focusVisibleChangedListenerKey]
             );
           }
@@ -131,7 +131,13 @@ function refreshFocus(/** @type {ReactiveElement} */ element) {
 function updateKeyboardActive(/** @type {boolean} */ newKeyboardActive) {
   if (keyboardActive !== newKeyboardActive) {
     keyboardActive = newKeyboardActive;
-    const event = new CustomEvent("focus-visible-changed", {
+    const oldEvent = new CustomEvent("focus-visible-changed", {
+      detail: {
+        focusVisible: keyboardActive,
+      },
+    });
+    document.dispatchEvent(oldEvent);
+    const event = new CustomEvent("focusvisiblechange", {
       detail: {
         focusVisible: keyboardActive,
       },

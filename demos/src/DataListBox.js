@@ -36,12 +36,16 @@ class DataListBox extends DataItemsMixin(PlainListBox) {
     super[rendered](changed);
 
     if (changed.data && this[raiseChangeEvents]) {
+      const oldEvent = new CustomEvent("data-changed", {
+        bubbles: true,
+      });
+      this.dispatchEvent(oldEvent);
       /**
        * Raised when the `data` property changes.
        *
-       * @event data-changed
+       * @event datachange
        */
-      const event = new CustomEvent("data-changed", {
+      const event = new CustomEvent("datachange", {
         bubbles: true,
       });
       this.dispatchEvent(event);

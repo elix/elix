@@ -96,7 +96,7 @@ class PopupSource extends Base {
 
     if (changed.popupPartType) {
       // Popup's opened state becomes our own opened state.
-      this[ids].popup.addEventListener("opened", () => {
+      this[ids].popup.addEventListener("open", () => {
         if (!this.opened) {
           this[raiseChangeEvents] = true;
           this.open();
@@ -105,7 +105,7 @@ class PopupSource extends Base {
       });
 
       // Popup's closed state becomes our own closed state.
-      this[ids].popup.addEventListener("closed", (event) => {
+      this[ids].popup.addEventListener("close", (event) => {
         if (!this.closed) {
           this[raiseChangeEvents] = true;
           /** @type {any} */

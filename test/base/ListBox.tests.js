@@ -21,7 +21,7 @@ describe("ListBox", () => {
     assert.equal(fixture.selectedIndex, -1);
     const item = fixture.items[0];
     const eventPromise = new Promise((resolve) => {
-      fixture.addEventListener("selected-index-changed", () => {
+      fixture.addEventListener("selectedindexchange", () => {
         assert.equal(fixture.selectedIndex, 0);
         resolve();
       });

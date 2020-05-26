@@ -46,7 +46,7 @@ describe("SingleSelectAPIMixin", () => {
 
   it("changing selection through (simulated) user interaction raises the selected-index-changed event", (done) => {
     const fixture = new SingleSelectAPITest();
-    fixture.addEventListener("selected-index-changed", () => {
+    fixture.addEventListener("selectedindexchange", () => {
       done();
     });
     container.append(fixture);
@@ -58,7 +58,7 @@ describe("SingleSelectAPIMixin", () => {
 
   it("changing selection programmatically does not raise the selected-index-changed event", (done) => {
     const fixture = new SingleSelectAPITest();
-    fixture.addEventListener("selected-index-changed", () => {
+    fixture.addEventListener("selectedindexchange", () => {
       assert.fail(
         null,
         null,

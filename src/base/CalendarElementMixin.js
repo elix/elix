@@ -90,12 +90,17 @@ export default function CalendarElementMixin(Base) {
       // TODO: call calendar.datesEqual(date, previousState.date)?
       if (changed.date && this[raiseChangeEvents]) {
         const date = this[state].date;
+        const oldEvent = new CustomEvent("date-changed", {
+          bubbles: true,
+          detail: { date },
+        });
+        this.dispatchEvent(oldEvent);
         /**
          * Raised when the `date` property changes.
          *
-         * @event date-changed
+         * @event datechange
          */
-        const event = new CustomEvent("date-changed", {
+        const event = new CustomEvent("datechange", {
           bubbles: true,
           detail: { date },
         });

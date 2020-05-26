@@ -25,10 +25,10 @@
 
     <script type="module">
       window.addEventListener("load", () => {
-        listBox.addEventListener("selected-index-changed", event =>
+        listBox.addEventListener("selectedindexchange", (event) =>
           selectedIndexChanged(event)
         );
-        carousel.addEventListener("selected-index-changed", event =>
+        carousel.addEventListener("selectedindexchange", (event) =>
           selectedIndexChanged(event)
         );
         listBox.selectedIndex = 0;

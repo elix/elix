@@ -159,18 +159,23 @@ class Explorer extends Base {
 
     if (changed.proxyListPartType) {
       this[ids].proxyList.addEventListener(
-        "selected-index-changed",
+        "selectedindexchange",
         handleSelectedIndexChanged
       );
     }
 
     if (changed.stagePartType) {
       this[ids].stage.addEventListener(
-        "selected-index-changed",
+        "selectedindexchange",
         handleSelectedIndexChanged
       );
-      this[ids].stage.addEventListener("selection-effect-finished", (event) => {
+      this[ids].stage.addEventListener("selectioneffectend", (event) => {
         const { selectedIndex } = /** @type {any} */ (event).detail;
+        const oldEvent = new CustomEvent("selection-effect-finished", {
+          bubbles: true,
+          detail: { selectedIndex },
+        });
+        this.dispatchEvent(oldEvent);
         /**
          * This event is raised if the current `stage` applies a transition
          * effect when changing the selection, and the selection effect has
@@ -178,17 +183,16 @@ class Explorer extends Base {
          * for example.
          *
          * The order of events when the `selectedIndex` property changes is
-         * therefore: `selected-index-changed` (occurs immediately when the
-         * index changes), followed by `selection-effect-finished` (occurs
-         * some time later).
+         * therefore: `selectedindexchange` (occurs immediately when the index
+         * changes), followed by `selectioneffectend` (occurs some time later).
          *
-         * @event selection-effect-finished
+         * @event selectioneffectend
          */
-        const finishedEvent = new CustomEvent("selection-effect-finished", {
+        const selectedEffectEndEvent = new CustomEvent("selectioneffectend", {
           bubbles: true,
           detail: { selectedIndex },
         });
-        this.dispatchEvent(finishedEvent);
+        this.dispatchEvent(selectedEffectEndEvent);
       });
     }
 

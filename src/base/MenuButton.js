@@ -221,7 +221,7 @@ class MenuButton extends PopupButton {
       });
 
       // Track changes in the menu's selection state.
-      this[ids].menu.addEventListener("current-index-changed", (event) => {
+      this[ids].menu.addEventListener("currentindexchange", (event) => {
         this[raiseChangeEvents] = true;
         /** @type {any} */
         const cast = event;

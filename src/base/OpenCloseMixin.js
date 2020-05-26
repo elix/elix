@@ -138,43 +138,62 @@ export default function OpenCloseMixin(Base) {
       }
 
       if (changed.opened && this[raiseChangeEvents]) {
-        /**
-         * Raised when the opened/closed state of the component changes.
-         *
-         * @event opened-changed
-         */
-        const openedChangedEvent = new CustomEvent("opened-changed", {
+        const oldEvent = new CustomEvent("opened-changed", {
           bubbles: true,
           detail: {
             closeResult: this[state].closeResult,
             opened: this[state].opened,
           },
         });
-        this.dispatchEvent(openedChangedEvent);
+        this.dispatchEvent(oldEvent);
+        /**
+         * Raised when the opened/closed state of the component changes.
+         *
+         * @event openedchange
+         */
+        const openedChangeEvent = new CustomEvent("openedchange", {
+          bubbles: true,
+          detail: {
+            closeResult: this[state].closeResult,
+            opened: this[state].opened,
+          },
+        });
+        this.dispatchEvent(openedChangeEvent);
 
         if (this[state].opened) {
+          const oldOpenedEvent = new CustomEvent("opened", {
+            bubbles: true,
+          });
+          this.dispatchEvent(oldOpenedEvent);
           /**
            * Raised when the component opens.
            *
-           * @event opened
+           * @event open
            */
-          const openedEvent = new CustomEvent("opened", {
+          const openEvent = new CustomEvent("open", {
             bubbles: true,
           });
-          this.dispatchEvent(openedEvent);
+          this.dispatchEvent(openEvent);
         } else {
-          /**
-           * Raised when the component closes.
-           *
-           * @event closed
-           */
-          const closedEvent = new CustomEvent("closed", {
+          const oldClosedEvent = new CustomEvent("closed", {
             bubbles: true,
             detail: {
               closeResult: this[state].closeResult,
             },
           });
-          this.dispatchEvent(closedEvent);
+          this.dispatchEvent(oldClosedEvent);
+          /**
+           * Raised when the component closes.
+           *
+           * @event close
+           */
+          const closeEvent = new CustomEvent("close", {
+            bubbles: true,
+            detail: {
+              closeResult: this[state].closeResult,
+            },
+          });
+          this.dispatchEvent(closeEvent);
         }
       }
 
@@ -213,7 +232,7 @@ export default function OpenCloseMixin(Base) {
 
     /**
      * This method can be used as an alternative to listening to the
-     * "opened-changed" event, particularly in situations where you want to only
+     * "openedchange" event, particularly in situations where you want to only
      * handle the next time the component is closed.
      *
      * @returns {Promise} A promise that resolves when the element has

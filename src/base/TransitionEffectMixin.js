@@ -70,6 +70,14 @@ export default function TransitionEffectMixin(Base) {
       }
       if (changed.effect || changed.effectPhase) {
         const { effect, effectPhase } = this[state];
+        const oldEvent = new CustomEvent("effect-phase-changed", {
+          bubbles: true,
+          detail: {
+            effect,
+            effectPhase,
+          },
+        });
+        this.dispatchEvent(oldEvent);
         /**
          * Raised when [state.effect](TransitionEffectMixin#effect-phases) or
          * [state.effectPhase](TransitionEffectMixin#effect-phases) changes.
@@ -81,12 +89,12 @@ export default function TransitionEffectMixin(Base) {
          * `startEffect` method will cause the element to pass through multiple
          * visual states. This makes it hard for external hosts of this
          * component to know what visual state the component is in. Accordingly,
-         * the mixin raises the `effect-phase-changed` event whenever the effect
-         * or phase changes, even if `internal.raiseChangeEvents` is false.
+         * the mixin raises the `effectphasechange` event whenever the effect or
+         * phase changes, even if `internal.raiseChangeEvents` is false.
          *
-         * @event effect-phase-changed
+         * @event effectphasechange
          */
-        const event = new CustomEvent("effect-phase-changed", {
+        const event = new CustomEvent("effectphasechange", {
           bubbles: true,
           detail: {
             effect,

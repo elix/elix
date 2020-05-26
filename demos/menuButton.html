@@ -26,7 +26,7 @@
       </elix-menu-button>
       <p id="result" role="alert"></p>
       <script>
-        sampleMenuButton.addEventListener("closed", (event) => {
+        sampleMenuButton.addEventListener("close", (event) => {
           const selectedItem = event.detail.closeResult;
           result.textContent = selectedItem
             ? `You picked: ${selectedItem.textContent}`

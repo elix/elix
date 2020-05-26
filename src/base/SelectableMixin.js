@@ -49,12 +49,17 @@ export default function SelectableMixin(Base) {
       // TODO: How do we know whether to raise this if selection is set by Menu? */
       if (changed.selected /* && this[raiseChangeEvents] */) {
         const { selected } = this[state];
+        const oldEvent = new CustomEvent("selected-changed", {
+          bubbles: true,
+          detail: { selected },
+        });
+        this.dispatchEvent(oldEvent);
         /**
          * Raised when the `selected` property changes.
          *
-         * @event selected-changed
+         * @event selectedchange
          */
-        const event = new CustomEvent("selected-changed", {
+        const event = new CustomEvent("selectedchange", {
           bubbles: true,
           detail: { selected },
         });

@@ -30,12 +30,16 @@ export default function ItemsAPIMixin(Base) {
       // the event then because the items didn't change in response to user
       // activity.
       if (!this[firstRender] && changed.items && this[raiseChangeEvents]) {
+        const oldEvent = new CustomEvent("items-changed", {
+          bubbles: true,
+        });
+        this.dispatchEvent(oldEvent);
         /**
          * Raised when the `items` property changes.
          *
-         * @event items-changed
+         * @event itemschange
          */
-        const event = new CustomEvent("items-changed", {
+        const event = new CustomEvent("itemschange", {
           bubbles: true,
         });
         this.dispatchEvent(event);

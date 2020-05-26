@@ -22,7 +22,7 @@ export default function MultiSelectToggleMixin(Base) {
       // @ts-ignore
       super();
 
-      this.addEventListener("selected-changed", (event) => {
+      this.addEventListener("selectedchange", (event) => {
         this[raiseChangeEvents] = true;
         // Find which item was selected, and update its selected flag.
         const { target } = event;

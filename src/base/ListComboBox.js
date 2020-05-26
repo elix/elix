@@ -162,7 +162,7 @@ class ListComboBox extends Base {
       // presses Backspace to delete that selected text, Gboard/Chrome seems to
       // ignore the first press of the Backspace key. The user must press
       // Backspace a second time to actually delete the selected text.
-      this[ids].list.addEventListener("selected-index-changed", (event) => {
+      this[ids].list.addEventListener("selectedindexchange", (event) => {
         /** @type {any} */
         const cast = event;
         const listSelectedIndex = cast.detail.selectedIndex;

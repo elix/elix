@@ -130,14 +130,14 @@ export const nativeInternals = Symbol("nativeInternals");
  *     set foo(value) {
  *       // Save foo value here, do any other work.
  *       if (this[raiseChangeEvents]) {
- *         export const event = new CustomEvent('foo-changed');
+ *         export const event = new CustomEvent('foochange');
  *         this.dispatchEvent(event);
  *       }
  *     }
  *
- * In this way, programmatic attempts to set the `foo` property will not
- * trigger the `foo-changed` event, but UI interactions that update that
- * property will cause those events to be raised.
+ * In this way, programmatic attempts to set the `foo` property will not trigger
+ * the `foochange` event, but UI interactions that update that property will
+ * cause those events to be raised.
  */
 export const raiseChangeEvents = Symbol("raiseChangeEvents");
 

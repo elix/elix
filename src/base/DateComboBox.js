@@ -280,7 +280,7 @@ class DateComboBox extends Base {
     renderParts(this[shadowRoot], this[state], changed);
 
     if (changed.calendarPartType) {
-      this[ids].calendar.addEventListener("date-changed", (event) => {
+      this[ids].calendar.addEventListener("datechange", (event) => {
         this[raiseChangeEvents] = true;
         /** @type {any} */
         const cast = event;

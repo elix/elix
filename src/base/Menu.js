@@ -121,7 +121,7 @@ class Menu extends Base {
 
     if (this[firstRender]) {
       // Listen to changes in disabled state.
-      this.addEventListener("disabled-changed", (event) => {
+      this.addEventListener("disabledchange", (event) => {
         this[raiseChangeEvents] = true;
         /** @type {any} */ const target = event.target;
         const { items } = this[state];

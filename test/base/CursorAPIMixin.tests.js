@@ -91,9 +91,9 @@ describe("CursorAPIMixin", () => {
     assert.equal(fixture.currentIndex, 0);
   });
 
-  it("changing currentIndex through (simulated) user interaction raises the current-index-changed event", (done) => {
+  it("changing currentIndex through (simulated) user interaction raises the currentindexchange event", (done) => {
     const fixture = new CursorAPITest();
-    fixture.addEventListener("current-index-changed", () => {
+    fixture.addEventListener("currentindexchange", () => {
       done();
     });
     container.append(fixture);
@@ -103,13 +103,13 @@ describe("CursorAPIMixin", () => {
     fixture[raiseChangeEvents] = false;
   });
 
-  it("changing currentIndex programmatically does not raise the current-index-changed event", (done) => {
+  it("changing currentIndex programmatically does not raise the currentindexchange event", (done) => {
     const fixture = new CursorAPITest();
-    fixture.addEventListener("current-index-changed", () => {
+    fixture.addEventListener("currentindexchange", () => {
       assert.fail(
         null,
         null,
-        "current-index-changed event should not have been raised in response to programmatic property change"
+        "currentindexchange event should not have been raised in response to programmatic property change"
       );
     });
     container.append(fixture);

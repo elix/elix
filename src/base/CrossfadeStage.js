@@ -62,28 +62,35 @@ class CrossfadeStage extends Base {
     super[render](changed);
 
     if (this[firstRender]) {
-      this.addEventListener("effect-phase-changed", (event) => {
+      this.addEventListener("effectphasechange", (event) => {
         /** @type {any} */ const cast = event;
         if (cast.detail.effectPhase === "after") {
           const { currentIndex } = this[state];
-          /**
-           * This event is raised when changing the selection and the selection
-           * effect has completed.
-           *
-           * The order of events when the `currentIndex` property changes is
-           * therefore: `selected-index-changed` (occurs immediately when the
-           * index changes), followed by `selection-effect-finished` (occurs
-           * some time later).
-           *
-           * @event selection-effect-finished
-           */
-          const finishedEvent = new CustomEvent("selection-effect-finished", {
+          const oldEvent = new CustomEvent("selection-effect-finished", {
             bubbles: true,
             detail: {
               selectedIndex: currentIndex,
             },
           });
-          this.dispatchEvent(finishedEvent);
+          this.dispatchEvent(oldEvent);
+          /**
+           * This event is raised when changing the selection and the selection
+           * effect has completed.
+           *
+           * The order of events when the `currentIndex` property changes is
+           * therefore: `selectedindexchange` (occurs immediately when the index
+           * changes), followed by `selectioneffectend` (occurs some time
+           * later).
+           *
+           * @event selectioneffectfinish
+           */
+          const event = new CustomEvent("selectioneffectend", {
+            bubbles: true,
+            detail: {
+              selectedIndex: currentIndex,
+            },
+          });
+          this.dispatchEvent(event);
         }
       });
     }

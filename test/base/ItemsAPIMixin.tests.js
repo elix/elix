@@ -30,7 +30,7 @@ describe("ItemsAPIMixin", () => {
     const fixture = new ItemsAPITest();
     container.append(fixture);
     await new Promise((resolve) => {
-      fixture.addEventListener("items-changed", () => {
+      fixture.addEventListener("itemschange", () => {
         resolve();
       });
       // Arrange for raising of change events.

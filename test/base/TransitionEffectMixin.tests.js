@@ -66,7 +66,7 @@ describe("TransitionEffectMixin", function () {
     const fixture = new TransitionEffectTest();
     container.append(fixture);
     const states = [];
-    fixture.addEventListener("effect-phase-changed", (event) => {
+    fixture.addEventListener("effectphasechange", (event) => {
       states.push(event["detail"].effectPhase);
       if (event["detail"].effectPhase === "after") {
         assert.deepEqual(states, ["before", "during", "after"]);
@@ -81,7 +81,7 @@ describe("TransitionEffectMixin", function () {
     fixture.opened = true;
     container.append(fixture);
     const states = [];
-    fixture.addEventListener("effect-phase-changed", (event) => {
+    fixture.addEventListener("effectphasechange", (event) => {
       states.push(event["detail"].effectPhase);
       if (event["detail"].effectPhase === "after") {
         assert.deepEqual(states, ["before", "during", "after"]);

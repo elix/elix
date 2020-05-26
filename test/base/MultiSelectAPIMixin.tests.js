@@ -53,11 +53,11 @@ describe("MultiSelectAPIMixin", () => {
     assert(!fixture.selectedFlags[0]);
   });
 
-  it("raises the selected-flags-changed event when selection changes", async () => {
+  it("raises the selectedflagschange event when selection changes", async () => {
     const fixture = new MultiSelectAPITest();
     container.append(fixture);
     await new Promise((resolve) => {
-      fixture.addEventListener("selected-flags-changed", () => {
+      fixture.addEventListener("selectedflagschange", () => {
         resolve();
       });
       // Simulate user interaction.
