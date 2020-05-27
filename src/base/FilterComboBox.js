@@ -1,5 +1,4 @@
 import AutoCompleteComboBox from "./AutoCompleteComboBox.js";
-import { substantiveElements } from "./content.js";
 import FilterListBox from "./FilterListBox.js";
 import {
   defaultState,
@@ -10,7 +9,6 @@ import {
   state,
   stateEffects,
 } from "./internal.js";
-import { getTextsFromItems } from "./ItemsTextMixin.js";
 import SlotContentMixin from "./SlotContentMixin.js";
 
 const Base = SlotContentMixin(AutoCompleteComboBox);
@@ -27,7 +25,6 @@ class FilterComboBox extends Base {
     return Object.assign(super[defaultState], {
       filter: "",
       listPartType: FilterListBox,
-      texts: null,
     });
   }
 
@@ -60,14 +57,6 @@ class FilterComboBox extends Base {
 
   [stateEffects](state, changed) {
     const effects = super[stateEffects](state, changed);
-
-    // If content changes, regenerate texts.
-    if (changed.content) {
-      const { content } = state;
-      const items = content ? substantiveElements(content) : null;
-      const texts = items ? getTextsFromItems(items) : [];
-      Object.assign(effects, { texts });
-    }
 
     // Closing resets the filter.
     if (changed.opened && !state.opened) {

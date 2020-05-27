@@ -2,6 +2,7 @@ import { forwardFocus, indexOfItemContainingTarget } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import { transmute } from "../core/template.js";
 import ComboBox from "./ComboBox.js";
+import { getDefaultText } from "./content.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import CursorSelectMixin from "./CursorSelectMixin.js";
 import DelegateCursorMixin from "./DelegateCursorMixin.js";
@@ -9,6 +10,7 @@ import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import {
   defaultState,
   firstRender,
+  getItemText,
   goFirst,
   goLast,
   goNext,
@@ -24,7 +26,6 @@ import {
   stateEffects,
   template,
 } from "./internal.js";
-import { getDefaultText } from "./ItemsTextMixin.js";
 import ListBox from "./ListBox.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
@@ -51,6 +52,20 @@ class ListComboBox extends Base {
       horizontalAlign: "stretch",
       listPartType: ListBox,
     });
+  }
+
+  /**
+   * Extract the text from the given item.
+   *
+   * The default implementation returns an item's `aria-label`, `alt` attribute,
+   * or its `textContent`, in that order. You can override this to return the
+   * text that should be used.
+   *
+   * @param {ListItemElement} item
+   * @returns {string}
+   */
+  [getItemText](item) {
+    return getDefaultText(item);
   }
 
   // We do our own handling of the Up and Down arrow keys, rather than relying
@@ -195,7 +210,7 @@ class ListComboBox extends Base {
       if (items && value != null) {
         const searchText = value.toLowerCase();
         const currentIndex = items.findIndex((item) => {
-          const itemText = getDefaultText(item);
+          const itemText = this[getItemText](item);
           return itemText.toLowerCase() === searchText;
         });
         Object.assign(effects, { currentIndex });
@@ -214,7 +229,7 @@ class ListComboBox extends Base {
       ) {
         const currentItem = items[currentIndex];
         if (currentItem) {
-          const currentItemText = getDefaultText(currentItem);
+          const currentItemText = this[getItemText](currentItem);
           // See notes on mobile at ComboBox.defaultState.
           const probablyMobile = matchMedia("(pointer: coarse)").matches;
           const selectText = !probablyMobile;
