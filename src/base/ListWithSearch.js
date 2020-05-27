@@ -29,7 +29,6 @@ import {
   template,
 } from "./internal.js";
 import KeyboardMixin from "./KeyboardMixin.js";
-import SelectedTextAPIMixin from "./SelectedTextAPIMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 const Base = ComposedFocusMixin(
@@ -41,9 +40,7 @@ const Base = ComposedFocusMixin(
             DelegateInputSelectionMixin(
               DelegateItemsMixin(
                 FocusVisibleMixin(
-                  KeyboardMixin(
-                    SelectedTextAPIMixin(SingleSelectAPIMixin(ReactiveElement))
-                  )
+                  KeyboardMixin(SingleSelectAPIMixin(ReactiveElement))
                 )
               )
             )
@@ -67,7 +64,6 @@ const Base = ComposedFocusMixin(
  * @mixes DelegateItemsMixin
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
- * @mixes SelectedTextAPIMixin
  * @mixes SingleSelectAPIMixin
  * @part {AutoCompleteInput} input - the input element for search terms
  * @part {FilterListBox} list - the searchable list of items

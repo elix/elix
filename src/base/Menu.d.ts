@@ -15,11 +15,10 @@ import KeyboardMixin from "./KeyboardMixin.js";
 import KeyboardPagedCursorMixin from "./KeyboardPagedCursorMixin.js";
 import KeyboardPrefixCursorMixin from "./KeyboardPrefixCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
-import SelectedTextAPIMixin from "./SelectedTextAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapCursorMixin from "./TapCursorMixin.js";
 
-export default class MenuBase extends AriaMenuMixin(
+export default class Menu extends AriaMenuMixin(
   CursorAPIMixin(
     CursorInViewMixin(
       DelegateFocusMixin(
@@ -32,9 +31,7 @@ export default class MenuBase extends AriaMenuMixin(
                     KeyboardPagedCursorMixin(
                       KeyboardPrefixCursorMixin(
                         LanguageDirectionMixin(
-                          SelectedTextAPIMixin(
-                            SlotItemsMixin(TapCursorMixin(ReactiveElement))
-                          )
+                          SlotItemsMixin(TapCursorMixin(ReactiveElement))
                         )
                       )
                     )

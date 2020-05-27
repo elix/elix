@@ -11,7 +11,6 @@ import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
-import SelectedTextAPIMixin from "./SelectedTextAPIMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 export default class ListWithSearch extends ComposedFocusMixin(
@@ -22,9 +21,7 @@ export default class ListWithSearch extends ComposedFocusMixin(
           DelegateInputSelectionMixin(
             DelegateItemsMixin(
               FocusVisibleMixin(
-                KeyboardMixin(
-                  SelectedTextAPIMixin(SingleSelectAPIMixin(ReactiveElement))
-                )
+                KeyboardMixin(SingleSelectAPIMixin(ReactiveElement))
               )
             )
           )
