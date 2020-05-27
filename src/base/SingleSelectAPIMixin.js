@@ -37,6 +37,7 @@ export default function SingleSelectAPIMixin(Base) {
       if (super[rendered]) {
         super[rendered](changed);
       }
+
       if (changed.selectedIndex && this[raiseChangeEvents]) {
         const selectedIndex = this[state].selectedIndex;
         const oldEvent = new CustomEvent("selected-index-changed", {

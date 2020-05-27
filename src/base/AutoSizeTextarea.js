@@ -168,9 +168,9 @@ class AutoSizeTextarea extends Base {
       /**
        * Raised when the `value` property changes.
        *
-       * @event valuechange
+       * @event input
        */
-      const event = new CustomEvent("valuechange", {
+      const event = new CustomEvent("input", {
         bubbles: true,
         detail: { value },
       });

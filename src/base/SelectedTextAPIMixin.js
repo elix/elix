@@ -34,8 +34,7 @@ export default function SelectedTextAPIMixin(Base) {
         super[rendered](changed);
       }
 
-      // If we have a pending value to apply and now have items, apply the
-      // value.
+      // If we have desired text to apply and now have items, apply the text.
       const { items, desiredSelectedText } = this[state];
       if (desiredSelectedText && items) {
         const index = indexOfItemWithText(items, desiredSelectedText);
@@ -62,16 +61,16 @@ export default function SelectedTextAPIMixin(Base) {
         ? ""
         : selectedItem.textContent;
     }
-    set selectedText(text) {
+    set selectedText(selectedText) {
       const { items } = this[state];
       if (items === null) {
         // No items yet, save and try again later.
         this[setState]({
-          desiredSelectedText: text,
+          desiredSelectedText: selectedText,
         });
       } else {
-        // Select the index of the indicate text, if found.
-        const selectedIndex = indexOfItemWithText(items, text);
+        // Select the index of the indicated text, if found.
+        const selectedIndex = indexOfItemWithText(items, selectedText);
         this[setState]({ selectedIndex });
       }
     }
