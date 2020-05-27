@@ -1,14 +1,25 @@
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
+import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
-import { defaultState, keydown, state, tap, template } from "./internal.js";
+import {
+  defaultState,
+  ids,
+  inputDelegate,
+  keydown,
+  state,
+  tap,
+  template,
+} from "./internal.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
 
 const Base = AriaRoleMixin(
   ComposedFocusMixin(
-    FocusVisibleMixin(KeyboardMixin(WrappedStandardElement.wrap("button")))
+    DelegateInputLabelMixin(
+      FocusVisibleMixin(KeyboardMixin(WrappedStandardElement.wrap("button")))
+    )
   )
 );
 
@@ -37,6 +48,7 @@ const mapKeysToClick = !firefox;
  * @inherits WrappedStandardElement
  * @mixes AriaRoleMixin
  * @mixes ComposedFocusMixin
+ * @mixes DelegateInputLabelMixin
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
  */
@@ -47,6 +59,11 @@ class Button extends Base {
       treatEnterAsClick: true,
       treatSpaceAsClick: true,
     });
+  }
+
+  // TODO: Since this isn't really an input, we should probably rename this.
+  get [inputDelegate]() {
+    return this[ids].inner;
   }
 
   // Pressing Enter or Space raises a click event, as if the user had clicked
