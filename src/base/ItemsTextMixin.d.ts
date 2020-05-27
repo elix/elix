@@ -14,11 +14,10 @@ declare const ItemsTextMixin: StateMixin<
   }
 >;
 
-declare type GetTextCallback = (item: Node) => string;
+declare type GetTextCallback = (item: Element) => string;
 
 export default ItemsTextMixin;
-export function getDefaultText(item: Node): string;
 export function getTextsFromItems(
-  items: Node[],
-  getText?: GetTextCallback
+  items: Element[],
+  getText: GetTextCallback
 ): string[] | null;
