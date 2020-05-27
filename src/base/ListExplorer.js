@@ -1,3 +1,4 @@
+import { getDefaultText } from "./content.js";
 import Explorer from "./Explorer.js";
 import { defaultState, getItemText, render, state } from "./internal.js";
 
@@ -21,11 +22,11 @@ class ListExplorer extends Explorer {
    * or its `textContent`, in that order. You can override this to return the
    * text that should be used.
    *
-   * @param {ListItemElement} item
+   * @param {Element} item
    * @returns {string}
    */
   [getItemText](item) {
-    return getDefaultItemText(item);
+    return super[getItemText] ? super[getItemText](item) : getDefaultText(item);
   }
 
   [render](/** @type {ChangedFlags} */ changed) {
@@ -43,21 +44,6 @@ class ListExplorer extends Explorer {
       });
     }
   }
-}
-
-/**
- * Extract the text from the given item.
- *
- * @private
- * @param {ListItemElement} item
- */
-export function getDefaultItemText(item) {
-  return (
-    item.getAttribute("aria-label") ||
-    item.getAttribute("alt") ||
-    item.textContent ||
-    ""
-  );
 }
 
 export default ListExplorer;

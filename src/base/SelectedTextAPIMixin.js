@@ -1,5 +1,12 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import { defaultState, rendered, setState, state } from "./internal.js";
+import { getDefaultText } from "./content.js";
+import {
+  defaultState,
+  getItemText,
+  rendered,
+  setState,
+  state,
+} from "./internal.js";
 
 /**
  * Exposes a public API for the selected text of a list-like element.
@@ -29,6 +36,22 @@ export default function SelectedTextAPIMixin(Base) {
       });
     }
 
+    /**
+     * Extract the text from the given item.
+     *
+     * The default implementation returns an item's `aria-label`, `alt` attribute,
+     * or its `textContent`, in that order. You can override this to return the
+     * text that should be used.
+     *
+     * @param {Element} item
+     * @returns {string}
+     */
+    [getItemText](item) {
+      return super[getItemText]
+        ? super[getItemText](item)
+        : getDefaultText(item);
+    }
+
     [rendered](/** @type {ChangedFlags} */ changed) {
       if (super[rendered]) {
         super[rendered](changed);
@@ -37,7 +60,11 @@ export default function SelectedTextAPIMixin(Base) {
       // If we have desired text to apply and now have items, apply the text.
       const { items, desiredSelectedText } = this[state];
       if (desiredSelectedText && items) {
-        const index = indexOfItemWithText(items, desiredSelectedText);
+        const index = indexOfItemWithText(
+          items,
+          this[getItemText],
+          desiredSelectedText
+        );
         this[setState]({
           selectedIndex: index,
           desiredSelectedText: null,
@@ -70,7 +97,11 @@ export default function SelectedTextAPIMixin(Base) {
         });
       } else {
         // Select the index of the indicated text, if found.
-        const selectedIndex = indexOfItemWithText(items, selectedText);
+        const selectedIndex = indexOfItemWithText(
+          items,
+          this[getItemText],
+          selectedText
+        );
         this[setState]({ selectedIndex });
       }
     }
@@ -84,6 +115,6 @@ export default function SelectedTextAPIMixin(Base) {
  * @param {Element[]} items
  * @param {string} text
  */
-function indexOfItemWithText(items, text) {
-  return items.findIndex((item) => item.textContent === text);
+function indexOfItemWithText(items, getText, text) {
+  return items.findIndex((item) => getText(item) === text);
 }

@@ -29,6 +29,27 @@ const auxiliarycustomTags = [
 ];
 
 /**
+ * Use a heuristic to extract text from the given item.
+ *
+ * This looks, in order, at: the `aria-label` attribute, the `alt` attribute,
+ * and the element's `textContent`.
+ *
+ * This function is used as the default implementation of the
+ * [getItemText](internal#getItemText) function in several mixins.
+ *
+ * @param {Element} element
+ * @returns {string}
+ */
+export function getDefaultText(element) {
+  return (
+    element.getAttribute("aria-label") ||
+    element.getAttribute("alt") ||
+    element.textContent ||
+    ""
+  );
+}
+
+/**
  * Return true if the given node is likely to be useful as component content.
  *
  * This will be `true` for nodes that are: a) instances of `Element`

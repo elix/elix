@@ -1,4 +1,5 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import { getDefaultText } from "./content.js";
 import { defaultState, getItemText, stateEffects } from "./internal.js";
 
 /**
@@ -23,11 +24,13 @@ export default function ItemsTextMixin(Base) {
      * or its `textContent`, in that order. You can override this to return the
      * text that should be used.
      *
-     * @param {ListItemElement} item
+     * @param {Element} item
      * @returns {string}
      */
     [getItemText](item) {
-      return getDefaultItemText(item);
+      return super[getItemText]
+        ? super[getItemText](item)
+        : getDefaultText(item);
     }
 
     [stateEffects](state, changed) {
@@ -53,26 +56,11 @@ export default function ItemsTextMixin(Base) {
 }
 
 /**
- * Extract the text from the given item.
- *
- * @private
- * @param {ListItemElement} item
- */
-export function getDefaultItemText(item) {
-  return (
-    item.getAttribute("aria-label") ||
-    item.getAttribute("alt") ||
-    item.textContent ||
-    ""
-  );
-}
-
-/**
  * Extract the text from the given items.
  *
  * @private
- * @param {ListItemElement[]} items
+ * @param {Element[]} items
  */
-export function getTextsFromItems(items, getText = getDefaultItemText) {
+export function getTextsFromItems(items, getText) {
   return items ? Array.from(items, (item) => getText(item)) : null;
 }
