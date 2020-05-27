@@ -123,7 +123,7 @@ export { default as RepeatMousedownMixin } from "../src/base/RepeatMousedownMixi
 export { default as ResizeMixin } from "../src/base/ResizeMixin.js";
 export { default as SelectableButton } from "./SelectableButton.js";
 export { default as SelectableMixin } from "../src/base/SelectableMixin.js";
-export { default as SelectedItemTextValueMixin } from "../src/base/SelectedItemTextValueMixin.js";
+export { default as SelectedTextAPIMixin } from "../src/base/SelectedTextAPIMixin.js";
 export { default as ShadowTemplateMixin } from "../src/core/ShadowTemplateMixin.js";
 export { default as SingleSelectAPIMixin } from "../src/base/SingleSelectAPIMixin.js";
 export { default as Slideshow } from "./Slideshow.js";

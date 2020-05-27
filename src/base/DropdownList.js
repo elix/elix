@@ -17,7 +17,7 @@ import {
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import MenuButton from "./MenuButton.js";
-import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
+import SelectedTextAPIMixin from "./SelectedTextAPIMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
@@ -26,9 +26,7 @@ const Base = AriaListMixin(
     FormElementMixin(
       ItemsAPIMixin(
         ItemsCursorMixin(
-          SelectedItemTextValueMixin(
-            SingleSelectAPIMixin(SlotItemsMixin(MenuButton))
-          )
+          SelectedTextAPIMixin(SingleSelectAPIMixin(SlotItemsMixin(MenuButton)))
         )
       )
     )
@@ -40,7 +38,7 @@ const Base = AriaListMixin(
  *
  * @inherits MenuButton
  * @mixes FormElementMixin
- * @mixes SelectedItemTextValueMixin
+ * @mixes SelectedTextAPIMixin
  * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
  * @part {div} value - region inside the toggle button showing the value of the current selection

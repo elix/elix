@@ -6,7 +6,7 @@ import FormElementMixin from "./FormElementMixin.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import MenuButton from "./MenuButton.js";
-import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
+import SelectedTextAPIMixin from "./SelectedTextAPIMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
@@ -14,9 +14,7 @@ export default class PlainDropdownList extends CursorAPIMixin(
   FormElementMixin(
     ItemsAPIMixin(
       ItemsCursorMixin(
-        SelectedItemTextValueMixin(
-          SingleSelectAPIMixin(SlotItemsMixin(MenuButton))
-        )
+        SelectedTextAPIMixin(SingleSelectAPIMixin(SlotItemsMixin(MenuButton)))
       )
     )
   )

@@ -3,11 +3,11 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-declare const SelectedItemTextValueMixin: Mixin<
+declare const SelectedTextAPIMixin: Mixin<
   {},
   {
-    value: string;
+    selectedText: string;
   }
 >;
 
-export default SelectedItemTextValueMixin;
+export default SelectedTextAPIMixin;

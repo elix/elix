@@ -18,7 +18,7 @@ import KeyboardMixin from "./KeyboardMixin.js";
 import KeyboardPagedCursorMixin from "./KeyboardPagedCursorMixin.js";
 import KeyboardPrefixCursorMixin from "./KeyboardPrefixCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
-import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
+import SelectedTextAPIMixin from "./SelectedTextAPIMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapCursorMixin from "./TapCursorMixin.js";
@@ -39,7 +39,7 @@ export default class ListBox extends AriaListMixin(
                           KeyboardPagedCursorMixin(
                             KeyboardPrefixCursorMixin(
                               LanguageDirectionMixin(
-                                SelectedItemTextValueMixin(
+                                SelectedTextAPIMixin(
                                   SingleSelectAPIMixin(
                                     SlotItemsMixin(
                                       TapCursorMixin(ReactiveElement)

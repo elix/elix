@@ -1,28 +1,34 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import { rendered, setState, state } from "./internal.js";
+import { defaultState, rendered, setState, state } from "./internal.js";
 
 /**
- * Defines a component's value as the text content of the selected item.
+ * Exposes a public API for the selected text of a list-like element.
  *
  * This mixin exists for list-like components that want to provide a more
- * convenient way to get/set the selected item using text. It adds a `value`
+ * convenient way to get/set the selected item using text. It adds a `selectedText`
  * property that gets the `textContent` of a component's `selectedItem`. The
- * `value` property can also be set to set the selection to the first item in
+ * `selectedText` property can also be set to set the selection to the first item in
  * the `items` collection that has the requested `textContent`. If the indicated
  * text is not found in `items`, the selection is cleared.
  *
  * This mixin expects a component to provide an `items` array of all elements in
  * the list. A standard way to do that with is
  * [ContentItemsMixin](ContentItemsMixin). This also expects the definition of a
- * `currentIndex` state, which can be obtained from
- * [ItemsCursorMixin](ItemsCursorMixin).
+ * `selectedIndex` state, which can be obtained from
+ * [CursorSelectMixin](CursorSelectMixin).
  *
- * @module SelectedItemTextValueMixin
+ * @module SelectedTextAPIMixin
  * @param {Constructor<ReactiveElement>} Base
  */
-export default function SelectedItemTextValueMixin(Base) {
+export default function SelectedTextAPIMixin(Base) {
   // The class prototype added by the mixin.
-  class SelectedItemTextValue extends Base {
+  class SelectedTextAPI extends Base {
+    get [defaultState]() {
+      return Object.assign(super[defaultState], {
+        desiredSelectedText: null,
+      });
+    }
+
     [rendered](/** @type {ChangedFlags} */ changed) {
       if (super[rendered]) {
         super[rendered](changed);
@@ -30,12 +36,12 @@ export default function SelectedItemTextValueMixin(Base) {
 
       // If we have a pending value to apply and now have items, apply the
       // value.
-      const { items, pendingValue } = this[state];
-      if (pendingValue && items) {
-        const index = indexOfItemWithText(items, pendingValue);
+      const { items, desiredSelectedText } = this[state];
+      if (desiredSelectedText && items) {
+        const index = indexOfItemWithText(items, desiredSelectedText);
         this[setState]({
-          currentIndex: index,
-          pendingValue: null,
+          selectedIndex: index,
+          desiredSelectedText: null,
         });
       }
     }
@@ -49,27 +55,29 @@ export default function SelectedItemTextValueMixin(Base) {
      *
      * @type {string}
      */
-    get value() {
-      return this.selectedItem == null || this.selectedItem.textContent == null
+    get selectedText() {
+      const { items, selectedIndex } = this[state];
+      const selectedItem = items ? items[selectedIndex] : null;
+      return selectedItem == null || selectedItem.textContent == null
         ? ""
-        : this.selectedItem.textContent;
+        : selectedItem.textContent;
     }
-    set value(text) {
-      const items = this[state].items;
+    set selectedText(text) {
+      const { items } = this[state];
       if (items === null) {
         // No items yet, save and try again later.
         this[setState]({
-          pendingValue: text,
+          desiredSelectedText: text,
         });
       } else {
         // Select the index of the indicate text, if found.
-        const currentIndex = indexOfItemWithText(items, text);
-        this[setState]({ currentIndex });
+        const selectedIndex = indexOfItemWithText(items, text);
+        this[setState]({ selectedIndex });
       }
     }
   }
 
-  return SelectedItemTextValue;
+  return SelectedTextAPI;
 }
 
 /**

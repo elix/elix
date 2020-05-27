@@ -31,6 +31,7 @@ import "./base/MultiSelectAPIMixin.tests.js";
 import "./base/NumberSpinBox.tests.js";
 import "./base/OpenCloseMixin.tests.js";
 import "./base/OverlayMixin.tests.js";
+import "./base/SelectedTextAPIMixin.tests.js";
 import "./base/SingleSelectAPIMixin.tests.js";
 import "./base/SlotContentMixin.tests.js";
 import "./base/TapCursorMixin.tests.js";

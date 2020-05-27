@@ -140,7 +140,7 @@ export { default as ReactiveMixin } from "./core/ReactiveMixin.js";
 export { default as RepeatMousedownMixin } from "./base/RepeatMousedownMixin.js";
 export { default as ResizeMixin } from "./base/ResizeMixin.js";
 export { default as SelectableMixin } from "./base/SelectableMixin.js";
-export { default as SelectedItemTextValueMixin } from "./base/SelectedItemTextValueMixin.js";
+export { default as SelectedTextAPIMixin } from "./base/SelectedTextAPIMixin.js";
 export { default as ShadowTemplateMixin } from "./core/ShadowTemplateMixin.js";
 export { default as SingleSelectAPIMixin } from "./base/SingleSelectAPIMixin.js";
 export { default as SlotContentMixin } from "./base/SlotContentMixin.js";
