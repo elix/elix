@@ -38,7 +38,6 @@ export { default as CursorAPIMixin } from "../src/base/CursorAPIMixin.js";
 export { default as CursorInViewMixin } from "../src/base/CursorInViewMixin.js";
 export { default as CursorSelectMixin } from "../src/base/CursorSelectMixin.js";
 export { default as DarkModeMixin } from "../src/base/DarkModeMixin.js";
-export { default as DataItemsMixin } from "../src/base/DataItemsMixin.js";
 export { default as DateComboBox } from "./DateComboBox.js";
 export { default as DateInput } from "./DateInput.js";
 export { default as DelegateCursorMixin } from "../src/base/DelegateCursorMixin.js";

@@ -13,7 +13,6 @@ export { default as CursorAPIMixin } from "./base/CursorAPIMixin.js";
 export { default as CursorInViewMixin } from "./base/CursorInViewMixin.js";
 export { default as CursorSelectMixin } from "./base/CursorSelectMixin.js";
 export { default as DarkModeMixin } from "./base/DarkModeMixin.js";
-export { default as DataItemsMixin } from "./base/DataItemsMixin.js";
 export { default as DelegateCursorMixin } from "./base/DelegateCursorMixin.js";
 export { default as DelegateFocusMixin } from "./base/DelegateFocusMixin.js";
 export { default as DelegateInputLabelMixin } from "./base/DelegateInputLabelMixin.js";
