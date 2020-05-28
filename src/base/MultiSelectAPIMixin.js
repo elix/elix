@@ -14,11 +14,11 @@ import { selectedItemsToFlags } from "./ItemsMultiSelectMixin.js";
  * This mixin expects a component to provide an `items` Array of all elements in
  * the list. This mixin also expects the component to apply
  * [ItemsMultiSelectMixin](ItemsMultiSelectMixin) or otherwise define a compatible
- * `selectedFlags` and `selectedItems` state.
+ * `selectedItemFlags` and `selectedItems` state.
  *
  * Given the above, this mixin exposes a consistent public API for reading and
  * manipulating the current item as a multiple-selection. This includes public members
- * `selectedFlags` and `selectedItems`, selection navigation methods, and a
+ * `selectedItemFlags` and `selectedItems`, selection navigation methods, and a
  * `selected-flags-changed` event.
  *
  * This mixin does not produce any user-visible effects to represent selection;
@@ -36,17 +36,17 @@ export default function MultiSelectAPIMixin(Base) {
       }
 
       // Raise selected-flags-changed event
-      if (changed.selectedFlags && this[raiseChangeEvents]) {
+      if (changed.selectedItemFlags && this[raiseChangeEvents]) {
         const oldEvent = new CustomEvent("selected-flags-changed", {
           bubbles: true,
         });
         this.dispatchEvent(oldEvent);
         /**
-         * Raised when the `selectedFlags` property changes.
+         * Raised when the `selectedItemFlags` property changes.
          *
-         * @event selectedflagschange
+         * @event selecteditemflagschange
          */
-        const event = new CustomEvent("selectedflagschange", {
+        const event = new CustomEvent("selecteditemflagschange", {
           bubbles: true,
         });
         this.dispatchEvent(event);
@@ -58,11 +58,11 @@ export default function MultiSelectAPIMixin(Base) {
      *
      * @type {boolean[]}
      */
-    get selectedFlags() {
-      return this[state].selectedFlags;
+    get selectedItemFlags() {
+      return this[state].selectedItemFlags;
     }
-    set selectedFlags(selectedFlags) {
-      this[setState]({ selectedFlags });
+    set selectedItemFlags(selectedItemFlags) {
+      this[setState]({ selectedItemFlags });
     }
 
     /**
@@ -75,14 +75,14 @@ export default function MultiSelectAPIMixin(Base) {
     }
     set selectedItems(selectedItems) {
       const items = this[state].items;
-      const selectedFlags = selectedItemsToFlags(items, selectedItems);
-      this[setState]({ selectedFlags });
+      const selectedItemFlags = selectedItemsToFlags(items, selectedItems);
+      this[setState]({ selectedItemFlags });
     }
 
     /**
-     * Toggles the indicated value in the `selectedFlags` array.
+     * Toggles the indicated value in the `selectedItemFlags` array.
      *
-     * @param {number} index - the position the `selectedFlags` array
+     * @param {number} index - the position the `selectedItemFlags` array
      * @param {boolean} [toggle] - if present, the flag will be set to
      * this boolean value; if omitted, the flag will be toggled
      */

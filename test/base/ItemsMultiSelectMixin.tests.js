@@ -28,30 +28,30 @@ describe("ItemsMultiSelectMixin", () => {
 
   it("has selected flags initially all false", () => {
     const fixture = new MultiSelectionTest();
-    assert.deepEqual(fixture[state].selectedFlags, [false, false, false]);
+    assert.deepEqual(fixture[state].selectedItemFlags, [false, false, false]);
   });
 
-  it("ensures selectedFlags is same length as items", () => {
+  it("ensures selectedItemFlags is same length as items", () => {
     const fixture = new MultiSelectionTest();
     fixture[setState]({
-      selectedFlags: [true], // Too short
+      selectedItemFlags: [true], // Too short
     });
-    assert.deepEqual(fixture[state].selectedFlags, [true, false, false]);
+    assert.deepEqual(fixture[state].selectedItemFlags, [true, false, false]);
     fixture[setState]({
-      selectedFlags: [false, true, false, true], // Too long
+      selectedItemFlags: [false, true, false, true], // Too long
     });
-    assert.deepEqual(fixture[state].selectedFlags, [false, true, false]);
+    assert.deepEqual(fixture[state].selectedItemFlags, [false, true, false]);
   });
 
-  it("refreshes selectedFlags when items change", () => {
+  it("refreshes selectedItemFlags when items change", () => {
     const fixture = new MultiSelectionTest();
     fixture[setState]({
-      selectedFlags: [true, false, true],
+      selectedItemFlags: [true, false, true],
     });
     fixture[setState]({
       items: ["a", "Zero", "b", "c", "Two", "d"],
     });
-    assert.deepEqual(fixture[state].selectedFlags, [
+    assert.deepEqual(fixture[state].selectedItemFlags, [
       false,
       true,
       false,

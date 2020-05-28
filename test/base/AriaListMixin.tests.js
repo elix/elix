@@ -70,7 +70,7 @@ describe("AriaListMixin", () => {
     );
     container.append(fixture);
     await fixture[setState]({
-      selectedFlags: [true, false, true],
+      selectedItemFlags: [true, false, true],
     });
     const items = fixture[state].items;
     assert.equal(items[0].getAttribute("aria-selected"), "true");

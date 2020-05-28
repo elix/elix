@@ -39,30 +39,30 @@ describe("MultiSelectAPIMixin", () => {
     const fixture = new MultiSelectAPITest();
     const items = fixture.items;
     fixture.selectedItems = [items[0], items[2]];
-    assert.deepEqual(fixture.selectedFlags, [true, false, true]);
+    assert.deepEqual(fixture.selectedItemFlags, [true, false, true]);
   });
 
   it("can toggle selected state of an individual items", () => {
     const fixture = new MultiSelectAPITest();
-    assert(!fixture.selectedFlags[0]);
+    assert(!fixture.selectedItemFlags[0]);
     fixture.toggleSelectedFlag(0);
-    assert(fixture.selectedFlags[0]);
+    assert(fixture.selectedItemFlags[0]);
     fixture.toggleSelectedFlag(0, true);
-    assert(fixture.selectedFlags[0]);
+    assert(fixture.selectedItemFlags[0]);
     fixture.toggleSelectedFlag(0, false);
-    assert(!fixture.selectedFlags[0]);
+    assert(!fixture.selectedItemFlags[0]);
   });
 
-  it("raises the selectedflagschange event when selection changes", async () => {
+  it("raises the selecteditemflagschange event when selection changes", async () => {
     const fixture = new MultiSelectAPITest();
     container.append(fixture);
     await new Promise((resolve) => {
-      fixture.addEventListener("selectedflagschange", () => {
+      fixture.addEventListener("selecteditemflagschange", () => {
         resolve();
       });
       // Simulate user interaction.
       fixture[raiseChangeEvents] = true;
-      fixture.selectedFlags = [true, false, true];
+      fixture.selectedItemFlags = [true, false, true];
     });
   });
 });

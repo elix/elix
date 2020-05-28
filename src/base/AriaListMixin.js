@@ -38,7 +38,7 @@ import {
  * This mixin expects the component to define a `currentIndex` state member to
  * indicate the current item. You can supply that yourself, or do so via
  * [ItemsCursorMixin](ItemsCursorMixin). For a multi-select list, you must also
- * define a `selectedFlags` state member, available via
+ * define a `selectedItemFlags` state member, available via
  * [ItemsMultiSelectMixin](ItemsMultiSelectMixin).
  *
  * @module AriaListMixin
@@ -91,13 +91,13 @@ export default function AriaListMixin(Base) {
       }
 
       // Reflect the selected state to each item.
-      if (changed.items || changed.selectedIndex || changed.selectedFlags) {
+      if (changed.items || changed.selectedIndex || changed.selectedItemFlags) {
         // Does the list support multi-selection?
-        const { selectedFlags, selectedIndex } = this[state];
+        const { selectedItemFlags, selectedIndex } = this[state];
         if (items) {
           items.forEach((item, index) => {
-            const selected = selectedFlags
-              ? selectedFlags[index] // Multi-select
+            const selected = selectedItemFlags
+              ? selectedItemFlags[index] // Multi-select
               : index === selectedIndex; // Single-select
             item.setAttribute("aria-selected", selected.toString());
           });
@@ -119,9 +119,9 @@ export default function AriaListMixin(Base) {
         }
       }
 
-      if (changed.selectedFlags) {
+      if (changed.selectedItemFlags) {
         // Let ARIA know this is a multi-select list box.
-        if (this[state].selectedFlags) {
+        if (this[state].selectedItemFlags) {
           this.setAttribute("aria-multiselectable", "true");
         } else {
           this.removeAttribute("aria-multiselectable");

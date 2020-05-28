@@ -18,7 +18,7 @@ export default function ItemsMultiSelectMixin(Base) {
   class ItemsMultiSelect extends Base {
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
-        selectedFlags: null,
+        selectedItemFlags: null,
         selectedItems: null,
       });
     }
@@ -28,51 +28,51 @@ export default function ItemsMultiSelectMixin(Base) {
         ? super[stateEffects](state, changed)
         : {};
 
-      if (changed.selectedFlags && state.items && state.selectedFlags) {
-        const { items, selectedFlags } = state;
+      if (changed.selectedItemFlags && state.items && state.selectedItemFlags) {
+        const { items, selectedItemFlags } = state;
 
-        // If new selectedFlags array size doesn't match that of items array,
-        // create a new selectedFlags array that matches size.
-        if (selectedFlags.length !== items.length) {
+        // If new selectedItemFlags array size doesn't match that of items array,
+        // create a new selectedItemFlags array that matches size.
+        if (selectedItemFlags.length !== items.length) {
           const newSelectedFlags =
-            selectedFlags.length > items.length
+            selectedItemFlags.length > items.length
               ? // Trim to fit
-                selectedFlags.slice(0, items.length)
+                selectedItemFlags.slice(0, items.length)
               : // Stretch to fit
                 [
-                  ...selectedFlags,
-                  ...Array(items.length - selectedFlags.length).fill(false),
+                  ...selectedItemFlags,
+                  ...Array(items.length - selectedItemFlags.length).fill(false),
                 ];
           Object.assign(effects, {
-            selectedFlags: newSelectedFlags,
+            selectedItemFlags: newSelectedFlags,
           });
         } else {
-          // Size of selectedFlags matches items array. Reflect the new
+          // Size of selectedItemFlags matches items array. Reflect the new
           // selection in selectedItems.
           const selectedItems = items.filter(
-            (item, index) => selectedFlags[index]
+            (item, index) => selectedItemFlags[index]
           );
           Object.assign(effects, { selectedItems });
         }
       } else if (changed.items && state.items) {
-        // If items change but selectedFlags doesn't, try to (re)initialize
-        // selectedFlags using the latest set of selectedItems.
+        // If items change but selectedItemFlags doesn't, try to (re)initialize
+        // selectedItemFlags using the latest set of selectedItems.
         const { items, selectedItems } = state;
-        const selectedFlags = selectedItemsToFlags(items, selectedItems);
-        Object.assign(effects, { selectedFlags });
+        const selectedItemFlags = selectedItemsToFlags(items, selectedItems);
+        Object.assign(effects, { selectedItemFlags });
       }
 
       return effects;
     }
 
     /**
-     * Toggle the element of the `selectedFlags` array with the given index.
+     * Toggle the element of the `selectedItemFlags` array with the given index.
      *
      * If the `toggle` parameter is omitted, the indicated flag is flipped. If a
      * boolean value is supplied for `toggle`, the flag is set to that value.
      *
      * @protected
-     * @param {number} index - the index into the `selectedFlags` array
+     * @param {number} index - the index into the `selectedItemFlags` array
      * @param {boolean} [toggle] - if supplied, the value to set the flag to
      */
     [toggleSelectedFlag](index, toggle) {
@@ -80,15 +80,15 @@ export default function ItemsMultiSelectMixin(Base) {
         super[toggleSelectedFlag](index, toggle);
       }
 
-      // Create a new copy of selectedFlags
-      const newSelectedFlags = [...this[state].selectedFlags];
+      // Create a new copy of selectedItemFlags
+      const newSelectedFlags = [...this[state].selectedItemFlags];
 
       // Apply the toggle. If undefined, flip the current value.
       newSelectedFlags[index] =
         toggle !== undefined ? toggle : !newSelectedFlags[index];
 
       this[setState]({
-        selectedFlags: newSelectedFlags,
+        selectedItemFlags: newSelectedFlags,
       });
     }
   }

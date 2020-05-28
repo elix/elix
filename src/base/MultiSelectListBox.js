@@ -129,11 +129,11 @@ class MultiSelectListBox extends Base {
     }
 
     // Apply `selected` style to the selected items.
-    if (changed.items || changed.selectedFlags) {
-      const { items, selectedFlags } = this[state];
-      if (items && selectedFlags) {
+    if (changed.items || changed.selectedItemFlags) {
+      const { items, selectedItemFlags } = this[state];
+      if (items && selectedItemFlags) {
         items.forEach((item, index) => {
-          item.toggleAttribute("selected", selectedFlags[index]);
+          item.toggleAttribute("selected", selectedItemFlags[index]);
         });
       }
     }

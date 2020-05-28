@@ -6,7 +6,7 @@
 declare const MultiSelectAPIMixin: Mixin<
   {},
   {
-    selectedFlags: boolean[];
+    selectedItemFlags: boolean[];
     selectedItems: ListItemElement[];
     toggleSelectedFlag(index: number, toggle?: boolean): void;
   }
