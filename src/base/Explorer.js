@@ -6,7 +6,7 @@ import CursorAPIMixin from "./CursorAPIMixin.js";
 import CursorSelectMixin from "./CursorSelectMixin.js";
 import {
   checkSize,
-  closestAvailableItem,
+  closestAvailableItemIndex,
   defaultState,
   firstRender,
   ids,
@@ -407,13 +407,13 @@ class Explorer extends Base {
       const specialCase = items && items.length > 0 && currentIndex < 0;
       const canGoNext =
         specialCase ||
-        this[closestAvailableItem](state, {
+        this[closestAvailableItemIndex](state, {
           direction: 1,
           index: currentIndex + 1,
         }) >= 0;
       const canGoPrevious =
         specialCase ||
-        this[closestAvailableItem](state, {
+        this[closestAvailableItemIndex](state, {
           direction: -1,
           index: currentIndex - 1,
         }) >= 0;

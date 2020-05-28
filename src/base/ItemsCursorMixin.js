@@ -1,6 +1,6 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import {
-  closestAvailableItem,
+  closestAvailableItemIndex,
   defaultState,
   goFirst,
   goLast,
@@ -21,15 +21,23 @@ export default function ItemsCursorMixin(Base) {
   // The class prototype added by the mixin.
   class ItemsCursor extends Base {
     /**
-     * Look for an item which is available in the given state. Start at the
-     * indicated index, and move in the indicated direction (-1 to move backward
-     * the items, 1 to move forward).
+     * Look for an item which is available in the given state..
+     *
+     * The `options` parameter can accept options for:
+     *
+     * * `direction`: 1 to move forward, -1 to move backward
+     * * `index`: the index to start at, defaults to `state.currentIndex`
+     * * `wrap`: whether to wrap around the ends of the `items` array, defaults
+     *   to `state.cursorOperationsWrap`.
+     *
+     * If an available item was found, this returns its index. If no item was
+     * found, this returns -1.
      *
      * @param {PlainObject} state
      * @param {PlainObject} options
      * @returns {number}
      */
-    [closestAvailableItem](state, options = {}) {
+    [closestAvailableItemIndex](state, options = {}) {
       const direction = options.direction !== undefined ? options.direction : 1;
       const index =
         options.index !== undefined ? options.index : state.currentIndex;
@@ -218,14 +226,14 @@ export default function ItemsCursorMixin(Base) {
           // First clamp index to existing array bounds.
           newIndex = Math.max(Math.min(count - 1, newDesiredIndex), 0);
           // Look for an available item going forward.
-          newIndex = this[closestAvailableItem](state, {
+          newIndex = this[closestAvailableItemIndex](state, {
             direction: 1,
             index: newIndex,
             wrap: false,
           });
           if (newIndex < 0) {
             // Next best: look for an available item going backward.
-            newIndex = this[closestAvailableItem](state, {
+            newIndex = this[closestAvailableItemIndex](state, {
               direction: -1,
               index: newIndex - 1,
               wrap: false,
@@ -257,7 +265,7 @@ export default function ItemsCursorMixin(Base) {
  * @param {number} direction
  */
 function moveToIndex(element, index, direction) {
-  const newIndex = element[closestAvailableItem](element[state], {
+  const newIndex = element[closestAvailableItemIndex](element[state], {
     direction,
     index,
   });
