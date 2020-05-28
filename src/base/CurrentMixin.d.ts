@@ -3,7 +3,7 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-declare const SelectableMixin: StateMixin<
+declare const CurrentMixin: StateMixin<
   {},
   {},
   {
@@ -14,4 +14,4 @@ declare const SelectableMixin: StateMixin<
   }
 >;
 
-export default SelectableMixin;
+export default CurrentMixin;
