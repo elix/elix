@@ -46,11 +46,6 @@ class PlainHamburgerMenuButton extends HamburgerMenuButton {
     result.content.append(
       fragmentFrom.html`
         <style>
-          :host {
-            height: 1em;
-            width: 1em;
-          }
-
           [part~="menu-button"] {
             align-items: center;
             display: inline-flex;
@@ -59,8 +54,8 @@ class PlainHamburgerMenuButton extends HamburgerMenuButton {
 
           [part~="menu-icon"] {
             display: block;
-            height: 24px;
-            width: 24px;
+            height: 1em;
+            width: 1em;
           }
         </style>
       `
