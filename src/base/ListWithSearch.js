@@ -57,6 +57,7 @@ const Base = ComposedFocusMixin(
  * @inherits ReactiveElement
  * @mixes ComposedFocusMixin
  * @mixes CursorAPIMixin
+ * @mixes CursorSelectMixin
  * @mixes DelegateCursorMixin
  * @mixes DelegateFocusMixin
  * @mixes DelegateInputLabelMixin

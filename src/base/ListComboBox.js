@@ -39,8 +39,9 @@ const Base = CursorAPIMixin(
  * A combo box whose popup presents a list of choices
  *
  * @inherits ComboBox
- * @mixes DelegateCursorMixin
  * @mixes CursorAPIMixin
+ * @mixes CursorSelectMixin
+ * @mixes DelegateCursorMixin
  * @mixes DelegateItemsMixin
  * @mixes SingleSelectAPIMixin
  * @part {ListBox} list - the list of choices

@@ -40,6 +40,7 @@ const Base = CursorAPIMixin(
  *
  * @inherits Modes
  * @mixes CursorAPIMixin
+ * @mixes CursorSelectMixin
  * @mixes EffectMixin
  * @mixes ItemsAPIMixin
  * @mixes ItemsCursorMixin

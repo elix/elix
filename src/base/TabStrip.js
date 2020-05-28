@@ -73,6 +73,7 @@ const Base = AriaListMixin(
  * @inherits ReactiveElement
  * @mixes AriaListMixin
  * @mixes CursorAPIMixin
+ * @mixes CursorSelectMixin
  * @mixes DirectionCursorMixin
  * @mixes ItemsAPIMixin
  * @mixes ItemsCursorMixin

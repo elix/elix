@@ -52,6 +52,7 @@ const Base = CursorAPIMixin(
  *
  * @inherits ReactiveElement
  * @mixes CursorAPIMixin
+ * @mixes CursorSelectMixin
  * @mixes ItemsCursorMixin
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectAPIMixin
