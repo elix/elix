@@ -1,13 +1,13 @@
 import { template } from "../base/internal.js";
-import MenuItem from "../base/MenuItem.js";
+import Option from "../base/Option.js";
 import { templateFrom } from "../core/htmlLiterals.js";
 
 /**
- * A choice in a list in the Plain reference design system
+ * An option in a list in the Plain reference design system
  *
- * @inherits MenuItem
+ * @inherits Option
  */
-class PlainChoice extends MenuItem {
+class PlainChoice extends Option {
   get [template]() {
     return templateFrom.html`
       <style>
