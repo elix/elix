@@ -1,6 +1,6 @@
 {
   "name": "elix",
-  "version": "13.0.0",
+  "version": "14.0.0",
   "description": "High-quality web components for common user interface patterns",
   "license": "MIT",
   "repository": {
@@ -17,6 +17,7 @@
     "combo box",
     "custom elements",
     "carousel",
+    "date picker",
     "dialog",
     "drawer",
     "dropdown",
@@ -26,6 +27,7 @@
     "popup",
     "pull to refresh",
     "slideshow",
+    "spin box",
     "tabs",
     "toast"
   ],
