@@ -101,6 +101,9 @@ class TabStrip extends Base {
     let handled;
 
     // Let user select a tab button with Enter or Space.
+    // The button will generally raise a `click` event on Enter/Space, but our
+    // use of `TapCursorMixin` listens to mousedown, not click, so we handle the
+    // keys specially.
     switch (event.key) {
       /* eslint-disable no-case-declarations */
       case " ":

@@ -24,8 +24,6 @@ const Base = FocusVisibleMixin(
 class TabButton extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
-      treatEnterAsClick: false, // Let tab strip handle Enter.
-      treatSpaceAsClick: false, // Let tab strip handle Space.
       position: "top",
     });
   }
