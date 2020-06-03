@@ -89,7 +89,7 @@ export default function FormElementMixin(Base) {
         this.setAttribute("name", this[state].name);
       }
 
-      if (this[nativeInternals]) {
+      if (this[nativeInternals] && this[nativeInternals].setValidity) {
         // Reflect validity state to internals.
         if (changed.valid || changed.validationMessage) {
           const { valid, validationMessage } = this[state];
