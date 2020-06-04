@@ -221,51 +221,6 @@ export function ownEvent(node, event) {
 }
 
 /**
- * Adds or removes the element's `childNodes` as necessary to match the nodes
- * indicated in the `childNodes` parameter.
- *
- * This operation is useful in cases where you maintain your own set of nodes
- * which should be rendered as the children of some element. When you insert or
- * remove nodes in that set, you can invoke this function to efficiently apply
- * the new set as a delta to the existing children. Only the items in the set
- * that have actually changed will be added or removed.
- *
- * @param {Element} element - the element to update
- * @param {(NodeList|Node[])} childNodes - the set of nodes to apply
- */
-export function updateChildNodes(element, childNodes) {
-  // If the childNodes parameter is the actual childNodes of an element, then as
-  // we append those nodes to the indicated target element, they'll get removed
-  // from the original set. To keep the list stable, we make a copy.
-  const copy = [...childNodes];
-
-  const oldLength = element.childNodes.length;
-  const newLength = copy.length;
-  const length = Math.max(oldLength, newLength);
-  for (let i = 0; i < length; i++) {
-    const oldChild = element.childNodes[i];
-    const newChild = copy[i];
-    if (i >= oldLength) {
-      // Add new item not in old set.
-      element.append(newChild);
-    } else if (i >= newLength) {
-      // Remove old item past end of new set.
-      element.removeChild(element.childNodes[newLength]);
-    } else if (oldChild !== newChild) {
-      if (copy.indexOf(oldChild, i) >= i) {
-        // Old node comes later in final set. Insert the new node rather than
-        // replacing it so that we don't detach the old node only to have to
-        // reattach it later.
-        element.insertBefore(newChild, oldChild);
-      } else {
-        // Replace old item with new item.
-        element.replaceChild(newChild, oldChild);
-      }
-    }
-  }
-}
-
-/**
  * Returns the set that includes the given node and all of its ancestors in the
  * composed tree. See [composedAncestors](#composedAncestors) for details on the
  * latter.
@@ -310,6 +265,51 @@ export const standardBooleanAttributes = {
   readonly: true,
   selected: true,
 };
+
+/**
+ * Adds or removes the element's `childNodes` as necessary to match the nodes
+ * indicated in the `childNodes` parameter.
+ *
+ * This operation is useful in cases where you maintain your own set of nodes
+ * which should be rendered as the children of some element. When you insert or
+ * remove nodes in that set, you can invoke this function to efficiently apply
+ * the new set as a delta to the existing children. Only the items in the set
+ * that have actually changed will be added or removed.
+ *
+ * @param {Element} element - the element to update
+ * @param {(NodeList|Node[])} childNodes - the set of nodes to apply
+ */
+export function updateChildNodes(element, childNodes) {
+  // If the childNodes parameter is the actual childNodes of an element, then as
+  // we append those nodes to the indicated target element, they'll get removed
+  // from the original set. To keep the list stable, we make a copy.
+  const copy = [...childNodes];
+
+  const oldLength = element.childNodes.length;
+  const newLength = copy.length;
+  const length = Math.max(oldLength, newLength);
+  for (let i = 0; i < length; i++) {
+    const oldChild = element.childNodes[i];
+    const newChild = copy[i];
+    if (i >= oldLength) {
+      // Add new item not in old set.
+      element.append(newChild);
+    } else if (i >= newLength) {
+      // Remove old item past end of new set.
+      element.removeChild(element.childNodes[newLength]);
+    } else if (oldChild !== newChild) {
+      if (copy.indexOf(oldChild, i) >= i) {
+        // Old node comes later in final set. Insert the new node rather than
+        // replacing it so that we don't detach the old node only to have to
+        // reattach it later.
+        element.insertBefore(newChild, oldChild);
+      } else {
+        // Replace old item with new item.
+        element.replaceChild(newChild, oldChild);
+      }
+    }
+  }
+}
 
 /**
  * Walk the composed tree at the root for elements that pass the given filter.
