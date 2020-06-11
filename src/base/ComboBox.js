@@ -2,10 +2,10 @@ import { forwardFocus } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import { transmute } from "../core/template.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
-import DelegateFocusMixin from "./DelegateFocusMixin.js";
+// import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
-import FocusVisibleMixin from "./FocusVisibleMixin.js";
+// import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import Hidden from "./Hidden.js";
 import {
@@ -26,12 +26,20 @@ import KeyboardMixin from "./KeyboardMixin.js";
 import PopupSource from "./PopupSource.js";
 import UpDownToggle from "./UpDownToggle.js";
 
+// const Base = AriaRoleMixin(
+//   DelegateFocusMixin(
+//     DelegateInputLabelMixin(
+//       DelegateInputSelectionMixin(
+//         FocusVisibleMixin(FormElementMixin(KeyboardMixin(PopupSource)))
+//       )
+//     )
+//   )
+// );
+
 const Base = AriaRoleMixin(
-  DelegateFocusMixin(
-    DelegateInputLabelMixin(
-      DelegateInputSelectionMixin(
-        FocusVisibleMixin(FormElementMixin(KeyboardMixin(PopupSource)))
-      )
+  DelegateInputLabelMixin(
+    DelegateInputSelectionMixin(
+      FormElementMixin(KeyboardMixin(PopupSource))
     )
   )
 );
