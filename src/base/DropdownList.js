@@ -1,55 +1,30 @@
-import ComboBox from "./ComboBox.js";
-import ListBox from "./ListBox.js";
-import {
-  defaultState,
-  ids,
-  raiseChangeEvents,
-  render,
-  setState,
-  state,
-  stateEffects,
-} from "./internal.js";
-import SlotContentMixin from "./SlotContentMixin.js";
+import { defaultState, ids, render, state } from "./internal.js";
+import ItemsTextMixin from "./ItemsTextMixin.js";
+import ListComboBox from "./ListComboBox.js";
 
-const Base = SlotContentMixin(ComboBox);
+const Base = ItemsTextMixin(ListComboBox);
 
 /**
- * A combo box that behaves like an HTML select
+ * A combo box that auto-completes the user's input against the list items
  *
- * @inherits ComboBox
- * @mixes SlotContentMixin
- * @part {div} input
- * @part {Listbox} list
+ * @inherits ListComboBox
+ * @mixes ItemsTextMixin
+ * @part { div } input
  */
 class DropdownList extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       inputPartType: 'div',
-      listPartType: ListBox,
     });
   }
 
   [render](/** @type {ChangedFlags} */ changed) {
     super[render](changed);
-
-    if (changed.inputPartType) {
-      this[ids].input.addEventListener("input", (event) => {
-        this[raiseChangeEvents] = true;
-        /** @type {any} */
-        // const cast = event;
-        // const filter = cast.detail
-        //   ? cast.detail.originalText
-        //   : this[state].value;
-        // this[setState]({ filter });
-        this[raiseChangeEvents] = false;
-      });
+    if (changed.texts) {
+      if ("texts" in this[ids].input) {
+        /** @type {any} */ (this[ids].input).texts = this[state].texts;
+      }
     }
-  }
-
-  [stateEffects](state, changed) {
-    const effects = super[stateEffects](state, changed);
-
-    return effects;
   }
 }
 

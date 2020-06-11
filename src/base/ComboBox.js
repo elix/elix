@@ -339,10 +339,11 @@ class ComboBox extends Base {
   get [template]() {
     const result = super[template];
 
-    // Put an input element and toggle in the source.
+    // Put a label, input element, and toggle in the source.
     const sourceSlot = result.content.querySelector('slot[name="source"]');
     if (sourceSlot) {
       sourceSlot.replaceWith(fragmentFrom.html`
+        <label id="label" part="label" for="input"></label>
         <input id="input" part="input"></input>
         <div id="popupToggle" part="popup-toggle" tabindex="-1"></div>
       `);
@@ -356,7 +357,7 @@ class ComboBox extends Base {
           [part~="source"] {
             background-color: inherit;
             display: inline-grid;
-            grid-template-columns: 1fr auto;
+            grid-template-columns: auto 1fr auto;
             position: relative;
           }
 
