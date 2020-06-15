@@ -2,6 +2,7 @@
 
 // Files that export a single object.
 export { default as AlertDialog } from "./AlertDialog.js";
+export { default as AriaDropdownList } from "./AriaDropdownList.js";
 export { default as AriaListMixin } from "../src/base/AriaListMixin.js";
 export { default as AriaMenuMixin } from "../src/base/AriaMenuMixin.js";
 export { default as AriaRoleMixin } from "../src/base/AriaRoleMixin.js";

@@ -52,6 +52,7 @@ export { default as OpenCloseMixin } from "./base/OpenCloseMixin.js";
 export { default as OverlayMixin } from "./base/OverlayMixin.js";
 export { default as PageNumbersMixin } from "./base/PageNumbersMixin.js";
 export { default as AlertDialog } from "./plain/PlainAlertDialog.js";
+export { default as AriaDropdownList } from "./plain/PlainAriaDropdownList.js";
 export { default as ArrowDirectionButton } from "./plain/PlainArrowDirectionButton.js";
 export { default as ArrowDirectionMixin } from "./plain/PlainArrowDirectionMixin.js";
 export { default as AutoCompleteComboBox } from "./plain/PlainAutoCompleteComboBox.js";
