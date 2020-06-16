@@ -16,7 +16,7 @@ class DropdownList extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       inputPartType: 'div',
-      value: 'foo'
+      value: ''
     });
   }
 
@@ -56,17 +56,6 @@ class DropdownList extends Base {
         <div id="popupToggle" part="popup-toggle"></div>
       `);
     }
-
-    result.content.append(
-      fragmentFrom.html`
-        <style>
-          [part~="input"] {
-            /* temporary styling */
-            min-width: 10em;
-          }
-        </style>
-      `
-    );
     return result;
   }
 }
