@@ -1,5 +1,5 @@
 import { fragmentFrom } from "../core/htmlLiterals.js";
-import { defaultState, ids, render, state, template, setState, raiseChangeEvents, } from "./internal.js";
+import { defaultState, ids, render, template, setState, state, raiseChangeEvents, } from "./internal.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import ListComboBox from "./ListComboBox.js";
 
@@ -22,6 +22,7 @@ class DropdownList extends Base {
 
   [render](/** @type {ChangedFlags} */ changed) {
     super[render](changed);
+
     if (changed.value) {
       const { value } = this[state];
       /** @type {any} */ (this[ids].input).innerHTML = value;

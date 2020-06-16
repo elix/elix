@@ -12,6 +12,7 @@ import PlainComboBoxMixin from "./PlainComboBoxMixin.js";
 class PlainDropdownList extends PlainComboBoxMixin(DropdownList) {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
+      inputPartType: 'div',
       listPartType: PlainListbox,
     });
   }
