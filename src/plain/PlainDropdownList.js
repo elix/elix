@@ -1,6 +1,7 @@
 import DropdownList from "../base/DropdownList.js";
 import { defaultState } from "../base/internal.js";
-import PlainListbox from "./PlainListBox.js"
+import PlainListbox from "./PlainListBox.js";
+import PlainComboBoxMixin from "./PlainComboBoxMixin.js";
 
 /**
  * DropdownList component in the Plain reference design system
@@ -8,10 +9,9 @@ import PlainListbox from "./PlainListBox.js"
  * @inherits DropdownList
  * @part {PlainListbox} list
  */
-class PlainDropdownList extends DropdownList {
+class PlainDropdownList extends PlainComboBoxMixin(DropdownList) {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
-      // inputPartType: 'input',
       listPartType: PlainListbox,
     });
   }

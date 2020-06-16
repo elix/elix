@@ -52,7 +52,7 @@ class DropdownList extends Base {
     if (sourceSlot) {
       sourceSlot.replaceWith(fragmentFrom.html`
         <label id="label" part="label" for="input"></label>
-        <div id="input" part="input"></input>
+        <div id="input" part="input" aria-labelledby="label"></input>
         <div id="popupToggle" part="popup-toggle"></div>
       `);
     }
