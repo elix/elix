@@ -1,5 +1,6 @@
 import { ownEvent } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
+import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import {
   defaultState,
   firstRender,
@@ -13,18 +14,18 @@ import {
 import KeyboardMixin from "./KeyboardMixin.js";
 import PopupSource from "./PopupSource.js";
 
-const Base = KeyboardMixin(PopupSource);
+const Base = DelegateFocusMixin(KeyboardMixin(PopupSource));
 
 /**
  * A button that invokes an attached popup
  *
  * @inherits PopupSource
+ * @mixes DelegateFocusMixin
  * @mixes KeyboardMixin
  */
 class PopupButton extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
-      role: "button",
       sourcePartType: "button",
     });
   }
@@ -52,7 +53,7 @@ class PopupButton extends Base {
     super[render](changed);
 
     if (this[firstRender]) {
-      // If the top-level element gets the focus while the popup is open, the
+      // If the source element gets the focus while the popup is open, the
       // most likely expanation is that the user hit Shift+Tab to back up out of
       // the popup. In that case, we should close.
       this.addEventListener("focus", async (event) => {
@@ -106,7 +107,6 @@ class PopupButton extends Base {
         // focused element (i.e., this element) when opening, and restore focus to
         // it when the popup closes.
       });
-      source.tabIndex = -1;
     }
   }
 

@@ -91,7 +91,7 @@ class PopupSource extends Base {
     renderParts(this[shadowRoot], this[state], changed);
 
     if (this[firstRender] || changed.ariaHasPopup) {
-      this.setAttribute("aria-haspopup", this[state].ariaHasPopup);
+      this[ids].source.setAttribute("aria-haspopup", this[state].ariaHasPopup);
     }
 
     if (changed.popupPartType) {
@@ -170,7 +170,7 @@ class PopupSource extends Base {
     if (changed.opened) {
       const { opened } = this[state];
       /** @type {any} */ (this[ids].popup).opened = opened;
-      this.setAttribute("aria-expanded", opened.toString());
+      this[ids].source.setAttribute("aria-expanded", opened.toString());
     }
 
     if (changed.disabled) {
