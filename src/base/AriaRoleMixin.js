@@ -26,7 +26,11 @@ export default function AriaRoleMixin(Base) {
       if (changed.role) {
         // Apply top-level role.
         const { role } = this[state];
-        this.setAttribute("role", role);
+        if (role) {
+          this.setAttribute("role", role);
+        } else {
+          this.removeAttribute("role");
+        }
       }
     }
 

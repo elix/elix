@@ -1,7 +1,6 @@
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import { transmute } from "../core/template.js";
-import AriaRoleMixin from "./AriaRoleMixin.js";
 import DisabledMixin from "./DisabledMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import {
@@ -23,17 +22,14 @@ import Popup from "./Popup.js";
 
 const resizeListenerKey = Symbol("resizeListener");
 
-const Base = AriaRoleMixin(
-  DisabledMixin(
-    FocusVisibleMixin(LanguageDirectionMixin(OpenCloseMixin(ReactiveElement)))
-  )
+const Base = DisabledMixin(
+  FocusVisibleMixin(LanguageDirectionMixin(OpenCloseMixin(ReactiveElement)))
 );
 
 /**
  * Positions a popup with respect to a source element
  *
  * @inherits ReactiveElement
- * @mixes AriaRoleMixin
  * @mixes DisabledMixin
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
@@ -51,7 +47,6 @@ class PopupSource extends Base {
       popupPosition: "below",
       popupPartType: Popup,
       popupWidth: null,
-      role: "none",
       roomAbove: null,
       roomBelow: null,
       roomLeft: null,

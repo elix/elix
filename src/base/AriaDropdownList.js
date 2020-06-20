@@ -1,3 +1,4 @@
+import { updateChildNodes } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import DropdownList from "./DropdownList.js";
 import {
@@ -7,6 +8,8 @@ import {
   render,
   rendered,
   setState,
+  state,
+  stateEffects,
   template,
 } from "./internal.js";
 import ListBox from "./ListBox.js";
@@ -14,6 +17,7 @@ import ListBox from "./ListBox.js";
 class AriaDropdownList extends DropdownList {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
+      accessibleItems: null,
       menuPartType: ListBox,
     });
   }
@@ -35,6 +39,28 @@ class AriaDropdownList extends DropdownList {
       const content = this[ids].menu.children;
       this[setState]({ content });
     }
+
+    if (changed.accessibleItems) {
+      const { accessibleItems } = this[state];
+      updateChildNodes(this[ids].menu, accessibleItems);
+    }
+  }
+
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
+
+    if (changed.items) {
+      // Create accessible items for dropdown list.
+      const items = state.items || [];
+      const accessibleItems = items.map((item) => {
+        const option = document.createElement("option");
+        option.textContent = item.textContent; // TODO getItemText
+        return option;
+      });
+      Object.assign(effects, { accessibleItems });
+    }
+
+    return effects;
   }
 
   get [template]() {
@@ -50,23 +76,23 @@ class AriaDropdownList extends DropdownList {
       source.role = "combobox";
     }
 
-    // Replace default slot with hard-coded list items.
+    // Remove default slot from inside menu.
     const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
-      defaultSlot.replaceWith(fragmentFrom.html`
-        <elix-option value="apple">Apple</elix-option>
-        <elix-option value="banana">Banana</elix-option>
-        <elix-option value="blueberry">Blueberry</elix-option>
-        <elix-option value="boysenberry">Boysenberry</elix-option>
-        <elix-option value="cherry">Cherry</elix-option>
-        <elix-option value="durian">Durian</elix-option>
-        <elix-option value="eggplant">Eggplant</elix-option>
-        <elix-option value="fig">Fig</elix-option>
-        <elix-option value="grape">Grape</elix-option>
-        <elix-option value="guava">Guava</elix-option>
-        <elix-option value="huckleberry">Huckleberry</elix-option>
-      `);
+      defaultSlot.remove();
     }
+
+    // Create new default slot inside hidden container.
+    result.content.append(fragmentFrom.html`
+      <style>
+        #hiddenContainer {
+          display: none;
+        }
+      </style>
+      <div id="hiddenContainer">
+        <slot></slot>
+      </div>
+    `);
 
     return result;
   }

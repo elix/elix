@@ -1,7 +1,6 @@
 import { updateChildNodes } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import { replace, transmute } from "../core/template.js";
-import AriaListMixin from "./AriaListMixin.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import {
@@ -22,15 +21,13 @@ import SelectedValueAPIMixin from "./SelectedValueAPIMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
-const Base = AriaListMixin(
-  CursorAPIMixin(
-    FormElementMixin(
-      ItemsAPIMixin(
-        ItemsCursorMixin(
-          SelectedTextAPIMixin(
-            SelectedValueAPIMixin(
-              SingleSelectAPIMixin(SlotItemsMixin(MenuButton))
-            )
+const Base = CursorAPIMixin(
+  FormElementMixin(
+    ItemsAPIMixin(
+      ItemsCursorMixin(
+        SelectedTextAPIMixin(
+          SelectedValueAPIMixin(
+            SingleSelectAPIMixin(SlotItemsMixin(MenuButton))
           )
         )
       )
