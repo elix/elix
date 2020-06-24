@@ -47,12 +47,6 @@ const Base = CursorAPIMixin(
  * @part {div} value - region inside the toggle button showing the value of the current selection
  */
 class DropdownList extends Base {
-  // By default, opening the menu re-selects the component item that's currently
-  // selected.
-  get defaultMenuItemIndex() {
-    return this[state].selectedIndex;
-  }
-
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       ariaHasPopup: "listbox",
@@ -98,10 +92,17 @@ class DropdownList extends Base {
   [stateEffects](state, changed) {
     const effects = super[stateEffects](state, changed);
 
+    // When opening the popup, by default (re)select the current item.
+    if (changed.opened && state.opened) {
+      Object.assign(effects, {
+        popupCurrentIndex: state.selectedIndex,
+      });
+    }
+
     // When the menu closes, update our selection from the menu selection.
-    if (changed.opened) {
-      const { closeResult, items, opened } = state;
-      if (!opened && items && closeResult !== undefined) {
+    if (changed.opened && !state.opened) {
+      const { closeResult, items } = state;
+      if (items && closeResult !== undefined) {
         const selectedIndex = items.indexOf(closeResult);
         Object.assign(effects, {
           selectedIndex,

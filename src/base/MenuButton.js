@@ -1,11 +1,9 @@
-import { deepContains, indexOfItemContainingTarget } from "../core/dom.js";
+import { deepContains } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import { transmute } from "../core/template.js";
 import {
   defaultState,
-  firstRender,
   ids,
-  keydown,
   raiseChangeEvents,
   render,
   setState,
@@ -16,25 +14,22 @@ import {
 } from "./internal.js";
 import Menu from "./Menu.js";
 import PopupButton from "./PopupButton.js";
+import PopupSelectMixin from "./PopupSelectMixin.js";
+
+const Base = PopupSelectMixin(PopupButton);
 
 /**
  * A button that invokes a menu.
  *
  * @inherits PopupButton
+ * @mixes PopupSelectMixin
  * @part {Menu} menu - the menu shown in the popup
- * @part {UpDownToggle} popup-toggle - the element that lets the user know they can open the popup
  * @part down-icon - the icon shown in the toggle if the popup will open or close in the down direction
  * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
  */
-class MenuButton extends PopupButton {
-  // The index that will be selected by default when the menu opens.
-  get defaultMenuItemIndex() {
-    return -1;
-  }
-
+class MenuButton extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
-      popupCurrentIndex: -1,
       menuPartType: Menu,
     });
   }
@@ -43,25 +38,6 @@ class MenuButton extends PopupButton {
     /** @type {any} */
     const menu = this[ids] && this[ids].menu;
     return menu ? menu.items : null;
-  }
-
-  [keydown](/** @type {KeyboardEvent} */ event) {
-    switch (event.key) {
-      // Enter closes popup.
-      case "Enter":
-        if (this.opened) {
-          this.selectCurrentItemAndClose();
-          return true;
-        }
-    }
-
-    // Give superclass a chance to handle.
-    const base = super[keydown] && super[keydown](event);
-    if (base) {
-      return true;
-    }
-
-    return false;
   }
 
   /**
@@ -78,49 +54,10 @@ class MenuButton extends PopupButton {
     this[setState]({ menuPartType });
   }
 
-  /**
-   * The class or tag used to create the `popup-toggle` part – the
-   * element that lets the user know they can open the popup.
-   *
-   * @type {PartDescriptor}
-   * @default UpDownToggle
-   */
-  get popupTogglePartType() {
-    return this[state].popupTogglePartType;
-  }
-  set popupTogglePartType(popupTogglePartType) {
-    this[setState]({ popupTogglePartType });
-  }
-
   [render](/** @type {ChangedFlags} */ changed) {
     super[render](changed);
 
     renderParts(this[shadowRoot], this[state], changed);
-
-    if (this[firstRender]) {
-      // If the user hovers over an enabled item, make it current.
-      this.addEventListener("mousemove", (event) => {
-        if (this[state].opened) {
-          // Treat the deepest element in the composed event path as the target.
-          const target = event.composedPath
-            ? event.composedPath()[0]
-            : event.target;
-
-          if (target && target instanceof Node) {
-            const items = this.items;
-            const hoverIndex = indexOfItemContainingTarget(items, target);
-            const item = items[hoverIndex];
-            const enabled = item && !item.disabled;
-            const popupCurrentIndex = enabled ? hoverIndex : -1;
-            if (popupCurrentIndex !== this[state].popupCurrentIndex) {
-              this[raiseChangeEvents] = true;
-              this[setState]({ popupCurrentIndex });
-              this[raiseChangeEvents] = false;
-            }
-          }
-        }
-      });
-    }
 
     if (changed.popupPartType) {
       this[ids].popup.tabIndex = -1;
@@ -191,6 +128,7 @@ class MenuButton extends PopupButton {
       });
     }
 
+    // The current item in the popup is represented in the menu.
     if (changed.popupCurrentIndex) {
       const menu = /** @type {any} */ (this[ids].menu);
       if ("currentIndex" in menu) {
@@ -199,43 +137,14 @@ class MenuButton extends PopupButton {
     }
   }
 
-  /**
-   * Highlight the selected item (if one exists), then close the menu.
-   */
-  async selectCurrentItemAndClose() {
-    const originalRaiseChangeEvents = this[raiseChangeEvents];
-    const selectionDefined = this[state].popupCurrentIndex >= 0;
-    const closeResult = selectionDefined
-      ? this.items[this[state].popupCurrentIndex]
-      : undefined;
-    /** @type {any} */ const menu = this[ids].menu;
-    if (selectionDefined && "flashCurrentItem" in menu) {
-      await menu.flashCurrentItem();
-    }
-    const saveRaiseChangeEvents = this[raiseChangeEvents];
-    this[raiseChangeEvents] = originalRaiseChangeEvents;
-    await this.close(closeResult);
-    this[raiseChangeEvents] = saveRaiseChangeEvents;
-  }
-
   [stateEffects](state, changed) {
     const effects = super[stateEffects](state, changed);
 
-    // Set things when opening, or reset things when closing.
-    if (changed.opened) {
-      if (state.opened) {
-        // Opening
-        Object.assign(effects, {
-          // Select the default item in the menu.
-          popupCurrentIndex: this.defaultMenuItemIndex,
-        });
-      } else {
-        // Closing
-        Object.assign(effects, {
-          // Clear menu selection.
-          popupCurrentIndex: -1,
-        });
-      }
+    // When opening, clear any menu selection.
+    if (changed.opened && state.opened) {
+      Object.assign(effects, {
+        popupCurrentIndex: -1,
+      });
     }
 
     return effects;

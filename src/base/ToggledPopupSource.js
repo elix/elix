@@ -22,11 +22,10 @@ const documentMouseupListenerKey = Symbol("documentMouseupListener");
 const Base = KeyboardMixin(PopupSource);
 
 /**
- * A button that invokes a menu.
+ * An element that can toggle open a popup.
  *
  * @inherits PopupSource
  * @mixes KeyboardMixin
- * @part {Menu} menu - the menu shown in the popup
  * @part {UpDownToggle} popup-toggle - the element that lets the user know they can open the popup
  * @part down-icon - the icon shown in the toggle if the popup will open or close in the down direction
  * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
