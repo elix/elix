@@ -6,6 +6,7 @@ import FormElementMixin from "./FormElementMixin.js";
 import {
   defaultState,
   ids,
+  raiseChangeEvents,
   render,
   setState,
   shadowRoot,
@@ -15,7 +16,8 @@ import {
 } from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
-import MenuButton from "./MenuButton.js";
+import PopupButton from "./PopupButton.js";
+import PopupSelectMixin from "./PopupSelectMixin.js";
 import SelectedTextAPIMixin from "./SelectedTextAPIMixin.js";
 import SelectedValueAPIMixin from "./SelectedValueAPIMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
@@ -27,7 +29,7 @@ const Base = CursorAPIMixin(
       ItemsCursorMixin(
         SelectedTextAPIMixin(
           SelectedValueAPIMixin(
-            SingleSelectAPIMixin(SlotItemsMixin(MenuButton))
+            SingleSelectAPIMixin(SlotItemsMixin(PopupSelectMixin(PopupButton)))
           )
         )
       )
@@ -38,12 +40,15 @@ const Base = CursorAPIMixin(
 /**
  * Shows a single choice made from a pop-up list of choices
  *
- * @inherits MenuButton
+ * @inherits PopupButton
  * @mixes FormElementMixin
  * @mixes SelectedTextAPIMixin
  * @mixes SelectedValueAPIMixin
  * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
+ * @part {div} list - the list shown in the popup
+ * @part down-icon - the icon shown in the toggle if the popup will open or close in the down direction
+ * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
  * @part {div} value - region inside the toggle button showing the value of the current selection
  */
 class DropdownList extends Base {
@@ -51,10 +56,31 @@ class DropdownList extends Base {
     return Object.assign(super[defaultState], {
       ariaHasPopup: "listbox",
       currentItemRequired: true,
+      listPartType: "div",
       selectedIndex: -1,
       selectedItem: null,
       valuePartType: "div",
     });
+  }
+
+  get items() {
+    /** @type {any} */
+    const list = this[ids] && this[ids].list;
+    return list ? list.items : null;
+  }
+
+  /**
+   * The class or tag used to define the `list` part – the element
+   * presenting the list items and handling navigation between them.
+   *
+   * @type {PartDescriptor}
+   * @default List
+   */
+  get listPartType() {
+    return this[state].listPartType;
+  }
+  set listPartType(listPartType) {
+    this[setState]({ listPartType });
   }
 
   [render](/** @type {ChangedFlags} */ changed) {
@@ -62,11 +88,48 @@ class DropdownList extends Base {
 
     renderParts(this[shadowRoot], this[state], changed);
 
-    if (changed.itemRole) {
-      if ("itemRole" in this[ids].menu) {
-        /** @type {any} */ (this[ids].menu).itemRole = this[state].itemRole;
-      }
+    if (changed.listPartType) {
+      // If the user mouses up on a list item, close the list with that item as
+      // the close result.
+      this[ids].list.addEventListener("mouseup", async (event) => {
+        // If we're doing a drag-select (user moused down on button, dragged
+        // mouse into list, and released), we close. If we're not doing a
+        // drag-select (the user opened the list with a complete click), and
+        // there's a selection, they clicked on an item, so also close.
+        // Otherwise, the user clicked the list open, then clicked on a list
+        // separator or list padding; stay open.
+        const popupCurrentIndex = this[state].popupCurrentIndex;
+        if (this[state].dragSelect || popupCurrentIndex >= 0) {
+          // We don't want the document mouseup handler to close
+          // before we've asked the list to highlight the selection.
+          // We need to stop event propagation here, before we enter
+          // any async code, to actually stop propagation.
+          event.stopPropagation();
+          this[raiseChangeEvents] = true;
+          await this.selectCurrentItemAndClose();
+          this[raiseChangeEvents] = false;
+        } else {
+          event.stopPropagation();
+        }
+      });
+
+      // Track changes in the list's selection state.
+      this[ids].list.addEventListener("currentindexchange", (event) => {
+        this[raiseChangeEvents] = true;
+        /** @type {any} */
+        const cast = event;
+        this[setState]({
+          popupCurrentIndex: cast.detail.currentIndex,
+        });
+        this[raiseChangeEvents] = false;
+      });
     }
+
+    // if (changed.itemRole) {
+    //   if ("itemRole" in this[ids].list) {
+    //     /** @type {any} */ (this[ids].list).itemRole = this[state].itemRole;
+    //   }
+    // }
 
     // Update selection.
     if (changed.items || changed.selectedIndex) {
@@ -87,6 +150,14 @@ class DropdownList extends Base {
         });
       }
     }
+
+    // The current item in the popup is represented in the list.
+    if (changed.popupCurrentIndex) {
+      const list = /** @type {any} */ (this[ids].list);
+      if ("currentIndex" in list) {
+        list.currentIndex = this[state].popupCurrentIndex;
+      }
+    }
   }
 
   [stateEffects](state, changed) {
@@ -99,7 +170,7 @@ class DropdownList extends Base {
       });
     }
 
-    // When the menu closes, update our selection from the menu selection.
+    // When the popup closes, update our selection from the list selection.
     if (changed.opened && !state.opened) {
       const { closeResult, items } = state;
       if (items && closeResult !== undefined) {
@@ -120,17 +191,17 @@ class DropdownList extends Base {
       }
     }
 
-    // MenuButton sets menuSelectedIndex to -1 if the user isn't hovering
+    // MenuButton sets popupSelectedIndex to -1 if the user isn't hovering
     // over the menu, but for the dropdown list pattern, we'd prefer to
     // default to showing the selected item.
-    if (changed.menuSelectedIndex) {
-      const { menuSelectedIndex, selectedIndex } = state;
-      if (menuSelectedIndex === -1 && selectedIndex >= 0) {
-        Object.assign(effects, {
-          menuSelectedIndex: selectedIndex,
-        });
-      }
-    }
+    // if (changed.popupSelectedIndex) {
+    //   const { popupSelectedIndex, selectedIndex } = state;
+    //   if (popupSelectedIndex === -1 && selectedIndex >= 0) {
+    //     Object.assign(effects, {
+    //       popupSelectedIndex: selectedIndex,
+    //     });
+    //   }
+    // }
 
     return effects;
   }
@@ -147,7 +218,25 @@ class DropdownList extends Base {
       );
     }
 
+    // Wrap default slot with a list.
+    const defaultSlot = result.content.querySelector("slot:not([name])");
+    if (defaultSlot) {
+      defaultSlot.replaceWith(fragmentFrom.html`
+        <div id="list" part="list">
+          <slot></slot>
+        </div>
+      `);
+    }
+
     renderParts(result.content, this[state]);
+
+    result.content.append(fragmentFrom.html`
+      <style>
+        [part~="list"] {
+          max-height: 100%;
+        }
+      </style>
+    `);
 
     return result;
   }
@@ -176,6 +265,13 @@ class DropdownList extends Base {
  * @param {ChangedFlags} [changed]
  */
 function renderParts(root, state, changed) {
+  if (!changed || changed.listPartType) {
+    const { listPartType } = state;
+    const list = root.getElementById("list");
+    if (list) {
+      transmute(list, listPartType);
+    }
+  }
   if (!changed || changed.valuePartType) {
     const { valuePartType } = state;
     const value = root.getElementById("value");

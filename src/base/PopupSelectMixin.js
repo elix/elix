@@ -87,7 +87,9 @@ export default function PopupSelectMixin(Base) {
       const closeResult = selectionDefined
         ? this.items[this[state].popupCurrentIndex]
         : undefined;
-      /** @type {any} */ const menu = this[ids].menu;
+
+      // HACK
+      /** @type {any} */ const menu = this[ids].menu || this[ids].list;
       if (selectionDefined && "flashCurrentItem" in menu) {
         await menu.flashCurrentItem();
       }
