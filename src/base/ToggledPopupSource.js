@@ -1,9 +1,7 @@
-import { indexOfItemContainingTarget } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import { transmute } from "../core/template.js";
 import {
   defaultState,
-  firstRender,
   ids,
   keydown,
   raiseChangeEvents,
@@ -44,8 +42,6 @@ class MenuButton extends Base {
     return Object.assign(super[defaultState], {
       dragSelect: true,
       popupTogglePartType: UpDownToggle,
-      touchstartX: null,
-      touchstartY: null,
     });
   }
 
@@ -112,29 +108,6 @@ class MenuButton extends Base {
 
     renderParts(this[shadowRoot], this[state], changed);
 
-    if (this[firstRender]) {
-      // If the user hovers over an enabled item, select it.
-      this.addEventListener("mousemove", (event) => {
-        // Treat the deepest element in the composed event path as the target.
-        const target = event.composedPath
-          ? event.composedPath()[0]
-          : event.target;
-
-        if (target && target instanceof Node) {
-          const items = this.items;
-          const hoverIndex = indexOfItemContainingTarget(items, target);
-          const item = items[hoverIndex];
-          const enabled = item && !item.disabled;
-          const menuCurrentIndex = enabled ? hoverIndex : -1;
-          if (menuCurrentIndex !== this[state].menuCurrentIndex) {
-            this[raiseChangeEvents] = true;
-            this[setState]({ menuCurrentIndex });
-            this[raiseChangeEvents] = false;
-          }
-        }
-      });
-    }
-
     if (changed.popupPartType) {
       this[ids].popup.tabIndex = -1;
     }
@@ -174,10 +147,6 @@ class MenuButton extends Base {
         Object.assign(effects, {
           // Until we get a mouseup, we're doing a drag-select.
           dragSelect: true,
-
-          // Clear previous touchstart point.
-          touchStartX: null,
-          touchStartY: null,
         });
       }
     }
@@ -229,8 +198,8 @@ async function handleMouseup(/** @type {MouseEvent} */ event) {
     event.clientX,
     event.clientY
   );
-  const overSource = hitTargets.indexOf(element[ids].source) >= 0;
   if (element.opened) {
+    const overSource = hitTargets.indexOf(element[ids].source) >= 0;
     if (overSource) {
       // User released the mouse over the source button (behind the
       // backdrop), so we're no longer doing a drag-select.

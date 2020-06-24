@@ -1,8 +1,9 @@
-import { deepContains } from "../core/dom.js";
+import { deepContains, indexOfItemContainingTarget } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import { transmute } from "../core/template.js";
 import {
   defaultState,
+  firstRender,
   ids,
   keydown,
   raiseChangeEvents,
@@ -33,9 +34,8 @@ class MenuButton extends PopupButton {
 
   get [defaultState]() {
     return Object.assign(super[defaultState], {
-      menuCurrentIndex: -1,
+      popupCurrentIndex: -1,
       menuPartType: Menu,
-      selectedItem: null,
     });
   }
 
@@ -97,6 +97,31 @@ class MenuButton extends PopupButton {
 
     renderParts(this[shadowRoot], this[state], changed);
 
+    if (this[firstRender]) {
+      // If the user hovers over an enabled item, make it current.
+      this.addEventListener("mousemove", (event) => {
+        if (this[state].opened) {
+          // Treat the deepest element in the composed event path as the target.
+          const target = event.composedPath
+            ? event.composedPath()[0]
+            : event.target;
+
+          if (target && target instanceof Node) {
+            const items = this.items;
+            const hoverIndex = indexOfItemContainingTarget(items, target);
+            const item = items[hoverIndex];
+            const enabled = item && !item.disabled;
+            const popupCurrentIndex = enabled ? hoverIndex : -1;
+            if (popupCurrentIndex !== this[state].popupCurrentIndex) {
+              this[raiseChangeEvents] = true;
+              this[setState]({ popupCurrentIndex });
+              this[raiseChangeEvents] = false;
+            }
+          }
+        }
+      });
+    }
+
     if (changed.popupPartType) {
       this[ids].popup.tabIndex = -1;
     }
@@ -139,8 +164,8 @@ class MenuButton extends PopupButton {
         // there's a selection, they clicked on an item, so also close.
         // Otherwise, the user clicked the menu open, then clicked on a menu
         // separator or menu padding; stay open.
-        const menuCurrentIndex = this[state].menuCurrentIndex;
-        if (this[state].dragSelect || menuCurrentIndex >= 0) {
+        const popupCurrentIndex = this[state].popupCurrentIndex;
+        if (this[state].dragSelect || popupCurrentIndex >= 0) {
           // We don't want the document mouseup handler to close
           // before we've asked the menu to highlight the selection.
           // We need to stop event propagation here, before we enter
@@ -160,16 +185,16 @@ class MenuButton extends PopupButton {
         /** @type {any} */
         const cast = event;
         this[setState]({
-          menuCurrentIndex: cast.detail.currentIndex,
+          popupCurrentIndex: cast.detail.currentIndex,
         });
         this[raiseChangeEvents] = false;
       });
     }
 
-    if (changed.menuCurrentIndex) {
+    if (changed.popupCurrentIndex) {
       const menu = /** @type {any} */ (this[ids].menu);
       if ("currentIndex" in menu) {
-        menu.currentIndex = this[state].menuCurrentIndex;
+        menu.currentIndex = this[state].popupCurrentIndex;
       }
     }
   }
@@ -179,9 +204,9 @@ class MenuButton extends PopupButton {
    */
   async selectCurrentItemAndClose() {
     const originalRaiseChangeEvents = this[raiseChangeEvents];
-    const selectionDefined = this[state].menuCurrentIndex >= 0;
+    const selectionDefined = this[state].popupCurrentIndex >= 0;
     const closeResult = selectionDefined
-      ? this.items[this[state].menuCurrentIndex]
+      ? this.items[this[state].popupCurrentIndex]
       : undefined;
     /** @type {any} */ const menu = this[ids].menu;
     if (selectionDefined && "flashCurrentItem" in menu) {
@@ -202,16 +227,13 @@ class MenuButton extends PopupButton {
         // Opening
         Object.assign(effects, {
           // Select the default item in the menu.
-          menuCurrentIndex: this.defaultMenuItemIndex,
-
-          // Clear any previously selected item.
-          selectedItem: null,
+          popupCurrentIndex: this.defaultMenuItemIndex,
         });
       } else {
         // Closing
         Object.assign(effects, {
           // Clear menu selection.
-          menuCurrentIndex: -1,
+          popupCurrentIndex: -1,
         });
       }
     }
