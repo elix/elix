@@ -27,7 +27,9 @@
       <p id="result" role="alert"></p>
       <script>
         sampleMenuButton.addEventListener("close", (event) => {
-          const selectedItem = event.detail.closeResult;
+          const closeResult = event.detail.closeResult;
+          const selectedItem =
+            !closeResult || closeResult.canceled ? null : closeResult;
           result.textContent = selectedItem
             ? `You picked: ${selectedItem.textContent}`
             : `You didn't pick a menu item.`;

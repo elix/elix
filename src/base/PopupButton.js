@@ -1,27 +1,22 @@
-import { ownEvent } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import {
   defaultState,
-  firstRender,
   ids,
   keydown,
   raiseChangeEvents,
   render,
-  state,
   template,
 } from "./internal.js";
-import KeyboardMixin from "./KeyboardMixin.js";
-import PopupSource from "./PopupSource.js";
+import ToggledPopupSource from "./ToggledPopupSource.js";
 
-const Base = DelegateFocusMixin(KeyboardMixin(PopupSource));
+const Base = DelegateFocusMixin(ToggledPopupSource);
 
 /**
  * A button that invokes an attached popup
  *
- * @inherits PopupSource
+ * @inherits ToggledPopupSource
  * @mixes DelegateFocusMixin
- * @mixes KeyboardMixin
  */
 class PopupButton extends Base {
   get [defaultState]() {
@@ -52,25 +47,25 @@ class PopupButton extends Base {
   [render](/** @type {ChangedFlags} */ changed) {
     super[render](changed);
 
-    if (this[firstRender]) {
-      // If the source element gets the focus while the popup is open, the
-      // most likely expanation is that the user hit Shift+Tab to back up out of
-      // the popup. In that case, we should close.
-      this.addEventListener("focus", async (event) => {
-        const hostFocused = !ownEvent(this[ids].popup, event);
-        // It's possible to get a focus event in the initial mousedown on the
-        // source button before the popup is even rendered. We don't want to
-        // close in that case, so we check to see if we've already measured the
-        // popup dimensions (which will be true if the popup fully completed
-        // rendering).
-        const measured = this[state].popupHeight !== null;
-        if (hostFocused && this.opened && measured) {
-          this[raiseChangeEvents] = true;
-          await this.close();
-          this[raiseChangeEvents] = false;
-        }
-      });
-    }
+    // if (this[firstRender]) {
+    //   // If the source element gets the focus while the popup is open, the
+    //   // most likely expanation is that the user hit Shift+Tab to back up out of
+    //   // the popup. In that case, we should close.
+    //   this.addEventListener("focus", async (event) => {
+    //     const hostFocused = !ownEvent(this[ids].popup, event);
+    //     // It's possible to get a focus event in the initial mousedown on the
+    //     // source button before the popup is even rendered. We don't want to
+    //     // close in that case, so we check to see if we've already measured the
+    //     // popup dimensions (which will be true if the popup fully completed
+    //     // rendering).
+    //     const measured = this[state].popupHeight !== null;
+    //     if (hostFocused && this.opened && measured) {
+    //       this[raiseChangeEvents] = true;
+    //       await this.close();
+    //       this[raiseChangeEvents] = false;
+    //     }
+    //   });
+    // }
 
     if (changed.sourcePartType) {
       // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
