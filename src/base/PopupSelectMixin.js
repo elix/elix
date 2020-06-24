@@ -79,6 +79,8 @@ export default function PopupSelectMixin(Base) {
     /**
      * Highlight the selected item (if one exists), then close the menu.
      */
+
+    // TODO: Symbol
     async selectCurrentItemAndClose() {
       const originalRaiseChangeEvents = this[raiseChangeEvents];
       const selectionDefined = this[state].popupCurrentIndex >= 0;

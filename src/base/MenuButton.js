@@ -59,10 +59,6 @@ class MenuButton extends Base {
 
     renderParts(this[shadowRoot], this[state], changed);
 
-    if (changed.popupPartType) {
-      this[ids].popup.tabIndex = -1;
-    }
-
     if (changed.menuPartType) {
       // Close the popup if menu loses focus.
       this[ids].menu.addEventListener("blur", async (event) => {

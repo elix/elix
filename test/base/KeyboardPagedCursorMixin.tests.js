@@ -11,8 +11,8 @@ class KeyboardPagedCursorTest extends Base {
   connectedCallback() {
     const items = Array.prototype.slice.call(this.children);
     this[setState]({
+      currentIndex: 1,
       items,
-      selectedIndex: -1,
     });
   }
 }
