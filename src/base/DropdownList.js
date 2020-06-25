@@ -6,8 +6,8 @@ import FormElementMixin from "./FormElementMixin.js";
 import {
   defaultState,
   ids,
-  raiseChangeEvents,
   render,
+  rendered,
   setState,
   shadowRoot,
   state,
@@ -57,6 +57,7 @@ class DropdownList extends Base {
       ariaHasPopup: "listbox",
       currentItemRequired: true,
       listPartType: "div",
+      popupList: null,
       selectedIndex: -1,
       selectedItem: null,
       valuePartType: "div",
@@ -88,49 +89,6 @@ class DropdownList extends Base {
 
     renderParts(this[shadowRoot], this[state], changed);
 
-    if (changed.listPartType) {
-      // If the user mouses up on a list item, close the list with that item as
-      // the close result.
-      this[ids].list.addEventListener("mouseup", async (event) => {
-        // If we're doing a drag-select (user moused down on button, dragged
-        // mouse into list, and released), we close. If we're not doing a
-        // drag-select (the user opened the list with a complete click), and
-        // there's a selection, they clicked on an item, so also close.
-        // Otherwise, the user clicked the list open, then clicked on a list
-        // separator or list padding; stay open.
-        const popupCurrentIndex = this[state].popupCurrentIndex;
-        if (this[state].dragSelect || popupCurrentIndex >= 0) {
-          // We don't want the document mouseup handler to close
-          // before we've asked the list to highlight the selection.
-          // We need to stop event propagation here, before we enter
-          // any async code, to actually stop propagation.
-          event.stopPropagation();
-          this[raiseChangeEvents] = true;
-          await this.selectCurrentItemAndClose();
-          this[raiseChangeEvents] = false;
-        } else {
-          event.stopPropagation();
-        }
-      });
-
-      // Track changes in the list's selection state.
-      this[ids].list.addEventListener("currentindexchange", (event) => {
-        this[raiseChangeEvents] = true;
-        /** @type {any} */
-        const cast = event;
-        this[setState]({
-          popupCurrentIndex: cast.detail.currentIndex,
-        });
-        this[raiseChangeEvents] = false;
-      });
-    }
-
-    // if (changed.itemRole) {
-    //   if ("itemRole" in this[ids].list) {
-    //     /** @type {any} */ (this[ids].list).itemRole = this[state].itemRole;
-    //   }
-    // }
-
     // Update selection.
     if (changed.items || changed.selectedIndex) {
       const { items, selectedIndex } = this[state];
@@ -157,6 +115,16 @@ class DropdownList extends Base {
       if ("currentIndex" in list) {
         list.currentIndex = this[state].popupCurrentIndex;
       }
+    }
+  }
+
+  [rendered](changed) {
+    super[rendered](changed);
+
+    if (changed.listPartType) {
+      this[setState]({
+        popupList: this[ids].list,
+      });
     }
   }
 

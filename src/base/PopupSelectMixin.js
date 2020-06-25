@@ -3,7 +3,6 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 import {
   defaultState,
   firstRender,
-  ids,
   keydown,
   raiseChangeEvents,
   render,
@@ -74,6 +73,46 @@ export default function PopupSelectMixin(Base) {
           }
         });
       }
+
+      if (changed.popupList) {
+        const { popupList } = this[state];
+        if (popupList) {
+          // If the user mouses up on a list item, close the list with that item as
+          // the close result.
+          popupList.addEventListener("mouseup", async (event) => {
+            // If we're doing a drag-select (user moused down on button, dragged
+            // mouse into list, and released), we close. If we're not doing a
+            // drag-select (the user opened the list with a complete click), and
+            // there's a selection, they clicked on an item, so also close.
+            // Otherwise, the user clicked the list open, then clicked on a list
+            // separator or list padding; stay open.
+            const popupCurrentIndex = this[state].popupCurrentIndex;
+            if (this[state].dragSelect || popupCurrentIndex >= 0) {
+              // We don't want the document mouseup handler to close
+              // before we've asked the list to highlight the selection.
+              // We need to stop event propagation here, before we enter
+              // any async code, to actually stop propagation.
+              event.stopPropagation();
+              this[raiseChangeEvents] = true;
+              await this.selectCurrentItemAndClose();
+              this[raiseChangeEvents] = false;
+            } else {
+              event.stopPropagation();
+            }
+          });
+
+          // Track changes in the list's selection state.
+          popupList.addEventListener("currentindexchange", (event) => {
+            this[raiseChangeEvents] = true;
+            /** @type {any} */
+            const cast = event;
+            this[setState]({
+              popupCurrentIndex: cast.detail.currentIndex,
+            });
+            this[raiseChangeEvents] = false;
+          });
+        }
+      }
     }
 
     /**
@@ -88,10 +127,9 @@ export default function PopupSelectMixin(Base) {
         ? this.items[this[state].popupCurrentIndex]
         : undefined;
 
-      // HACK
-      /** @type {any} */ const menu = this[ids].menu || this[ids].list;
-      if (selectionDefined && "flashCurrentItem" in menu) {
-        await menu.flashCurrentItem();
+      const list = this[state].popupList;
+      if (selectionDefined && "flashCurrentItem" in list) {
+        await list.flashCurrentItem();
       }
       const saveRaiseChangeEvents = this[raiseChangeEvents];
       this[raiseChangeEvents] = originalRaiseChangeEvents;

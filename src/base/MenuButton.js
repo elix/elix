@@ -6,6 +6,7 @@ import {
   ids,
   raiseChangeEvents,
   render,
+  rendered,
   setState,
   shadowRoot,
   state,
@@ -87,41 +88,6 @@ class MenuButton extends Base {
           event.preventDefault();
         }
       });
-
-      // If the user mouses up on a menu item, close the menu with that item as
-      // the close result.
-      this[ids].menu.addEventListener("mouseup", async (event) => {
-        // If we're doing a drag-select (user moused down on button, dragged
-        // mouse into menu, and released), we close. If we're not doing a
-        // drag-select (the user opened the menu with a complete click), and
-        // there's a selection, they clicked on an item, so also close.
-        // Otherwise, the user clicked the menu open, then clicked on a menu
-        // separator or menu padding; stay open.
-        const popupCurrentIndex = this[state].popupCurrentIndex;
-        if (this[state].dragSelect || popupCurrentIndex >= 0) {
-          // We don't want the document mouseup handler to close
-          // before we've asked the menu to highlight the selection.
-          // We need to stop event propagation here, before we enter
-          // any async code, to actually stop propagation.
-          event.stopPropagation();
-          this[raiseChangeEvents] = true;
-          await this.selectCurrentItemAndClose();
-          this[raiseChangeEvents] = false;
-        } else {
-          event.stopPropagation();
-        }
-      });
-
-      // Track changes in the menu's selection state.
-      this[ids].menu.addEventListener("currentindexchange", (event) => {
-        this[raiseChangeEvents] = true;
-        /** @type {any} */
-        const cast = event;
-        this[setState]({
-          popupCurrentIndex: cast.detail.currentIndex,
-        });
-        this[raiseChangeEvents] = false;
-      });
     }
 
     // The current item in the popup is represented in the menu.
@@ -130,6 +96,16 @@ class MenuButton extends Base {
       if ("currentIndex" in menu) {
         menu.currentIndex = this[state].popupCurrentIndex;
       }
+    }
+  }
+
+  [rendered](changed) {
+    super[rendered](changed);
+
+    if (changed.menuPartType) {
+      this[setState]({
+        popupList: this[ids].menu,
+      });
     }
   }
 
