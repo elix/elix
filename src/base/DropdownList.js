@@ -214,33 +214,26 @@ class DropdownList extends Base {
       `);
     }
 
-    // Connect the source to the accessible list.
+    // Apply combobox semantics to the source button. Because focus moves to the
+    // list itself when the popup opens, the aria-controls attribute has no
+    // effect other than convincing the browser to announce the button as a
+    // combobox.
     const source = result.content.querySelector('[part~="source"]');
     if (source) {
       source.setAttribute("aria-activedescendant", "value");
       source.setAttribute("aria-autocomplete", "none");
-      source.setAttribute("aria-controls", "accessibleListPlaceholder");
+      source.setAttribute("aria-controls", "list");
       source.role = "combobox";
     }
 
     renderParts(result.content, this[state]);
 
-    // Add styling, plus an invisible div that can serve as a placeholder for an
-    // accessible listbox that the combo box can use in "aria-controls".
     result.content.append(fragmentFrom.html`
       <style>
         [part~="list"] {
           max-height: 100%;
         }
-
-        #accessibleListPlaceholder {
-          height: 0;
-          overflow: hidden;
-          position: absolute;
-          width: 0;
-        }
       </style>
-      <div id="accessibleListPlaceholder"></div>
     `);
 
     return result;
