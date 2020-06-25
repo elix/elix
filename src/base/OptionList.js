@@ -12,6 +12,7 @@ import {
   ids,
   render,
   scrollTarget,
+  setState,
   state,
   template,
 } from "./internal.js";
@@ -103,21 +104,44 @@ const Base = AriaRoleMixin(
 class OptionList extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
+      highlightCurrentItem: true,
       orientation: "vertical",
       role: "listbox",
     });
   }
 
+  /**
+   * Flash the current item.
+   *
+   * By default, this uses a heuristic to guess whether the menu was closed by a
+   * keyboard or mouse (on desktop). If so, the menu flashes the current item
+   * off then back on, emulating the menu item selection effect in macOS.
+   * Otherwise, it does nothing.
+   */
+  async flashCurrentItem() {
+    const keyboardActive = this[state].focusVisible;
+    const probablyDesktop = matchMedia("(pointer: fine)").matches;
+    if (keyboardActive || probablyDesktop) {
+      const flashDuration = 75; // milliseconds
+      this[setState]({ highlightCurrentItem: false });
+      await new Promise((resolve) => setTimeout(resolve, flashDuration));
+      this[setState]({ highlightCurrentItem: true });
+      await new Promise((resolve) => setTimeout(resolve, flashDuration));
+    }
+  }
+
   [render](/** @type {ChangedFlags} */ changed) {
     super[render](changed);
 
-    // Apply `current` style to the current item only.
-    if (changed.items || changed.currentIndex) {
-      const { currentIndex, items } = this[state];
+    // Highlight the current item.
+    if (changed.items || changed.currentIndex || changed.highlightCurrentItem) {
+      const { currentIndex, items, highlightCurrentItem } = this[state];
       if (items) {
         items.forEach((item, index) => {
           const current = index === currentIndex;
-          item.toggleAttribute("current", current);
+
+          // Show visible highlight unless we're surpressing that.
+          item.toggleAttribute("current", highlightCurrentItem && current);
 
           // For ARIA purposes, we want to announce the current item as the
           // selected item.
