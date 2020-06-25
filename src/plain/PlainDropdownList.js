@@ -2,8 +2,8 @@ import DropdownList from "../base/DropdownList.js";
 import { defaultState, template } from "../base/internal.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import PlainBorderButton from "./PlainBorderButton.js";
-import PlainListBox from "./PlainListBox.js";
 import PlainOpenCloseToggle from "./PlainOpenCloseToggle.js";
+import PlainOptionList from "./PlainOptionList.js";
 import PlainPopup from "./PlainPopup.js";
 
 /**
@@ -11,14 +11,14 @@ import PlainPopup from "./PlainPopup.js";
  *
  * @inherits DropdownList
  * @part {PlainBorderButton} source
- * @part {PlainListBox} list
+ * @part {PlainOptionList} list
  * @part {PlainOpenCloseToggle} popup-toggle
  * @part {PlainPopup} popup
  */
 class PlainDropdownList extends DropdownList {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
-      listPartType: PlainListBox,
+      listPartType: PlainOptionList,
       popupPartType: PlainPopup,
       sourcePartType: PlainBorderButton,
       popupTogglePartType: PlainOpenCloseToggle,
@@ -28,11 +28,10 @@ class PlainDropdownList extends DropdownList {
   get [template]() {
     const result = super[template];
 
-    // Turn off list border.
+    // Rely on focus shown on source.
     result.content.append(fragmentFrom.html`
       <style>
         [part~="list"] {
-          border: none;
           outline: none;
         }
       </style>
