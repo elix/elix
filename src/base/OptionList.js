@@ -1,6 +1,6 @@
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import AriaListMixin from "./AriaListMixin.js";
+import AriaRoleMixin from "./AriaRoleMixin.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import CursorInViewMixin from "./CursorInViewMixin.js";
@@ -29,7 +29,7 @@ import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapCursorMixin from "./TapCursorMixin.js";
 
-const Base = AriaListMixin(
+const Base = AriaRoleMixin(
   ComposedFocusMixin(
     CursorAPIMixin(
       CursorInViewMixin(
@@ -79,7 +79,7 @@ const Base = AriaListMixin(
  * `Menu`.
  *
  * @inherits ReactiveElement
- * @mixes AriaListMixin
+ * @mixes AriaRoleMixin
  * @mixes ComposedFocusMixin
  * @mixes CursorInViewMixin
  * @mixes CursorAPIMixin
@@ -104,6 +104,7 @@ class OptionList extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       orientation: "vertical",
+      role: "listbox",
     });
   }
 
@@ -115,7 +116,12 @@ class OptionList extends Base {
       const { currentIndex, items } = this[state];
       if (items) {
         items.forEach((item, index) => {
-          item.toggleAttribute("current", index === currentIndex);
+          const current = index === currentIndex;
+          item.toggleAttribute("current", current);
+
+          // For ARIA purposes, we want to announce the current item as the
+          // selected item.
+          item.setAttribute("aria-selected", String(current));
         });
       }
     }

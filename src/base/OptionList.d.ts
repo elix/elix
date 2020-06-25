@@ -2,7 +2,7 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import ReactiveElement from "../core/ReactiveElement.js";
-import AriaListMixin from "./AriaListMixin.js";
+import AriaRoleMixin from "./AriaRoleMixin.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import CursorInViewMixin from "./CursorInViewMixin.js";
@@ -22,7 +22,7 @@ import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapCursorMixin from "./TapCursorMixin.js";
 
-export default class ListBox extends AriaListMixin(
+export default class OptonList extends AriaRoleMixin(
   ComposedFocusMixin(
     CursorAPIMixin(
       CursorInViewMixin(
@@ -58,6 +58,4 @@ export default class ListBox extends AriaListMixin(
       )
     )
   )
-) {
-  orientation: "horizontal" | "vertical";
-}
+) {}

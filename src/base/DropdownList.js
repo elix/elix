@@ -18,6 +18,7 @@ import {
 } from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
+import ListBox from "./ListBox.js";
 import PopupButton from "./PopupButton.js";
 import PopupSelectMixin from "./PopupSelectMixin.js";
 import SelectedTextAPIMixin from "./SelectedTextAPIMixin.js";
@@ -30,10 +31,10 @@ const Base = CursorAPIMixin(
     FormElementMixin(
       ItemsAPIMixin(
         ItemsCursorMixin(
-          SelectedTextAPIMixin(
-            SelectedValueAPIMixin(
-              SingleSelectAPIMixin(
-                SlotItemsMixin(PopupSelectMixin(PopupButton))
+          PopupSelectMixin(
+            SelectedTextAPIMixin(
+              SelectedValueAPIMixin(
+                SingleSelectAPIMixin(SlotItemsMixin(PopupButton))
               )
             )
           )
@@ -47,11 +48,17 @@ const Base = CursorAPIMixin(
  * Shows a single choice made from a pop-up list of choices
  *
  * @inherits PopupButton
+ * @mixes CursorAPIMixin
+ * @mixes DelegateInputLabelMixin
  * @mixes FormElementMixin
+ * @mixes ItemsAPIMixin
+ * @mixes ItemsCursorMixin
+ * @mixes PopupSelectMixin
  * @mixes SelectedTextAPIMixin
  * @mixes SelectedValueAPIMixin
  * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
+ *
  * @part {div} list - the list shown in the popup
  * @part down-icon - the icon shown in the toggle if the popup will open or close in the down direction
  * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
@@ -120,11 +127,16 @@ class DropdownList extends Base {
       }
     }
 
-    // The current item in the popup is represented in the list.
+    // The popup's current item is represented in the visible list.
     if (changed.popupCurrentIndex) {
+      const { popupCurrentIndex } = this[state];
       const list = /** @type {any} */ (this[ids].list);
       if ("currentIndex" in list) {
-        list.currentIndex = this[state].popupCurrentIndex;
+        list.currentIndex = popupCurrentIndex;
+      }
+      /** @type {any} */ const accessibleList = this[ids].accessibleList;
+      if ("selectedIndex" in accessibleList) {
+        accessibleList.selectedIndex = popupCurrentIndex;
       }
     }
   }
@@ -237,8 +249,13 @@ class DropdownList extends Base {
           width: 0;
         }
       </style>
-      <div id="accessibleList"></div>
+      <div id="accessibleList" tabindex="-1"></div>
     `);
+
+    const accessibleList = result.content.getElementById("accessibleList");
+    if (accessibleList) {
+      transmute(accessibleList, ListBox);
+    }
 
     return result;
   }
