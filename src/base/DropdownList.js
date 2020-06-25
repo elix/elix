@@ -2,10 +2,12 @@ import { updateChildNodes } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import { replace, transmute } from "../core/template.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
+import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import {
   defaultState,
   ids,
+  inputDelegate,
   render,
   rendered,
   setState,
@@ -24,12 +26,16 @@ import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
 const Base = CursorAPIMixin(
-  FormElementMixin(
-    ItemsAPIMixin(
-      ItemsCursorMixin(
-        SelectedTextAPIMixin(
-          SelectedValueAPIMixin(
-            SingleSelectAPIMixin(SlotItemsMixin(PopupSelectMixin(PopupButton)))
+  DelegateInputLabelMixin(
+    FormElementMixin(
+      ItemsAPIMixin(
+        ItemsCursorMixin(
+          SelectedTextAPIMixin(
+            SelectedValueAPIMixin(
+              SingleSelectAPIMixin(
+                SlotItemsMixin(PopupSelectMixin(PopupButton))
+              )
+            )
           )
         )
       )
@@ -54,6 +60,7 @@ const Base = CursorAPIMixin(
 class DropdownList extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
+      accessibleOptions: null,
       ariaHasPopup: "listbox",
       currentItemRequired: true,
       listPartType: "div",
@@ -62,6 +69,10 @@ class DropdownList extends Base {
       selectedItem: null,
       valuePartType: "div",
     });
+  }
+
+  get [inputDelegate]() {
+    return this[ids].source;
   }
 
   get items() {
@@ -126,10 +137,27 @@ class DropdownList extends Base {
         popupList: this[ids].list,
       });
     }
+
+    // Render the invisible accessible options.
+    if (changed.accessibleOptions) {
+      const { accessibleOptions } = this[state];
+      updateChildNodes(this[ids].accessibleList, accessibleOptions);
+    }
   }
 
   [stateEffects](state, changed) {
     const effects = super[stateEffects](state, changed);
+
+    // Create accessible items for dropdown list.
+    if (changed.items) {
+      const items = state.items || [];
+      const accessibleOptions = items.map((item) => {
+        const option = document.createElement("option");
+        option.textContent = item.textContent; // TODO getItemText
+        return option;
+      });
+      Object.assign(effects, { accessibleOptions });
+    }
 
     // When opening the popup, by default (re)select the current item.
     if (changed.opened && state.opened) {
@@ -184,14 +212,32 @@ class DropdownList extends Base {
       `);
     }
 
+    // Connect the source to the accessible list.
+    const source = result.content.querySelector('[part~="source"]');
+    if (source) {
+      source.setAttribute("aria-activedescendant", "value");
+      source.setAttribute("aria-autocomplete", "none");
+      source.setAttribute("aria-controls", "accessibleList");
+      source.role = "combobox";
+    }
+
     renderParts(result.content, this[state]);
 
+    // Add styling plus invisible list for accessibility purposes.
     result.content.append(fragmentFrom.html`
       <style>
         [part~="list"] {
           max-height: 100%;
         }
+
+        #accessibleList {
+          height: 0;
+          overflow: hidden;
+          position: absolute;
+          width: 0;
+        }
       </style>
+      <div id="accessibleList"></div>
     `);
 
     return result;
