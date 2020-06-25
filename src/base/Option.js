@@ -1,8 +1,9 @@
+import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
 import CurrentMixin from "./CurrentMixin.js";
 import DisabledMixin from "./DisabledMixin.js";
-import { defaultState } from "./internal.js";
+import { defaultState, template } from "./internal.js";
 import SelectableMixin from "./SelectableMixin.js";
 
 /**
@@ -26,6 +27,17 @@ class Option extends AriaRoleMixin(
     return Object.assign(super[defaultState], {
       role: "option",
     });
+  }
+
+  get [template]() {
+    return templateFrom.html`
+      <style>
+        :host {
+          display: block;
+        }
+      </style>
+      <slot></slot>
+    `;
   }
 }
 
