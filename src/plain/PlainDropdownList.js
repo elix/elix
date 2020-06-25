@@ -1,6 +1,5 @@
 import DropdownList from "../base/DropdownList.js";
-import { defaultState, template } from "../base/internal.js";
-import { fragmentFrom } from "../core/htmlLiterals.js";
+import { defaultState } from "../base/internal.js";
 import PlainBorderButton from "./PlainBorderButton.js";
 import PlainOpenCloseToggle from "./PlainOpenCloseToggle.js";
 import PlainOptionList from "./PlainOptionList.js";
@@ -23,21 +22,6 @@ class PlainDropdownList extends DropdownList {
       sourcePartType: PlainBorderButton,
       popupTogglePartType: PlainOpenCloseToggle,
     });
-  }
-
-  get [template]() {
-    const result = super[template];
-
-    // Rely on focus shown on source.
-    result.content.append(fragmentFrom.html`
-      <style>
-        [part~="list"] {
-          outline: none;
-        }
-      </style>
-    `);
-
-    return result;
   }
 }
 

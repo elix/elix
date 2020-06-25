@@ -6,6 +6,7 @@ import {
   keydown,
   raiseChangeEvents,
   render,
+  state,
   template,
 } from "./internal.js";
 import ToggledPopupSource from "./ToggledPopupSource.js";
@@ -67,6 +68,12 @@ class PopupButton extends Base {
     //   });
     // }
 
+    // Reflect opened state to attribute for styling.
+    if (changed.opened) {
+      const { opened } = this[state];
+      this.toggleAttribute("opened", opened);
+    }
+
     if (changed.sourcePartType) {
       // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
       // mousedown won't fire until the user releases their finger, so it behaves
@@ -107,6 +114,7 @@ class PopupButton extends Base {
 
   get [template]() {
     const result = super[template];
+    // When popup is open, it will have focus; don't show focus ring on host.
     result.content.append(
       fragmentFrom.html`
         <style>
@@ -119,6 +127,10 @@ class PopupButton extends Base {
             -ms-user-select: none;
             -webkit-user-select: none;
             user-select: none;
+          }
+
+          :host([opened][focus-visible]) {
+            outline: none;
           }
         </style>
       `
