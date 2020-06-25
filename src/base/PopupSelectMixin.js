@@ -37,7 +37,7 @@ export default function PopupSelectMixin(Base) {
         // Enter closes popup.
         case "Enter":
           if (this.opened) {
-            this.selectCurrentItemAndClose();
+            selectCurrentItemAndClose(this);
             handled = true;
           }
       }
@@ -104,7 +104,7 @@ export default function PopupSelectMixin(Base) {
               // any async code, to actually stop propagation.
               event.stopPropagation();
               this[raiseChangeEvents] = true;
-              await this.selectCurrentItemAndClose();
+              await selectCurrentItemAndClose(this);
               this[raiseChangeEvents] = false;
             } else {
               event.stopPropagation();
@@ -125,28 +125,6 @@ export default function PopupSelectMixin(Base) {
       }
     }
 
-    /**
-     * Highlight the selected item (if one exists), then close the menu.
-     */
-
-    // TODO: Symbol
-    async selectCurrentItemAndClose() {
-      const originalRaiseChangeEvents = this[raiseChangeEvents];
-      const selectionDefined = this[state].popupCurrentIndex >= 0;
-      const closeResult = selectionDefined
-        ? this.items[this[state].popupCurrentIndex]
-        : undefined;
-
-      const list = this[state].popupList;
-      if (selectionDefined && "flashCurrentItem" in list) {
-        await list.flashCurrentItem();
-      }
-      const saveRaiseChangeEvents = this[raiseChangeEvents];
-      this[raiseChangeEvents] = originalRaiseChangeEvents;
-      await this.close(closeResult);
-      this[raiseChangeEvents] = saveRaiseChangeEvents;
-    }
-
     [stateEffects](state, changed) {
       const effects = super[stateEffects](state, changed);
 
@@ -162,4 +140,24 @@ export default function PopupSelectMixin(Base) {
   }
 
   return PopupSelect;
+}
+
+/**
+ * Highlight the selected item (if one exists), then close the menu.
+ */
+async function selectCurrentItemAndClose(element) {
+  const originalRaiseChangeEvents = element[raiseChangeEvents];
+  const selectionDefined = element[state].popupCurrentIndex >= 0;
+  const closeResult = selectionDefined
+    ? element.items[element[state].popupCurrentIndex]
+    : undefined;
+
+  const list = element[state].popupList;
+  if (selectionDefined && "flashCurrentItem" in list) {
+    await list.flashCurrentItem();
+  }
+  const saveRaiseChangeEvents = element[raiseChangeEvents];
+  element[raiseChangeEvents] = originalRaiseChangeEvents;
+  await element.close(closeResult);
+  element[raiseChangeEvents] = saveRaiseChangeEvents;
 }
