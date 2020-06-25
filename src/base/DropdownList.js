@@ -18,7 +18,6 @@ import {
 } from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
-import ListBox from "./ListBox.js";
 import PopupButton from "./PopupButton.js";
 import PopupSelectMixin from "./PopupSelectMixin.js";
 import SelectedTextAPIMixin from "./SelectedTextAPIMixin.js";
@@ -134,26 +133,17 @@ class DropdownList extends Base {
       if ("currentIndex" in list) {
         list.currentIndex = popupCurrentIndex;
       }
-      /** @type {any} */ const accessibleList = this[ids].accessibleList;
-      if ("selectedIndex" in accessibleList) {
-        accessibleList.selectedIndex = popupCurrentIndex;
-      }
     }
   }
 
   [rendered](changed) {
     super[rendered](changed);
 
+    // Indicate which component is the popup's list.
     if (changed.listPartType) {
       this[setState]({
         popupList: this[ids].list,
       });
-    }
-
-    // Render the invisible accessible options.
-    if (changed.accessibleOptions) {
-      const { accessibleOptions } = this[state];
-      updateChildNodes(this[ids].accessibleList, accessibleOptions);
     }
   }
 
@@ -229,33 +219,29 @@ class DropdownList extends Base {
     if (source) {
       source.setAttribute("aria-activedescendant", "value");
       source.setAttribute("aria-autocomplete", "none");
-      source.setAttribute("aria-controls", "accessibleList");
+      source.setAttribute("aria-controls", "accessibleListPlaceholder");
       source.role = "combobox";
     }
 
     renderParts(result.content, this[state]);
 
-    // Add styling plus invisible list for accessibility purposes.
+    // Add styling, plus an invisible div that can serve as a placeholder for an
+    // accessible listbox that the combo box can use in "aria-controls".
     result.content.append(fragmentFrom.html`
       <style>
         [part~="list"] {
           max-height: 100%;
         }
 
-        #accessibleList {
+        #accessibleListPlaceholder {
           height: 0;
           overflow: hidden;
           position: absolute;
           width: 0;
         }
       </style>
-      <div id="accessibleList" tabindex="-1"></div>
+      <div id="accessibleListPlaceholder"></div>
     `);
-
-    const accessibleList = result.content.getElementById("accessibleList");
-    if (accessibleList) {
-      transmute(accessibleList, ListBox);
-    }
 
     return result;
   }
