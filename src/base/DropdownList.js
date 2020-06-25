@@ -159,18 +159,6 @@ class DropdownList extends Base {
       }
     }
 
-    // MenuButton sets popupCurrentIndex to -1 if the user isn't hovering
-    // over the menu, but for the dropdown list pattern, we'd prefer to
-    // default to showing the selected item.
-    // if (changed.popupCurrentIndex) {
-    //   const { popupCurrentIndex, selectedIndex } = state;
-    //   if (popupCurrentIndex === -1 && selectedIndex >= 0) {
-    //     Object.assign(effects, {
-    //       popupCurrentIndex: selectedIndex,
-    //     });
-    //   }
-    // }
-
     return effects;
   }
 

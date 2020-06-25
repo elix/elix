@@ -63,7 +63,17 @@ export default function PopupSelectMixin(Base) {
               const hoverIndex = indexOfItemContainingTarget(items, target);
               const item = items[hoverIndex];
               const enabled = item && !item.disabled;
-              const popupCurrentIndex = enabled ? hoverIndex : -1;
+
+              // If the user's not hovering over an item, default to a
+              // selectedIndex if defined (DropdownList wants that behavior),
+              // otherwise fall back to no selection (MenuButton wants that
+              // behavior).
+              const defaultIndex =
+                this[state].selectedIndex !== undefined
+                  ? this[state].selectedIndex
+                  : -1;
+
+              const popupCurrentIndex = enabled ? hoverIndex : defaultIndex;
               if (popupCurrentIndex !== this[state].popupCurrentIndex) {
                 this[raiseChangeEvents] = true;
                 this[setState]({ popupCurrentIndex });
