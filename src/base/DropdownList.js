@@ -126,6 +126,14 @@ class DropdownList extends Base {
       }
     }
 
+    if (changed.sourcePartType) {
+      /** @type {any} */ const source = this[ids].source;
+      // HACK — need better way to forward button role to inner button.
+      if (source.inner) {
+        source.inner.setAttribute("role", "none");
+      }
+    }
+
     // The popup's current item is represented in the visible list.
     if (changed.popupCurrentIndex) {
       const { popupCurrentIndex } = this[state];
@@ -223,7 +231,7 @@ class DropdownList extends Base {
       source.setAttribute("aria-activedescendant", "value");
       source.setAttribute("aria-autocomplete", "none");
       source.setAttribute("aria-controls", "list");
-      source.role = "combobox";
+      source.setAttribute("role", "combobox");
     }
 
     renderParts(result.content, this[state]);
