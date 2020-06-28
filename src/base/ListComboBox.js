@@ -1,4 +1,4 @@
-import { forwardFocus, indexOfItemContainingTarget } from "../core/dom.js";
+import { forwardFocus } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import { transmute } from "../core/template.js";
 import ComboBox from "./ComboBox.js";
@@ -17,7 +17,6 @@ import {
   ids,
   itemsDelegate,
   keydown,
-  raiseChangeEvents,
   render,
   rendered,
   setState,
@@ -143,23 +142,23 @@ class ListComboBox extends Base {
     }
 
     if (changed.listPartType) {
-      this[ids].list.addEventListener("mousedown", (event) => {
-        // Only process events for the main (usually left) button.
-        if (/** @type {MouseEvent} */ (event).button !== 0) {
-          return;
-        }
-        // Mousing down inside a list item closes the popup.
-        /** @type {any} */
-        const target = event.target;
-        if (target) {
-          const targetIndex = indexOfItemContainingTarget(this.items, target);
-          if (this.opened && targetIndex >= 0) {
-            this[raiseChangeEvents] = true;
-            this.close();
-            this[raiseChangeEvents] = false;
-          }
-        }
-      });
+      // this[ids].list.addEventListener("mousedown", (event) => {
+      //   // Only process events for the main (usually left) button.
+      //   if (/** @type {MouseEvent} */ (event).button !== 0) {
+      //     return;
+      //   }
+      //   // Mousing down inside a list item closes the popup.
+      //   /** @type {any} */
+      //   const target = event.target;
+      //   if (target) {
+      //     const targetIndex = indexOfItemContainingTarget(this.items, target);
+      //     if (this.opened && targetIndex >= 0) {
+      //       this[raiseChangeEvents] = true;
+      //       this.close();
+      //       this[raiseChangeEvents] = false;
+      //     }
+      //   }
+      // });
 
       // Keep focus off of the list and on the top level combo box (which should
       // delegate focus to the input).
@@ -174,24 +173,43 @@ class ListComboBox extends Base {
       // presses Backspace to delete that selected text, Gboard/Chrome seems to
       // ignore the first press of the Backspace key. The user must press
       // Backspace a second time to actually delete the selected text.
-      this[ids].list.addEventListener("selectedindexchange", (event) => {
-        /** @type {any} */
-        const cast = event;
-        const listSelectedIndex = cast.detail.selectedIndex;
-        if (this[state].selectedIndex !== listSelectedIndex) {
-          this[raiseChangeEvents] = true;
-          this[setState]({
-            currentIndex: listSelectedIndex,
-          });
-          this[raiseChangeEvents] = false;
-        }
-      });
+      // this[ids].list.addEventListener("selectedindexchange", (event) => {
+      //   /** @type {any} */
+      //   const cast = event;
+      //   const listSelectedIndex = cast.detail.selectedIndex;
+      //   if (this[state].selectedIndex !== listSelectedIndex) {
+      //     this[raiseChangeEvents] = true;
+      //     this[setState]({
+      //       currentIndex: listSelectedIndex,
+      //     });
+      //     this[raiseChangeEvents] = false;
+      //   }
+      // });
     }
 
+    // if (changed.currentIndex) {
+    //   const list = /** @type {any} */ (this[ids].list);
+    //   if ("selectedIndex" in list) {
+    //     list.selectedIndex = this[state].currentIndex;
+    //   }
+    // }
+
+    // The popup's current item is represented in the visible list.
+    // if (changed.popupCurrentIndex) {
+    //   const { popupCurrentIndex } = this[state];
+    //   const list = /** @type {any} */ (this[ids].list);
+    //   if ("currentIndex" in list) {
+    //     list.currentIndex = popupCurrentIndex;
+    //   }
+    // }
+
+    // TODO: Move this to PopupSelectMixin?
+    // The popup's current item is represented in the visible list.
     if (changed.currentIndex) {
+      const { currentIndex } = this[state];
       const list = /** @type {any} */ (this[ids].list);
-      if ("selectedIndex" in list) {
-        list.selectedIndex = this[state].currentIndex;
+      if ("currentIndex" in list) {
+        list.currentIndex = currentIndex;
       }
     }
   }

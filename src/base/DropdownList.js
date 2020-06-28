@@ -127,15 +127,6 @@ class DropdownList extends Base {
         source.inner.setAttribute("role", "none");
       }
     }
-
-    // The popup's current item is represented in the visible list.
-    if (changed.popupCurrentIndex) {
-      const { popupCurrentIndex } = this[state];
-      const list = /** @type {any} */ (this[ids].list);
-      if ("currentIndex" in list) {
-        list.currentIndex = popupCurrentIndex;
-      }
-    }
   }
 
   [rendered](changed) {

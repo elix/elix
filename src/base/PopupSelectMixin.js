@@ -26,7 +26,7 @@ export default function PopupSelectMixin(Base) {
   class PopupSelect extends Base {
     get [defaultState]() {
       return Object.assign(super[defaultState], {
-        popupCurrentIndex: -1,
+        currentIndex: -1,
         popupList: null,
       });
     }
@@ -74,10 +74,10 @@ export default function PopupSelectMixin(Base) {
                   ? this[state].selectedIndex
                   : -1;
 
-              const popupCurrentIndex = enabled ? hoverIndex : defaultIndex;
-              if (popupCurrentIndex !== this[state].popupCurrentIndex) {
+              const currentIndex = enabled ? hoverIndex : defaultIndex;
+              if (currentIndex !== this[state].currentIndex) {
                 this[raiseChangeEvents] = true;
-                this[setState]({ popupCurrentIndex });
+                this[setState]({ currentIndex });
                 this[raiseChangeEvents] = false;
               }
             }
@@ -97,8 +97,8 @@ export default function PopupSelectMixin(Base) {
             // there's a selection, they clicked on an item, so also close.
             // Otherwise, the user clicked the list open, then clicked on a list
             // separator or list padding; stay open.
-            const popupCurrentIndex = this[state].popupCurrentIndex;
-            if (this[state].dragSelect || popupCurrentIndex >= 0) {
+            const currentIndex = this[state].currentIndex;
+            if (this[state].dragSelect || currentIndex >= 0) {
               // We don't want the document mouseup handler to close
               // before we've asked the list to highlight the selection.
               // We need to stop event propagation here, before we enter
@@ -118,10 +118,19 @@ export default function PopupSelectMixin(Base) {
             /** @type {any} */
             const cast = event;
             this[setState]({
-              popupCurrentIndex: cast.detail.currentIndex,
+              currentIndex: cast.detail.currentIndex,
             });
             this[raiseChangeEvents] = false;
           });
+        }
+      }
+
+      // The popup's current item is represented in the visible list.
+      if (changed.currentIndex) {
+        const { currentIndex } = this[state];
+        const list = /** @type {any} */ (this[ids].list);
+        if ("currentIndex" in list) {
+          list.currentIndex = currentIndex;
         }
       }
     }
@@ -132,7 +141,7 @@ export default function PopupSelectMixin(Base) {
       // When closing, clear menu selection.
       if (changed.opened && !state.opened) {
         Object.assign(effects, {
-          popupCurrentIndex: -1,
+          currentIndex: -1,
         });
       }
 
@@ -148,9 +157,9 @@ export default function PopupSelectMixin(Base) {
  */
 async function selectCurrentItemAndClose(element) {
   const originalRaiseChangeEvents = element[raiseChangeEvents];
-  const selectionDefined = element[state].popupCurrentIndex >= 0;
+  const selectionDefined = element[state].currentIndex >= 0;
   const closeResult = selectionDefined
-    ? element.items[element[state].popupCurrentIndex]
+    ? element.items[element[state].currentIndex]
     : undefined;
 
   const list = element[state].popupList;
