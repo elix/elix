@@ -2,7 +2,6 @@
 
 // Files that export a single object.
 export { default as AlertDialog } from "./AlertDialog.js";
-export { default as AriaDropdownList } from "./AriaDropdownList.js";
 export { default as AriaListMixin } from "../src/base/AriaListMixin.js";
 export { default as AriaMenuMixin } from "../src/base/AriaMenuMixin.js";
 export { default as AriaRoleMixin } from "../src/base/AriaRoleMixin.js";
@@ -93,6 +92,7 @@ export { default as NumberSpinBox } from "./NumberSpinBox.js";
 export { default as OpenCloseMixin } from "../src/base/OpenCloseMixin.js";
 export { default as OpenCloseToggle } from "./OpenCloseToggle.js";
 export { default as Option } from "./Option.js";
+export { default as OptionList } from "./OptionList.js";
 export { default as Overlay } from "./Overlay.js";
 export { default as OverlayFrame } from "./OverlayFrame.js";
 export { default as OverlayMixin } from "../src/base/OverlayMixin.js";
@@ -102,6 +102,7 @@ export { default as PlayControlsMixin } from "../src/base/PlayControlsMixin.js";
 export { default as Popup } from "./Popup.js";
 export { default as PopupButton } from "./PopupButton.js";
 export { default as PopupModalityMixin } from "../src/base/PopupModalityMixin.js";
+export { default as PopupSelectMixin } from "../src/base/PopupSelectMixin.js";
 export { default as PopupSource } from "./PopupSource.js";
 export { default as ProgressSpinner } from "./ProgressSpinner.js";
 export { default as PullToRefresh } from "./PullToRefresh.js";
@@ -131,6 +132,7 @@ export { default as Tabs } from "./Tabs.js";
 export { default as TapCursorMixin } from "../src/base/TapCursorMixin.js";
 export { default as TimerCursorMixin } from "../src/base/TimerCursorMixin.js";
 export { default as Toast } from "./Toast.js";
+export { default as ToggledPopupSource } from "../src/base/ToggledPopupSource.js";
 export { default as TouchSwipeMixin } from "../src/base/TouchSwipeMixin.js";
 export { default as TrackTextSelectionMixin } from "../src/base/TrackTextSelectionMixin.js";
 export { default as TrackpadSwipeMixin } from "../src/base/TrackpadSwipeMixin.js";
