@@ -43,8 +43,28 @@ class PopupButton extends Base {
         break;
     }
 
-    // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[keydown] && super[keydown](event));
+    // Give superclass a chance to handle.
+    handled = super[keydown] && super[keydown](event);
+
+    if (!handled && this.opened && !event.metaKey && !event.altKey) {
+      // If they haven't already been handled, absorb keys that might cause the
+      // page to scroll in the background, which would in turn cause the popup to
+      // inadvertently close.
+      switch (event.key) {
+        case "ArrowDown":
+        case "ArrowLeft":
+        case "ArrowRight":
+        case "ArrowUp":
+        case "End":
+        case "Home":
+        case "PageDown":
+        case "PageUp":
+        case " ":
+          handled = true;
+      }
+    }
+
+    return handled;
   }
 
   [render](/** @type {ChangedFlags} */ changed) {

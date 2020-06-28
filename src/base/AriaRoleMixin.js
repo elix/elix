@@ -1,5 +1,11 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import { render, rendering, setState, state } from "./internal.js";
+import {
+  defaultState,
+  render,
+  rendering,
+  setState,
+  state,
+} from "./internal.js";
 
 /**
  * Lets a component define its ARIA role through a `role` state member
@@ -19,6 +25,12 @@ import { render, rendering, setState, state } from "./internal.js";
 export default function AriaRoleMixin(Base) {
   // The class prototype added by the mixin.
   class AriaRole extends Base {
+    get [defaultState]() {
+      return Object.assign(super[defaultState], {
+        role: null,
+      });
+    }
+
     [render](/** @type {ChangedFlags} */ changed) {
       if (super[render]) {
         super[render](changed);

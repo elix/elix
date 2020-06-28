@@ -9,7 +9,6 @@ import DelegateCursorMixin from "./DelegateCursorMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import {
   defaultState,
-  firstRender,
   getItemText,
   goFirst,
   goLast,
@@ -20,6 +19,7 @@ import {
   keydown,
   raiseChangeEvents,
   render,
+  rendered,
   setState,
   shadowRoot,
   state,
@@ -138,10 +138,6 @@ class ListComboBox extends Base {
 
     renderParts(this[shadowRoot], this[state], changed);
 
-    if (this[firstRender]) {
-      this.setAttribute("aria-haspopup", "listbox");
-    }
-
     if (changed.inputPartType) {
       this[ids].input.setAttribute("aria-autocomplete", "both");
     }
@@ -197,6 +193,17 @@ class ListComboBox extends Base {
       if ("selectedIndex" in list) {
         list.selectedIndex = this[state].currentIndex;
       }
+    }
+  }
+
+  [rendered](changed) {
+    super[rendered](changed);
+
+    // Indicate which component is the popup's list.
+    if (changed.listPartType) {
+      this[setState]({
+        popupList: this[ids].list,
+      });
     }
   }
 

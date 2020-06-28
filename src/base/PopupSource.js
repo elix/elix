@@ -7,6 +7,7 @@ import {
   defaultState,
   firstRender,
   ids,
+  inputDelegate,
   raiseChangeEvents,
   render,
   rendered,
@@ -55,6 +56,12 @@ class PopupSource extends Base {
     });
   }
 
+  // By default, assume that the source part is an input-like element that will
+  // get the foucs.
+  get [inputDelegate]() {
+    return this[ids].source;
+  }
+
   get frame() {
     return /** @type {any} */ (this[ids].popup).frame;
   }
@@ -86,7 +93,10 @@ class PopupSource extends Base {
     renderParts(this[shadowRoot], this[state], changed);
 
     if (this[firstRender] || changed.ariaHasPopup) {
-      this[ids].source.setAttribute("aria-haspopup", this[state].ariaHasPopup);
+      this[inputDelegate].setAttribute(
+        "aria-haspopup",
+        this[state].ariaHasPopup
+      );
     }
 
     if (changed.popupPartType) {

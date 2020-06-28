@@ -59,8 +59,6 @@ class Input extends Base {
         this.value = /** @type {any} */ (this.inner).value;
         this[raiseChangeEvents] = false;
       });
-
-      this.setAttribute("role", "none");
     }
   }
 

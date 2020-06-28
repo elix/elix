@@ -27,6 +27,7 @@ export default function PopupSelectMixin(Base) {
     get [defaultState]() {
       return Object.assign(super[defaultState], {
         popupCurrentIndex: -1,
+        popupList: null,
       });
     }
 

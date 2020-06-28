@@ -52,40 +52,19 @@ class MenuButton extends Base {
   }
 
   [keydown](/** @type {KeyboardEvent} */ event) {
+    let handled;
+
     switch (event.key) {
       // Enter opens popup.
       case "Enter":
         if (!this.opened) {
           this.open();
-          return true;
+          handled = true;
         }
     }
 
-    // Give superclass a chance to handle.
-    const base = super[keydown] && super[keydown](event);
-    if (base) {
-      return true;
-    }
-
-    if (this.opened && !event.metaKey && !event.altKey) {
-      // If they haven't already been handled, absorb keys that might cause the
-      // page to scroll in the background, which would in turn cause the popup to
-      // inadvertently close.
-      switch (event.key) {
-        case "ArrowDown":
-        case "ArrowLeft":
-        case "ArrowRight":
-        case "ArrowUp":
-        case "End":
-        case "Home":
-        case "PageDown":
-        case "PageUp":
-        case " ":
-          return true;
-      }
-    }
-
-    return false;
+    // Prefer mixin result if it's defined, otherwise use base result.
+    return handled || (super[keydown] && super[keydown](event));
   }
 
   /**

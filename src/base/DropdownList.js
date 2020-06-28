@@ -7,7 +7,6 @@ import FormElementMixin from "./FormElementMixin.js";
 import {
   defaultState,
   ids,
-  inputDelegate,
   render,
   rendered,
   setState,
@@ -70,15 +69,10 @@ class DropdownList extends Base {
       ariaHasPopup: "listbox",
       currentItemRequired: true,
       listPartType: "div",
-      popupList: null,
       selectedIndex: -1,
       selectedItem: null,
       valuePartType: "div",
     });
-  }
-
-  get [inputDelegate]() {
-    return this[ids].source;
   }
 
   get items() {

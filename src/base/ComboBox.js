@@ -1,7 +1,6 @@
 import { forwardFocus } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import { transmute } from "../core/template.js";
-import AriaRoleMixin from "./AriaRoleMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
@@ -22,16 +21,13 @@ import {
   stateEffects,
   template,
 } from "./internal.js";
-import KeyboardMixin from "./KeyboardMixin.js";
-import PopupSource from "./PopupSource.js";
-import UpDownToggle from "./UpDownToggle.js";
+import PopupSelectMixin from "./PopupSelectMixin.js";
+import ToggledPopupSource from "./ToggledPopupSource.js";
 
-const Base = AriaRoleMixin(
-  DelegateFocusMixin(
-    DelegateInputLabelMixin(
-      DelegateInputSelectionMixin(
-        FocusVisibleMixin(FormElementMixin(KeyboardMixin(PopupSource)))
-      )
+const Base = DelegateFocusMixin(
+  DelegateInputLabelMixin(
+    DelegateInputSelectionMixin(
+      FocusVisibleMixin(FormElementMixin(PopupSelectMixin(ToggledPopupSource)))
     )
   )
 );
@@ -39,14 +35,14 @@ const Base = AriaRoleMixin(
 /**
  * A text input paired with a popup that can be used as an alternative to typing
  *
- * @inherits PopupSource
- * @mixes AriaRoleMixin
+ * @inherits ToggledPopupSource
  * @mixes DelegateFocusMixin
  * @mixes DelegateInputLabelMixin
  * @mixes DelegateInputSelectionMixin
  * @mixes FocusVisibleMixin
  * @mixes FormElementMixin
  * @mixes KeyboardMixin
+ * @mixes PopupSelectMixin
  * @part {Hidden} backdrop
  * @part down-icon - the icon shown in the toggle if the popup will open or close in the down direction
  * @part {input} input - the text input element
@@ -57,14 +53,12 @@ const Base = AriaRoleMixin(
 class ComboBox extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
+      ariaHasPopup: "listbox",
       focused: false,
       inputPartType: "input",
       orientation: "vertical",
       placeholder: "",
-      popupTogglePartType: UpDownToggle,
-      role: "combobox",
       selectText: false,
-      sourcePartType: "div",
       value: "",
     });
   }
@@ -150,11 +144,6 @@ class ComboBox extends Base {
         }
         break;
 
-      case "Enter":
-        this.toggle();
-        handled = true;
-        break;
-
       // Escape closes popup and indicates why.
       case "Escape":
         this.close({
@@ -178,20 +167,6 @@ class ComboBox extends Base {
   }
   set placeholder(placeholder) {
     this[setState]({ placeholder });
-  }
-
-  /**
-   * The class or tag used to create the `popup-toggle` part – the
-   * element that lets the user know they can open the popup.
-   *
-   * @type {PartDescriptor}
-   * @default UpDownToggle
-   */
-  get popupTogglePartType() {
-    return this[state].popupTogglePartType;
-  }
-  set popupTogglePartType(popupTogglePartType) {
-    this[setState]({ popupTogglePartType });
   }
 
   [render](/** @type {ChangedFlags} */ changed) {
@@ -348,6 +323,18 @@ class ComboBox extends Base {
       `);
     }
 
+    // Apply combobox semantics to the source button. Because focus moves to the
+    // list itself when the popup opens, the aria-controls attribute has no
+    // effect other than convincing the browser to announce the button as a
+    // combobox.
+    const input = result.content.querySelector('[part~="input"]');
+    if (input) {
+      input.setAttribute("aria-activedescendant", "value");
+      input.setAttribute("aria-autocomplete", "none");
+      input.setAttribute("aria-controls", "list");
+      input.setAttribute("role", "combobox");
+    }
+
     renderParts(result.content, this[state]);
 
     result.content.append(
@@ -400,13 +387,13 @@ function renderParts(root, state, changed) {
       transmute(input, inputPartType);
     }
   }
-  if (!changed || changed.popupTogglePartType) {
-    const { popupTogglePartType } = state;
-    const popupToggle = root.getElementById("popupToggle");
-    if (popupToggle) {
-      transmute(popupToggle, popupTogglePartType);
-    }
-  }
+  // if (!changed || changed.popupTogglePartType) {
+  //   const { popupTogglePartType } = state;
+  //   const popupToggle = root.getElementById("popupToggle");
+  //   if (popupToggle) {
+  //     transmute(popupToggle, popupTogglePartType);
+  //   }
+  // }
 }
 
 export default ComboBox;
