@@ -323,13 +323,9 @@ class ComboBox extends Base {
       `);
     }
 
-    // Apply combobox semantics to the source button. Because focus moves to the
-    // list itself when the popup opens, the aria-controls attribute has no
-    // effect other than convincing the browser to announce the button as a
-    // combobox.
+    // Apply combobox semantics to the source button.
     const input = result.content.querySelector('[part~="input"]');
     if (input) {
-      input.setAttribute("aria-activedescendant", "value");
       input.setAttribute("aria-autocomplete", "none");
       input.setAttribute("aria-controls", "list");
       input.setAttribute("role", "combobox");

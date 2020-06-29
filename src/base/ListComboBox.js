@@ -202,16 +202,6 @@ class ListComboBox extends Base {
     //     list.currentIndex = popupCurrentIndex;
     //   }
     // }
-
-    // TODO: Move this to PopupSelectMixin?
-    // The popup's current item is represented in the visible list.
-    if (changed.currentIndex) {
-      const { currentIndex } = this[state];
-      const list = /** @type {any} */ (this[ids].list);
-      if ("currentIndex" in list) {
-        list.currentIndex = currentIndex;
-      }
-    }
   }
 
   [rendered](changed) {
