@@ -3,7 +3,7 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-declare const DelegateInputSelectionMixin: StateMixin<
+declare const DelegateInputLabelMixin: StateMixin<
   {},
   {},
   {
@@ -14,4 +14,4 @@ declare const DelegateInputSelectionMixin: StateMixin<
   }
 >;
 
-export default DelegateInputSelectionMixin;
+export default DelegateInputLabelMixin;
