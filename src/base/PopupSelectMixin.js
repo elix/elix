@@ -126,11 +126,10 @@ export default function PopupSelectMixin(Base) {
       }
 
       // The popup's current item is represented in the visible list.
-      if (changed.currentIndex) {
-        const { currentIndex } = this[state];
-        const list = /** @type {any} */ (this[ids].list);
-        if ("currentIndex" in list) {
-          list.currentIndex = currentIndex;
+      if (changed.currentIndex || changed.popupList) {
+        const { currentIndex, popupList } = this[state];
+        if (popupList && "currentIndex" in popupList) {
+          popupList.currentIndex = currentIndex;
         }
       }
     }
