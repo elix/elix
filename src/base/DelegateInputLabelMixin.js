@@ -33,23 +33,23 @@ export default function DelegateInputLabelMixin(Base) {
     }
 
     // Forward ARIA labelledby to the input element.
-    get ariaLabelledBy() {
-      return this[state].ariaLabelledBy;
+    get ariaLabelledby() {
+      return this[state].ariaLabelledby;
     }
-    set ariaLabelledBy(ariaLabelledBy) {
+    set ariaLabelledby(ariaLabelledby) {
       if (this.getRootNode() !== null) {
         const ariaLabel = this.getRootNode().querySelector(
-          `#${ariaLabelledBy}`
+          `#${ariaLabelledby}`
         ).innerText;
         this[setState]({ ariaLabel });
       }
-      this[setState]({ ariaLabelledBy });
+      this[setState]({ ariaLabelledby });
     }
 
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         ariaLabel: "",
-        ariaLabelledBy: "",
+        ariaLabelledby: "",
       });
     }
 
@@ -62,11 +62,11 @@ export default function DelegateInputLabelMixin(Base) {
         this.removeAttribute('aria-label');
       }
 
-      if (changed.ariaLabelledBy) {
+      if (changed.ariaLabelledby) {
         console.log(this[state])
-        const { ariaLabelledBy } = this[state];
+        const { ariaLabelledby } = this[state];
 
-        this[inputDelegate].setAttribute('aria-labelledby', ariaLabelledBy);
+        this[inputDelegate].setAttribute('aria-labelledby', ariaLabelledby);
         this.removeAttribute('aria-labelledby');
       }
     }
