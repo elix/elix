@@ -1,6 +1,7 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import {
   defaultState,
+  firstRender,
   inputDelegate,
   render,
   setState,
@@ -31,18 +32,42 @@ export default function DelegateInputLabelMixin(Base) {
       this[setState]({ ariaLabel });
     }
 
+    // Forward ARIA labelledby to the input element.
+    get ariaLabelledBy() {
+      return this[state].ariaLabelledBy;
+    }
+    set ariaLabelledBy(ariaLabelledBy) {
+      if (this.getRootNode() !== null) {
+        const ariaLabel = this.getRootNode().querySelector(
+          `#${ariaLabelledBy}`
+        ).innerText;
+        this[setState]({ ariaLabel });
+      }
+      this[setState]({ ariaLabelledBy });
+    }
+
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         ariaLabel: "",
+        ariaLabelledBy: "",
       });
     }
 
     [render](changed) {
       super[render](changed);
-
       if (changed.ariaLabel) {
         const { ariaLabel } = this[state];
+
         this[inputDelegate].setAttribute("aria-label", ariaLabel);
+        this.removeAttribute('aria-label');
+      }
+
+      if (changed.ariaLabelledBy) {
+        console.log(this[state])
+        const { ariaLabelledBy } = this[state];
+
+        this[inputDelegate].setAttribute('aria-labelledby', ariaLabelledBy);
+        this.removeAttribute('aria-labelledby');
       }
     }
   }
