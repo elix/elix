@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Report a bug or other issue
-title: Issue title, including the name of the relevant component or mixin
+title: Issue summary, including the name of the relevant component or mixin
 labels: ''
 assignees: ''
 
@@ -9,9 +9,8 @@ assignees: ''
 
 Begin with a clear and concise description of the bug.
 
-**To Reproduce**
-The smallest set of steps required to reproduce the behavior:
-1. Create a page with <elix-some-component>.
+**Steps that reproduce the issue**
+1. Create a page with `<elix-some-component>`.
 2. Click on the component.
 3. See error.
 
