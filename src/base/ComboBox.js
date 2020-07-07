@@ -53,7 +53,7 @@ const Base = DelegateFocusMixin(
 class ComboBox extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
-      ariaHasPopup: "listbox",
+      ariaHasPopup: null,
       focused: false,
       inputPartType: "input",
       orientation: "vertical",
@@ -321,14 +321,6 @@ class ComboBox extends Base {
         <input id="input" part="input"></input>
         <div id="popupToggle" part="popup-toggle" tabindex="-1"></div>
       `);
-    }
-
-    // Apply combobox semantics to the source button.
-    const input = result.content.querySelector('[part~="input"]');
-    if (input) {
-      input.setAttribute("aria-autocomplete", "none");
-      input.setAttribute("aria-controls", "list");
-      input.setAttribute("role", "combobox");
     }
 
     renderParts(result.content, this[state]);

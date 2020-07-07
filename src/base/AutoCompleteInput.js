@@ -1,15 +1,22 @@
+import { updateChildNodes } from "../core/dom.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
+import { transmute } from "../core/template.js";
 import Input from "./Input.js";
 import {
   defaultState,
   firstRender,
   ids,
+  inputDelegate,
   raiseChangeEvents,
   render,
   rendered,
   setState,
   shadowRoot,
   state,
+  stateEffects,
+  template,
 } from "./internal.js";
+import ListBox from "./ListBox.js";
 
 /**
  * A text input box that completes text as the user types
@@ -21,6 +28,7 @@ class AutoCompleteInput extends Input {
     return Object.assign(super[defaultState], {
       autoCompleteSelect: false,
       originalText: "",
+      textIndex: -1,
       texts: [],
     });
   }
@@ -72,6 +80,36 @@ class AutoCompleteInput extends Input {
           this[raiseChangeEvents] = false;
         });
       });
+
+      transmute(this[ids].accessibleList, ListBox);
+    }
+
+    // Copy the text values to the invisible, accessible list.
+    if (changed.texts) {
+      const { texts } = this[state];
+      const options =
+        texts === null
+          ? []
+          : texts.map((text) => {
+              const div = document.createElement("div");
+              div.textContent = text;
+              return div;
+            });
+      updateChildNodes(this[ids].accessibleList, options);
+    }
+
+    if (changed.textIndex) {
+      const { textIndex } = this[state];
+      const list = this[ids].accessibleList;
+      list.currentIndex = textIndex;
+
+      // HACKY
+      const items = list.items;
+      const item = items ? items[textIndex] : null;
+      const id = item ? item.id : null;
+      if (id) {
+        this[inputDelegate].setAttribute("aria-activedescendant", id);
+      }
     }
   }
 
@@ -100,6 +138,46 @@ class AutoCompleteInput extends Input {
       });
       this.dispatchEvent(event);
     }
+  }
+
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects]
+      ? super[stateEffects](state, changed)
+      : {};
+
+    if (changed.valueCopy) {
+      const { texts, valueCopy } = state;
+      const textIndex = texts.indexOf(valueCopy);
+      Object.assign(effects, { textIndex });
+    }
+
+    return effects;
+  }
+
+  get [template]() {
+    const result = super[template];
+
+    // Apply combobox semantics to the input.
+    const inner = result.content.querySelector('[part~="inner"]');
+    if (inner) {
+      inner.setAttribute("aria-autocomplete", "none");
+      inner.setAttribute("aria-controls", "accessibleList");
+      inner.setAttribute("role", "combobox");
+    }
+
+    // Add an accessible list.
+    result.content.append(fragmentFrom.html`
+      <style>
+        #accessibleList {
+          height: 0;
+          position: absolute;
+          width: 0;
+        }
+      </style>
+      <div id="accessibleList" tabindex="-1"></div>
+    `);
+
+    return result;
   }
 
   /**

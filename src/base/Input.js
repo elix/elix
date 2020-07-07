@@ -3,11 +3,13 @@ import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import {
+  defaultState,
   firstRender,
   ids,
   inputDelegate,
   raiseChangeEvents,
   render,
+  setState,
   template,
 } from "./internal.js";
 import TrackTextSelectionMixin from "./TrackTextSelectionMixin.js";
@@ -34,6 +36,12 @@ const Base = DelegateInputLabelMixin(
  * @mixes TrackTextSelectionMixin
  */
 class Input extends Base {
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
+      valueCopy: "",
+    });
+  }
+
   get [inputDelegate]() {
     return this.inner;
   }
@@ -74,6 +82,14 @@ class Input extends Base {
       </style>
     `);
     return result;
+  }
+
+  get value() {
+    return super.value;
+  }
+  set value(value) {
+    super.value = value;
+    this[setState]({ valueCopy: value });
   }
 }
 

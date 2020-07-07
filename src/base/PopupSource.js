@@ -93,10 +93,15 @@ class PopupSource extends Base {
     renderParts(this[shadowRoot], this[state], changed);
 
     if (this[firstRender] || changed.ariaHasPopup) {
-      this[inputDelegate].setAttribute(
-        "aria-haspopup",
-        this[state].ariaHasPopup
-      );
+      const { ariaHasPopup } = this[state];
+      if (ariaHasPopup === null) {
+        this[inputDelegate].removeAttribute("aria-haspopup");
+      } else {
+        this[inputDelegate].setAttribute(
+          "aria-haspopup",
+          this[state].ariaHasPopup
+        );
+      }
     }
 
     if (changed.popupPartType) {
