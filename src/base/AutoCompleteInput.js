@@ -112,17 +112,21 @@ class AutoCompleteInput extends Input {
       updateChildNodes(this[ids].accessibleList, options);
     }
 
+    // Select the the accessible list item for the current text.
     if (changed.textIndex) {
       const { textIndex } = this[state];
-      const list = this[ids].accessibleList;
-      list.currentIndex = textIndex;
 
-      // HACKY
-      const items = list.items;
-      const item = items ? items[textIndex] : null;
+      /** @type {any} */ const list = this[ids].accessibleList;
+      if ("currentIndex" in list) {
+        list.currentIndex = textIndex;
+      }
+
+      const item = list.currentItem;
       const id = item ? item.id : null;
       if (id) {
         this[inputDelegate].setAttribute("aria-activedescendant", id);
+      } else {
+        this[inputDelegate].removeAttribute("aria-activedescendant");
       }
     }
   }

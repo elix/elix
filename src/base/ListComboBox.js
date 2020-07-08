@@ -138,24 +138,6 @@ class ListComboBox extends Base {
     renderParts(this[shadowRoot], this[state], changed);
 
     if (changed.listPartType) {
-      // this[ids].list.addEventListener("mousedown", (event) => {
-      //   // Only process events for the main (usually left) button.
-      //   if (/** @type {MouseEvent} */ (event).button !== 0) {
-      //     return;
-      //   }
-      //   // Mousing down inside a list item closes the popup.
-      //   /** @type {any} */
-      //   const target = event.target;
-      //   if (target) {
-      //     const targetIndex = indexOfItemContainingTarget(this.items, target);
-      //     if (this.opened && targetIndex >= 0) {
-      //       this[raiseChangeEvents] = true;
-      //       this.close();
-      //       this[raiseChangeEvents] = false;
-      //     }
-      //   }
-      // });
-
       // Keep focus off of the list and on the top level combo box (which should
       // delegate focus to the input).
       /** @type {any} */
@@ -182,22 +164,6 @@ class ListComboBox extends Base {
       //   }
       // });
     }
-
-    // if (changed.currentIndex) {
-    //   const list = /** @type {any} */ (this[ids].list);
-    //   if ("selectedIndex" in list) {
-    //     list.selectedIndex = this[state].currentIndex;
-    //   }
-    // }
-
-    // The popup's current item is represented in the visible list.
-    // if (changed.popupCurrentIndex) {
-    //   const { popupCurrentIndex } = this[state];
-    //   const list = /** @type {any} */ (this[ids].list);
-    //   if ("currentIndex" in list) {
-    //     list.currentIndex = popupCurrentIndex;
-    //   }
-    // }
   }
 
   [rendered](changed) {
