@@ -3,7 +3,6 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 import {
   defaultState,
   firstRender,
-  ids,
   keydown,
   raiseChangeEvents,
   render,
