@@ -237,6 +237,15 @@ class ComboBox extends Base {
       });
     }
 
+    // If input wants to know whether combo box is opened, let it know.
+    if (changed.opened || changed.inputPartType) {
+      /** @type {any} */ const input = this[ids].input;
+      if ("opened" in input) {
+        const { opened } = this[state];
+        input.opened = opened;
+      }
+    }
+
     if (changed.popupTogglePartType) {
       const popupToggle = this[ids].popupToggle;
       const input = this[ids].input;

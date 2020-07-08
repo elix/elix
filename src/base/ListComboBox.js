@@ -137,10 +137,6 @@ class ListComboBox extends Base {
 
     renderParts(this[shadowRoot], this[state], changed);
 
-    if (changed.inputPartType) {
-      this[ids].input.setAttribute("aria-autocomplete", "both");
-    }
-
     if (changed.listPartType) {
       // this[ids].list.addEventListener("mousedown", (event) => {
       //   // Only process events for the main (usually left) button.

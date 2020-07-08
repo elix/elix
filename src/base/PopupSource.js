@@ -180,7 +180,7 @@ class PopupSource extends Base {
     if (changed.opened) {
       const { opened } = this[state];
       /** @type {any} */ (this[ids].popup).opened = opened;
-      this[ids].source.setAttribute("aria-expanded", opened.toString());
+      // this[ids].source.setAttribute("aria-expanded", opened.toString());
     }
 
     if (changed.disabled) {

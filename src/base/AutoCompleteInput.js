@@ -27,10 +27,18 @@ class AutoCompleteInput extends Input {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       autoCompleteSelect: false,
+      opened: false,
       originalText: "",
       textIndex: -1,
       texts: [],
     });
+  }
+
+  get opened() {
+    return this[state].opened;
+  }
+  set opened(opened) {
+    this[setState]({ opened });
   }
 
   [render](/** @type {ChangedFlags} */ changed) {
@@ -82,6 +90,12 @@ class AutoCompleteInput extends Input {
       });
 
       transmute(this[ids].accessibleList, ListBox);
+    }
+
+    // Let ARIA know whether combo box is open.
+    if (changed.opened) {
+      const { opened } = this[state];
+      this[ids].inner.setAttribute("aria-expanded", opened.toString());
     }
 
     // Copy the text values to the invisible, accessible list.
@@ -157,10 +171,10 @@ class AutoCompleteInput extends Input {
   get [template]() {
     const result = super[template];
 
-    // Apply combobox semantics to the input.
+    // Apply ARIA combobox attributes to the input.
     const inner = result.content.querySelector('[part~="inner"]');
     if (inner) {
-      inner.setAttribute("aria-autocomplete", "none");
+      inner.setAttribute("aria-autocomplete", "both");
       inner.setAttribute("aria-controls", "accessibleList");
       inner.setAttribute("role", "combobox");
     }
