@@ -10,7 +10,6 @@ import {
   setState,
   shadowRoot,
   state,
-  stateEffects,
   template,
 } from "./internal.js";
 import Menu from "./Menu.js";
@@ -89,14 +88,6 @@ class MenuButton extends Base {
         }
       });
     }
-
-    // The current item in the popup is represented in the menu.
-    if (changed.popupCurrentIndex) {
-      const menu = /** @type {any} */ (this[ids].menu);
-      if ("currentIndex" in menu) {
-        menu.currentIndex = this[state].popupCurrentIndex;
-      }
-    }
   }
 
   [rendered](changed) {
@@ -107,19 +98,6 @@ class MenuButton extends Base {
         popupList: this[ids].menu,
       });
     }
-  }
-
-  [stateEffects](state, changed) {
-    const effects = super[stateEffects](state, changed);
-
-    // When opening, clear any menu selection.
-    if (changed.opened && state.opened) {
-      Object.assign(effects, {
-        popupCurrentIndex: -1,
-      });
-    }
-
-    return effects;
   }
 
   get [template]() {

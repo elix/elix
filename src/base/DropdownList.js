@@ -67,7 +67,6 @@ class DropdownList extends Base {
     return Object.assign(super[defaultState], {
       accessibleOptions: null,
       ariaHasPopup: "listbox",
-      currentItemRequired: true,
       listPartType: "div",
       selectedIndex: -1,
       selectedItem: null,
@@ -157,7 +156,7 @@ class DropdownList extends Base {
     // When opening the popup, by default (re)select the current item.
     if (changed.opened && state.opened) {
       Object.assign(effects, {
-        popupCurrentIndex: state.selectedIndex,
+        currentIndex: state.selectedIndex,
       });
     }
 
@@ -172,7 +171,8 @@ class DropdownList extends Base {
       }
     }
 
-    // If we get items and don't have a selection, select the first item.
+    // If we get items while closed and don't have a selection, select the first
+    // item.
     if (changed.items || changed.selectedIndex) {
       const { items, selectedIndex } = state;
       if (selectedIndex < 0 && items && items.length > 0) {
