@@ -384,13 +384,6 @@ function renderParts(root, state, changed) {
       transmute(input, inputPartType);
     }
   }
-  // if (!changed || changed.popupTogglePartType) {
-  //   const { popupTogglePartType } = state;
-  //   const popupToggle = root.getElementById("popupToggle");
-  //   if (popupToggle) {
-  //     transmute(popupToggle, popupTogglePartType);
-  //   }
-  // }
 }
 
 export default ComboBox;
