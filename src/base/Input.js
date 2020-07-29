@@ -1,6 +1,6 @@
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
-import DelegateIdMixin from './DelegateIdMixin.js';
+// import DelegateFocusMixin from './Deleg'
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import {
@@ -14,13 +14,13 @@ import {
 import TrackTextSelectionMixin from "./TrackTextSelectionMixin.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
 
-const Base = DelegateIdMixin(DelegateInputLabelMixin(
+const Base = DelegateInputLabelMixin(
   FocusVisibleMixin(
     FormElementMixin(
       TrackTextSelectionMixin(WrappedStandardElement.wrap("input"))
     )
   )
-));
+);
 
 /**
  * Base class for custom input elements
