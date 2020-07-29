@@ -32,18 +32,21 @@ export default function DelegateInputLabelMixin(Base) {
       this[setState]({ ariaLabel });
     }
 
-    // Forward ARIA labelledby to the input element.
+    // Forward ARIA labelledby as an aria-label to the input element.
     get ariaLabelledby() {
       return this[state].ariaLabelledby;
     }
     set ariaLabelledby(ariaLabelledby) {
       if (this.getRootNode() !== null) {
-        const ariaLabel = this.getRootNode().querySelector(
+        // @ts-ignore
+        let labelNode = this.getRootNode().querySelector(
           `#${ariaLabelledby}`
-        ).innerText;
-        this[setState]({ ariaLabel });
+        );
+
+        labelNode.setAttribute('aria-hidden', true);
+        const ariaLabel = labelNode.innerText;
+        this[setState]({ ariaLabel, ariaLabelledby });
       }
-      this[setState]({ ariaLabelledby });
     }
 
     get [defaultState]() {
@@ -55,18 +58,33 @@ export default function DelegateInputLabelMixin(Base) {
 
     [render](changed) {
       super[render](changed);
+      if (this[firstRender]) {
+        if (this.getRootNode() !== null) {
+          // @ts-ignore
+          const labelNode = this.getRootNode().querySelector(
+            `[for="${this.id}"]`
+          )
+          if (labelNode !== null) {
+            const ariaLabel = labelNode.innerText;
+            labelNode.setAttribute('aria-hidden', true);
+            this[setState]({ ariaLabel });
+          } else {
+            const labelNode = this.closest('label');
+            if (labelNode !== null) {
+              const ariaLabel = labelNode.innerText;
+              this[setState]({ ariaLabel });
+            }
+          }
+        }
+      }
+
       if (changed.ariaLabel) {
         const { ariaLabel } = this[state];
-
         this[inputDelegate].setAttribute("aria-label", ariaLabel);
         this.removeAttribute('aria-label');
       }
 
       if (changed.ariaLabelledby) {
-        console.log(this[state])
-        const { ariaLabelledby } = this[state];
-
-        this[inputDelegate].setAttribute('aria-labelledby', ariaLabelledby);
         this.removeAttribute('aria-labelledby');
       }
     }
