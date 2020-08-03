@@ -124,70 +124,16 @@ class PopupSource extends Base {
       changed.rightToLeft
     ) {
       const {
-        horizontalAlign,
-        popupHeight,
+        calculatedFrameMaxHeight,
+        calculatedFrameMaxWidth,
+        calculatedPopupLeft,
+        calculatedPopupPosition,
+        calculatedPopupRight,
         popupMeasured,
-        popupPosition,
-        popupWidth,
-        rightToLeft,
-        roomAbove,
-        roomBelow,
-        roomLeft,
-        roomRight,
       } = this[state];
 
-      const fitsAbove = popupHeight <= roomAbove;
-      const fitsBelow = popupHeight <= roomBelow;
-      const canLeftAlign = popupWidth <= roomRight;
-      const canRightAlign = popupWidth <= roomLeft;
-
-      const preferPositionBelow = popupPosition === "below";
-
-      // We respect each position popup preference (above/below/right/right) if
-      // there's room in that direction. Otherwise, we use the horizontal/vertical
-      // position that maximizes the popup width/height.
-      const positionBelow =
-        (preferPositionBelow && (fitsBelow || roomBelow >= roomAbove)) ||
-        (!preferPositionBelow && !fitsAbove && roomBelow >= roomAbove);
-      const fitsVertically =
-        (positionBelow && fitsBelow) || (!positionBelow && fitsAbove);
-      const maxFrameHeight = fitsVertically
-        ? null
-        : positionBelow
-        ? roomBelow
-        : roomAbove;
-
-      // Position popup.
+      const positionBelow = calculatedPopupPosition === "below";
       const bottom = positionBelow ? null : 0;
-
-      let left;
-      let right;
-      let maxFrameWidth;
-      if (horizontalAlign === "stretch") {
-        left = 0;
-        right = 0;
-        maxFrameWidth = null;
-      } else {
-        const preferLeftAlign =
-          horizontalAlign === "left" ||
-          (rightToLeft
-            ? horizontalAlign === "end"
-            : horizontalAlign === "start");
-        // The above/below preference rules also apply to left/right alignment.
-        const alignLeft =
-          (preferLeftAlign && (canLeftAlign || roomRight >= roomLeft)) ||
-          (!preferLeftAlign && !canRightAlign && roomRight >= roomLeft);
-        left = alignLeft ? 0 : null;
-        right = !alignLeft ? 0 : null;
-
-        const fitsHorizontally =
-          (alignLeft && roomRight) || (!alignLeft && roomLeft);
-        maxFrameWidth = fitsHorizontally
-          ? null
-          : alignLeft
-          ? roomRight
-          : roomLeft;
-      }
 
       // Until we've measured the rendered position of the popup, render it in
       // fixed position (so it doesn't affect page layout or scrolling), and don't
@@ -197,6 +143,9 @@ class PopupSource extends Base {
       // it fits.
       const opacity = popupMeasured ? null : 0;
       const position = popupMeasured ? "absolute" : "fixed";
+
+      const left = calculatedPopupLeft;
+      const right = calculatedPopupRight;
 
       const popup = this[ids].popup;
       Object.assign(popup.style, {
@@ -208,8 +157,12 @@ class PopupSource extends Base {
       });
       const frame = /** @type {any} */ (popup).frame;
       Object.assign(frame.style, {
-        maxHeight: maxFrameHeight ? `${maxFrameHeight}px` : null,
-        maxWidth: maxFrameWidth ? `${maxFrameWidth}px` : null,
+        maxHeight: calculatedFrameMaxHeight
+          ? `${calculatedFrameMaxHeight}px`
+          : null,
+        maxWidth: calculatedFrameMaxWidth
+          ? `${calculatedFrameMaxWidth}px`
+          : null,
       });
       this[ids].popupContainer.style.top = positionBelow ? "" : "0";
     }
@@ -291,16 +244,15 @@ class PopupSource extends Base {
   [stateEffects](state, changed) {
     const effects = super[stateEffects](state, changed);
 
-    // Closing popup resets our calculations of popup size and room.
+    // Closing popup resets our popup calculations.
     if (changed.opened && !state.opened) {
       Object.assign(effects, {
-        popupHeight: null,
+        calculatedFrameMaxHeight: null,
+        calculatedFrameMaxWidth: null,
+        calculatedPopupLeft: null,
+        calculatedPopupPosition: null,
+        calculatedPopupRight: null,
         popupMeasured: false,
-        popupWidth: null,
-        roomAbove: null,
-        roomBelow: null,
-        roomLeft: null,
-        roomRight: null,
       });
     }
 
@@ -377,16 +329,78 @@ function measurePopup(element) {
   const windowWidth = window.innerWidth;
   const popupRect = element[ids].popup.getBoundingClientRect();
   const sourceRect = element.getBoundingClientRect();
+
+  const popupHeight = popupRect.height;
+  const popupWidth = popupRect.width;
+
+  const { horizontalAlign, popupPosition, rightToLeft } = element[state];
+
+  // Calculate the best vertical popup position relative to the source.
+  const roomAbove = sourceRect.top;
+  const roomBelow = Math.ceil(windowHeight - sourceRect.bottom);
+  const roomLeft = sourceRect.right;
+  const roomRight = Math.ceil(windowWidth - sourceRect.left);
+
+  const fitsAbove = popupHeight <= roomAbove;
+  const fitsBelow = popupHeight <= roomBelow;
+
+  const preferPositionBelow = popupPosition === "below";
+
+  // We respect each position popup preference (above/below/right/right) if
+  // there's room in that direction. Otherwise, we use the horizontal/vertical
+  // position that maximizes the popup width/height.
+  const positionBelow =
+    (preferPositionBelow && (fitsBelow || roomBelow >= roomAbove)) ||
+    (!preferPositionBelow && !fitsAbove && roomBelow >= roomAbove);
+  const fitsVertically =
+    (positionBelow && fitsBelow) || (!positionBelow && fitsAbove);
+  const calculatedFrameMaxHeight = fitsVertically
+    ? null
+    : positionBelow
+    ? roomBelow
+    : roomAbove;
+
+  // The popup should be positioned below the source.
+  const calculatedPopupPosition = positionBelow ? "below" : "above";
+
+  // Calculate the best horizontal popup alignment relative to the source.
+  const canLeftAlign = popupWidth <= roomRight;
+  const canRightAlign = popupWidth <= roomLeft;
+
+  let calculatedPopupLeft;
+  let calculatedPopupRight;
+  let calculatedFrameMaxWidth;
+  if (horizontalAlign === "stretch") {
+    calculatedPopupLeft = 0;
+    calculatedPopupRight = 0;
+    calculatedFrameMaxWidth = null;
+  } else {
+    const preferLeftAlign =
+      horizontalAlign === "left" ||
+      (rightToLeft ? horizontalAlign === "end" : horizontalAlign === "start");
+    // The above/below preference rules also apply to left/right alignment.
+    const alignLeft =
+      (preferLeftAlign && (canLeftAlign || roomRight >= roomLeft)) ||
+      (!preferLeftAlign && !canRightAlign && roomRight >= roomLeft);
+    calculatedPopupLeft = alignLeft ? 0 : null;
+    calculatedPopupRight = !alignLeft ? 0 : null;
+
+    const fitsHorizontally =
+      (alignLeft && roomRight) || (!alignLeft && roomLeft);
+    calculatedFrameMaxWidth = fitsHorizontally
+      ? null
+      : alignLeft
+      ? roomRight
+      : roomLeft;
+  }
+
   element[setState]({
-    popupHeight: popupRect.height,
+    calculatedFrameMaxHeight,
+    calculatedFrameMaxWidth,
+    calculatedPopupLeft,
+    calculatedPopupPosition,
+    calculatedPopupRight,
     popupMeasured: true,
-    popupWidth: popupRect.width,
-    roomAbove: sourceRect.top,
-    roomBelow: Math.ceil(windowHeight - sourceRect.bottom),
-    roomLeft: sourceRect.right,
-    roomRight: Math.ceil(windowWidth - sourceRect.left),
-    windowHeight,
-    windowWidth,
   });
 }
 

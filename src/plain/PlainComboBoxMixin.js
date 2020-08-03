@@ -1,4 +1,10 @@
-import { defaultState, ids, render, template } from "../base/internal.js";
+import {
+  defaultState,
+  ids,
+  render,
+  state,
+  template,
+} from "../base/internal.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import PlainInput from "./PlainInput.js";
@@ -36,6 +42,30 @@ export default function PlainComboBoxMixin(Base) {
           outline: "none",
         });
       }
+
+      // We don't want the box-shadow on the popup to appear over the input. To
+      // avoid this, we create a clip-path on the popup. This clip path has the
+      // shape of a rectangle 10px bigger than the popup frame (to account for
+      // the box-shadow) with a cut-out piece. If the popup is positioned below
+      // the input, the top of the shape will be cut out to avoid rendering over
+      // the input. The resulting shape looks like this Unicode character: 凹.
+      //
+      // Likewise, if the popup is positioned below the input, a piece will be
+      // cut out of the bottom of the shape to avoid rendering over the input.
+      //
+      // TODO: The cut-out arrangement is optimized for combo boxes with a
+      // horizontal alignment of "stretch". For combo boxes with start/end or
+      // left/right, we should adjust the position and width of the cut-out to
+      // match the input.
+      if (changed.calculatedPopupPosition) {
+        const { calculatedPopupPosition, opened } = this[state];
+        const w = `10px`; // Width of box shadow
+        const clipPath =
+          calculatedPopupPosition === "below"
+            ? `polygon(0px 0px, 100% 0px, 100% -${w}, calc(100% + ${w}) -${w}, calc(100% + ${w}) calc(100% + ${w}), -${w} calc(100% + ${w}), -${w} -${w}, 0px -${w})`
+            : `polygon(-${w} -${w}, calc(100% + ${w}) -${w}, calc(100% + ${w}) calc(100% + ${w}), 100% calc(100% + ${w}), 100% 100%, 0px 100%, 0px calc(100% + ${w}), -${w} calc(100% + ${w}))`;
+        this[ids].popup.style.clipPath = opened ? clipPath : "";
+      }
     }
 
     get [template]() {
@@ -46,10 +76,6 @@ export default function PlainComboBoxMixin(Base) {
             background: white;
             border: 1px solid gray;
             box-sizing: border-box;
-          }
-
-          [part~="source"] {
-            z-index: 2; /* So it's on top of popup */
           }
 
           [part~="input"] {
