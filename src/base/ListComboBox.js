@@ -158,26 +158,6 @@ class ListComboBox extends Base {
       /** @type {any} */
       const cast = this[ids].list;
       forwardFocus(cast, this);
-
-      // Track changes in the list's selection state.
-      // Known bug: this behavior seems to confuse Gboard on Chrome for Android.
-      // If we update our notion of the selection index, we'll ultimately update
-      // the text shown in the input and leave it selected. If the user then
-      // presses Backspace to delete that selected text, Gboard/Chrome seems to
-      // ignore the first press of the Backspace key. The user must press
-      // Backspace a second time to actually delete the selected text.
-      // this[ids].list.addEventListener("selectedindexchange", (event) => {
-      //   /** @type {any} */
-      //   const cast = event;
-      //   const listSelectedIndex = cast.detail.selectedIndex;
-      //   if (this[state].selectedIndex !== listSelectedIndex) {
-      //     this[raiseChangeEvents] = true;
-      //     this[setState]({
-      //       currentIndex: listSelectedIndex,
-      //     });
-      //     this[raiseChangeEvents] = false;
-      //   }
-      // });
     }
   }
 
