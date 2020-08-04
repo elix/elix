@@ -10,6 +10,7 @@ import {
   setState,
   shadowRoot,
   state,
+  stateEffects,
   template,
 } from "./internal.js";
 import Menu from "./Menu.js";
@@ -98,6 +99,19 @@ class MenuButton extends Base {
         popupList: this[ids].menu,
       });
     }
+  }
+
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
+
+    // When closing, clear menu selection.
+    if (changed.opened && !state.opened) {
+      Object.assign(effects, {
+        currentIndex: -1,
+      });
+    }
+
+    return effects;
   }
 
   get [template]() {

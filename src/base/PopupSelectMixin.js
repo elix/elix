@@ -8,7 +8,6 @@ import {
   render,
   setState,
   state,
-  stateEffects,
 } from "./internal.js";
 
 /**
@@ -124,19 +123,6 @@ export default function PopupSelectMixin(Base) {
           popupList.currentIndex = currentIndex;
         }
       }
-    }
-
-    [stateEffects](state, changed) {
-      const effects = super[stateEffects](state, changed);
-
-      // When closing, clear menu selection.
-      if (changed.opened && !state.opened) {
-        Object.assign(effects, {
-          currentIndex: -1,
-        });
-      }
-
-      return effects;
     }
   }
 
