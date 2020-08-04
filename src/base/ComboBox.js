@@ -2,10 +2,10 @@ import { forwardFocus } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import { transmute } from "../core/template.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
-import DelegateFocusMixin from "./DelegateFocusMixin.js";
+// import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
-import FocusVisibleMixin from "./FocusVisibleMixin.js";
+// import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import Hidden from "./Hidden.js";
 import {
@@ -26,12 +26,20 @@ import KeyboardMixin from "./KeyboardMixin.js";
 import PopupSource from "./PopupSource.js";
 import UpDownToggle from "./UpDownToggle.js";
 
+// const Base = AriaRoleMixin(
+//   DelegateFocusMixin(
+//     DelegateInputLabelMixin(
+//       DelegateInputSelectionMixin(
+//         FocusVisibleMixin(FormElementMixin(KeyboardMixin(PopupSource)))
+//       )
+//     )
+//   )
+// );
+
 const Base = AriaRoleMixin(
-  DelegateFocusMixin(
-    DelegateInputLabelMixin(
-      DelegateInputSelectionMixin(
-        FocusVisibleMixin(FormElementMixin(KeyboardMixin(PopupSource)))
-      )
+  DelegateInputLabelMixin(
+    DelegateInputSelectionMixin(
+      FormElementMixin(KeyboardMixin(PopupSource))
     )
   )
 );
@@ -339,10 +347,11 @@ class ComboBox extends Base {
   get [template]() {
     const result = super[template];
 
-    // Put an input element and toggle in the source.
+    // Put a label, input element, and toggle in the source.
     const sourceSlot = result.content.querySelector('slot[name="source"]');
     if (sourceSlot) {
       sourceSlot.replaceWith(fragmentFrom.html`
+        <label id="label" part="label" for="input"></label>
         <input id="input" part="input"></input>
         <div id="popupToggle" part="popup-toggle" tabindex="-1"></div>
       `);
@@ -356,7 +365,7 @@ class ComboBox extends Base {
           [part~="source"] {
             background-color: inherit;
             display: inline-grid;
-            grid-template-columns: 1fr auto;
+            grid-template-columns: auto 1fr auto;
             position: relative;
           }
 
