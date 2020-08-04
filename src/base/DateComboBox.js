@@ -211,6 +211,14 @@ class DateComboBox extends Base {
         }
         break;
 
+      // Enter closes popup.
+      case "Enter":
+        if (this.opened) {
+          this.close();
+          handled = true;
+        }
+        break;
+
       case "PageDown":
         if (opened) {
           this[setState]({

@@ -21,13 +21,12 @@ import {
   stateEffects,
   template,
 } from "./internal.js";
-import PopupSelectMixin from "./PopupSelectMixin.js";
 import ToggledPopupSource from "./ToggledPopupSource.js";
 
 const Base = DelegateFocusMixin(
   DelegateInputLabelMixin(
     DelegateInputSelectionMixin(
-      FocusVisibleMixin(FormElementMixin(PopupSelectMixin(ToggledPopupSource)))
+      FocusVisibleMixin(FormElementMixin(ToggledPopupSource))
     )
   )
 );
@@ -42,7 +41,6 @@ const Base = DelegateFocusMixin(
  * @mixes FocusVisibleMixin
  * @mixes FormElementMixin
  * @mixes KeyboardMixin
- * @mixes PopupSelectMixin
  * @part {Hidden} backdrop
  * @part down-icon - the icon shown in the toggle if the popup will open or close in the down direction
  * @part {input} input - the text input element
@@ -51,9 +49,22 @@ const Base = DelegateFocusMixin(
  * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
  */
 class ComboBox extends Base {
+  /**
+   * Close the popup and restore any previously-selected value.
+   */
+  cancel() {
+    // Restore previous confirmed value.
+    const value = this[state].confirmedValue;
+    this[setState]({ value });
+    this.close({
+      canceled: "Escape",
+    });
+  }
+
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       ariaHasPopup: null,
+      confirmedValue: "",
       focused: false,
       inputPartType: "input",
       orientation: "vertical",
@@ -65,45 +76,6 @@ class ComboBox extends Base {
 
   get [inputDelegate]() {
     return this[ids].input;
-  }
-
-  [rendered](/** @type {ChangedFlags} */ changed) {
-    super[rendered](changed);
-    if (this[state].selectText) {
-      // Select the text in the input after giving the inner input a chance to render the value.
-      setTimeout(() => {
-        // Text selection might have been turned off in the interim;
-        // double-check that we still want to select text.
-        if (this[state].selectText) {
-          /** @type {any} */
-          const cast = this[ids].input;
-          const value = cast.value;
-          if (value > "") {
-            cast.selectionStart = 0;
-            cast.selectionEnd = cast.value.length;
-          }
-        }
-      });
-    }
-  }
-
-  [stateEffects](state, changed) {
-    const effects = super[stateEffects](state, changed);
-
-    // Select text on closing.
-    // Exception: on mobile devices, leaving the text selected may show
-    // selection handles, which may suggest to the user that there's something
-    // more they should be doing with the text even though they're done with it.
-    // We therefore avoid leaving text selected if an on-screen keyboard is in
-    // use. Since we can't actually detect that, we use the absence of a
-    // fine-grained pointer (mouse) as a proxy for mobile.
-    if (changed.opened && !state.opened) {
-      const probablyMobile = matchMedia("(pointer: coarse)").matches;
-      const selectText = !probablyMobile;
-      Object.assign(effects, { selectText });
-    }
-
-    return effects;
   }
 
   /**
@@ -144,17 +116,20 @@ class ComboBox extends Base {
         }
         break;
 
-      // Escape closes popup and indicates why.
+      // Escape cancels popup.
       case "Escape":
-        this.close({
-          canceled: "Escape",
-        });
+        this.cancel();
         handled = true;
         break;
 
-      // On Windows, F4 is a standard keyboard shortcut to toggle a combo box.
+      // On Windows, F4 is a standard keyboard shortcut to open or cancel a
+      // combo box.
       case "F4":
-        this.toggle();
+        if (this.opened) {
+          this.cancel();
+        } else {
+          this.open();
+        }
         handled = true;
         break;
     }
@@ -324,6 +299,57 @@ class ComboBox extends Base {
       const { value } = this[state];
       /** @type {any} */ (this[ids].input).value = value;
     }
+  }
+
+  [rendered](/** @type {ChangedFlags} */ changed) {
+    super[rendered](changed);
+    if (this[state].selectText) {
+      // Select the text in the input after giving the inner input a chance to render the value.
+      setTimeout(() => {
+        // Text selection might have been turned off in the interim;
+        // double-check that we still want to select text.
+        if (this[state].selectText) {
+          /** @type {any} */
+          const cast = this[ids].input;
+          const value = cast.value;
+          if (value > "") {
+            cast.selectionStart = 0;
+            cast.selectionEnd = cast.value.length;
+          }
+        }
+      });
+    }
+  }
+
+  [stateEffects](state, changed) {
+    const effects = super[stateEffects](state, changed);
+
+    // If the value changes while the popup is closed (or closing), consider the
+    // value to be confirmed. This confirmed value will be restored if the user
+    // later opens the popup and then cancels it.
+    if (changed.opened || changed.value) {
+      const { opened, value } = state;
+      if (!opened) {
+        Object.assign(effects, {
+          confirmedValue: value,
+        });
+      }
+    }
+
+    // Select text on closing.
+    // Exception: on mobile devices, leaving the text selected may show
+    // selection handles, which may suggest to the user that there's something
+    // more they should be doing with the text even though they're done with it.
+    // We therefore avoid leaving text selected if an on-screen keyboard is in
+    // use. Since we can't actually detect that, we use the absence of a
+    // fine-grained pointer (mouse) as a proxy for mobile.
+    if (changed.opened && !state.opened) {
+      const probablyMobile = matchMedia("(pointer: coarse)").matches;
+      const selectText = !probablyMobile;
+      Object.assign(effects, { selectText });
+    }
+
+    return effects;
   }
 
   get [template]() {

@@ -5,10 +5,13 @@ import ComboBox from "./ComboBox.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
 import DelegateCursorMixin from "./DelegateCursorMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
+import PopupSelectMixin from "./PopupSelectMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 export default class ListComboBox extends CursorAPIMixin(
-  DelegateCursorMixin(DelegateItemsMixin(SingleSelectAPIMixin(ComboBox)))
+  DelegateCursorMixin(
+    DelegateItemsMixin(PopupSelectMixin(SingleSelectAPIMixin(ComboBox)))
+  )
 ) {
   listPartType: PartDescriptor;
 }
