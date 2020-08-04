@@ -2,14 +2,16 @@ import { indexOfItemContainingTarget } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import {
   defaultState,
-  firstRender,
   keydown,
   raiseChangeEvents,
   render,
   rendered,
   setState,
   state,
+  stateEffects,
 } from "./internal.js";
+
+const documentMousemoveListenerKey = Symbol("documentMousemoveListener");
 
 /**
  * A source with a popup that offers a selection
@@ -24,11 +26,25 @@ import {
 export default function PopupSelectMixin(Base) {
   // The class prototype added by the mixin.
   class PopupSelect extends Base {
+    connectedCallback() {
+      super.connectedCallback();
+      // Handle edge case where component is opened, removed, then added back.
+      listenIfOpenAndConnected(this);
+    }
+
     get [defaultState]() {
       return Object.assign(super[defaultState], {
         currentIndex: -1,
+        hasHoveredOverItemSinceOpened: false,
         popupList: null,
       });
+    }
+
+    disconnectedCallback() {
+      if (super.disconnectedCallback) {
+        super.disconnectedCallback();
+      }
+      listenIfOpenAndConnected(this);
     }
 
     [keydown](/** @type {KeyboardEvent} */ event) {
@@ -50,33 +66,6 @@ export default function PopupSelectMixin(Base) {
     [render](changed) {
       super[render](changed);
 
-      if (this[firstRender]) {
-        // If the user hovers over an enabled item, make it current.
-        this.addEventListener("mousemove", (event) => {
-          if (this[state].opened) {
-            // Treat the deepest element in the composed event path as the target.
-            const target = event.composedPath
-              ? event.composedPath()[0]
-              : event.target;
-
-            if (target && target instanceof Node) {
-              const items = this.items;
-              const hoverIndex = indexOfItemContainingTarget(items, target);
-              const item = items[hoverIndex];
-
-              // If the user's not over an enabled item, clear selection.
-              const currentIndex = item && !item.disabled ? hoverIndex : -1;
-
-              if (currentIndex !== this[state].currentIndex) {
-                this[raiseChangeEvents] = true;
-                this[setState]({ currentIndex });
-                this[raiseChangeEvents] = false;
-              }
-            }
-          }
-        });
-      }
-
       if (changed.popupList) {
         const { popupList } = this[state];
         if (popupList) {
@@ -91,10 +80,11 @@ export default function PopupSelectMixin(Base) {
             // separator or list padding; stay open.
             const currentIndex = this[state].currentIndex;
             if (this[state].dragSelect || currentIndex >= 0) {
-              // We don't want the document mouseup handler to close
-              // before we've asked the list to highlight the selection.
-              // We need to stop event propagation here, before we enter
-              // any async code, to actually stop propagation.
+              // We don't want the document mouseup handler in
+              // ToggledPopupSource to close the popup before we've asked the
+              // list to highlight the selection. We stop event propagation
+              // here, before we enter any async code, to actually stop
+              // propagation.
               event.stopPropagation();
               this[raiseChangeEvents] = true;
               await selectCurrentItemAndClose(this);
@@ -129,21 +119,95 @@ export default function PopupSelectMixin(Base) {
     [rendered](changed) {
       super[rendered](changed);
 
-      if (changed.opened && this[state].opened) {
-        // Ensure the list's cursor is visible. If the cursor moved while the
-        // list was closed, the cursor may not be in view yet.
-        const { popupList } = this[state];
-        if (popupList.scrollCurrentItemIntoView) {
-          // Give popup time to render.
-          setTimeout(() => {
-            popupList.scrollCurrentItemIntoView();
-          });
+      if (changed.opened) {
+        if (this[state].opened) {
+          // Ensure the list's cursor is visible. If the cursor moved while the
+          // list was closed, the cursor may not be in view yet.
+          const { popupList } = this[state];
+          if (popupList.scrollCurrentItemIntoView) {
+            // Give popup time to render.
+            setTimeout(() => {
+              popupList.scrollCurrentItemIntoView();
+            });
+          }
         }
+        listenIfOpenAndConnected(this);
       }
+    }
+
+    [stateEffects](state, changed) {
+      const effects = super[stateEffects]
+        ? super[stateEffects](state, changed)
+        : {};
+
+      // When opening, reset out notion of whether the user has hovered over an
+      // item since the list was opened.
+      if (changed.opened && state.opened) {
+        Object.assign(effects, {
+          hasHoveredOverItemSinceOpened: false,
+        });
+      }
+
+      return effects;
     }
   }
 
   return PopupSelect;
+}
+
+// Handle a mouse hover select operation.
+function handleMousemove(/** @type {MouseEvent} */ event) {
+  // @ts-ignore
+  const element = this;
+  const { hasHoveredOverItemSinceOpened, opened } = element[state];
+  if (opened) {
+    // Treat the deepest element in the composed event path as the target.
+    const target = event.composedPath ? event.composedPath()[0] : event.target;
+
+    if (target && target instanceof Node) {
+      const items = element.items;
+      const hoverIndex = indexOfItemContainingTarget(items, target);
+      const item = items[hoverIndex];
+
+      // If the user is hovering over an enabled item, make it current.
+      // If the user is not hovering over an enabled item, but has
+      // hovered over such an item at least once since the list was
+      // opened, then clear cursor.
+      const currentIndex = item && !item.disabled ? hoverIndex : -1;
+
+      if (
+        (hasHoveredOverItemSinceOpened || currentIndex >= 0) &&
+        currentIndex !== element[state].currentIndex
+      ) {
+        element[raiseChangeEvents] = true;
+        element[setState]({ currentIndex });
+        if (currentIndex >= 0 && !hasHoveredOverItemSinceOpened) {
+          element[setState]({ hasHoveredOverItemSinceOpened: true });
+        }
+        element[raiseChangeEvents] = false;
+      }
+    }
+  }
+}
+
+function listenIfOpenAndConnected(element) {
+  if (element[state].opened && element.isConnected) {
+    if (!element[documentMousemoveListenerKey]) {
+      // Not listening yet; start.
+      element[documentMousemoveListenerKey] = handleMousemove.bind(element);
+      document.addEventListener(
+        "mousemove",
+        element[documentMousemoveListenerKey]
+      );
+    }
+  } else if (element[documentMousemoveListenerKey]) {
+    // Currently listening; stop.
+    document.removeEventListener(
+      "mousemove",
+      element[documentMousemoveListenerKey]
+    );
+    element[documentMousemoveListenerKey] = null;
+  }
 }
 
 /**
