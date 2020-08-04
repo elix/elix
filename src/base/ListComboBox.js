@@ -4,7 +4,6 @@ import { transmute } from "../core/template.js";
 import ComboBox from "./ComboBox.js";
 import { getDefaultText } from "./content.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
-import CursorSelectMixin from "./CursorSelectMixin.js";
 import DelegateCursorMixin from "./DelegateCursorMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import {
@@ -29,9 +28,7 @@ import ListBox from "./ListBox.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 const Base = CursorAPIMixin(
-  CursorSelectMixin(
-    DelegateCursorMixin(DelegateItemsMixin(SingleSelectAPIMixin(ComboBox)))
-  )
+  DelegateCursorMixin(DelegateItemsMixin(SingleSelectAPIMixin(ComboBox)))
 );
 
 /**
@@ -39,7 +36,6 @@ const Base = CursorAPIMixin(
  *
  * @inherits ComboBox
  * @mixes CursorAPIMixin
- * @mixes CursorSelectMixin
  * @mixes DelegateCursorMixin
  * @mixes DelegateItemsMixin
  * @mixes SingleSelectAPIMixin
@@ -51,6 +47,8 @@ class ListComboBox extends Base {
       currentIndex: -1,
       horizontalAlign: "stretch",
       listPartType: ListBox,
+      selectedIndex: -1,
+      selectedItem: null,
     });
   }
 
@@ -101,6 +99,19 @@ class ListComboBox extends Base {
           handled = list.pageUp && list.pageUp();
         }
         break;
+    }
+
+    // If the list's current index changed as a result of a keyboard operation,
+    // update the selected index. We distinguish between keyboard operations
+    // (which update both cursor and selection) and mouse hover operations
+    // (which update the cursor, but not the selection).
+    if (handled) {
+      const { selectedIndex } = this[state];
+      if (selectedIndex !== list.currentIndex) {
+        this[setState]({
+          selectedIndex: list.currentIndex,
+        });
+      }
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
@@ -180,6 +191,20 @@ class ListComboBox extends Base {
   [stateEffects](state, changed) {
     const effects = super[stateEffects](state, changed);
 
+    // Current item tracks selection.
+    // Since this step happens second, if both current item and selected item
+    // are changed, the current item wins.
+    if (changed.selectedIndex) {
+      Object.assign(effects, {
+        currentIndex: state.selectedIndex,
+      });
+    }
+    if (changed.selectedItem) {
+      Object.assign(effects, {
+        currentItem: state.selectedItem,
+      });
+    }
+
     // If value was changed directly or items have updated, select the
     // corresponding item in list.
     if (changed.items || changed.value) {
@@ -195,29 +220,31 @@ class ListComboBox extends Base {
       }
     }
 
-    // If user selects a new item, or combo is closing, make selected item the
-    // value.
-    if (changed.opened || changed.currentIndex) {
-      const { closeResult, items, opened, currentIndex, value } = state;
+    // If user selects a new item, make the item's text the value.
+    if (changed.selectedIndex) {
+      const { items, selectedIndex, value } = state;
+      const currentItem = items ? items[selectedIndex] : null;
+      const currentItemText = currentItem ? this[getItemText](currentItem) : "";
+      // See notes on mobile at ComboBox.defaultState.
+      const probablyMobile = matchMedia("(pointer: coarse)").matches;
+      const selectText = !probablyMobile;
+      if (value !== currentItemText) {
+        Object.assign(effects, {
+          selectText,
+          value: currentItemText,
+        });
+      }
+    }
+
+    // If closing, make current item the selected item.
+    if (changed.opened) {
+      const { closeResult, currentIndex, opened } = state;
       const closing = changed.opened && !opened;
       const canceled = closeResult && closeResult.canceled;
-      if (
-        currentIndex >= 0 &&
-        (changed.currentIndex || (closing && !canceled))
-      ) {
-        const currentItem = items[currentIndex];
-        if (currentItem) {
-          const currentItemText = this[getItemText](currentItem);
-          // See notes on mobile at ComboBox.defaultState.
-          const probablyMobile = matchMedia("(pointer: coarse)").matches;
-          const selectText = !probablyMobile;
-          if (value !== currentItemText) {
-            Object.assign(effects, {
-              selectText,
-              value: currentItemText,
-            });
-          }
-        }
+      if (closing && !canceled && currentIndex >= 0) {
+        Object.assign(effects, {
+          selectedIndex: currentIndex,
+        });
       }
     }
 

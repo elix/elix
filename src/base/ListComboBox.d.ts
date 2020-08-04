@@ -3,15 +3,12 @@
 
 import ComboBox from "./ComboBox.js";
 import CursorAPIMixin from "./CursorAPIMixin.js";
-import CursorSelectMixin from "./CursorSelectMixin.js";
 import DelegateCursorMixin from "./DelegateCursorMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 export default class ListComboBox extends CursorAPIMixin(
-  CursorSelectMixin(
-    DelegateCursorMixin(DelegateItemsMixin(SingleSelectAPIMixin(ComboBox)))
-  )
+  DelegateCursorMixin(DelegateItemsMixin(SingleSelectAPIMixin(ComboBox)))
 ) {
   listPartType: PartDescriptor;
 }

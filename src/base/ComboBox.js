@@ -151,6 +151,12 @@ class ComboBox extends Base {
         });
         handled = true;
         break;
+
+      // On Windows, F4 is a standard keyboard shortcut to toggle a combo box.
+      case "F4":
+        this.toggle();
+        handled = true;
+        break;
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
