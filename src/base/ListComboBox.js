@@ -191,9 +191,10 @@ class ListComboBox extends Base {
   [stateEffects](state, changed) {
     const effects = super[stateEffects](state, changed);
 
-    // Current item tracks selection.
-    // Since this step happens second, if both current item and selected item
-    // are changed, the current item wins.
+    // We want the cursor to track the selection, but we don't always want the
+    // selection to track the cursor. (A mouse hover operation on the list will
+    // update the cursor, but shouldn't update the selection.) For that reason,
+    // we can't use the CursorSelectMixin, which updates in both directions.
     if (changed.selectedIndex) {
       Object.assign(effects, {
         currentIndex: state.selectedIndex,

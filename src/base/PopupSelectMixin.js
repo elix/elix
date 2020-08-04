@@ -6,6 +6,7 @@ import {
   keydown,
   raiseChangeEvents,
   render,
+  rendered,
   setState,
   state,
 } from "./internal.js";
@@ -121,6 +122,22 @@ export default function PopupSelectMixin(Base) {
         const { currentIndex, popupList } = this[state];
         if (popupList && "currentIndex" in popupList) {
           popupList.currentIndex = currentIndex;
+        }
+      }
+    }
+
+    [rendered](changed) {
+      super[rendered](changed);
+
+      if (changed.opened && this[state].opened) {
+        // Ensure the list's cursor is visible. If the cursor moved while the
+        // list was closed, the cursor may not be in view yet.
+        const { popupList } = this[state];
+        if (popupList.scrollCurrentItemIntoView) {
+          // Give popup time to render.
+          setTimeout(() => {
+            popupList.scrollCurrentItemIntoView();
+          });
         }
       }
     }
