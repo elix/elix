@@ -1,3 +1,4 @@
+import { indexOfItemContainingTarget } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import { transmute } from "../core/template.js";
 import Button from "./Button.js";
@@ -288,14 +289,16 @@ class DateComboBox extends Base {
     renderParts(this[shadowRoot], this[state], changed);
 
     if (changed.calendarPartType) {
-      this[ids].calendar.addEventListener("datechange", (event) => {
+      /** @type {any} */ const calendar = this[ids].calendar;
+      calendar.addEventListener("datechange", (event) => {
         this[raiseChangeEvents] = true;
         /** @type {any} */
         const cast = event;
         this.date = cast.detail.date;
         this[raiseChangeEvents] = false;
       });
-      this[ids].calendar.addEventListener("mousedown", (event) => {
+
+      calendar.addEventListener("mousedown", (event) => {
         // Only process events for the main (usually left) button.
         if (/** @type {MouseEvent} */ (event).button !== 0) {
           return;
@@ -304,6 +307,26 @@ class DateComboBox extends Base {
         this.close();
         event.preventDefault(); // Keep focus on input.
         this[raiseChangeEvents] = false;
+      });
+
+      // If the user drag-selects into the calendar and mouses up over a day,
+      // select that date close.
+      calendar.addEventListener("mouseup", async (event) => {
+        const target = event.composedPath()[0];
+        if (this[state].dragSelect && target instanceof Node) {
+          // Determine which day element the event occurred in.
+          const days = calendar.days;
+          const index = indexOfItemContainingTarget(days, target);
+          /** @type {any} */
+          const day = days[index];
+          if (day) {
+            event.stopPropagation();
+            this[raiseChangeEvents] = true;
+            this.date = day.date;
+            this.close();
+            this[raiseChangeEvents] = false;
+          }
+        }
       });
     }
     if (changed.todayButtonPartType) {
