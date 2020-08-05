@@ -49,18 +49,6 @@ const Base = DelegateFocusMixin(
  * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
  */
 class ComboBox extends Base {
-  /**
-   * Close the popup and restore any previously-selected value.
-   */
-  cancel() {
-    // Restore previous confirmed value.
-    const value = this[state].confirmedValue;
-    this[setState]({ value });
-    this.close({
-      canceled: "Escape",
-    });
-  }
-
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       ariaHasPopup: null,
@@ -118,7 +106,7 @@ class ComboBox extends Base {
 
       // Escape cancels popup.
       case "Escape":
-        this.cancel();
+        this.close({ canceled: "Escape" });
         handled = true;
         break;
 
@@ -126,7 +114,7 @@ class ComboBox extends Base {
       // combo box.
       case "F4":
         if (this.opened) {
-          this.cancel();
+          this.close({ canceled: "F4" });
         } else {
           this.open();
         }
@@ -326,13 +314,24 @@ class ComboBox extends Base {
 
     // If the value changes while the popup is closed (or closing), consider the
     // value to be confirmed. This confirmed value will be restored if the user
-    // later opens the popup and then cancels it.
+    // later opens the popup and then cancels it. On the other hand, if the user
+    // is cancelling the popup, then restore the value from the most recent
+    // confirmed value.
     if (changed.opened || changed.value) {
-      const { opened, value } = state;
+      const { closeResult, opened } = state;
       if (!opened) {
-        Object.assign(effects, {
-          confirmedValue: value,
-        });
+        const canceled = closeResult && closeResult.canceled;
+        if (canceled) {
+          // Restore previous confirmed value.
+          Object.assign(effects, {
+            value: state.confirmedValue,
+          });
+        } else {
+          // Confirm current value.
+          Object.assign(effects, {
+            confirmedValue: state.value,
+          });
+        }
       }
     }
 

@@ -160,13 +160,14 @@ class DropdownList extends Base {
       });
     }
 
-    // When the popup closes, update our selection from the list selection.
-    if (changed.opened && !state.opened) {
-      const { closeResult, items } = state;
-      if (items && closeResult !== undefined) {
-        const selectedIndex = items.indexOf(closeResult);
+    // If closing, make current item the selected item.
+    if (changed.opened) {
+      const { closeResult, currentIndex, opened } = state;
+      const closing = changed.opened && !opened;
+      const canceled = closeResult && closeResult.canceled;
+      if (closing && !canceled && currentIndex >= 0) {
         Object.assign(effects, {
-          selectedIndex,
+          selectedIndex: currentIndex,
         });
       }
     }
@@ -174,8 +175,8 @@ class DropdownList extends Base {
     // If we get items while closed and don't have a selection, select the first
     // item.
     if (changed.items || changed.selectedIndex) {
-      const { items, selectedIndex } = state;
-      if (selectedIndex < 0 && items && items.length > 0) {
+      const { items, opened, selectedIndex } = state;
+      if (!opened && selectedIndex < 0 && items && items.length > 0) {
         Object.assign(effects, {
           selectedIndex: 0,
         });

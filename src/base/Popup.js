@@ -41,7 +41,9 @@ async function mousedownHandler(event) {
   // @ts-ignore
   const element = this;
   element[raiseChangeEvents] = true;
-  await element.close();
+  await element.close({
+    canceled: "mousedown outside",
+  });
   element[raiseChangeEvents] = false;
   event.preventDefault();
   event.stopPropagation();

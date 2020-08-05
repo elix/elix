@@ -170,7 +170,7 @@ async function blurHandler(/** @type {Event} */ event) {
     !deepContains(element, newFocusedElement)
   ) {
     element[raiseChangeEvents] = true;
-    await element.close();
+    await element.close({ canceled: "window blur" });
     element[raiseChangeEvents] = false;
   }
 }
@@ -182,7 +182,9 @@ async function closeHandler(/** @type {Event} */ event) {
     event.type !== "resize" || element[state].closeOnWindowResize;
   if (!ownEvent(element, event) && handleEvent) {
     element[raiseChangeEvents] = true;
-    await element.close();
+    await element.close({
+      canceled: `window ${event.type}`,
+    });
     element[raiseChangeEvents] = false;
   }
 }
