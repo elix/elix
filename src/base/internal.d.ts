@@ -12,6 +12,7 @@
  * Symbol objects to be used at runtime as desired.
  */
 
+export const applyElementData: "_applyElementData";
 export const checkSize: "_checkSize";
 export const closestAvailableItemIndex: "_closestAvailableItemIndex";
 export const contentSlot: "_contentSlot";

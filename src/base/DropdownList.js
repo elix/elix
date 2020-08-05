@@ -5,6 +5,7 @@ import CursorAPIMixin from "./CursorAPIMixin.js";
 import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import {
+  applyElementData,
   defaultState,
   ids,
   render,
@@ -63,6 +64,15 @@ const Base = CursorAPIMixin(
  * @part {div} value - region inside the toggle button showing the value of the current selection
  */
 class DropdownList extends Base {
+  // Apply the data shown in the source element (an item in the list) to the
+  // target element (the value part). The default implementation clones the
+  // source's childNodes and sets those as as the child nodes of the target.
+  [applyElementData](source, target) {
+    const sourceChildNodes = source ? [...source.childNodes] : [];
+    const clones = sourceChildNodes.map((node) => node.cloneNode(true));
+    updateChildNodes(target, clones);
+  }
+
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       accessibleOptions: null,
@@ -104,10 +114,8 @@ class DropdownList extends Base {
       const { items, selectedIndex } = this[state];
       const selectedItem = items ? items[selectedIndex] : null;
 
-      // Show selection in value part.
-      const clone = selectedItem ? selectedItem.cloneNode(true) : null;
-      const childNodes = clone ? clone.childNodes : [];
-      updateChildNodes(this[ids].value, childNodes);
+      // Apply the data from the selected item to the value part.
+      this[applyElementData](selectedItem, this[ids].value);
 
       // Mark only the selected item as selected.
       if (items) {

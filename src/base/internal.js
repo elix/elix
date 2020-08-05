@@ -34,6 +34,15 @@
 import * as coreInternal from "../core/internal.js";
 
 /**
+ * Symbol for the `applyElementData` method.
+ *
+ * Components that want to be able to apply data from one element to another
+ * can support this method. E.g., [DropdownList](DropdownList) uses this to
+ * apply data from the selected item to the component's value part.
+ */
+export const applyElementData = Symbol("applyElementData");
+
+/**
  * Symbol for the `checkSize` method.
  *
  * If defined, this method will be invoked by [ResizeMixin](ResizeMixin)
