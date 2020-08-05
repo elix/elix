@@ -1,4 +1,4 @@
-import ReactiveElement from "../core/ReactiveElement.js";
+import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import {
   goFirst,
   goLast,
