@@ -177,8 +177,14 @@ async function handleMouseup(/** @type {MouseEvent} */ event) {
     event.clientY
   );
   if (element.opened) {
+    // Was mouseup over source part?
     const overSource = hitTargets.indexOf(element[ids].source) >= 0;
-    const overPopup = hitTargets.indexOf(element[ids].popup) >= 0;
+
+    // Was mouseup over the popup frame (or, if no frame is defined, the popup)?
+    const popup = element[ids].popup;
+    const popupFrame = popup.frame || popup;
+    const overPopupFrame = hitTargets.indexOf(popupFrame) >= 0;
+
     if (overSource) {
       // User released the mouse over the source button (behind the
       // backdrop), so we're no longer doing a drag-select.
@@ -189,7 +195,7 @@ async function handleMouseup(/** @type {MouseEvent} */ event) {
         });
         element[raiseChangeEvents] = false;
       }
-    } else if (!overPopup) {
+    } else if (!overPopupFrame) {
       // If we get to this point, the user released over the backdrop with
       // the popup open, so close.
       element[raiseChangeEvents] = true;
