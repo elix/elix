@@ -135,13 +135,11 @@ export default function ReactiveMixin(Base) {
         this[firstRender] = true;
       }
 
-      // Get the log of which fields have changed since the last render. As a
-      // special case, the initial value of this set will be the empty set, so
-      // we'll always render the first time.
+      // Get the log of which fields have changed since the last render.
       const changed = this[changedSinceLastRenderKey];
 
-      // We only render if this is the first render, or state has has changed
-      // since the last render.
+      // We only render if this is the first render, or state has changed since
+      // the last render.
       if (this[firstRender] || changed) {
         // If at least one of the[setState] calls was made in response
         // to user interaction or some other component-internal event, set the
