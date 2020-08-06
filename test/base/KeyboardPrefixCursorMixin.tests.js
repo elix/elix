@@ -78,7 +78,7 @@ describe("KeyboardPrefixCursorMixin", () => {
     const fixture = createSampleElement();
     // Typing "x" leaves selection alone (since it doesn't match).
     simulateKeydown(fixture, "x");
-    assert.equal(fixture[state].currentIndex, undefined);
+    assert.equal(fixture[state].currentIndex, -1);
   });
 
   it("treats spaces in the typed prefix like regular characters", () => {
