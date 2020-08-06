@@ -24,7 +24,7 @@ export default function SelectedValueAPIMixin(Base) {
       // If we have a desired value to apply and now have items, apply the
       // value.
       const { items, desiredValue } = this[state];
-      if (desiredValue && items) {
+      if ((changed.desiredValue || changed.items) && desiredValue && items) {
         const index = indexOfItemWithValue(items, desiredValue);
         this[setState]({
           selectedIndex: index,
