@@ -221,18 +221,17 @@ export default function ReactiveMixin(Base) {
       // actually changed.
       const { state, changed } = copyStateWithChanges(this, changes);
 
-      // We only need to apply the changes to the component state if: a) this is
-      // the first time setState has been called, or b) the supplied changes
-      // parameter actually contains substantive changes.
-      const firstSetState = this[stateKey] === undefined;
-      const substantiveChanges = Object.keys(changed).length > 0;
-      if (!(firstSetState || substantiveChanges)) {
+      // We only need to apply the changes to the component state if: a) the
+      // current state is undefined (this is the first time setState has been
+      // called), or b) the supplied changes parameter actually contains
+      // substantive changes.
+      if (this[stateKey] && Object.keys(changed).length === 0) {
         // No need to update state.
         return;
       }
 
       // Freeze the new state so it's immutable. This prevents accidental
-      // attempts to set state without going through [setState].
+      // attempts to set state without going through setState.
       Object.freeze(state);
 
       // Set this as the component's new state.
