@@ -2,21 +2,29 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import CursorAPIMixin from "./CursorAPIMixin.js";
+import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
-import MenuButton from "./MenuButton.js";
+import PopupButton from "./PopupButton.js";
 import PopupSelectMixin from "./PopupSelectMixin.js";
 import SelectedTextAPIMixin from "./SelectedTextAPIMixin.js";
+import SelectedValueAPIMixin from "./SelectedValueAPIMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
-export default class PlainDropdownList extends CursorAPIMixin(
-  FormElementMixin(
-    ItemsAPIMixin(
-      ItemsCursorMixin(
-        PopupSelectMixin(
-          SelectedTextAPIMixin(SingleSelectAPIMixin(SlotItemsMixin(MenuButton)))
+export default class DropdownList extends CursorAPIMixin(
+  DelegateInputLabelMixin(
+    FormElementMixin(
+      ItemsAPIMixin(
+        ItemsCursorMixin(
+          PopupSelectMixin(
+            SelectedTextAPIMixin(
+              SelectedValueAPIMixin(
+                SingleSelectAPIMixin(SlotItemsMixin(PopupButton))
+              )
+            )
+          )
         )
       )
     )

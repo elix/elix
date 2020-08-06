@@ -2,16 +2,13 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import ReactiveElement from "../core/ReactiveElement.js";
-import AriaRoleMixin from "./AriaRoleMixin.js";
 import DisabledMixin from "./DisabledMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 
-export default class PopupSource extends AriaRoleMixin(
-  DisabledMixin(
-    FocusVisibleMixin(LanguageDirectionMixin(OpenCloseMixin(ReactiveElement)))
-  )
+export default class PopupSource extends DisabledMixin(
+  FocusVisibleMixin(LanguageDirectionMixin(OpenCloseMixin(ReactiveElement)))
 ) {
   framePartType: PartDescriptor;
   horizontalAlign: "start" | "end" | "left" | "right" | "stretch";
