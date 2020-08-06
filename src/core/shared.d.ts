@@ -28,11 +28,10 @@ type IndexedObject<T> = {
 };
 
 type CustomElement = HTMLElement & {
-  adoptedCallback(): void;
-  attributeChangedCallback(attributeName, oldValue, newValue): void;
-  connectedCallback(): void;
-  disconnectedCallback(): void;
-  shadowRoot: ShadowRoot;
+  adoptedCallback?(): void;
+  attributeChangedCallback?(attributeName, oldValue, newValue): void;
+  connectedCallback?(): void;
+  disconnectedCallback?(): void;
 };
 
 /*

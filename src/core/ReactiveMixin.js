@@ -40,11 +40,11 @@ export default function ReactiveMixin(Base) {
     constructor() {
       super();
 
-      // Components can inspect internal.firstRender during rendering to do
-      // special work the first time (like wire up event handlers). Until the
-      // first render actually happens, we set that flag to be undefined so we
-      // have a way of distinguishing between a component that has never
-      // rendered and one that is being rendered for the nth time.
+      // Components can inspect `firstRender` during rendering to do special
+      // work the first time (like wire up event handlers). Until the first
+      // render actually happens, we set that flag to be undefined so we have a
+      // way of distinguishing between a component that has never rendered and
+      // one that is being rendered for the nth time.
       this[firstRender] = undefined;
 
       // We want to support the standard HTML pattern of only raising events in
@@ -259,7 +259,7 @@ export default function ReactiveMixin(Base) {
         changed
       );
 
-      // We only need to queue a render if we're in the document, and a render
+      // We only need to queue a render if we're in the document and a render
       // operation hasn't already been queued for this component. If we're not
       // in the document yet, when the component is eventually added to the
       // document, the connectedCallback will ensure we render at that point.
@@ -309,10 +309,11 @@ export default function ReactiveMixin(Base) {
      *
      * This method should return a dictionary of changes that should be applied
      * to the state. If the dictionary object is not empty, the
-     * `internal.setState` will apply the changes to the state, and invoke this
-     * `stateEffects` method again to determine whether there are any
-     * third-order effects that should be applied. This process repeats until
-     * all mixins/classes report that they have no additional changes to make.
+     * `internal.setState` method will apply the changes to the state, and
+     * invoke this `stateEffects` method again to determine whether there are
+     * any third-order effects that should be applied. This process repeats
+     * until all mixins/classes report that they have no additional changes to
+     * make.
      *
      * See an example of how `ReactiveMixin` invokes the `stateEffects` to
      * [ensure state consistency](ReactiveMixin#ensuring-state-consistency).

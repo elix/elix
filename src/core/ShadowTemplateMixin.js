@@ -84,7 +84,7 @@ export default function ShadowTemplateMixin(Base) {
       if (!this[shadowIdProxyKey]) {
         // Construct a proxy that maps to getElementById.
         const target = {
-          // Give the proxy a means of refering this element via the target.
+          // Give the proxy a means of refering to this element via the target.
           [proxyElementKey]: this,
         };
         this[shadowIdProxyKey] = new Proxy(target, shadowIdProxyHandler);
@@ -101,8 +101,7 @@ export default function ShadowTemplateMixin(Base) {
         super[render](changed);
       }
 
-      // We only need to render the shadow root the first time the component is
-      // rendered.
+      // We populate the shadow root the first time the component is rendered.
       if (this[firstRender] === undefined || this[firstRender]) {
         // If this type of element defines a template, prepare it for use.
         const template = getTemplate(this);
