@@ -3,9 +3,10 @@ import CalendarElementMixin from "./CalendarElementMixin.js";
 import Input from "./Input.js";
 import {
   defaultState,
+  firstRender,
   ids,
   raiseChangeEvents,
-  rendered,
+  render,
   setState,
   state,
   stateEffects,
@@ -88,22 +89,25 @@ class DateInput extends Base {
     return calendar.parseWithOptionalYear(text, dateTimeFormat, timeBias);
   }
 
-  [rendered](/** @type {ChangedFlags} */ changed) {
-    super[rendered](changed);
-    this[ids].inner.addEventListener("blur", () => {
-      this[raiseChangeEvents] = true;
-      this[setState]({
-        focused: false,
+  [render](/** @type {ChangedFlags} */ changed) {
+    super[render](changed);
+
+    if (this[firstRender]) {
+      this[ids].inner.addEventListener("blur", () => {
+        this[raiseChangeEvents] = true;
+        this[setState]({
+          focused: false,
+        });
+        this[raiseChangeEvents] = false;
       });
-      this[raiseChangeEvents] = false;
-    });
-    this[ids].inner.addEventListener("focus", () => {
-      this[raiseChangeEvents] = true;
-      this[setState]({
-        focused: true,
+      this[ids].inner.addEventListener("focus", () => {
+        this[raiseChangeEvents] = true;
+        this[setState]({
+          focused: true,
+        });
+        this[raiseChangeEvents] = false;
       });
-      this[raiseChangeEvents] = false;
-    });
+    }
   }
 
   [stateEffects](state, changed) {
