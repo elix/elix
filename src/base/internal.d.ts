@@ -40,6 +40,7 @@ export const ids: "_ids";
 export const inputDelegate: "_inputDelegate";
 export const itemsDelegate: "_itemsDelegate";
 export const keydown: "_keydown";
+export const matchText: "_matchText";
 export const mouseenter: "_mouseenter";
 export const mouseleave: "_mouseleave";
 export const nativeInternals: "_nativeInternals";

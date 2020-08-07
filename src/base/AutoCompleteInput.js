@@ -7,6 +7,7 @@ import {
   firstRender,
   ids,
   inputDelegate,
+  matchText,
   raiseChangeEvents,
   render,
   rendered,
@@ -32,6 +33,32 @@ class AutoCompleteInput extends Input {
       textIndex: -1,
       texts: [],
     });
+  }
+
+  /**
+   * Search the given array of text strings for one that matches `prefix`.
+   *
+   * This method is invoked by the auto-complete algorithm when the user types
+   * characters into the input.
+   *
+   * The default implementation does a case-insensitive prefix search. You can
+   * override this method to define custom auto-complete behavior. Return the
+   * complete matching string if a match was found, or null if there was no
+   * match.
+   *
+   * @param {string[]} texts
+   * @param {string} prefix
+   * @returns {string|null}
+   */
+  [matchText](texts, prefix) {
+    if (prefix.length === 0 || !texts) {
+      return null;
+    }
+    const prefixLowerCase = prefix.toLowerCase();
+    const match = texts.find((text) =>
+      text.toLowerCase().startsWith(prefixLowerCase)
+    );
+    return match || null;
   }
 
   get opened() {
@@ -229,22 +256,16 @@ class AutoCompleteInput extends Input {
 }
 
 export function autoComplete(/** @type {AutoCompleteInput} */ element) {
-  const value = element.value.toLowerCase();
-  const texts = element.texts;
-  if (value.length === 0 || !texts) {
-    return null;
-  }
-  const match = texts.find((text) => text.toLowerCase().startsWith(value));
-  if (!match) {
-    return null;
-  }
+  const match = element[matchText](element.texts, element.value);
 
-  // Update the input value to the match.
+  // If found, update the input value to the match.
   // Leave the auto-completed portion selected.
-  element[setState]({
-    autoCompleteSelect: true,
-    value: match,
-  });
+  if (match) {
+    element[setState]({
+      autoCompleteSelect: true,
+      value: match,
+    });
+  }
 
   return match;
 }

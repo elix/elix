@@ -294,6 +294,14 @@ export const itemsDelegate = Symbol("itemsDelegate");
 export const keydown = Symbol("keydown");
 
 /**
+ * Symbol for the `matchText` method.
+ *
+ * [AutoCompleteInput](AutoCompleteInput) invokes this method when trying
+ * to find a match for a given input string against its set of texts.
+ */
+export const matchText = Symbol("matchText");
+
+/**
  * Symbol for the `mouseenter` method.
  *
  * [HoverMixin](HoverMixin) invokes this method when the user moves the
