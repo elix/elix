@@ -19,7 +19,7 @@ import {
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
 import PopupButton from "./PopupButton.js";
-import PopupSelectMixin from "./PopupSelectMixin.js";
+import PopupListMixin from "./PopupListMixin.js";
 import SelectedTextAPIMixin from "./SelectedTextAPIMixin.js";
 import SelectedValueAPIMixin from "./SelectedValueAPIMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
@@ -30,7 +30,7 @@ const Base = CursorAPIMixin(
     FormElementMixin(
       ItemsAPIMixin(
         ItemsCursorMixin(
-          PopupSelectMixin(
+          PopupListMixin(
             SelectedTextAPIMixin(
               SelectedValueAPIMixin(
                 SingleSelectAPIMixin(SlotItemsMixin(PopupButton))
@@ -52,7 +52,7 @@ const Base = CursorAPIMixin(
  * @mixes FormElementMixin
  * @mixes ItemsAPIMixin
  * @mixes ItemsCursorMixin
- * @mixes PopupSelectMixin
+ * @mixes PopupListMixin
  * @mixes SelectedTextAPIMixin
  * @mixes SelectedValueAPIMixin
  * @mixes SingleSelectAPIMixin

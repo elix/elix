@@ -25,12 +25,12 @@ import {
   template,
 } from "./internal.js";
 import ListBox from "./ListBox.js";
-import PopupSelectMixin from "./PopupSelectMixin.js";
+import PopupListMixin from "./PopupListMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 
 const Base = CursorAPIMixin(
   DelegateCursorMixin(
-    DelegateItemsMixin(PopupSelectMixin(SingleSelectAPIMixin(ComboBox)))
+    DelegateItemsMixin(PopupListMixin(SingleSelectAPIMixin(ComboBox)))
   )
 );
 
@@ -41,7 +41,7 @@ const Base = CursorAPIMixin(
  * @mixes CursorAPIMixin
  * @mixes DelegateCursorMixin
  * @mixes DelegateItemsMixin
- * @mixes PopupSelectMixin
+ * @mixes PopupListMixin
  * @mixes SingleSelectAPIMixin
  * @part {ListBox} list - the list of choices
  */

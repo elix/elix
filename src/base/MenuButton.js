@@ -15,15 +15,15 @@ import {
 } from "./internal.js";
 import Menu from "./Menu.js";
 import PopupButton from "./PopupButton.js";
-import PopupSelectMixin from "./PopupSelectMixin.js";
+import PopupListMixin from "./PopupListMixin.js";
 
-const Base = PopupSelectMixin(PopupButton);
+const Base = PopupListMixin(PopupButton);
 
 /**
  * A button that invokes a menu.
  *
  * @inherits PopupButton
- * @mixes PopupSelectMixin
+ * @mixes PopupListMixin
  * @part {Menu} menu - the menu shown in the popup
  * @part down-icon - the icon shown in the toggle if the popup will open or close in the down direction
  * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction

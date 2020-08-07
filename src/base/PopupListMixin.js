@@ -20,12 +20,12 @@ const documentMousemoveListenerKey = Symbol("documentMousemoveListener");
  * the source to produce the popup, drag into the popup to highlight an item,
  * then release the mouse to select that item.
  *
- * @module PopupSelectMixin
+ * @module PopupListMixin
  * @param {Constructor<ReactiveElement>} Base
  */
-export default function PopupSelectMixin(Base) {
+export default function PopupListMixin(Base) {
   // The class prototype added by the mixin.
-  class PopupSelect extends Base {
+  class PopupList extends Base {
     connectedCallback() {
       super.connectedCallback();
       // Handle edge case where component is opened, removed, then added back.
@@ -152,7 +152,7 @@ export default function PopupSelectMixin(Base) {
     }
   }
 
-  return PopupSelect;
+  return PopupList;
 }
 
 // Handle a mouse hover select operation.

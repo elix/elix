@@ -3,6 +3,6 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-declare const PopupSelectMixin: Mixin<{}, {}>;
+declare const PopupListMixin: Mixin<{}, {}>;
 
-export default PopupSelectMixin;
+export default PopupListMixin;

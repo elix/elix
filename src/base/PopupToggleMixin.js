@@ -15,7 +15,7 @@ import UpDownToggle from "./UpDownToggle.js";
 /**
  * Adds a `popupToggle` part to a component
  *
- * @module PopupSelectMixin
+ * @module PopupToggleMixin
  * @part {UpDownToggle} popup-toggle - the element that lets the user know they can open the popup
  * @part down-icon - the icon shown in the toggle if the popup will open or close in the down direction
  * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
