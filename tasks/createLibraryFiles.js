@@ -71,7 +71,7 @@ async function createLibraryFile(destination, header, sourceFiles) {
       return `import * as ${name}Import from "${importPath}";
 // @ts-ignore
 export const ${name} = ${name}Import;
-  `;
+`;
     })
     .join("\n");
 
