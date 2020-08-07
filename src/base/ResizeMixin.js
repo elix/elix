@@ -42,9 +42,7 @@ export default function ResizeMixin(Base) {
     }
 
     connectedCallback() {
-      if (super.connectedCallback) {
-        super.connectedCallback();
-      }
+      super.connectedCallback();
       if (resizeObserver) {
         resizeObserver.observe(this);
       }

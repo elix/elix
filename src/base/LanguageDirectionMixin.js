@@ -19,9 +19,7 @@ export default function LanguageDirectionMixin(Base) {
       const languageDirection = getComputedStyle(element).direction;
       const rightToLeft = languageDirection === "rtl";
       this[setState]({ rightToLeft });
-      if (super.connectedCallback) {
-        super.connectedCallback();
-      }
+      super.connectedCallback();
     }
   };
 }

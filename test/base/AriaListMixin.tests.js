@@ -6,9 +6,7 @@ import { assert } from "../testHelpers.js";
 
 class AriaListTest extends AriaListMixin(ContentItemsMixin(ReactiveElement)) {
   connectedCallback() {
-    if (super.connectedCallback) {
-      super.connectedCallback();
-    }
+    super.connectedCallback();
     const content = [...this.children];
     this[setState]({ content });
   }
