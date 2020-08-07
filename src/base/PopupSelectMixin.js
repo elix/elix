@@ -14,7 +14,7 @@ import {
 const documentMousemoveListenerKey = Symbol("documentMousemoveListener");
 
 /**
- * A source with a popup that offers a selection
+ * Handles aspects of selection in a list-like element inside a popup.
  *
  * This includes support for drag-select operations: the user can mouse down on
  * the source to produce the popup, drag into the popup to highlight an item,
