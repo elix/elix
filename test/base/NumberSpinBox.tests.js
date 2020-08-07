@@ -17,43 +17,43 @@ describe("NumberSpinBox", () => {
 
   it("increments/decrements by 1 by default", () => {
     const fixture = new NumberSpinBox();
-    assert.equal(fixture.value, 0);
+    assert.equal(fixture.value, "");
     fixture.stepUp();
-    assert.equal(fixture.value, 1);
-    fixture.value = 0;
+    assert.equal(fixture.value, "1");
+    fixture.value = "0";
     fixture.stepDown();
-    assert.equal(fixture.value, -1);
+    assert.equal(fixture.value, "-1");
   });
 
   it("can increment/decrement by a custom step", () => {
     const fixture = new NumberSpinBox();
     fixture.step = 0.1;
     fixture.stepUp();
-    assert.equal(fixture.value, 0.1);
-    fixture.value = 0;
+    assert.equal(fixture.value, "0.1");
+    fixture.value = "0";
     fixture.stepDown();
-    assert.equal(fixture.value, -0.1);
+    assert.equal(fixture.value, "-0.1");
   });
 
   it("doesn't stepUp/stepDown beyond defined maximum/minimum values", () => {
     const fixture = new NumberSpinBox();
-    assert.equal(fixture.value, 0);
+    assert.equal(fixture.value, "");
     fixture.min = 1;
     fixture.max = 5;
     fixture.step = 2;
-    assert.equal(fixture.value, 0); // Still allowed
+    assert.equal(fixture.value, ""); // Empty value still allowed
     fixture.stepUp(); // 2
     fixture.stepUp(); // 4
     fixture.stepUp(); // Would be 6; ignored
-    assert.equal(fixture.value, 4);
+    assert.equal(fixture.value, "4");
     fixture.stepDown(); // 2
     fixture.stepDown(); // Would be 0; ignored
-    assert.equal(fixture.value, 2);
+    assert.equal(fixture.value, "2");
   });
 
   it("determines whether the user can step up or down", () => {
     const fixture = new NumberSpinBox();
-    fixture.value = 0;
+    fixture.value = "0";
     // If no max/min, can always go up/down.
     assert(fixture[state].canGoUp);
     assert(fixture[state].canGoDown);
@@ -61,10 +61,10 @@ describe("NumberSpinBox", () => {
     fixture.max = 10;
     assert(fixture[state].canGoUp);
     assert(!fixture[state].canGoDown);
-    fixture.value = 1;
+    fixture.value = "1";
     assert(fixture[state].canGoUp);
     assert(fixture[state].canGoDown);
-    fixture.value = 10;
+    fixture.value = "10";
     assert(!fixture[state].canGoUp);
     assert(fixture[state].canGoDown);
   });
@@ -77,18 +77,18 @@ describe("NumberSpinBox", () => {
       fixture.value = "foo";
       await Promise.resolve(); // Wait for render.
       assert(!fixture.validity.valid);
-      fixture.value = 0;
+      fixture.value = "0";
       fixture.min = 0;
       fixture.max = 10;
       await Promise.resolve();
       assert(fixture.validity.valid);
-      fixture.value = 11;
+      fixture.value = "11";
       await Promise.resolve();
       assert(!fixture.validity.valid);
-      fixture.value = 0;
+      fixture.value = "0";
       await Promise.resolve();
       assert(fixture.validity.valid);
-      fixture.value = -1;
+      fixture.value = "-1";
       await Promise.resolve();
       assert(!fixture.validity.valid);
     }

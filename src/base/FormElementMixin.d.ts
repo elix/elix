@@ -12,7 +12,7 @@ declare const FormElementMixin: StateMixin<
     reportValidity(): void;
     type: string;
     validationMessage: string;
-    validity: boolean;
+    validity: ValidityState;
     willValidate: boolean;
   },
   {}
