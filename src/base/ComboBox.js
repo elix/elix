@@ -104,6 +104,14 @@ class ComboBox extends Base {
         }
         break;
 
+      // Enter opens popup.
+      case "Enter":
+        if (!this.opened) {
+          this.open();
+          handled = true;
+        }
+        break;
+
       // Escape cancels popup.
       case "Escape":
         this.close({ canceled: "Escape" });
@@ -241,7 +249,10 @@ class ComboBox extends Base {
     if (changed.popupPartType) {
       const popup = this[ids].popup;
       /** @type {any} */ const cast = popup;
+
+      // Make popup not focusable.
       popup.removeAttribute("tabindex");
+
       // Override popup's backdrop to hide it.
       if ("backdropPartType" in popup) {
         cast.backdropPartType = Hidden;
@@ -260,6 +271,9 @@ class ComboBox extends Base {
         cast.closeOnWindowResize = false;
       }
     }
+    // if (changed.popupPartType) {
+    //   this[ids].popup.tabIndex = -1;
+    // }
 
     if (changed.disabled) {
       const { disabled } = this[state];

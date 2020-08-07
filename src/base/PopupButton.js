@@ -41,6 +41,14 @@ class PopupButton extends Base {
           handled = true;
         }
         break;
+
+      // Enter opens popup.
+      case "Enter":
+        if (!this.opened) {
+          this.open();
+          handled = true;
+        }
+        break;
     }
 
     // Give superclass a chance to handle.
@@ -134,6 +142,10 @@ class PopupButton extends Base {
         // focused element (i.e., this element) when opening, and restore focus to
         // it when the popup closes.
       });
+    }
+
+    if (changed.popupPartType) {
+      this[ids].popup.removeAttribute("tabindex");
     }
   }
 

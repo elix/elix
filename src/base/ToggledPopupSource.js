@@ -1,9 +1,7 @@
 import {
   defaultState,
   ids,
-  keydown,
   raiseChangeEvents,
-  render,
   rendered,
   setState,
   shadowRoot,
@@ -43,30 +41,6 @@ class ToggledPopupSource extends Base {
       super.disconnectedCallback();
     }
     listenIfOpenAndConnected(this);
-  }
-
-  [keydown](/** @type {KeyboardEvent} */ event) {
-    let handled;
-
-    switch (event.key) {
-      // Enter opens popup.
-      case "Enter":
-        if (!this.opened) {
-          this.open();
-          handled = true;
-        }
-    }
-
-    // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[keydown] && super[keydown](event));
-  }
-
-  [render](/** @type {ChangedFlags} */ changed) {
-    super[render](changed);
-
-    if (changed.popupPartType) {
-      this[ids].popup.tabIndex = -1;
-    }
   }
 
   [rendered](/** @type {ChangedFlags} */ changed) {
