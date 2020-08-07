@@ -2,8 +2,11 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
-import ToggledPopupSource from "./ToggledPopupSource.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import PopupDragSelectMixin from "./PopupDragSelectMixin.js";
+import PopupSource from "./PopupSource.js";
+import PopupToggleMixin from "./PopupToggleMixin.js";
 
 export default class PopupButton extends DelegateFocusMixin(
-  ToggledPopupSource
+  KeyboardMixin(PopupDragSelectMixin(PopupToggleMixin(PopupSource)))
 ) {}

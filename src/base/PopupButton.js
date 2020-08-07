@@ -11,15 +11,23 @@ import {
   state,
   template,
 } from "./internal.js";
-import ToggledPopupSource from "./ToggledPopupSource.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import PopupDragSelectMixin from "./PopupDragSelectMixin.js";
+import PopupSource from "./PopupSource.js";
+import PopupToggleMixin from "./PopupToggleMixin.js";
 
-const Base = DelegateFocusMixin(ToggledPopupSource);
+const Base = DelegateFocusMixin(
+  KeyboardMixin(PopupDragSelectMixin(PopupToggleMixin(PopupSource)))
+);
 
 /**
  * A button that invokes an attached popup
  *
- * @inherits ToggledPopupSource
+ * @inherits PopupSource
  * @mixes DelegateFocusMixin
+ * @mixes KeyboardMixin
+ * @mixes PopupDragSelectMixin
+ * @mixes PopupToggleMixin
  */
 class PopupButton extends Base {
   get [defaultState]() {

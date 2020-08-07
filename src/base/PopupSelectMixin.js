@@ -81,7 +81,7 @@ export default function PopupSelectMixin(Base) {
             const currentIndex = this[state].currentIndex;
             if (this[state].dragSelect || currentIndex >= 0) {
               // We don't want the document mouseup handler in
-              // ToggledPopupSource to close the popup before we've asked the
+              // PopupDragSelectMixin to close the popup before we've asked the
               // list to highlight the selection. We stop event propagation
               // here, before we enter any async code, to actually stop
               // propagation.

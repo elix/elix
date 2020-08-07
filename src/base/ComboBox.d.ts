@@ -6,12 +6,19 @@ import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import PopupDragSelectMixin from "./PopupDragSelectMixin.js";
 import PopupSource from "./PopupSource.js";
+import PopupToggleMixin from "./PopupToggleMixin.js";
 
 export default class ComboBox extends DelegateFocusMixin(
   DelegateInputLabelMixin(
     DelegateInputSelectionMixin(
-      FocusVisibleMixin(FormElementMixin(PopupSource))
+      FocusVisibleMixin(
+        FormElementMixin(
+          KeyboardMixin(PopupDragSelectMixin(PopupToggleMixin(PopupSource)))
+        )
+      )
     )
   )
 ) {

@@ -21,12 +21,19 @@ import {
   stateEffects,
   template,
 } from "./internal.js";
-import ToggledPopupSource from "./ToggledPopupSource.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import PopupDragSelectMixin from "./PopupDragSelectMixin.js";
+import PopupSource from "./PopupSource.js";
+import PopupToggleMixin from "./PopupToggleMixin.js";
 
 const Base = DelegateFocusMixin(
   DelegateInputLabelMixin(
     DelegateInputSelectionMixin(
-      FocusVisibleMixin(FormElementMixin(ToggledPopupSource))
+      FocusVisibleMixin(
+        FormElementMixin(
+          KeyboardMixin(PopupDragSelectMixin(PopupToggleMixin(PopupSource)))
+        )
+      )
     )
   )
 );
@@ -34,19 +41,18 @@ const Base = DelegateFocusMixin(
 /**
  * A text input paired with a popup that can be used as an alternative to typing
  *
- * @inherits ToggledPopupSource
+ * @inherits PopupSource
  * @mixes DelegateFocusMixin
  * @mixes DelegateInputLabelMixin
  * @mixes DelegateInputSelectionMixin
  * @mixes FocusVisibleMixin
  * @mixes FormElementMixin
  * @mixes KeyboardMixin
+ * @mixes PopupDragSelectMixin
+ * @mixes PopupToggleMixin
  * @part {Hidden} backdrop
- * @part down-icon - the icon shown in the toggle if the popup will open or close in the down direction
  * @part {input} input - the text input element
  * @part {div} source
- * @part {UpDownToggle} popup-toggle - the element that lets the user know they can open the popup
- * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
  */
 class ComboBox extends Base {
   get [defaultState]() {

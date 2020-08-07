@@ -1,3 +1,4 @@
+import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import {
   defaultState,
   ids,
@@ -8,65 +9,64 @@ import {
   state,
   stateEffects,
 } from "./internal.js";
-import KeyboardMixin from "./KeyboardMixin.js";
-import PopupSource from "./PopupSource.js";
-import PopupToggleMixin from "./PopupToggleMixin.js";
 
 const documentMouseupListenerKey = Symbol("documentMouseupListener");
 
-const Base = KeyboardMixin(PopupToggleMixin(PopupSource));
-
 /**
- * An element that can toggle open a popup.
+ * Add drag-select behavior to an element with a popup.
  *
- * @inherits PopupSource
- * @mixes KeyboardMixin
- * @mixes PopupToggleMixin
+ * @module PopupDragSelectMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
-class ToggledPopupSource extends Base {
-  connectedCallback() {
-    super.connectedCallback();
-    // Handle edge case where component is opened, removed, then added back.
-    listenIfOpenAndConnected(this);
-  }
-
-  get [defaultState]() {
-    return Object.assign(super[defaultState], {
-      dragSelect: true,
-    });
-  }
-
-  disconnectedCallback() {
-    if (super.disconnectedCallback) {
-      super.disconnectedCallback();
-    }
-    listenIfOpenAndConnected(this);
-  }
-
-  [rendered](/** @type {ChangedFlags} */ changed) {
-    super[rendered](changed);
-
-    if (changed.opened) {
+export default function PopupDragSelectMixin(Base) {
+  // The class prototype added by the mixin.
+  class PopupDragSelect extends Base {
+    connectedCallback() {
+      super.connectedCallback();
+      // Handle edge case where component is opened, removed, then added back.
       listenIfOpenAndConnected(this);
     }
-  }
 
-  [stateEffects](state, changed) {
-    const effects = super[stateEffects](state, changed);
+    get [defaultState]() {
+      return Object.assign(super[defaultState], {
+        dragSelect: true,
+      });
+    }
 
-    // Set things when opening, or reset things when closing.
-    if (changed.opened) {
-      if (state.opened) {
-        // Opening
-        Object.assign(effects, {
-          // Until we get a mouseup, we're doing a drag-select.
-          dragSelect: true,
-        });
+    disconnectedCallback() {
+      if (super.disconnectedCallback) {
+        super.disconnectedCallback();
+      }
+      listenIfOpenAndConnected(this);
+    }
+
+    [rendered](/** @type {ChangedFlags} */ changed) {
+      super[rendered](changed);
+
+      if (changed.opened) {
+        listenIfOpenAndConnected(this);
       }
     }
 
-    return effects;
+    [stateEffects](state, changed) {
+      const effects = super[stateEffects](state, changed);
+
+      // Set things when opening, or reset things when closing.
+      if (changed.opened) {
+        if (state.opened) {
+          // Opening
+          Object.assign(effects, {
+            // Until we get a mouseup, we're doing a drag-select.
+            dragSelect: true,
+          });
+        }
+      }
+
+      return effects;
+    }
   }
+
+  return PopupDragSelect;
 }
 
 async function handleMouseup(/** @type {MouseEvent} */ event) {
@@ -107,12 +107,12 @@ async function handleMouseup(/** @type {MouseEvent} */ event) {
 
 function listenIfOpenAndConnected(element) {
   if (element[state].opened && element.isConnected) {
-    // If the popup is open and user releases the mouse over the backdrop, close
-    // the popup. We need to listen to mouseup on the document, not this
-    // element. If the user mouses down on the source, then moves the mouse off
-    // the document before releasing the mouse, the element itself won't get the
-    // mouseup. The document will, however, so it's a more reliable source of
-    // mouse state.
+    // If the popup is open and user releases the mouse over the backdrop, we
+    // want to close the popup. We need to listen to mouseup on the document,
+    // not this element. If the user mouses down on the source, then moves the
+    // mouse off the document before releasing the mouse, the element itself
+    // won't get the mouseup. The document will, however, so it's a more
+    // reliable source of mouse state.
     //
     // Coincidentally, we *also* need to listen to mouseup on the document to
     // tell whether the user released the mouse over the source button. When the
@@ -134,5 +134,3 @@ function listenIfOpenAndConnected(element) {
     element[documentMouseupListenerKey] = null;
   }
 }
-
-export default ToggledPopupSource;

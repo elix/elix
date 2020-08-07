@@ -33,7 +33,6 @@ const Base = DisabledMixin(
  * @inherits ReactiveElement
  * @mixes DisabledMixin
  * @mixes FocusVisibleMixin
- * @mixes KeyboardMixin
  * @mixes OpenCloseMixin
  * @part {Popup} popup - the popup element
  * @part {button} source - the element used as the reference point for positioning the popup, generally the element that invokes the popup
