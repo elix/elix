@@ -13,7 +13,7 @@ import {
 import UpDownToggle from "./UpDownToggle.js";
 
 /**
- * Adds a `popupToggle` part to a component
+ * Manages a popup toggle part for a popup source.
  *
  * @module PopupToggleMixin
  * @part {UpDownToggle} popup-toggle - the element that lets the user know they can open the popup

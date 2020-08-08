@@ -15,6 +15,10 @@ const documentMouseupListenerKey = Symbol("documentMouseupListener");
 /**
  * Add drag-select behavior to an element with a popup.
  *
+ * This allows a user to mouse down on a popup source, drag into the resulting
+ * popup, and release the mouse to select something in the popup. This can be
+ * used in conjunction with [PopupListMixin](PopupListMixin).
+ *
  * @module PopupDragSelectMixin
  * @param {Constructor<ReactiveElement>} Base
  */

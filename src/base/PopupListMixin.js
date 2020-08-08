@@ -14,7 +14,7 @@ import {
 const documentMousemoveListenerKey = Symbol("documentMousemoveListener");
 
 /**
- * Handles aspects of selection in a list-like element inside a popup.
+ * Syncs the cursor a popup source and a list-like element inside the popup.
  *
  * This includes support for drag-select operations: the user can mouse down on
  * the source to produce the popup, drag into the popup to highlight an item,
@@ -94,7 +94,7 @@ export default function PopupListMixin(Base) {
             }
           });
 
-          // Track changes in the list's selection state.
+          // Track changes in the list's cursor.
           popupList.addEventListener("currentindexchange", (event) => {
             this[raiseChangeEvents] = true;
             /** @type {any} */
@@ -211,17 +211,17 @@ function listenIfOpenAndConnected(element) {
 }
 
 /**
- * Highlight the selected item (if one exists), then close the menu.
+ * Highlight the current item (if one exists), then close the menu.
  */
 async function selectCurrentItemAndClose(element) {
   const originalRaiseChangeEvents = element[raiseChangeEvents];
-  const selectionDefined = element[state].currentIndex >= 0;
-  const closeResult = selectionDefined
+  const cursorDefined = element[state].currentIndex >= 0;
+  const closeResult = cursorDefined
     ? element.items[element[state].currentIndex]
     : undefined;
 
   const list = element[state].popupList;
-  if (selectionDefined && "flashCurrentItem" in list) {
+  if (cursorDefined && "flashCurrentItem" in list) {
     await list.flashCurrentItem();
   }
   const saveRaiseChangeEvents = element[raiseChangeEvents];
