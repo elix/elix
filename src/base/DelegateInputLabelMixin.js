@@ -8,10 +8,11 @@ import {
   rendered,
   setState,
   state,
+  stateEffects,
 } from "./internal.js";
 
 /**
- * Delegates its ARIA label property to an inner input-type element
+ * Delegates its ARIA label property to an inner input-type element.
  *
  * This helps ensure that elements built around an inner input element provide a
  * proper accessible label for assistive technologies like screen readers.
@@ -61,7 +62,7 @@ export default function DelegateInputLabelMixin(Base) {
       if (this[firstRender]) {
         // Refresh the input label on focus. This refresh appears to happen fast
         // enough that the screen reader will announce the refreshed label.
-        this[inputDelegate].addEventListener("focus", () => {
+        this.addEventListener("focus", () => {
           this[raiseChangeEvents] = true;
           refreshInputLabel(this);
           this[raiseChangeEvents] = false;
@@ -105,20 +106,56 @@ export default function DelegateInputLabelMixin(Base) {
         this[setState]({ removingAriaAttribute: false });
       }
     }
+
+    [stateEffects](state, changed) {
+      const effects = super[stateEffects]
+        ? super[stateEffects](state, changed)
+        : {};
+
+      // If the ariaLabel changes, we can update our inputLabel state
+      // immediately. Among other things, this facilitates scenarios where we
+      // have nested elements using DelegateInputLabelMixin: the outermost
+      // element can use whatever label approach it wants, the inner elements
+      // will all use ariaLabel.
+      if (changed.ariaLabel) {
+        Object.assign(effects, { inputLabel: state.ariaLabel });
+      }
+
+      return effects;
+    }
   }
 
   return DelegateInputLabel;
 }
 
+/**
+ * When the element gets the focus, we refresh its label. This is done because
+ * three of the labeling strategies (`aria-labelledby` attribute, `for`
+ * attribute, and wrapping `label`) reference other elements in the tree -- and
+ * the contents of those elements can change dynamically.
+ *
+ * @private
+ * @param {HTMLElement} element
+ */
 function refreshInputLabel(element) {
   const { ariaLabel, ariaLabelledby } = element[state];
-  const rootNode = element.getRootNode();
-  let inputLabel = null;
 
   if (ariaLabel) {
-    // Rely on delegated aria-label attribute.
-    inputLabel = ariaLabel;
-  } else if (ariaLabelledby) {
+    // Already handled when ariaLabel property was set.
+    return;
+  }
+
+  const rootNode = element.getRootNode();
+  if (!(rootNode instanceof Document || rootNode instanceof DocumentFragment)) {
+    // Element isn't attached yet.
+    return;
+  }
+
+  let inputLabel = null;
+
+  // TODO: Figure out the order in which a browser tries these strategies, and
+  // match the browser's order.
+  if (ariaLabelledby) {
     // Collect labels from elements with the indicated IDs.
     const ids = ariaLabelledby.split(" ");
     const labels = ids.map((id) => {
@@ -131,10 +168,10 @@ function refreshInputLabel(element) {
     if (id) {
       // Look for labelling element with `for` attribute.
       const elementWithFor = rootNode.querySelector(`[for="${id}"]`);
-      if (elementWithFor) {
+      if (elementWithFor instanceof HTMLElement) {
         // Obtain label from wrapping label element.
         inputLabel = elementWithFor.innerText;
-        elementWithFor.setAttribute("aria-hidden", true);
+        elementWithFor.setAttribute("aria-hidden", "true");
       }
     }
     if (inputLabel === null) {
@@ -142,7 +179,7 @@ function refreshInputLabel(element) {
       const labelElement = element.closest("label");
       if (labelElement) {
         inputLabel = labelElement.innerText;
-        labelElement.setAttribute("aria-hidden", true);
+        labelElement.setAttribute("aria-hidden", "true");
       }
     }
   }
