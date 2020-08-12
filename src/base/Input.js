@@ -1,6 +1,5 @@
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
-// import DelegateFocusMixin from './Deleg'
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import {
@@ -32,7 +31,6 @@ const Base = DelegateInputLabelMixin(
  *
  * @inherits WrappedStandardElement
  * @mixes DelegateInputLabelMixin
- * @mixes DelegateIdMixin
  * @mixes FocusVisibleMixin
  * @mixes FormElementMixin
  * @mixes TrackTextSelectionMixin
