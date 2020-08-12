@@ -1,6 +1,14 @@
 /* Helpers for mocking user interactions in unit tests. */
 
 /**
+ * Raise a synthetic `focus` event.
+ */
+export function dispatchSyntheticFocusEvent(element) {
+  const event = new Event("focus");
+  element.dispatchEvent(event);
+}
+
+/**
  * Raise a synthetic keyboard event on the indicated element.
  * The last `init` argument can be left off, in which case an `Enter` key
  * will be simulated.
@@ -10,7 +18,7 @@ export function dispatchSyntheticKeyboardEvent(element, eventType, init) {
     {
       bubbles: true,
       key: "Enter",
-      keyCode: 13
+      keyCode: 13,
     },
     init
   );
@@ -20,7 +28,7 @@ export function dispatchSyntheticKeyboardEvent(element, eventType, init) {
 }
 
 /**
- * Raise a synthetic mousedown event on the indicated element.
+ * Raise a synthetic mouse event on the indicated element.
  */
 export function dispatchSyntheticMouseEvent(element, eventType, init) {
   const properties = Object.assign(
@@ -30,11 +38,10 @@ export function dispatchSyntheticMouseEvent(element, eventType, init) {
       cancelable: true,
       clientX: 0,
       clientY: 0,
-      button: 0
+      button: 0,
     },
     init
   );
-
   const event = new MouseEvent(eventType, properties);
   element.dispatchEvent(event);
 }

@@ -12,6 +12,7 @@ import "./base/CursorInViewMixin.tests.js";
 import "./base/DarkModeMixin.tests.js";
 import "./base/DateComboBox.tests.js";
 import "./base/DelegateFocusMixin.tests.js";
+import "./base/DelegateInputLabelMixin.tests.js";
 import "./base/DirectionCursorMixin.tests.js";
 import "./base/Explorer.tests.js";
 import "./base/FilterListBox.tests.js";

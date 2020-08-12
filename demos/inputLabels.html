@@ -1,31 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix Input with labels</title>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Elix Input</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/Input.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="demos.css" />
-  <script type="module" src="../define/Input.js"></script>
-</head>
-
-<body role="main">
-  <div class="demo">
-    <elix-input aria-label="Name"></elix-input>
-    <div>
-      <label for="input-0">Email</label>
-      <elix-input id="input-0"></elix-input>
+  <body role="main">
+    <div class="demo">
+      <div>Name <elix-input aria-label="Name"></elix-input></div>
+      <div>
+        <label for="input-0">Email</label>
+        <elix-input id="input-0"></elix-input>
+      </div>
+      <div>
+        <span id="label-1">Phone</span>
+        <elix-input aria-labelledby="label-1"></elix-input>
+      </div>
+      <label>
+        Nickname
+        <elix-input></elix-input>
+      </label>
     </div>
-    <div>
-      <div id="label-1">Phone #</div>
-      <elix-input aria-labelledby="label-1"></elix-input>
-    </div>
-    <label>
-      Nickname
-      <elix-input></elix-input>
-    </label>
-  </div>
-</body>
-
+  </body>
 </html>
