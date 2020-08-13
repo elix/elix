@@ -111,4 +111,22 @@ describe("DelegateInputLabelMixin", () => {
     await Promise.resolve(); // Wait for inner element to move aria-label.
     assert.equal(innermostInput.getAttribute("aria-label"), "Dingo");
   });
+
+  it("gives precedence to aria-labelledby over aria-label", (done) => {
+    container.innerHTML = `
+      <span id="span">Echidna</span>
+      <delegate-input-label-test aria-labelledby="span" aria-label="Fox">
+      </delegate-input-label-test>
+    `;
+    const fixture = container.querySelector("delegate-input-label-test");
+    fixture.addEventListener("focus", async () => {
+      await Promise.resolve(); // Wait for mixin's post-focus render.
+      assert.equal(
+        fixture[inputDelegate].getAttribute("aria-label"),
+        "Echidna"
+      );
+      done();
+    });
+    dispatchSyntheticFocusEvent(fixture);
+  });
 });

@@ -178,20 +178,12 @@ function getLabelFromElement(element) {
  */
 function refreshInputLabel(element, state) {
   const { ariaLabel, ariaLabelledby } = state;
-
-  const rootNode = element.getRootNode();
+  /** @type {any} */ const rootNode = element.getRootNode();
   let inputLabel = null;
 
-  if (ariaLabel) {
-    // Use ariaLabel property as input label.
-    inputLabel = ariaLabel;
-  } else if (
-    !(rootNode instanceof Document || rootNode instanceof DocumentFragment)
-  ) {
-    // Element isn't attached yet, label is null.
-  } else if (ariaLabelledby) {
-    // TODO: Figure out the order in which a browser tries these strategies, and
-    // match the browser's order.
+  // Prefer aria-labelledby over aria-label.
+  // See https://developers.google.com/web/fundamentals/accessibility/semantics-aria/aria-labels-and-relationships
+  if (ariaLabelledby && rootNode) {
     // Collect labels from elements with the indicated IDs.
     const ids = ariaLabelledby.split(" ");
     const labels = ids.map((id) => {
@@ -207,7 +199,11 @@ function refreshInputLabel(element, state) {
       return label;
     });
     inputLabel = labels.join(" ");
-  } else {
+  } else if (ariaLabel) {
+    // Use ariaLabel property as input label.
+    inputLabel = ariaLabel;
+  }
+  if (rootNode) {
     const id = element.id;
     if (id) {
       // Look for labelling element with `for` attribute.
