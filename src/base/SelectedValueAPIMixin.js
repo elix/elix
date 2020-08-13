@@ -32,7 +32,7 @@ export default function SelectedValueAPIMixin(Base) {
       if (changed.selectedIndex) {
         const { items, selectedIndex } = state;
         const selectedItem = items ? items[selectedIndex] : null;
-        const value = selectedItem ? selectedItem.value : "";
+        const value = selectedItem ? selectedItem.getAttribute("value") : "";
         Object.assign(effects, { value });
       }
 

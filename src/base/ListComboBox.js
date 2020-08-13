@@ -172,6 +172,28 @@ class ListComboBox extends Base {
     }
   }
 
+  /**
+   * The `value` attribute of the selected item. If no item is selected, this
+   * returns the empty string.
+   *
+   * You can set this property to select the item with a matching `value`
+   * attribute.
+   *
+   * @type {string}
+   */
+  get selectedItemValue() {
+    const { items, selectedIndex } = this[state];
+    const selectedItem = items ? items[selectedIndex] : null;
+    return selectedItem ? selectedItem.getAttribute("value") : "";
+  }
+  set selectedItemValue(selectedItemValue) {
+    const { items } = this[state];
+    const selectedIndex = items.findIndex(
+      (item) => item.getAttribute("value") === selectedItemValue
+    );
+    this[setState]({ selectedIndex });
+  }
+
   [stateEffects](state, changed) {
     const effects = super[stateEffects](state, changed);
 
@@ -190,7 +212,7 @@ class ListComboBox extends Base {
       });
     }
 
-    // If value was changed directly or items have updated, select the
+    // If value was changed directly or typed, or items have updated, select the
     // corresponding item in list.
     if (changed.items || changed.value) {
       const { value } = state;
@@ -201,7 +223,10 @@ class ListComboBox extends Base {
           const itemText = this[getItemText](item);
           return itemText.toLowerCase() === searchText;
         });
-        Object.assign(effects, { currentIndex });
+        Object.assign(effects, {
+          currentIndex,
+          selectedIndex: currentIndex,
+        });
       }
     }
 

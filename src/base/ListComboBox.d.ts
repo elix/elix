@@ -14,4 +14,5 @@ export default class ListComboBox extends CursorAPIMixin(
   )
 ) {
   listPartType: PartDescriptor;
+  selectedItemValue: string;
 }
