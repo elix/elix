@@ -60,8 +60,8 @@ class ListComboBox extends Base {
    * Extract the text from the given item.
    *
    * The default implementation returns an item's `aria-label`, `alt` attribute,
-   * or its `textContent`, in that order. You can override this to return the
-   * text that should be used.
+   * `innerText`, or `textContent`, in that order. You can override this to
+   * return the text that should be used.
    *
    * @param {ListItemElement} item
    * @returns {string}

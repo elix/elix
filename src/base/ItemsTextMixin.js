@@ -20,9 +20,9 @@ export default function ItemsTextMixin(Base) {
     /**
      * Extract the text from the given item.
      *
-     * The default implementation returns an item's `aria-label`, `alt` attribute,
-     * or its `textContent`, in that order. You can override this to return the
-     * text that should be used.
+     * The default implementation returns an item's `aria-label`, `alt`
+     * attribute, `innerText`, or `textContent`, in that order. You can override
+     * this to return the text that should be used.
      *
      * @param {Element} item
      * @returns {string}

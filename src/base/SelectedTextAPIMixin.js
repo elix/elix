@@ -3,9 +3,9 @@ import { getDefaultText } from "./content.js";
 import {
   defaultState,
   getItemText,
-  rendered,
   setState,
   state,
+  stateEffects,
 } from "./internal.js";
 
 /**
@@ -32,16 +32,16 @@ export default function SelectedTextAPIMixin(Base) {
   class SelectedTextAPI extends Base {
     get [defaultState]() {
       return Object.assign(super[defaultState], {
-        desiredSelectedText: null,
+        selectedText: "",
       });
     }
 
     /**
      * Extract the text from the given item.
      *
-     * The default implementation returns an item's `aria-label`, `alt` attribute,
-     * or its `textContent`, in that order. You can override this to return the
-     * text that should be used.
+     * The default implementation returns an item's `aria-label`, `alt`
+     * attribute, `innerText`, or `textContent`, in that order. You can override
+     * this to return the text that should be used.
      *
      * @param {Element} item
      * @returns {string}
@@ -52,58 +52,47 @@ export default function SelectedTextAPIMixin(Base) {
         : getDefaultText(item);
     }
 
-    [rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[rendered]) {
-        super[rendered](changed);
+    [stateEffects](state, changed) {
+      const effects = super[stateEffects]
+        ? super[stateEffects](state, changed)
+        : {};
+
+      // If items or selectedText changes, update the selected index.
+      if (changed.items || changed.selectedText) {
+        const { items, selectedText } = state;
+        const selectedIndex = items
+          ? indexOfItemWithText(items, this[getItemText], selectedText)
+          : -1;
+        Object.assign(effects, { selectedIndex });
       }
 
-      // If we have desired text to apply and now have items, apply the text.
-      const { items, desiredSelectedText } = this[state];
-      if (desiredSelectedText && items) {
-        const index = indexOfItemWithText(
-          items,
-          this[getItemText],
-          desiredSelectedText
-        );
-        this[setState]({
-          selectedIndex: index,
-          desiredSelectedText: null,
-        });
+      // If selected index changes, update selectedText.
+      if (changed.selectedIndex) {
+        const { items, selectedIndex } = state;
+        const selectedItem = items ? items[selectedIndex] : null;
+        const selectedText = selectedItem
+          ? this[getItemText](selectedItem)
+          : "";
+        Object.assign(effects, { selectedText });
       }
+
+      return effects;
     }
 
     /**
      * The text content of the selected item.
      *
      * Setting this value to a string will attempt to select the first list item
-     * whose text content match that string. Setting this to a string not matching
-     * any list item will result in no selection.
+     * whose text matches that string. Setting this to a string not matching any
+     * list item will result in no selection.
      *
      * @type {string}
      */
     get selectedText() {
-      const { items, selectedIndex } = this[state];
-      const selectedItem = items ? items[selectedIndex] : null;
-      return selectedItem == null || selectedItem.textContent == null
-        ? ""
-        : selectedItem.textContent;
+      return this[state].selectedText;
     }
     set selectedText(selectedText) {
-      const { items } = this[state];
-      if (items === null) {
-        // No items yet, save and try again later.
-        this[setState]({
-          desiredSelectedText: selectedText,
-        });
-      } else {
-        // Select the index of the indicated text, if found.
-        const selectedIndex = indexOfItemWithText(
-          items,
-          this[getItemText],
-          selectedText
-        );
-        this[setState]({ selectedIndex });
-      }
+      this[setState]({ selectedText });
     }
   }
 

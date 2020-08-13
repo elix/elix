@@ -119,12 +119,16 @@ export default function DelegateInputLabelMixin(Base) {
       // element can use whatever label approach it wants, the inner elements
       // will all use ariaLabel.
       //
-      // We also update the label if the value changes. One pattern with
-      // select-like elements is to have them include their own ID in the IDs
-      // specified by aria-labelledby. This incorporates the element's own
-      // `value` in the announced label. Since that `value` can change while the
-      // element has focus, we refresh the label if the value changes.
-      if (changed.ariaLabel || changed.value) {
+      // We also update the label if we're focused, using ariaLabelledby, and
+      // the selectedText changes. One pattern with select-like elements is to
+      // have them include their own ID in the IDs specified by aria-labelledby.
+      // This can incorporate the element's own `selectedText` in the announced
+      // label. That `selectedText` can change while the element has focus, in
+      // which case we'll refresh.
+      if (
+        (changed.ariaLabel && state.ariaLabel) ||
+        (changed.selectedText && state.ariaLabelledby && this.matches(":focus"))
+      ) {
         const inputLabel = refreshInputLabel(this, state);
         Object.assign(effects, { inputLabel });
       }
@@ -136,8 +140,27 @@ export default function DelegateInputLabelMixin(Base) {
   return DelegateInputLabel;
 }
 
+// Given an element that is being used as a label, extract its label text.
 function getLabelFromElement(element) {
-  return element.value || element.innerText;
+  // We use innerText here instead of textContent because we want the rendered
+  // text. If, e.g., a text node includes a span with `display: none`,
+  // textContent would include that hidden text, but innerText would leave it
+  // out -- which is what we want here.
+  if ("selectedText" in element) {
+    // Element (most likely Elix) with selectedText property
+    return element.selectedText;
+  } else if ("value" in element && "options" in element) {
+    // select or select-like element
+    const value = element.value;
+    const option = element.options.find((option) => option.value === value);
+    return option ? option.innerText : "";
+  } else if ("value" in element) {
+    // Other input element
+    return element.value;
+  } else {
+    // Other
+    return element.innerText;
+  }
 }
 
 /**
@@ -173,11 +196,11 @@ function refreshInputLabel(element, state) {
       const elementWithId = rootNode.getElementById(id);
       // Get a label from the indicated element.
       // Special case: if the element is providing its own label, we return its
-      // current `value` state instead of using the public `value` property.
+      // current `selectedText` state.
       const label = !elementWithId
         ? ""
         : elementWithId === element && state.value !== null
-        ? state.value
+        ? state.selectedText
         : getLabelFromElement(elementWithId);
       return label;
     });
