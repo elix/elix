@@ -1,5 +1,5 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import { defaultState, rendered, setState, state } from "./internal.js";
+import { defaultState, setState, state, stateEffects } from "./internal.js";
 
 /**
  * Exposes a public API for the value of a list-like element.
@@ -12,25 +12,31 @@ export default function SelectedValueAPIMixin(Base) {
   class SelectedValueAPI extends Base {
     get [defaultState]() {
       return Object.assign(super[defaultState], {
-        desiredValue: null,
+        value: null,
       });
     }
 
-    [rendered](/** @type {ChangedFlags} */ changed) {
-      if (super[rendered]) {
-        super[rendered](changed);
+    [stateEffects](state, changed) {
+      const effects = super[stateEffects]
+        ? super[stateEffects](state, changed)
+        : {};
+
+      // If items or value changes, update the selected index.
+      if (changed.items || changed.value) {
+        const { items, value } = state;
+        const selectedIndex = items ? indexOfItemWithValue(items, value) : -1;
+        Object.assign(effects, { selectedIndex });
       }
 
-      // If we have a desired value to apply and now have items, apply the
-      // value.
-      const { items, desiredValue } = this[state];
-      if ((changed.desiredValue || changed.items) && desiredValue && items) {
-        const index = indexOfItemWithValue(items, desiredValue);
-        this[setState]({
-          selectedIndex: index,
-          desiredValue: null,
-        });
+      // If selected index changes, update value.
+      if (changed.selectedIndex) {
+        const { items, selectedIndex } = state;
+        const selectedItem = items ? items[selectedIndex] : null;
+        const value = selectedItem ? selectedItem.getAttribute("value") : "";
+        Object.assign(effects, { value });
       }
+
+      return effects;
     }
 
     /**
@@ -43,22 +49,10 @@ export default function SelectedValueAPIMixin(Base) {
      * @type {string}
      */
     get value() {
-      const { items, selectedIndex } = this[state];
-      const selectedItem = items ? items[selectedIndex] : null;
-      return selectedItem ? selectedItem.getAttribute("value") : "";
+      return this[state].value;
     }
     set value(value) {
-      const { items } = this[state];
-      if (items === null) {
-        // No items yet, save and try again later.
-        this[setState]({
-          desiredValue: value,
-        });
-      } else {
-        // Select the index of the indicated value, if found.
-        const selectedIndex = indexOfItemWithValue(items, value);
-        this[setState]({ selectedIndex });
-      }
+      this[setState]({ value });
     }
   }
 
