@@ -127,7 +127,9 @@ export default function DelegateInputLabelMixin(Base) {
       // which case we'll refresh.
       if (
         (changed.ariaLabel && state.ariaLabel) ||
-        (changed.selectedText && state.ariaLabelledby && this.matches(":focus"))
+        (changed.selectedText &&
+          state.ariaLabelledby &&
+          this.matches(":focus-within"))
       ) {
         const inputLabel = refreshInputLabel(this, state);
         Object.assign(effects, { inputLabel });
@@ -213,7 +215,6 @@ function refreshInputLabel(element, state) {
       if (elementWithFor instanceof HTMLElement) {
         // Obtain label from wrapping label element.
         inputLabel = getLabelFromElement(elementWithFor);
-        // elementWithFor.setAttribute("aria-hidden", "true");
       }
     }
     if (inputLabel === null) {
@@ -221,7 +222,6 @@ function refreshInputLabel(element, state) {
       const labelElement = element.closest("label");
       if (labelElement) {
         inputLabel = getLabelFromElement(labelElement);
-        // labelElement.setAttribute("aria-hidden", "true");
       }
     }
   }

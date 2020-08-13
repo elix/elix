@@ -11,19 +11,34 @@
 
   <body role="main">
     <div class="demo">
-      <div>Name <elix-input aria-label="Name"></elix-input></div>
+      <p>
+        This demo tests various ways of assigning an ARIA label to an Elix
+        element. In each case, the assigned label should be delegated to an
+        <code>&lt;input&gt;</code> in the element's shadow.
+      </p>
       <div>
+        <p>Using <code>aria-label</code>:</p>
+        Name <elix-input aria-label="Name"></elix-input>
+      </div>
+      <div>
+        <p>Using <code>aria-labelledby:</code></p>
+        <span id="label-1">Phone</span>
+        <elix-input aria-labelledby="label-1"></elix-input>
+      </div>
+      <div>
+        <p>
+          Using a <code>&lt;label&gt;</code> with a <code>for</code> attribute:
+        </p>
         <label for="input-0">Email</label>
         <elix-input id="input-0"></elix-input>
       </div>
       <div>
-        <span id="label-1">Phone</span>
-        <elix-input aria-labelledby="label-1"></elix-input>
+        <p>Using a wrapping <code>&lt;label&gt;</code>:</p>
+        <label>
+          Nickname
+          <elix-input></elix-input>
+        </label>
       </div>
-      <label>
-        Nickname
-        <elix-input></elix-input>
-      </label>
     </div>
   </body>
 </html>
