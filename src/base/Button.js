@@ -1,11 +1,14 @@
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
+import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
-import { defaultState, tap, template } from "./internal.js";
+import { defaultState, ids, inputDelegate, tap, template } from "./internal.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
 
 const Base = ComposedFocusMixin(
-  FocusVisibleMixin(WrappedStandardElement.wrap("button"))
+  DelegateInputLabelMixin(
+    FocusVisibleMixin(WrappedStandardElement.wrap("button"))
+  )
 );
 
 /**
@@ -16,6 +19,7 @@ const Base = ComposedFocusMixin(
  *
  * @inherits WrappedStandardElement
  * @mixes ComposedFocusMixin
+ * @mixes DelegateInputLabelMixin
  * @mixes KeyboardMixin
  */
 class Button extends Base {
@@ -23,6 +27,10 @@ class Button extends Base {
     return Object.assign(super[defaultState], {
       role: "button",
     });
+  }
+
+  get [inputDelegate]() {
+    return this[ids].inner;
   }
 
   // Respond to a simulated click.

@@ -2,9 +2,10 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
+import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
 
-export default class Button extends
-  ComposedFocusMixin(FocusVisibleMixin(WrappedStandardElement)
-  ) { }
+export default class Button extends ComposedFocusMixin(
+  DelegateInputLabelMixin(FocusVisibleMixin(WrappedStandardElement))
+) {}
