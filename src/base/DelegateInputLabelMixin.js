@@ -91,6 +91,8 @@ export default function DelegateInputLabelMixin(Base) {
       // those attributes from the outside (which should update state).
       if (changed.ariaLabel && !this[state].removingAriaAttribute) {
         if (this.getAttribute("aria-label")) {
+          const { ariaLabel } = this[state];
+          this.setAttribute("aria-label-delegated", ariaLabel);
           this[setState]({ removingAriaAttribute: true });
           this.removeAttribute("aria-label");
         }
