@@ -181,8 +181,20 @@ function refreshInputLabel(element, state) {
   /** @type {any} */ const rootNode = element.getRootNode();
   let inputLabel = null;
 
-  // Prefer aria-labelledby over aria-label.
-  // See https://developers.google.com/web/fundamentals/accessibility/semantics-aria/aria-labels-and-relationships
+  // Prefer aria-labelledby over aria-label, per
+  // https://developers.google.com/web/fundamentals/accessibility/semantics-aria/aria-labels-and-relationships.
+  // After that, we prefer a `label` element with a `for` attribute, and finally
+  // a wrapping `label` element.
+  //
+  // There do not appear to be consistent cross-browser rules for handling
+  // multiple forms of label assignment on the same component. E.g., if you
+  // place an element in a wrapping label *and* point a `label` element at that
+  // element with a `for` attribute, as of August 2020 Chrome and Firefox will
+  // announce both, but Safari will only announce the `for` label.
+  //
+  // Since people are probably not relying upon specific results for multiple
+  // forms of label assignment, we don't attempt to construct a combined label
+  // in those cases.
   if (ariaLabelledby && rootNode) {
     // Collect labels from elements with the indicated IDs.
     const ids = ariaLabelledby.split(" ");
@@ -202,8 +214,7 @@ function refreshInputLabel(element, state) {
   } else if (ariaLabel) {
     // Use ariaLabel property as input label.
     inputLabel = ariaLabel;
-  }
-  if (rootNode) {
+  } else if (rootNode) {
     const id = element.id;
     if (id) {
       // Look for labelling element with `for` attribute.
