@@ -38,6 +38,8 @@ export default function DelegateInputLabelMixin(Base) {
     }
 
     // Forward ARIA labelledby as an aria-label to the input element.
+    // Note the lowercase "b" in the name, necessary to support the actual
+    // attribute name "aria-labelledby", which has no hyphen before the "by".
     get ariaLabelledby() {
       return this[state].ariaLabelledby;
     }
@@ -89,9 +91,9 @@ export default function DelegateInputLabelMixin(Base) {
       // We use a flag to distinguish between us removing our own ARIA
       // attributes (which should not update state), and someone removing
       // those attributes from the outside (which should update state).
+      const { ariaLabel, ariaLabelledby } = this[state];
       if (changed.ariaLabel && !this[state].removingAriaAttribute) {
         if (this.getAttribute("aria-label")) {
-          const { ariaLabel } = this[state];
           this.setAttribute("aria-label-delegated", ariaLabel);
           this[setState]({ removingAriaAttribute: true });
           this.removeAttribute("aria-label");
@@ -99,6 +101,7 @@ export default function DelegateInputLabelMixin(Base) {
       }
       if (changed.ariaLabelledby && !this[state].removingAriaAttribute) {
         if (this.getAttribute("aria-labelledby")) {
+          this.setAttribute("aria-labelledby-delegated", ariaLabelledby);
           this[setState]({ removingAriaAttribute: true });
           this.removeAttribute("aria-labelledby");
         }
