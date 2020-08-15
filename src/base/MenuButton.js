@@ -25,8 +25,6 @@ const Base = PopupListMixin(PopupButton);
  * @inherits PopupButton
  * @mixes PopupListMixin
  * @part {Menu} menu - the menu shown in the popup
- * @part down-icon - the icon shown in the toggle if the popup will open or close in the down direction
- * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
  */
 class MenuButton extends Base {
   get [defaultState]() {

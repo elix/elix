@@ -13,6 +13,7 @@ import {
  * An element that can point up or down.
  *
  * @part down-icon - the icon shown in the toggle if the popup will open or close in the down direction
+ * @part toggle-icon - both the up and down icons
  * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
  */
 class UpDownToggle extends ReactiveElement {
@@ -66,10 +67,10 @@ class UpDownToggle extends ReactiveElement {
           display: inline-block;
         }
       </style>
-      <div id="downIcon" part="down-icon">
+      <div id="downIcon" part="toggle-icon down-icon">
         <slot name="down-icon"></slot>
       </div>
-      <div id="upIcon" part="up-icon">
+      <div id="upIcon" part="toggle-icon up-icon">
         <slot name="up-icon"></slot>
       </div>
     `;

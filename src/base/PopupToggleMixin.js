@@ -76,7 +76,7 @@ export default function PopupToggleMixin(Base) {
         <div
           id="popupToggle"
           part="popup-toggle"
-          exportparts="down-icon up-icon"
+          exportparts="toggle-icon, down-icon, up-icon"
           tabindex="-1"
         >
           <slot name="toggle-icon"></slot>

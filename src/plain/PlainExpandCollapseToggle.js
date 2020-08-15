@@ -9,7 +9,6 @@ import { replace } from "../core/template.js";
  * @inherits UpDownToggle
  * @part collapse-icon - the default icon shown when the panel is expanded
  * @part expand-icon - the default icon shown when the panel is collapsed
- * @part toggle-icon - both of the default icons used to expand/collapse the panel
  */
 class PlainExpandCollapseToggle extends UpDownToggle {
   get [template]() {
