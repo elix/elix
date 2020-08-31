@@ -86,6 +86,22 @@ export default function DelegateInputLabelMixin(Base) {
     [rendered](changed) {
       super[rendered](changed);
 
+      if (this[firstRender]) {
+        // Refresh the label on first render. This is not guaranteed to pick up
+        // labels defined by another element, as that element (or elements) may
+        // not be in the DOM yet. For that reason, we'll also refresh the label
+        // on focus. The reason to do it now is to handle the common cases where
+        // the element defining the label does exist so that accessibility
+        // testing tools can confirm that the input delegate does have a label.
+        // Because this refresh can entail multiple searches of the tree, we
+        // defer the refresh to idle time.
+        const idleCallback = window.requestIdleCallback || setTimeout;
+        idleCallback(() => {
+          const inputLabel = refreshInputLabel(this, this[state]);
+          this[setState]({ inputLabel });
+        });
+      }
+
       // Once we've obtained an aria-label or aria-labelledby from the host, we
       // remove those attirbutes so that the labels don't get announced twice.
       // We use a flag to distinguish between us removing our own ARIA
@@ -94,14 +110,14 @@ export default function DelegateInputLabelMixin(Base) {
       const { ariaLabel, ariaLabelledby } = this[state];
       if (changed.ariaLabel && !this[state].removingAriaAttribute) {
         if (this.getAttribute("aria-label")) {
-          this.setAttribute("aria-label-delegated", ariaLabel);
+          this.setAttribute("delegated-label", ariaLabel);
           this[setState]({ removingAriaAttribute: true });
           this.removeAttribute("aria-label");
         }
       }
       if (changed.ariaLabelledby && !this[state].removingAriaAttribute) {
         if (this.getAttribute("aria-labelledby")) {
-          this.setAttribute("aria-labelledby-delegated", ariaLabelledby);
+          this.setAttribute("delegated-labelledby", ariaLabelledby);
           this[setState]({ removingAriaAttribute: true });
           this.removeAttribute("aria-labelledby");
         }
@@ -183,7 +199,9 @@ function getLabelFromElement(element) {
  */
 function refreshInputLabel(element, state) {
   const { ariaLabel, ariaLabelledby } = state;
-  /** @type {any} */ const rootNode = element.getRootNode();
+  /** @type {any} */ const rootNode = element.isConnected
+    ? element.getRootNode()
+    : null;
   let inputLabel = null;
 
   // Prefer aria-labelledby over aria-label, per
