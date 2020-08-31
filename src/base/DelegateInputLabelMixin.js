@@ -59,7 +59,9 @@ export default function DelegateInputLabelMixin(Base) {
     }
 
     [render](changed) {
-      super[render](changed);
+      if (super[render]) {
+        super[render](changed);
+      }
 
       if (this[firstRender]) {
         // Refresh the input label on focus. This refresh appears to happen fast
@@ -84,7 +86,9 @@ export default function DelegateInputLabelMixin(Base) {
     }
 
     [rendered](changed) {
-      super[rendered](changed);
+      if (super[rendered]) {
+        super[rendered](changed);
+      }
 
       if (this[firstRender]) {
         // Refresh the label on first render. This is not guaranteed to pick up

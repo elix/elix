@@ -30,7 +30,9 @@ export default function PlainComboBoxMixin(Base) {
     }
 
     [render](changed) {
-      super[render](changed);
+      if (super[render]) {
+        super[render](changed);
+      }
 
       // Style the inner input.
       if (changed.inputPartType) {

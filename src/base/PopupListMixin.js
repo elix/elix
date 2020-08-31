@@ -64,7 +64,9 @@ export default function PopupListMixin(Base) {
     }
 
     [render](changed) {
-      super[render](changed);
+      if (super[render]) {
+        super[render](changed);
+      }
 
       if (changed.popupList) {
         const { popupList } = this[state];
@@ -117,7 +119,9 @@ export default function PopupListMixin(Base) {
     }
 
     [rendered](changed) {
-      super[rendered](changed);
+      if (super[rendered]) {
+        super[rendered](changed);
+      }
 
       if (changed.opened) {
         if (this[state].opened) {

@@ -19,7 +19,9 @@ export default function PlainCarouselMixin(Base) {
     }
 
     [render](changed) {
-      super[render](changed);
+      if (super[render]) {
+        super[render](changed);
+      }
 
       const proxies = this.proxies;
       if (

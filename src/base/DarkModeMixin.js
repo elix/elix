@@ -77,7 +77,9 @@ export default function DarkModeMixin(Base) {
     }
 
     [render](changed) {
-      super[render](changed);
+      if (super[render]) {
+        super[render](changed);
+      }
 
       if (changed.dark) {
         const { dark } = this[state];
@@ -86,7 +88,9 @@ export default function DarkModeMixin(Base) {
     }
 
     [rendered](changed) {
-      super[rendered](changed);
+      if (super[rendered]) {
+        super[rendered](changed);
+      }
 
       if (changed.detectDarkMode) {
         const { detectDarkMode } = this[state];

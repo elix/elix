@@ -10,7 +10,10 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function PlainDrawerMixin(Base) {
   return class PlainDrawer extends Base {
     [render](changed) {
-      super[render](changed);
+      if (super[render]) {
+        super[render](changed);
+      }
+
       // As the drawer opens (closes), transition the backdrop to fully
       // opaque (transparent).
       if (changed.openedFraction) {

@@ -38,7 +38,9 @@ export default function TrackTextSelectionMixin(Base) {
     }
 
     [render](changed) {
-      super[render](changed);
+      if (super[render]) {
+        super[render](changed);
+      }
 
       if (this[firstRender]) {
         // The user can manually update the selection with the keyboard or
@@ -62,7 +64,9 @@ export default function TrackTextSelectionMixin(Base) {
     }
 
     [rendered](changed) {
-      super[rendered](changed);
+      if (super[rendered]) {
+        super[rendered](changed);
+      }
 
       // If either selection property is null, pick up its rendered value now.
       const { selectionEnd, selectionStart } = this[state];

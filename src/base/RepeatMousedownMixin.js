@@ -33,7 +33,9 @@ export default function RepeatMousedownMixin(Base) {
     }
 
     [render](changed) {
-      super[render](changed);
+      if (super[render]) {
+        super[render](changed);
+      }
 
       // Wire up event handlers.
       if (this[firstRender]) {
