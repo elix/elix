@@ -34,6 +34,7 @@ export default function FormElementMixin(Base) {
 
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
+        name: "",
         validationMessage: "",
         valid: true,
       });
@@ -70,7 +71,7 @@ export default function FormElementMixin(Base) {
      * @type {string}
      */
     get name() {
-      return this[state].name;
+      return this[state] ? this[state].name : "";
     }
     set name(name) {
       if ("name" in Base.prototype) {
@@ -126,13 +127,19 @@ export default function FormElementMixin(Base) {
      * The "type" of the form field, provided for consistency with the
      * native HTML
      * [type](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#type)
-     * property. The value of this property will be the same as the HTML tag
-     * name registered for the custom element.
+     * property.
+     *
+     * If a base class provides a `type` property, that will be returned. (If
+     * this mixin is applied to a class defined by WrappedStandardElement, this
+     * will return the `type` of the inner standard element.) Otherwise, the
+     * default value of this property will be the same as the HTML tag name
+     * registered for the custom element.
      *
      * @type {string}
      */
     get type() {
-      return this.localName;
+      // Defer to base class value.
+      return super.type || this.localName;
     }
 
     get validationMessage() {
