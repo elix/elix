@@ -115,7 +115,7 @@ export default function ShadowTemplateMixin(Base) {
           const clone = document.importNode(template.content, true);
           root.append(clone);
 
-          // After this call, we won' be able to rely on being able to access
+          // After this call, we won't be able to rely on being able to access
           // the shadow root via `this.shadowRoot`, because the component may
           // have asked for a closed shadow root. We save a reference to the
           // shadow root now so that the component always has a consistent means
