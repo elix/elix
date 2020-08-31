@@ -34,7 +34,6 @@ describe("SelectedTextAPIMixin", () => {
 
   it("returns the empty string as the selectedText for no selection", () => {
     const fixture = new SelectedTextAPITest();
-    assert.equal(fixture[state].selectedIndex, -1);
     assert.equal(fixture.selectedText, "");
   });
 

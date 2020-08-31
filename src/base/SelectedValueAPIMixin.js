@@ -21,15 +21,8 @@ export default function SelectedValueAPIMixin(Base) {
         ? super[stateEffects](state, changed)
         : {};
 
-      // If items or value changes, update the selected index.
-      if (changed.items || changed.value) {
-        const { items, value } = state;
-        const selectedIndex = items ? indexOfItemWithValue(items, value) : -1;
-        Object.assign(effects, { selectedIndex });
-      }
-
-      // If selected index changes, update value.
-      if (changed.selectedIndex) {
+      // Value tracks the value attribute on the selected item.
+      if (changed.items || changed.selectedIndex) {
         const { items, selectedIndex } = state;
         const selectedItem = items ? items[selectedIndex] : null;
         const value = selectedItem ? selectedItem.getAttribute("value") : "";
@@ -52,7 +45,10 @@ export default function SelectedValueAPIMixin(Base) {
       return this[state].value;
     }
     set value(value) {
-      this[setState]({ value });
+      // Find index of item with desired value.
+      const { items } = this[state];
+      const selectedIndex = items ? indexOfItemWithValue(items, value) : -1;
+      this[setState]({ selectedIndex });
     }
   }
 

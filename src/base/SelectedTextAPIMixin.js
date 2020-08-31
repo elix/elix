@@ -57,17 +57,8 @@ export default function SelectedTextAPIMixin(Base) {
         ? super[stateEffects](state, changed)
         : {};
 
-      // If items or selectedText changes, update the selected index.
-      if (changed.items || changed.selectedText) {
-        const { items, selectedText } = state;
-        const selectedIndex = items
-          ? indexOfItemWithText(items, this[getItemText], selectedText)
-          : -1;
-        Object.assign(effects, { selectedIndex });
-      }
-
-      // If selected index changes, update selectedText.
-      if (changed.selectedIndex) {
+      // selectedText tracks text of selected item
+      if (changed.items || changed.selectedIndex) {
         const { items, selectedIndex } = state;
         const selectedItem = items ? items[selectedIndex] : null;
         const selectedText = selectedItem
@@ -92,7 +83,12 @@ export default function SelectedTextAPIMixin(Base) {
       return this[state].selectedText;
     }
     set selectedText(selectedText) {
-      this[setState]({ selectedText });
+      // Find index of item with desired text.
+      const { items } = this[state];
+      const selectedIndex = items
+        ? indexOfItemWithText(items, this[getItemText], selectedText)
+        : -1;
+      this[setState]({ selectedIndex });
     }
   }
 

@@ -25,27 +25,26 @@ export default function CursorSelectMixin(Base) {
         ? super[stateEffects](state, changed)
         : {};
 
-      // Selection tracks current item.
       if (changed.currentIndex) {
+        // Priority one: selected index tracks current index.
         Object.assign(effects, {
           selectedIndex: state.currentIndex,
         });
-      }
-      if (changed.currentItem) {
-        Object.assign(effects, {
-          selectedItem: state.currentItem,
-        });
-      }
-
-      // Current item tracks selection.
-      // Since this step happens second, if both current item and selected item
-      // are changed, the current item wins.
-      if (changed.selectedIndex) {
+      } else if (changed.selectedIndex) {
+        // Priority two: current index tracks selected index.
+        // These priorities ensure that, both current index and selected index
+        // are changed, current index wins.
         Object.assign(effects, {
           currentIndex: state.selectedIndex,
         });
       }
-      if (changed.selectedItem) {
+
+      // Same priorities as above.
+      if (changed.currentItem) {
+        Object.assign(effects, {
+          selectedItem: state.currentItem,
+        });
+      } else if (changed.selectedItem) {
         Object.assign(effects, {
           currentItem: state.selectedItem,
         });
