@@ -225,7 +225,6 @@ class ListComboBox extends Base {
         });
         Object.assign(effects, {
           currentIndex,
-          selectedIndex: currentIndex,
         });
       }
     }
