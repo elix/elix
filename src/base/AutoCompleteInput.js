@@ -126,6 +126,7 @@ class AutoCompleteInput extends Input {
     }
 
     // Copy the text values to the invisible, accessible list.
+    // TODO: We could defer this work to after the component gets focus.
     if (changed.texts) {
       const { texts } = this[state];
       const options =
