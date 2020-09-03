@@ -1,5 +1,6 @@
 import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
+import DisabledMixin from "./DisabledMixin.js";
 import {
   defaultState,
   ids,
@@ -9,18 +10,21 @@ import {
   template,
 } from "./internal.js";
 
+const Base = DisabledMixin(ReactiveElement);
+
 /**
  * An element that can point up or down.
  *
+ * @inherits ReactiveElement
+ * @mixes DisabledMixin
  * @part down-icon - the icon shown in the toggle if the popup will open or close in the down direction
  * @part toggle-icon - both the up and down icons
  * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
  */
-class UpDownToggle extends ReactiveElement {
+class UpDownToggle extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       direction: "down",
-      disabled: false,
     });
   }
 
@@ -37,13 +41,6 @@ class UpDownToggle extends ReactiveElement {
     this[setState]({ direction });
   }
 
-  get disabled() {
-    return this[state].disabled;
-  }
-  set disabled(disabled) {
-    this[setState]({ disabled });
-  }
-
   [render](/** @type {ChangedFlags} */ changed) {
     super[render](changed);
 
@@ -52,11 +49,6 @@ class UpDownToggle extends ReactiveElement {
       this[ids].downIcon.style.display =
         direction === "down" ? "block" : "none";
       this[ids].upIcon.style.display = direction === "up" ? "block" : "none";
-    }
-
-    if (changed.disabled) {
-      const { disabled } = this[state];
-      this.toggleAttribute("disabled", disabled);
     }
   }
 

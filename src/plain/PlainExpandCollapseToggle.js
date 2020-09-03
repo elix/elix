@@ -7,8 +7,6 @@ import { replace } from "../core/template.js";
  * An expand/collapse toggle in the Plain reference design system
  *
  * @inherits UpDownToggle
- * @part collapse-icon - the default icon shown when the panel is expanded
- * @part expand-icon - the default icon shown when the panel is collapsed
  */
 class PlainExpandCollapseToggle extends UpDownToggle {
   get [template]() {
@@ -19,7 +17,7 @@ class PlainExpandCollapseToggle extends UpDownToggle {
     const downIconGlyph = fragmentFrom.html`
       <svg
         id="downIcon"
-        part="toggle-icon expand-icon"
+        part="toggle-icon down-icon"
         xmlns="http://www.w3.org/2000/svg"
         width="24"
         height="24"
@@ -35,7 +33,7 @@ class PlainExpandCollapseToggle extends UpDownToggle {
     const upIconGlyph = fragmentFrom.html`
       <svg
         id="upIcon"
-        part="toggle-icon collapse-icon"
+        part="toggle-icon up-icon"
         xmlns="http://www.w3.org/2000/svg"
         width="24"
         height="24"
