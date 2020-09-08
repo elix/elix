@@ -39,14 +39,14 @@ export default class CustomSpinBox extends NumberSpinBox {
           overflow: hidden;
         }
 
-        [part~="input"] {
+        [part~=input] {
           background: none;
           border: none;
           padding: 0.3em 0.6em;
           width: 4em;
         }
 
-        [part~="spin-button"] {
+        [part~=spin-button] {
           background: linear-gradient(50deg, #6e00ff 0, #bb00ff 100%);
           border-radius: 0;
           border-width: 0;
@@ -57,7 +57,7 @@ export default class CustomSpinBox extends NumberSpinBox {
           padding: 2px;
         }
 
-        [part~="spin-button"]:hover {
+        [part~=spin-button]:hover {
           background: #bb00ff;
           color: white;
         }

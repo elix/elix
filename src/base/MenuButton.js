@@ -129,7 +129,7 @@ class MenuButton extends Base {
 
     result.content.append(fragmentFrom.html`
       <style>
-        [part~="menu"] {
+        [part~=menu] {
           max-height: 100%;
         }
       </style>

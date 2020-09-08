@@ -258,15 +258,15 @@ class CalendarMonth extends Base {
           display: inline-block;
         }
 
-        [part~="month-year-header"] {
+        [part~=month-year-header] {
           display: block;
         }
 
-        [part~="day-names-header"] {
+        [part~=day-names-header] {
           display: grid;
         }
 
-        [part~="month-days"] {
+        [part~=month-days] {
           display: block;
         }
       </style>

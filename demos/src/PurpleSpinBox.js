@@ -39,7 +39,7 @@ export default class PurpleSpinBox extends NumberSpinBox {
           overflow: hidden;
         }
 
-        [part~="input"] {
+        [part~=input] {
           background: none;
           border: none;
           font: inherit;
@@ -47,7 +47,7 @@ export default class PurpleSpinBox extends NumberSpinBox {
           width: 4em;
         }
 
-        [part~="spin-button"] {
+        [part~=spin-button] {
           background: linear-gradient(50deg, #6e00ff 0, #bb00ff 100%);
           border: none;
           color: #ddd;
@@ -56,7 +56,7 @@ export default class PurpleSpinBox extends NumberSpinBox {
           padding: 2px;
         }
 
-        [part~="spin-button"]:hover {
+        [part~=spin-button]:hover {
           background: #bb00ff;
           color: white;
         }

@@ -23,14 +23,14 @@ class SereneTabs extends Tabs {
             display: flex;
           }
 
-          [part~="proxy-list"] {
+          [part~=proxy-list] {
             background: #222;
             color: white;
             font-family: Gentium Basic;
             padding: 0 33px;
           }
 
-          [part~="stage"] {
+          [part~=stage] {
             background: white;
             padding: 0 33px;
           }

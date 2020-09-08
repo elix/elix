@@ -17,7 +17,7 @@ class CustomArrowButton extends Button {
             -webkit-tap-highlight-color: transparent;
           }
           
-          [part~="inner"] {
+          [part~=inner] {
             background: rgba(255, 255, 255, 0.2);
             border-color: rgba(255, 255, 255, 0.7);
             border: 2px solid transparent;
@@ -37,14 +37,14 @@ class CustomArrowButton extends Button {
             width: 48px;
           }
 
-          :host(:hover) [part~="inner"]:not(:disabled) {
+          :host(:hover) [part~=inner]:not(:disabled) {
             border-color: rgba(255, 255, 255, 0.8);
             color: rgba(255, 255, 255, 0.8);
             cursor: pointer;
             transform: scale(1.1);
           }
 
-          [part~="inner"]:disabled {
+          [part~=inner]:disabled {
             color: rgba(255, 255, 255, 0.2);
             transform: scale(1.0);
           }

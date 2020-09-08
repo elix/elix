@@ -31,7 +31,7 @@ class PlainCarouselWithThumbnails extends DarkModeMixin(
     result.content.append(
       fragmentFrom.html`
         <style>
-          [part~="proxy"] {
+          [part~=proxy] {
             height: var(--elix-thumbnail-height, 4em);
             width: var(--elix-thumbnail-width, 6em);
             object-fit: contain;

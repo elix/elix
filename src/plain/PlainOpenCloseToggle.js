@@ -55,7 +55,7 @@ class PlainOpenCloseToggle extends UpDownToggle {
             background: #eee;
           }
 
-          [part~="toggle-icon"] {
+          [part~=toggle-icon] {
             fill: currentColor;
             height: 10px;
             margin: 0.25em;

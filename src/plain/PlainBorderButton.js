@@ -13,7 +13,7 @@ class PlainBorderButton extends PlainButton {
     result.content.append(
       fragmentFrom.html`
         <style>
-          [part~="inner"] {
+          [part~=inner] {
             background: #eee;
             border: 1px solid #ccc;
             padding: 0.25em 0.5em;

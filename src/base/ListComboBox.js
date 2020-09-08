@@ -275,7 +275,7 @@ class ListComboBox extends Base {
     if (defaultSlot) {
       defaultSlot.replaceWith(fragmentFrom.html`
         <style>
-          [part~="list"] {
+          [part~=list] {
             border: none;
             flex: 1;
             height: 100%;

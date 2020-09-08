@@ -74,7 +74,7 @@ class Input extends Base {
     const result = super[template];
     result.content.append(fragmentFrom.html`
       <style>
-        [part~="inner"] {
+        [part~=inner] {
           font: inherit;
           outline: none;
           text-align: inherit;

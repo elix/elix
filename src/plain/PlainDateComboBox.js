@@ -29,17 +29,17 @@ class PlainDateComboBox extends PlainComboBoxMixin(DateComboBox) {
             width: 8em;
           }
 
-          [part~="calendar"] {
+          [part~=calendar] {
             margin: 0.5em;
           }
 
-          [part~="today-button"] {
+          [part~=today-button] {
             border: 1px solid transparent;
             box-sizing: border-box;
             padding: 0.5em;
           }
 
-          [part~="today-button"]:hover {
+          [part~=today-button]:hover {
             border-color: gray;
           }
         </style>

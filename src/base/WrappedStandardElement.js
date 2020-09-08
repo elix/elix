@@ -457,21 +457,22 @@ class WrappedStandardElement extends Base {
     const display = blockElements.includes(this.extends)
       ? "block"
       : "inline-block";
+    const tag = this.extends;
     return templateFrom.html`
       <style>
         :host {
           display: ${display}
         }
         
-        [part~="inner"] {
+        [part~=inner] {
           box-sizing: border-box;
           height: 100%;
           width: 100%;
         }
       </style>
-      <${this.extends} id="inner" part="inner">
+      <${tag} id="inner" part="inner ${tag}">
         <slot></slot>
-      </${this.extends}>
+      </${tag}>
     `;
   }
 

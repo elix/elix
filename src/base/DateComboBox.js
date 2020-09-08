@@ -458,7 +458,7 @@ class DateComboBox extends Base {
     if (defaultSlot) {
       defaultSlot.replaceWith(fragmentFrom.html`
         <style>
-          [part~="calendar-container"] {
+          [part~=calendar-container] {
             display: flex;
             flex-direction: column;
           }

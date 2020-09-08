@@ -57,7 +57,7 @@ class PlainExpandCollapseToggle extends UpDownToggle {
             background: #eee;
           }
 
-          [part~="inner"] {
+          [part~=inner] {
             display: inline-flex;
             justify-content: center;
             margin: 0;
@@ -65,7 +65,7 @@ class PlainExpandCollapseToggle extends UpDownToggle {
             white-space: nowrap;
           }
 
-          [part~="toggle-icon"] {
+          [part~=toggle-icon] {
             fill: currentColor;
           }
         </style>

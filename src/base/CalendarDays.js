@@ -12,7 +12,7 @@ import {
   setState,
   state,
   stateEffects,
-  template,
+  template
 } from "./internal.js";
 
 const Base = CalendarElementMixin(ReactiveElement);
@@ -196,7 +196,7 @@ class CalendarDays extends Base {
           display: inline-block;
         }
 
-        [part~="day-container"] {
+        [part~=day-container] {
           direction: ltr;
           display: grid;
           grid-template-columns: repeat(7, 1fr);

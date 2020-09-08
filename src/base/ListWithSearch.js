@@ -221,11 +221,11 @@ class ListWithSearch extends Base {
           grid-template-rows: auto minmax(0, 1fr);
         }
 
-        [part~="input"] {
+        [part~=input] {
           outline: none;
         }
 
-        [part~="list"] {
+        [part~=list] {
           outline: none;
         }
       </style>

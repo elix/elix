@@ -18,7 +18,7 @@ export default function PlainButtonMixin(Base) {
             opacity: 0.5;
           }
 
-          [part~="inner"] {
+          [part~=inner] {
             display: inline-flex;
             justify-content: center;
             margin: 0;

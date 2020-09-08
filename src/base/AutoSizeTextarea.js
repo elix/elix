@@ -225,13 +225,13 @@ class AutoSizeTextarea extends Base {
           position: relative;
         }
 
-        [part~="inner"],
+        [part~=inner],
         #copyContainer {
           font: inherit;
           margin: 0;
         }
 
-        [part~="inner"] {
+        [part~=inner] {
           box-sizing: border-box;
           height: 100%;
           overflow: hidden;

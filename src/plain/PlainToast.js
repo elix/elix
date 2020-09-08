@@ -33,7 +33,7 @@ class PlainToast extends Toast {
             width: 100%;
           }
 
-          [part~="frame"] {
+          [part~=frame] {
             margin: 1em;
             transition-duration: 0.25s;
             transition-property: opacity, transform;
