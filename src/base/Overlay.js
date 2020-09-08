@@ -1,4 +1,4 @@
-import { templateFrom } from "../core/htmlLiterals.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import { transmute } from "../core/template.js";
 import Backdrop from "./Backdrop.js";
@@ -121,8 +121,10 @@ class Overlay extends Base {
   }
 
   get [template]() {
+    const result = super[template];
+
     // TODO: Consider moving frameContent div to Drawer.
-    const result = templateFrom.html`
+    result.content.append(fragmentFrom.html`
       <style>
         :host {
           align-items: center;
@@ -162,7 +164,7 @@ class Overlay extends Base {
           <slot></slot>
         </div>
       </div>
-    `;
+    `);
 
     renderParts(result.content, this[state]);
 
