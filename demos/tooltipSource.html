@@ -9,18 +9,19 @@
     <script type="module" src="../define/TooltipSource.js"></script>
 
     <script type="module">
-      import * as internal from "../src/core/internal.js";
-      import * as template from "../src/core/template.js";
+      import { template } from "../src/base/internal.js";
+      import { templateFrom } from "../src/core/htmlLiterals.js";
       import ReactiveElement from "../src/core/ReactiveElement.js";
 
       class TestElement extends ReactiveElement {
         connectedCallback() {
           super.connectedCallback();
         }
-        get [internal.template]() {
+
+        get [template]() {
           // visually-hidden class from
           // https://inclusive-components.design/tooltips-toggletips/
-          return template.html`
+          return templateFrom.html`
             <style>
               .visually-hidden {
                 clip-path: inset(100%);
@@ -69,9 +70,7 @@
         with a mouse.
       </p>
       <elix-tooltip-source>
-        <span id="label" slot="source">
-          OK
-        </span>
+        <span id="label" slot="source"> OK </span>
         <span id="tooltip">Here is the tooltip.</span>
       </elix-tooltip-source>
     </div>

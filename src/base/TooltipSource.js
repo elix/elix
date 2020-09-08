@@ -1,44 +1,50 @@
-import * as internal from "./internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
 import Hidden from "./Hidden.js";
-import html from "../core/html.js";
+import {
+  defaultState,
+  ids,
+  raiseChangeEvents,
+  render,
+  template,
+} from "./internal.js";
 import PopupButton from "./PopupButton.js";
 
 /**
  * Button with a non-interactive tooltip that appears on hover
  */
 class TooltipSource extends PopupButton {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
-      role: "none"
+  get [defaultState]() {
+    return Object.assign(super[defaultState], {
+      role: "none",
     });
   }
 
-  [internal.render](changed) {
-    super[internal.render](changed);
+  [render](changed) {
+    super[render](changed);
 
     // Track when the mouse enters/leaves the source element.
     if (changed.sourcePartType) {
-      const source = this[internal.ids].source;
+      const source = this[ids].source;
       source.addEventListener("mouseenter", () => {
-        this[internal.raiseChangeEvents] = true;
+        this[raiseChangeEvents] = true;
         this.open();
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = false;
       });
       source.addEventListener("mouseleave", () => {
-        this[internal.raiseChangeEvents] = true;
+        this[raiseChangeEvents] = true;
         this.close();
-        this[internal.raiseChangeEvents] = false;
+        this[raiseChangeEvents] = false;
       });
 
       // HACK
       // source.addEventListener("keydown", event => {
-      //   this[internal.raiseChangeEvents] = true;
+      //   this[raiseChangeEvents] = true;
       //   if (event.key === "Escape") {
       //     this.close({
       //       canceled: "Escape"
       //     });
       //   }
-      //   this[internal.raiseChangeEvents] = false;
+      //   this[raiseChangeEvents] = false;
       // });
     }
 
@@ -46,7 +52,7 @@ class TooltipSource extends PopupButton {
     // mouseenter/mouseleave on the source element. Additionally, don't try to
     // focus on the popup when it opens.
     if (changed.popupPartType) {
-      const popup = this[internal.ids].popup;
+      const popup = this[ids].popup;
       if ("backdropPartType" in popup) {
         /** @type {any} */ (popup).backdropPartType = Hidden;
       }
@@ -60,12 +66,12 @@ class TooltipSource extends PopupButton {
     }
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
+  get [template]() {
+    const result = super[template];
 
     // visually-hidden class from
     // https://inclusive-components.design/tooltips-toggletips/
-    result.content.append(html`
+    result.content.append(fragmentFrom.html`
       <style>
         #popup:not([opened]) {
           clip-path: inset(100%);
