@@ -9,7 +9,7 @@ import {
   raiseChangeEvents,
   render,
   state,
-  template
+  template,
 } from "./internal.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import PopupDragSelectMixin from "./PopupDragSelectMixin.js";
@@ -57,12 +57,12 @@ class PopupButton extends Base {
           handled = true;
         }
         break;
-        
+
       // If popup is open, pressing Esc should close popup.
       case "Escape":
         if (this.opened) {
           this.close({
-            canceled: "Escape"
+            canceled: "Escape",
           });
           handled = true;
         }
@@ -160,13 +160,10 @@ class PopupButton extends Base {
         // focused element (i.e., this element) when opening, and restore focus to
         // it when the popup closes.
       });
-<<<<<<< HEAD
     }
 
     if (changed.popupPartType) {
       this[ids].popup.removeAttribute("tabindex");
-=======
->>>>>>> Use DelegateFocusMixin to keep focus on inner button.
     }
   }
 
