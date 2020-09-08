@@ -25,7 +25,7 @@ class PlainTabs extends Tabs {
     result.content.append(
       fragmentFrom.html`
         <style>
-          [part~=proxy-list] {
+          [part~="proxy-list"] {
             z-index: 1;
           }
         </style>

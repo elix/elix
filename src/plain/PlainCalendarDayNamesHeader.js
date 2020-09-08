@@ -17,7 +17,7 @@ class PlainCalendarDayNamesHeader extends CalendarDayNamesHeader {
             font-size: smaller;
           }
 
-          [part~=day-name] {
+          [part~="day-name"] {
             padding: 0.3em;
             text-align: center;
             white-space: nowrap;

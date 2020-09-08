@@ -80,7 +80,7 @@ export default function PlainComboBoxMixin(Base) {
             box-sizing: border-box;
           }
 
-          [part~=input] {
+          [part~="input"] {
             background: transparent;
             border: none;
           }

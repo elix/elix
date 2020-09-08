@@ -43,7 +43,7 @@ function PageNumbersMixin(Base) {
           style="display: flex; flex: 1; overflow: hidden;"
         >
           <style>
-            [part~=page-number] {
+            [part~="page-number"] {
               bottom: 0;
               color: white;
               padding: 0.5em;

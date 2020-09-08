@@ -46,13 +46,13 @@ class PlainHamburgerMenuButton extends HamburgerMenuButton {
     result.content.append(
       fragmentFrom.html`
         <style>
-          [part~=menu-button] {
+          [part~="menu-button"] {
             align-items: center;
             display: inline-flex;
             flex: 1;
           }
 
-          [part~=menu-icon] {
+          [part~="menu-icon"] {
             display: block;
             height: 1em;
             width: 1em;

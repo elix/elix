@@ -136,7 +136,7 @@ class Overlay extends Base {
           -webkit-tap-highlight-color: transparent;
         }
 
-        [part~=frame] {
+        [part~="frame"] {
           box-sizing: border-box;
           display: flex;
           flex-direction: column;

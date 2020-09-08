@@ -23,15 +23,15 @@ class PlainAlertDialog extends PlainModalOverlayMixin(AlertDialog) {
     result.content.append(
       fragmentFrom.html`
         <style>
-          [part~=frame] {
+          [part~="frame"] {
             padding: 1em;
           }
 
-          [part~=choice-button-container] {
+          [part~="choice-button-container"] {
             margin-top: 1em;
           }
 
-          [part~=choice-button]:not(:first-child) {
+          [part~="choice-button"]:not(:first-child) {
             margin-left: 0.5em;
           }
         </style>

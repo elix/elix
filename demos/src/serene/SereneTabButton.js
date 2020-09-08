@@ -18,7 +18,7 @@ class SereneTabButton extends TabButton {
             margin-left: 0;
           }
 
-          [part~=button] {
+          [part~="button"] {
             background: #222;
             border: none;
             color: inherit;
@@ -32,11 +32,11 @@ class SereneTabButton extends TabButton {
             white-space: nowrap;
           }
 
-          :host(:hover) [part~=button] {
+          :host(:hover) [part~="button"] {
             background: #444;
           }
 
-          :host([selected]) [part~=button] {
+          :host([selected]) [part~="button"] {
             background: #666;
           }
         </style>

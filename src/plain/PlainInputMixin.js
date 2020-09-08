@@ -20,7 +20,7 @@ export default function PlainInputMixin(Base) {
             box-sizing: border-box;
           }
 
-          [part~=input] {
+          [part~="input"] {
             background: transparent;
             border-color: transparent;
           }

@@ -198,7 +198,7 @@ class CalendarMonthNavigator extends Base {
 
     const styleTemplate = templateFrom.html`
       <style>
-        [part~=arrow-icon] {
+        [part~="arrow-icon"] {
           font-size: 24px;
         }
       </style>

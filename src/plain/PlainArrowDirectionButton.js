@@ -35,7 +35,7 @@ class PlainArrowDirectionButton extends Base {
             color: rgba(0, 0, 0, 0.3);
           }
 
-          [part~=button] {
+          [part~="button"] {
             fill: currentcolor;
           }
 

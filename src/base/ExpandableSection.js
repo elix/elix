@@ -105,12 +105,12 @@ class ExpandableSection extends Base {
           display: inline-block;
         }
 
-        [part~=header] {
+        [part~="header"] {
           display: flex;
         }
 
         @media (hover: hover), (any-hover: hover) {
-          [part~=header]:hover {
+          [part~="header"]:hover {
             background: rgba(0, 0, 0, 0.05);
           }
         }

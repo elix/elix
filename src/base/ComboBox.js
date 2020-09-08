@@ -388,18 +388,18 @@ class ComboBox extends Base {
     result.content.append(
       fragmentFrom.html`
         <style>
-          [part~=source] {
+          [part~="source"] {
             background-color: inherit;
             display: inline-grid;
             grid-template-columns: 1fr auto;
             position: relative;
           }
 
-          [part~=input] {
+          [part~="input"] {
             outline: none;
           }
 
-          [part~=popup] {
+          [part~="popup"] {
             flex-direction: column;
             max-height: 100vh;
             max-width: 100vh;

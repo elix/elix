@@ -25,7 +25,7 @@ class PlainPullToRefresh extends PullToRefresh {
 
     // Use a default down arrow icon as the pull indicator.
     const pullIndicator = result.content.querySelector(
-      "[part~=pull-indicator]"
+      "[part~="pull-indicator"]"
     );
     const arrow = fragmentFrom.html`
       <svg
@@ -44,7 +44,7 @@ class PlainPullToRefresh extends PullToRefresh {
     result.content.append(
       fragmentFrom.html`
         <style>
-          [part~=indicator-container] {
+          [part~="indicator-container"] {
             padding: 1em;
           }
         </style>

@@ -15,7 +15,7 @@ class CarouselComboBox extends AutoCompleteComboBox {
     result.content.append(
       templateFrom.html`
         <style>
-          [part~=list] {
+          [part~="list"] {
             background: black;
           }
         </style>

@@ -7,7 +7,7 @@ import {
   setState,
   shadowRoot,
   state,
-  template,
+  template
 } from "./internal.js";
 
 /**
@@ -77,7 +77,7 @@ class CalendarDayNamesHeader extends ReactiveElement {
       const weekendEnd = calendar.weekendEnd(locale);
       const date = new Date(2017, 0, 1); // A Sunday
       const dayNameParts = this[shadowRoot].querySelectorAll(
-        "[part~=day-name]"
+        "[part~="day-name"]"
       );
       for (let i = 0; i <= 6; i++) {
         const dayOfWeek = (firstDayOfWeek + i) % 7;

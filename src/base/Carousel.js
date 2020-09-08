@@ -167,7 +167,7 @@ class Carousel extends Base {
     result.content.append(
       fragmentFrom.html`
         <style>
-          [part~=stage] {
+          [part~="stage"] {
             height: 100%;
             width: 100%;
           }

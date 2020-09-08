@@ -47,7 +47,7 @@ export default function PlainCarouselMixin(Base) {
       result.content.append(
         fragmentFrom.html`
           <style>
-            [part~=arrow-icon] {
+            [part~="arrow-icon"] {
               font-size: 48px;
             }
           </style>

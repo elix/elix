@@ -441,11 +441,11 @@ class Explorer extends Base {
           position: relative;
         }
 
-        [part~=proxy-list] {
+        [part~="proxy-list"] {
           box-sizing: border-box;
         }
 
-        [part~=stage] {
+        [part~="stage"] {
           flex: 1;
         }
       </style>

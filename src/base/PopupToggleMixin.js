@@ -88,11 +88,11 @@ export default function PopupToggleMixin(Base) {
 
       result.content.append(fragmentFrom.html`
       <style>
-        [part~=popup-toggle] {
+        [part~="popup-toggle"] {
           outline: none;
         }
 
-        [part~=source] {
+        [part~="source"] {
           align-items: center;
           display: flex;
         }

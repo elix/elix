@@ -14,7 +14,7 @@ import {
   shadowRoot,
   state,
   stateEffects,
-  template,
+  template
 } from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
@@ -220,7 +220,7 @@ class DropdownList extends Base {
     // list itself when the popup opens, the aria-controls attribute has no
     // effect other than convincing the browser to announce the button as a
     // combobox.
-    const source = result.content.querySelector("[part~=source]");
+    const source = result.content.querySelector("[part~="source"]");
     if (source) {
       source.setAttribute("aria-activedescendant", "value");
       source.setAttribute("aria-autocomplete", "none");
@@ -232,7 +232,7 @@ class DropdownList extends Base {
 
     result.content.append(fragmentFrom.html`
       <style>
-        [part~=list] {
+        [part~="list"] {
           max-height: 100%;
         }
       </style>

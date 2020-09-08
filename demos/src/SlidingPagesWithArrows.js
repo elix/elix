@@ -35,7 +35,7 @@ class SlidingPagesWithArrows extends Base {
     result.content.append(
       templateFrom.html`
         <style>
-          [part~=arrow-icon] {
+          [part~="arrow-icon"] {
             font-size: 48px;
           }
         </style>

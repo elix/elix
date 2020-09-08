@@ -231,7 +231,7 @@ class PullToRefresh extends Base {
           display: block;
         }
 
-        [part~=refresh-header] {
+        [part~="refresh-header"] {
           align-items: center;
           display: flex;
           flex-direction: column-reverse;
@@ -243,14 +243,14 @@ class PullToRefresh extends Base {
           width: 100%;
         }
 
-        [part~=indicator-container] {
+        [part~="indicator-container"] {
           align-items: center;
           box-sizing: border-box;
           display: grid;
           justify-items: center;
         }
 
-        [part~=indicator] {
+        [part~="indicator"] {
           grid-column: 1;
           grid-row: 1;
         }

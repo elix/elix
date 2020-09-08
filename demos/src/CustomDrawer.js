@@ -47,7 +47,7 @@ export default class CustomDrawer extends DrawerWithGrip {
     result.content.append(
       templateFrom.html`
         <style>
-          [part~=frame] {
+          [part~="frame"] {
             background: rgba(26,36,46,0.9);
             color: white;
             width: 100%;

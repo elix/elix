@@ -35,13 +35,13 @@ export default function PlainSpinBoxMixin(Base) {
             box-sizing: border-box;
           }
 
-          [part~=input] {
+          [part~="input"] {
             background: transparent;
             border: none;
             width: 4em;
           }
 
-          [part~=spin-button] {
+          [part~="spin-button"] {
             background: transparent;
             border: 1px solid gray;
             box-sizing: border-box;
@@ -49,12 +49,12 @@ export default function PlainSpinBoxMixin(Base) {
             padding: 2px;
           }
 
-          [part~=up-button] {
+          [part~="up-button"] {
             border-right: none;
             border-top: none;
           }
 
-          [part~=down-button] {
+          [part~="down-button"] {
             border-bottom: none;
             border-right: none;
             border-top: none;

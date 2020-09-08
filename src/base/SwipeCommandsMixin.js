@@ -253,7 +253,7 @@ export default function SwipeCommandsMixin(Base) {
               font-weight: bold;
             }
 
-            [part~=command-container] {
+            [part~="command-container"] {
               display: flex;
               overflow: hidden;
               position: absolute;
@@ -261,16 +261,16 @@ export default function SwipeCommandsMixin(Base) {
               will-change: width;
             }
 
-            [part~=command-container] ::slotted(*),
-            [part~=command-container] slot > * {
+            [part~="command-container"] ::slotted(*),
+            [part~="command-container"] slot > * {
               flex: 1;
             }
 
-            [part~=left-command-container] {
+            [part~="left-command-container"] {
               left: 0;
             }
 
-            [part~=right-command-container] {
+            [part~="right-command-container"] {
               right: 0;
             }
           </style>

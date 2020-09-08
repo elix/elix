@@ -163,7 +163,7 @@ class PopupButton extends Base {
     result.content.append(
       fragmentFrom.html`
         <style>
-          [part~=source] {
+          [part~="source"] {
             cursor: default;
             outline: none;
             -webkit-tap-highlight-color: transparent;

@@ -57,7 +57,7 @@ class PlainExpandCollapseToggle extends UpDownToggle {
             background: #eee;
           }
 
-          [part~=toggle-icon] {
+          [part~="toggle-icon"] {
             fill: currentColor;
           }
         </style>

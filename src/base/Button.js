@@ -55,7 +55,7 @@ class Button extends Base {
             touch-action: manipulation;
           }
 
-          [part~=button] {
+          [part~="button"] {
             align-items: center;
             background: none;
             border: none;
