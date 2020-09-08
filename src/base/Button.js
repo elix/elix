@@ -21,6 +21,7 @@ const Base = ComposedFocusMixin(
  * @mixes ComposedFocusMixin
  * @mixes DelegateInputLabelMixin
  * @mixes KeyboardMixin
+ * @part button - the inner standard HTML button
  */
 class Button extends Base {
   get [defaultState]() {
@@ -54,7 +55,7 @@ class Button extends Base {
             touch-action: manipulation;
           }
 
-          [part~=inner] {
+          [part~=button] {
             align-items: center;
             background: none;
             border: none;

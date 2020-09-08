@@ -40,6 +40,7 @@ const Base = FormElementMixin(
  * @mixes FormElementMixin
  * @mixes SlotContentMixin
  * @mixes TrackTextSelectionMixin
+ * @part textarea - the inner standard HTML textarea
  */
 class AutoSizeTextarea extends Base {
   attributeChangedCallback(name, oldValue, newValue) {
@@ -225,13 +226,13 @@ class AutoSizeTextarea extends Base {
           position: relative;
         }
 
-        [part~=inner],
+        [part~=textarea],
         #copyContainer {
           font: inherit;
           margin: 0;
         }
 
-        [part~=inner] {
+        [part~=textarea] {
           box-sizing: border-box;
           height: 100%;
           overflow: hidden;
@@ -254,7 +255,7 @@ class AutoSizeTextarea extends Base {
         }
       </style>
       <div id="autoSizeContainer">
-        <textarea id="inner" part="inner"></textarea>
+        <textarea id="inner" part="inner textarea"></textarea>
         <div id="copyContainer"><span id="textCopy"></span><span id="extraSpace">&nbsp;</span></div>
       </div>
       <div hidden>

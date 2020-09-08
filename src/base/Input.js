@@ -34,6 +34,7 @@ const Base = DelegateInputLabelMixin(
  * @mixes FocusVisibleMixin
  * @mixes FormElementMixin
  * @mixes TrackTextSelectionMixin
+ * @part input - the inner standard HTML input
  */
 class Input extends Base {
   get [defaultState]() {
@@ -74,7 +75,7 @@ class Input extends Base {
     const result = super[template];
     result.content.append(fragmentFrom.html`
       <style>
-        [part~=inner] {
+        [part~=input] {
           font: inherit;
           outline: none;
           text-align: inherit;

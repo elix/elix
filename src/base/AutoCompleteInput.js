@@ -204,7 +204,7 @@ class AutoCompleteInput extends Input {
     const result = super[template];
 
     // Apply ARIA combobox attributes to the input.
-    const inner = result.content.querySelector("[part~=inner]");
+    const inner = result.content.querySelector("[part~=input]");
     if (inner) {
       inner.setAttribute("aria-autocomplete", "both");
       inner.setAttribute("aria-controls", "accessibleList");

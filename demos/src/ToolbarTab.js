@@ -19,7 +19,7 @@ class ToolbarTab extends TabButton {
             z-index: 1;
           }
 
-          [part~=inner] {
+          [part~=button] {
             align-items: center;
             background: transparent;
             border: none;
