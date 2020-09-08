@@ -4,15 +4,15 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 import { transmute } from "../core/template.js";
 import Button from "./Button.js";
 import {
-    defaultState,
-    goNext,
-    goPrevious,
-    ids,
-    keydown,
-    render,
-    setState,
-    shadowRoot,
-    state
+  defaultState,
+  goNext,
+  goPrevious,
+  ids,
+  keydown,
+  render,
+  setState,
+  shadowRoot,
+  state,
 } from "./internal.js";
 
 const wrap = Symbol("wrap");
@@ -200,7 +200,7 @@ export default function PlayControlsMixin(Base) {
 function renderParts(root, state, changed) {
   if (!changed || changed.controlButtonPartType) {
     const { controlButtonPartType } = state;
-    const controlButtons = root.querySelectorAll("[part~="control-button"]");
+    const controlButtons = root.querySelectorAll('[part~="control-button"]');
     controlButtons.forEach((controlButton) =>
       transmute(controlButton, controlButtonPartType)
     );

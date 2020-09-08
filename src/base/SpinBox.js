@@ -9,18 +9,18 @@ import DisabledMixin from "./DisabledMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import {
-    defaultState,
-    goDown,
-    goUp,
-    ids,
-    inputDelegate,
-    raiseChangeEvents,
-    render,
-    rendered,
-    setState,
-    shadowRoot,
-    state,
-    template
+  defaultState,
+  goDown,
+  goUp,
+  ids,
+  inputDelegate,
+  raiseChangeEvents,
+  render,
+  rendered,
+  setState,
+  shadowRoot,
+  state,
+  template,
 } from "./internal.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
@@ -232,7 +232,7 @@ export class SpinBox extends Base {
 function renderParts(root, state, changed) {
   if (!changed || changed.inputPartType) {
     const { buttonPartType } = state;
-    const buttons = root.querySelectorAll("[part~="spin-button"]");
+    const buttons = root.querySelectorAll('[part~="spin-button"]');
     buttons.forEach((button) => {
       transmute(button, buttonPartType);
     });
