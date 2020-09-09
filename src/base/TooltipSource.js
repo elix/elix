@@ -35,17 +35,6 @@ class TooltipSource extends PopupButton {
         this.close();
         this[raiseChangeEvents] = false;
       });
-
-      // HACK
-      // source.addEventListener("keydown", event => {
-      //   this[raiseChangeEvents] = true;
-      //   if (event.key === "Escape") {
-      //     this.close({
-      //       canceled: "Escape"
-      //     });
-      //   }
-      //   this[raiseChangeEvents] = false;
-      // });
     }
 
     // Suppress popup's backdrop, which would interfere with tracking
@@ -56,8 +45,9 @@ class TooltipSource extends PopupButton {
       if ("backdropPartType" in popup) {
         /** @type {any} */ (popup).backdropPartType = Hidden;
       }
+
       if ("autoFocus" in popup) {
-        /** @type {any} */ (popup).autoFocus = Hidden;
+        /** @type {any} */ (popup).autoFocus = false;
       }
 
       // Even if the popup declares itself focusable, we want to keep focus on

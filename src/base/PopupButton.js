@@ -59,6 +59,9 @@ class PopupButton extends Base {
         break;
 
       // If popup is open, pressing Esc should close popup.
+      // This code exists to handle cases where the popup does not take the
+      // focus (autoFocus is false). In cases where the popup takes focus, it
+      // will be up to the popup to handle closing when Esc is pressed.
       case "Escape":
         if (this.opened) {
           this.close({

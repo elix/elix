@@ -7,49 +7,9 @@
 
     <link rel="stylesheet" href="demos.css" />
     <script type="module" src="../define/TooltipSource.js"></script>
-
-    <script type="module">
-      import { template } from "../src/base/internal.js";
-      import { templateFrom } from "../src/core/htmlLiterals.js";
-      import ReactiveElement from "../src/core/ReactiveElement.js";
-
-      class TestElement extends ReactiveElement {
-        connectedCallback() {
-          super.connectedCallback();
-        }
-
-        get [template]() {
-          // visually-hidden class from
-          // https://inclusive-components.design/tooltips-toggletips/
-          return templateFrom.html`
-            <style>
-              .visually-hidden {
-                clip-path: inset(100%);
-                clip: rect(1px, 1px, 1px, 1px);
-                height: 1px;
-                overflow: hidden;
-                position: absolute;
-                white-space: nowrap;
-                width: 1px;
-              }
-            </style>
-            <button aria-describedby="tooltip"><slot name="source"></slot></button>
-            <span id="tooltip" class="visually-hidden"><slot></slot></span>
-          `;
-        }
-      }
-
-      customElements.define("test-element", TestElement);
-    </script>
   </head>
 
   <body role="main">
-    <button id="OK" aria-describedby="okTooltip">OK</button>
-    <div id="okTooltip" role="tooltip">This is the OK button</div>
-    <test-element>
-      <span slot="source">Hello</span>
-      How are you?
-    </test-element>
     <div class="demo padded">
       <style>
         #tooltip {
