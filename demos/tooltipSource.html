@@ -12,26 +12,26 @@
   <body role="main">
     <div class="demo padded">
       <style>
-        #tooltip {
+        .tooltip {
           padding: 1em;
           white-space: nowrap;
         }
-
-        :not(:defined) #label {
-          visibility: visible;
-        }
-        :not(:defined) #tooltip {
-          display: none;
-        }
       </style>
-
       <p>
-        This button has a tooltip that appears when you hover over the button
-        with a mouse.
+        These buttons have tooltips that appear when you hover over the button
+        or move keyboard focus to the button.
       </p>
       <elix-tooltip-source>
-        <span id="label" slot="source"> OK </span>
-        <span id="tooltip">Here is the tooltip.</span>
+        <span slot="source">1</span>
+        <span class="tooltip">One</span>
+      </elix-tooltip-source>
+      <elix-tooltip-source>
+        <span slot="source">2</span>
+        <span class="tooltip">Two</span>
+      </elix-tooltip-source>
+      <elix-tooltip-source>
+        <span slot="source">3</span>
+        <span class="tooltip">Three</span>
       </elix-tooltip-source>
     </div>
   </body>
