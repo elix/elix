@@ -6,9 +6,13 @@ import {
   ids,
   raiseChangeEvents,
   render,
+  rendered,
+  state,
   template,
 } from "./internal.js";
 import PopupButton from "./PopupButton.js";
+
+const documentKeydownListenerKey = Symbol("documentKeydownListener");
 
 const Base = FocusVisibleMixin(PopupButton);
 
@@ -16,10 +20,23 @@ const Base = FocusVisibleMixin(PopupButton);
  * Button with a non-interactive tooltip that appears on hover
  */
 class TooltipSource extends Base {
+  connectedCallback() {
+    super.connectedCallback();
+    // Handle edge case where component is opened, removed, then added back.
+    listenIfOpenAndConnected(this);
+  }
+
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       role: "none",
     });
+  }
+
+  disconnectedCallback() {
+    if (super.disconnectedCallback) {
+      super.disconnectedCallback();
+    }
+    listenIfOpenAndConnected(this);
   }
 
   [render](changed) {
@@ -65,6 +82,14 @@ class TooltipSource extends Base {
     }
   }
 
+  [rendered](/** @type {ChangedFlags} */ changed) {
+    super[rendered](changed);
+
+    if (changed.opened) {
+      listenIfOpenAndConnected(this);
+    }
+  }
+
   get [template]() {
     const result = super[template];
 
@@ -98,6 +123,44 @@ class TooltipSource extends Base {
     }
 
     return result;
+  }
+}
+
+// The user can invoke the tooltip on mouse hover, in which case the tooltip
+// will be shown even if the tooltip source does not have the focus. In that
+// situation, we still want the Esc key to close the tooltip. If the user
+// happened to intend for something else to happen a result, we'll still let
+// that happen -- but if the Esc key wasn't meant for the tooltip, it seems
+// safer to close the tooltip.
+async function handleKeydown(/** @type {KeyboardEvent} */ event) {
+  // @ts-ignore
+  const element = this;
+
+  switch (event.key) {
+    case "Escape":
+      if (element.opened) {
+        element[raiseChangeEvents] = true;
+        element.close();
+        element[raiseChangeEvents] = false;
+      }
+      break;
+  }
+}
+
+function listenIfOpenAndConnected(element) {
+  if (element[state].opened && element.isConnected) {
+    if (!element[documentKeydownListenerKey]) {
+      // Not listening yet; start.
+      element[documentKeydownListenerKey] = handleKeydown.bind(element);
+      document.addEventListener("keydown", element[documentKeydownListenerKey]);
+    }
+  } else if (element[documentKeydownListenerKey]) {
+    // Currently listening; stop.
+    document.removeEventListener(
+      "keydown",
+      element[documentKeydownListenerKey]
+    );
+    element[documentKeydownListenerKey] = null;
   }
 }
 
