@@ -1,4 +1,5 @@
 import { fragmentFrom } from "../core/htmlLiterals.js";
+import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import Hidden from "./Hidden.js";
 import {
   defaultState,
@@ -9,10 +10,12 @@ import {
 } from "./internal.js";
 import PopupButton from "./PopupButton.js";
 
+const Base = FocusVisibleMixin(PopupButton);
+
 /**
  * Button with a non-interactive tooltip that appears on hover
  */
-class TooltipSource extends PopupButton {
+class TooltipSource extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       role: "none",
@@ -22,9 +25,15 @@ class TooltipSource extends PopupButton {
   [render](changed) {
     super[render](changed);
 
-    // Track when the mouse enters/leaves the source element.
+    // Open tooltip on focus/mouseenter, close on mouseleave.
+    // PopupButton will already close the tooltip on blur.
     if (changed.sourcePartType) {
       const source = this[ids].source;
+      source.addEventListener("focus", () => {
+        this[raiseChangeEvents] = true;
+        this.open();
+        this[raiseChangeEvents] = false;
+      });
       source.addEventListener("mouseenter", () => {
         this[raiseChangeEvents] = true;
         this.open();
