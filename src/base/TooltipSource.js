@@ -13,6 +13,9 @@ import {
 } from "./internal.js";
 import PopupButton from "./PopupButton.js";
 
+// A reference to the most recently opened tooltip source.
+let mostRecentTooltipSource = null;
+
 const documentKeydownListenerKey = Symbol("documentKeydownListener");
 
 const Base = FocusVisibleMixin(PopupButton);
@@ -99,6 +102,19 @@ class TooltipSource extends Base {
 
     if (changed.opened) {
       listenIfOpenAndConnected(this);
+
+      if (this[state].opened) {
+        // If some other tooltip source is open, close it.
+        if (mostRecentTooltipSource && mostRecentTooltipSource.close) {
+          mostRecentTooltipSource.close();
+        }
+
+        // Make this the most recently-opened tooltip source.
+        mostRecentTooltipSource = this;
+      } else if (this === mostRecentTooltipSource && !this[state].opened) {
+        // This tooltip source was the most recent, but is now closed.
+        mostRecentTooltipSource = null;
+      }
     }
   }
 
