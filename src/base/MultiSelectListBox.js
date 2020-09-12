@@ -26,6 +26,7 @@ import KeyboardPrefixCursorMixin from "./KeyboardPrefixCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import MultiSelectAPIMixin from "./MultiSelectAPIMixin.js";
 import MultiSelectToggleMixin from "./MultiSelectToggleMixin.js";
+import MultiSelectValueAPIMixin from "./MultiSelectValueAPIMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapCursorMixin from "./TapCursorMixin.js";
@@ -47,9 +48,11 @@ const Base = AriaListMixin(
                             LanguageDirectionMixin(
                               MultiSelectAPIMixin(
                                 MultiSelectToggleMixin(
-                                  SingleSelectAPIMixin(
-                                    SlotItemsMixin(
-                                      TapCursorMixin(ReactiveElement)
+                                  MultiSelectValueAPIMixin(
+                                    SingleSelectAPIMixin(
+                                      SlotItemsMixin(
+                                        TapCursorMixin(ReactiveElement)
+                                      )
                                     )
                                   )
                                 )
@@ -97,6 +100,7 @@ const Base = AriaListMixin(
  * @mixes LanguageDirectionMixin
  * @mixes MultiSelectAPIMixin
  * @mixes MultiSelectToggleMixin
+ * @mixes MultiSelectValueAPIMixin
  * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
  * @mixes TapCursorMixin

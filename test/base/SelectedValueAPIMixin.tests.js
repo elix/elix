@@ -5,7 +5,7 @@ import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import { assert } from "../testHelpers.js";
 
 /* Element that exposes a value property */
-class SelectedTextAPITest extends ReactiveMixin(
+class SelectedValueAPITest extends ReactiveMixin(
   SelectedValueAPIMixin(ItemsCursorMixin(HTMLElement))
 ) {
   get [defaultState]() {
@@ -20,7 +20,7 @@ class SelectedTextAPITest extends ReactiveMixin(
     });
   }
 }
-customElements.define("selected-value-api-test", SelectedTextAPITest);
+customElements.define("selected-value-api-test", SelectedValueAPITest);
 
 describe("SelectedValueAPIMixin", () => {
   let container;
@@ -34,24 +34,24 @@ describe("SelectedValueAPIMixin", () => {
   });
 
   it("returns the empty string as the value for no selection", () => {
-    const fixture = new SelectedTextAPITest();
+    const fixture = new SelectedValueAPITest();
     assert.equal(fixture.value, "");
   });
 
   it("returns the value of the selected item", () => {
-    const fixture = new SelectedTextAPITest();
+    const fixture = new SelectedValueAPITest();
     fixture[setState]({ selectedIndex: 0 });
     assert.equal(fixture.value, "zero");
   });
 
   it("can set the selected index of the item with the indicated value", () => {
-    const fixture = new SelectedTextAPITest();
+    const fixture = new SelectedValueAPITest();
     fixture.value = "one";
     assert.equal(fixture[state].selectedIndex, 1);
   });
 
   it("clears the selected index if indicated text isn't found", () => {
-    const fixture = new SelectedTextAPITest();
+    const fixture = new SelectedValueAPITest();
     fixture.value = "foo";
     assert.equal(fixture[state].selectedIndex, -1);
   });

@@ -19,6 +19,7 @@ import KeyboardPrefixCursorMixin from "./KeyboardPrefixCursorMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import MultiSelectAPIMixin from "./MultiSelectAPIMixin.js";
 import MultiSelectToggleMixin from "./MultiSelectToggleMixin.js";
+import MultiSelectValueAPIMixin from "./MultiSelectValueAPIMixin.js";
 import SingleSelectAPIMixin from "./SingleSelectAPIMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapCursorMixin from "./TapCursorMixin.js";
@@ -40,9 +41,11 @@ export default class MultiSelectListBox extends AriaListMixin(
                             LanguageDirectionMixin(
                               MultiSelectAPIMixin(
                                 MultiSelectToggleMixin(
-                                  SingleSelectAPIMixin(
-                                    SlotItemsMixin(
-                                      TapCursorMixin(ReactiveElement)
+                                  MultiSelectValueAPIMixin(
+                                    SingleSelectAPIMixin(
+                                      SlotItemsMixin(
+                                        TapCursorMixin(ReactiveElement)
+                                      )
                                     )
                                   )
                                 )

@@ -11,8 +11,8 @@ export default function SelectedValueAPIMixin(Base) {
   // The class prototype added by the mixin.
   class SelectedValueAPI extends Base {
     get [defaultState]() {
-      return Object.assign(super[defaultState], {
-        value: null,
+      return Object.assign(super[defaultState] || {}, {
+        value: "",
       });
     }
 
@@ -33,11 +33,11 @@ export default function SelectedValueAPIMixin(Base) {
     }
 
     /**
-     * The text content of the selected item.
+     * The value attribute of the selected item.
      *
-     * Setting this value to a string will attempt to select the first list item
-     * whose text content match that string. Setting this to a string not matching
-     * any list item will result in no selection.
+     * Setting this to a string will attempt to select the first list item whose
+     * value attribute matches that string. Setting this to a string not
+     * matching any value attribute will result in no selection.
      *
      * @type {string}
      */
