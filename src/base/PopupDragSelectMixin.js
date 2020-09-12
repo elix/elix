@@ -32,7 +32,7 @@ export default function PopupDragSelectMixin(Base) {
     }
 
     get [defaultState]() {
-      return Object.assign(super[defaultState], {
+      return Object.assign(super[defaultState] || {}, {
         dragSelect: true,
       });
     }

@@ -33,7 +33,7 @@ export default function PopupListMixin(Base) {
     }
 
     get [defaultState]() {
-      return Object.assign(super[defaultState], {
+      return Object.assign(super[defaultState] || {}, {
         currentIndex: -1,
         hasHoveredOverItemSinceOpened: false,
         popupList: null,

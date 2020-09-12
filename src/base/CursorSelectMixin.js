@@ -14,7 +14,7 @@ export default function CursorSelectMixin(Base) {
   // The class prototype added by the mixin.
   return class CursorSelect extends Base {
     get [defaultState]() {
-      return Object.assign(super[defaultState], {
+      return Object.assign(super[defaultState] || {}, {
         selectedIndex: -1,
         selectedItem: null,
       });

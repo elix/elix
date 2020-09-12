@@ -31,7 +31,7 @@ export default function SelectedTextAPIMixin(Base) {
   // The class prototype added by the mixin.
   class SelectedTextAPI extends Base {
     get [defaultState]() {
-      return Object.assign(super[defaultState], {
+      return Object.assign(super[defaultState] || {}, {
         selectedText: "",
       });
     }
