@@ -1,5 +1,6 @@
 import { defaultState, template } from "../base/internal.js";
 import MenuButton from "../base/MenuButton.js";
+import PopupToggleMixin from "../base/PopupToggleMixin.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import PlainBorderButton from "./PlainBorderButton.js";
 import PlainMenu from "./PlainMenu.js";
@@ -14,8 +15,9 @@ import PlainPopup from "./PlainPopup.js";
  * @part {PlainPopup} popup
  * @part {PlainOpenCloseToggle} popup-toggle
  * @part {PlainBorderButton} source
+ * @mixes PopupToggleMixin
  */
-class PlainMenuButton extends MenuButton {
+class PlainMenuButton extends PopupToggleMixin(MenuButton) {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       menuPartType: PlainMenu,

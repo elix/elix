@@ -69,18 +69,16 @@ export default function PopupToggleMixin(Base) {
     get [template]() {
       const result = super[template];
 
-      // Inject a toggle button into the source slot.
-      const sourceSlot = result.content.querySelector('slot[name="source"]');
-      if (sourceSlot) {
-        sourceSlot.append(fragmentFrom.html`
-        <div
-          id="popupToggle"
-          part="popup-toggle"
-          exportparts="toggle-icon, down-icon, up-icon"
-          tabindex="-1"
-        >
-          <slot name="toggle-icon"></slot>
-        </div>
+      // Append a toggle button to the source.
+      const source = result.content.querySelector('[part~="source"]');
+      if (source) {
+        source.append(fragmentFrom.html`
+          <div
+            id="popupToggle"
+            part="popup-toggle"
+            exportparts="toggle-icon, down-icon, up-icon"
+            tabindex="-1"
+          ></div>
       `);
       }
 

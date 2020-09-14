@@ -379,7 +379,6 @@ class ComboBox extends Base {
     if (sourceSlot) {
       sourceSlot.replaceWith(fragmentFrom.html`
         <input id="input" part="input"></input>
-        <div id="popupToggle" part="popup-toggle" tabindex="-1"></div>
       `);
     }
 

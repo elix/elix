@@ -14,10 +14,9 @@ import {
 import KeyboardMixin from "./KeyboardMixin.js";
 import PopupDragSelectMixin from "./PopupDragSelectMixin.js";
 import PopupSource from "./PopupSource.js";
-import PopupToggleMixin from "./PopupToggleMixin.js";
 
 const Base = DelegateFocusMixin(
-  KeyboardMixin(PopupDragSelectMixin(PopupToggleMixin(PopupSource)))
+  KeyboardMixin(PopupDragSelectMixin(PopupSource))
 );
 
 /**
@@ -27,7 +26,6 @@ const Base = DelegateFocusMixin(
  * @mixes DelegateFocusMixin
  * @mixes KeyboardMixin
  * @mixes PopupDragSelectMixin
- * @mixes PopupToggleMixin
  */
 class PopupButton extends Base {
   get [defaultState]() {

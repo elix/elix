@@ -5,8 +5,7 @@ import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import PopupDragSelectMixin from "./PopupDragSelectMixin.js";
 import PopupSource from "./PopupSource.js";
-import PopupToggleMixin from "./PopupToggleMixin.js";
 
 export default class PopupButton extends DelegateFocusMixin(
-  KeyboardMixin(PopupDragSelectMixin(PopupToggleMixin(PopupSource)))
+  KeyboardMixin(PopupDragSelectMixin(PopupSource))
 ) {}
