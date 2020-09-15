@@ -129,6 +129,7 @@ class PopupSource extends Base {
 
     if (
       // changed.horizontalAlign ||
+      changed.opened ||
       changed.popupMeasured
       // changed.rightToLeft
     ) {
@@ -138,27 +139,46 @@ class PopupSource extends Base {
         calculatedPopupLeft,
         calculatedPopupPosition,
         calculatedPopupRight,
+        opened,
         popupMeasured,
       } = this[state];
 
-      if (!popupMeasured) {
-        // We need to measure the popup, which requires rendering it. We don't
-        // want the user to see it during this measuring phase, so we give it
-        // zero opacity. (If we use `visibility: hidden` for this purpose, the
-        // popup won't be able to receive the focus, which would complicate our
-        // overlay focus handling.)
+      if (!opened) {
+        // If the popup's closed, we reset the styles used to position it.
+        if (!opened) {
+          Object.assign(this[ids].popupContainer.style, {
+            overflow: "",
+          });
+          Object.assign(this[ids].popup.style, {
+            bottom: "",
+            left: "",
+            opacity: "",
+            position: "",
+            right: "",
+          });
+        }
+      } else if (!popupMeasured) {
+        // If the popup is opened but has not yet been measured, we want to
+        // render the component invisibly so we can measure it before showing
+        // it. We hide it by giving it zero opacity. If we use `visibility:
+        // hidden` for this purpose, the popup won't be able to receive the
+        // focus, which would complicate our overlay focus handling.
         //
-        // During measuring, we use fixed positioning to try to avoid affecting
-        // page layout or triggering scrolling.
+        // We also need to avoid affecting page layout or triggering page
+        // scrolling in this phase. One way we can do that is to hide the
+        // overflow on the zero-height popupContainer element, clipping the
+        // popup and preventing it from affecting layout. (Another method would
+        // be applying `position: fixed` to the popup in this phase, but as of
+        // September 2020, a Chrome bug prevents that from working inside a
+        // scrollable page region with a transform.)
+        Object.assign(this[ids].popupContainer.style, {
+          overflow: "hidden",
+        });
         Object.assign(this[ids].popup.style, {
-          left: 0,
-          position: "fixed",
           opacity: 0,
-          top: 0,
         });
       } else {
-        // We've measured the popup, so now we can render it in position.
-
+        // We can now show the open and measured popup in position.
         const positionBelow = calculatedPopupPosition === "below";
 
         const popup = this[ids].popup;
@@ -166,7 +186,6 @@ class PopupSource extends Base {
           bottom: positionBelow ? "" : 0,
           left: calculatedPopupLeft,
           opacity: "",
-          position: "absolute",
           right: calculatedPopupRight,
         });
 
@@ -180,25 +199,16 @@ class PopupSource extends Base {
             : "",
         });
 
-        this[ids].popupContainer.style.top = positionBelow ? "" : "0";
+        Object.assign(this[ids].popupContainer.style, {
+          overflow: "",
+          top: positionBelow ? "" : "0",
+        });
       }
     }
 
     if (changed.opened) {
       const { opened } = this[state];
-
       /** @type {any} */ (this[ids].popup).opened = opened;
-
-      // If the popup's closed, we remove the styles used to position it.
-      if (!opened) {
-        Object.assign(this[ids].popup.style, {
-          bottom: "",
-          left: "",
-          opacity: "",
-          position: "",
-          right: "",
-        });
-      }
     }
 
     if (changed.disabled) {
@@ -211,15 +221,16 @@ class PopupSource extends Base {
 
   [rendered](/** @type {ChangedFlags} */ changed) {
     super[rendered](changed);
+    const { opened } = this[state];
     if (changed.opened) {
-      if (this.opened) {
+      if (opened) {
         // Worth noting that's possible (but unusual) for a popup to render opened
         // on first render.
         waitThenRenderOpened(this);
       } else {
         removeEventListeners(this);
       }
-    } else if (this.opened && !this[state].popupMeasured) {
+    } else if (opened && !this[state].popupMeasured) {
       // Need to recalculate popup measurements.
       measurePopup(this);
     }
@@ -492,7 +503,7 @@ function waitThenRenderOpened(element) {
   setTimeout(() => {
     // It's conceivable the popup was closed before the timeout completed,
     // so double-check that it's still opened before listening to events.
-    if (element.opened) {
+    if (element[state].opened) {
       measurePopup(element);
       addEventListeners(element);
     }
