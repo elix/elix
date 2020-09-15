@@ -121,9 +121,6 @@ class PopupButton extends Base {
       // Reflect opened state to attribute for styling.
       const { opened } = this[state];
       this.toggleAttribute("opened", opened);
-
-      // Reflect opened state to source for ARIA.
-      this[ids].source.setAttribute("aria-expanded", opened.toString());
     }
 
     if (changed.sourcePartType) {

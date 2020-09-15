@@ -31,7 +31,10 @@ class TooltipSource extends Base {
   }
 
   get [defaultState]() {
+    // Because the user will not have to interact with the element to invoke the
+    // popup, we don't need `aria-haspopup`.
     return Object.assign(super[defaultState], {
+      ariaHasPopup: null,
       role: "none",
     });
   }

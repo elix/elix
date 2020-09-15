@@ -87,6 +87,12 @@ class MenuButton extends Base {
         }
       });
     }
+
+    if (changed.opened) {
+      // Reflect opened state to source for ARIA.
+      const { opened } = this[state];
+      this[ids].source.setAttribute("aria-expanded", opened.toString());
+    }
   }
 
   [rendered](changed) {

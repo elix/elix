@@ -127,6 +127,12 @@ class DropdownList extends Base {
       }
     }
 
+    if (changed.opened) {
+      // Reflect opened state to source for ARIA.
+      const { opened } = this[state];
+      this[ids].source.setAttribute("aria-expanded", opened.toString());
+    }
+
     if (changed.sourcePartType) {
       /** @type {any} */ const source = this[ids].source;
       // HACK — need better way to forward button role to inner button.
