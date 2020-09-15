@@ -128,9 +128,9 @@ class PopupSource extends Base {
     }
 
     if (
-      changed.horizontalAlign ||
-      changed.popupMeasured ||
-      changed.rightToLeft
+      // changed.horizontalAlign ||
+      changed.popupMeasured
+      // changed.rightToLeft
     ) {
       const {
         calculatedFrameMaxHeight,
@@ -141,44 +141,64 @@ class PopupSource extends Base {
         popupMeasured,
       } = this[state];
 
-      const positionBelow = calculatedPopupPosition === "below";
-      const bottom = positionBelow ? null : 0;
+      if (!popupMeasured) {
+        // We need to measure the popup, which requires rendering it. We don't
+        // want the user to see it during this measuring phase, so we give it
+        // zero opacity. (If we use `visibility: hidden` for this purpose, the
+        // popup won't be able to receive the focus, which would complicate our
+        // overlay focus handling.)
+        //
+        // During measuring, we use fixed positioning to try to avoid affecting
+        // page layout or triggering scrolling.
+        Object.assign(this[ids].popup.style, {
+          left: 0,
+          position: "fixed",
+          opacity: 0,
+          top: 0,
+        });
+      } else {
+        // We've measured the popup, so now we can render it in position.
 
-      // Until we've measured the rendered position of the popup, render it in
-      // fixed position (so it doesn't affect page layout or scrolling), and don't
-      // make it visible yet. If we use `visibility: hidden` for this purpose, the
-      // popup won't be able to receive the focus. Instead, we use zero opacity as
-      // a way to make the popup temporarily invisible until we have checked where
-      // it fits.
-      const opacity = popupMeasured ? null : 0;
-      const position = popupMeasured ? "absolute" : "fixed";
+        const positionBelow = calculatedPopupPosition === "below";
 
-      const left = calculatedPopupLeft;
-      const right = calculatedPopupRight;
+        const popup = this[ids].popup;
+        Object.assign(popup.style, {
+          bottom: positionBelow ? "" : 0,
+          left: calculatedPopupLeft,
+          opacity: "",
+          position: "absolute",
+          right: calculatedPopupRight,
+        });
 
-      const popup = this[ids].popup;
-      Object.assign(popup.style, {
-        bottom,
-        left,
-        opacity,
-        position,
-        right,
-      });
-      const frame = /** @type {any} */ (popup).frame;
-      Object.assign(frame.style, {
-        maxHeight: calculatedFrameMaxHeight
-          ? `${calculatedFrameMaxHeight}px`
-          : null,
-        maxWidth: calculatedFrameMaxWidth
-          ? `${calculatedFrameMaxWidth}px`
-          : null,
-      });
-      this[ids].popupContainer.style.top = positionBelow ? "" : "0";
+        const frame = /** @type {any} */ (popup).frame;
+        Object.assign(frame.style, {
+          maxHeight: calculatedFrameMaxHeight
+            ? `${calculatedFrameMaxHeight}px`
+            : "",
+          maxWidth: calculatedFrameMaxWidth
+            ? `${calculatedFrameMaxWidth}px`
+            : "",
+        });
+
+        this[ids].popupContainer.style.top = positionBelow ? "" : "0";
+      }
     }
 
     if (changed.opened) {
       const { opened } = this[state];
+
       /** @type {any} */ (this[ids].popup).opened = opened;
+
+      // If the popup's closed, we remove the styles used to position it.
+      if (!opened) {
+        Object.assign(this[ids].popup.style, {
+          bottom: "",
+          left: "",
+          opacity: "",
+          position: "",
+          right: "",
+        });
+      }
     }
 
     if (changed.disabled) {
