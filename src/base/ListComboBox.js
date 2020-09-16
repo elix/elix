@@ -155,9 +155,10 @@ class ListComboBox extends Base {
     if (changed.listPartType) {
       // Keep focus off of the list and on the top level combo box (which should
       // delegate focus to the input).
-      /** @type {any} */
-      const cast = this[ids].list;
-      forwardFocus(cast, this);
+      const list = this[ids].list;
+      if (list instanceof HTMLElement) {
+        forwardFocus(list, this);
+      }
     }
   }
 
@@ -274,21 +275,24 @@ class ListComboBox extends Base {
     const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
       defaultSlot.replaceWith(fragmentFrom.html`
-        <style>
-          [part~="list"] {
-            border: none;
-            flex: 1;
-            height: 100%;
-            max-height: 100%;
-            overscroll-behavior: contain;
-            width: 100%;
-          }
-        </style>
         <div id="list" part="list" tabindex="-1">
           <slot></slot>
         </div>
       `);
     }
+
+    result.content.append(fragmentFrom.html`
+      <style>
+        [part~="list"] {
+          border: none;
+          flex: 1;
+          height: 100%;
+          max-height: 100%;
+          overscroll-behavior: contain;
+          width: 100%;
+        }
+      </style>
+    `);
 
     renderParts(result.content, this[state]);
 
