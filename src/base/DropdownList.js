@@ -75,7 +75,6 @@ class DropdownList extends Base {
 
   get [defaultState]() {
     return Object.assign(super[defaultState], {
-      accessibleOptions: null,
       ariaHasPopup: "listbox",
       listPartType: "div",
       selectedIndex: -1,
@@ -155,17 +154,6 @@ class DropdownList extends Base {
 
   [stateEffects](state, changed) {
     const effects = super[stateEffects](state, changed);
-
-    // Create accessible items for dropdown list.
-    if (changed.items) {
-      const items = state.items || [];
-      const accessibleOptions = items.map((item) => {
-        const option = document.createElement("option");
-        option.textContent = item.textContent; // TODO getItemText
-        return option;
-      });
-      Object.assign(effects, { accessibleOptions });
-    }
 
     // When opening the popup, by default (re)select the current item.
     if (changed.opened && state.opened) {
