@@ -86,6 +86,36 @@ class PopupSource extends Base {
     this[setState]({ horizontalAlign });
   }
 
+  /**
+   * The preferred direction for the popup.
+   *
+   * * `above`: popup should appear above the source
+   * * `below`: popup should appear below the source
+   *
+   * @type {('above'|'below')}
+   * @default 'below'
+   */
+  get popupPosition() {
+    return this[state].popupPosition;
+  }
+  set popupPosition(popupPosition) {
+    this[setState]({ popupPosition });
+  }
+
+  /**
+   * The class or tag used to create the `popup` part – the element
+   * responsible for displaying the popup and handling overlay behavior.
+   *
+   * @type {PartDescriptor}
+   * @default Popup
+   */
+  get popupPartType() {
+    return this[state].popupPartType;
+  }
+  set popupPartType(popupPartType) {
+    this[setState]({ popupPartType });
+  }
+
   [render](/** @type {ChangedFlags} */ changed) {
     super[render](changed);
 
@@ -217,6 +247,15 @@ class PopupSource extends Base {
         /** @type {any} */ (this[ids].source).disabled = disabled;
       }
     }
+
+    // Let the popup know it's position relative to the popup.
+    if (changed.calculatedPopupPosition) {
+      const { calculatedPopupPosition } = this[state];
+      /** @type {any} */ const popup = this[ids].popup;
+      if ("position" in popup) {
+        popup.position = calculatedPopupPosition;
+      }
+    }
   }
 
   [rendered](/** @type {ChangedFlags} */ changed) {
@@ -234,36 +273,6 @@ class PopupSource extends Base {
       // Need to recalculate popup measurements.
       measurePopup(this);
     }
-  }
-
-  /**
-   * The preferred direction for the popup.
-   *
-   * * `above`: popup should appear above the source
-   * * `below`: popup should appear below the source
-   *
-   * @type {('above'|'below')}
-   * @default 'below'
-   */
-  get popupPosition() {
-    return this[state].popupPosition;
-  }
-  set popupPosition(popupPosition) {
-    this[setState]({ popupPosition });
-  }
-
-  /**
-   * The class or tag used to create the `popup` part – the element
-   * responsible for displaying the popup and handling overlay behavior.
-   *
-   * @type {PartDescriptor}
-   * @default Popup
-   */
-  get popupPartType() {
-    return this[state].popupPartType;
-  }
-  set popupPartType(popupPartType) {
-    this[setState]({ popupPartType });
   }
 
   /**
