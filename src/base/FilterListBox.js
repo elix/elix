@@ -43,7 +43,9 @@ class FilterListBox extends ListBox {
     // change events.
     const saveRaiseChangesEvents = this[raiseChangeEvents];
     this[raiseChangeEvents] = true;
-    this[setState]({ filter });
+    this[setState]({
+      filter: String(filter),
+    });
     this[raiseChangeEvents] = saveRaiseChangesEvents;
   }
 

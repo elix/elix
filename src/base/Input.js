@@ -89,8 +89,9 @@ class Input extends Base {
     return super.value;
   }
   set value(value) {
-    super.value = value;
-    this[setState]({ valueCopy: value });
+    const s = String(value);
+    super.value = s;
+    this[setState]({ valueCopy: s });
   }
 }
 

@@ -74,10 +74,13 @@ export default function FormElementMixin(Base) {
       return this[state] ? this[state].name : "";
     }
     set name(name) {
+      const s = String(name);
       if ("name" in Base.prototype) {
-        super.name = name;
+        super.name = s;
       }
-      this[setState]({ name });
+      this[setState]({
+        name: s,
+      });
     }
 
     [render](/** @type {ChangedFlags} */ changed) {

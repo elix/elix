@@ -205,7 +205,7 @@ class DateInput extends Base {
     // the effects on the date, so we'll need to raise change events.
     const saveRaiseChangesEvents = this[raiseChangeEvents];
     this[raiseChangeEvents] = true;
-    super.value = value;
+    super.value = String(value);
     this[setState]({
       datePriority: false,
     });

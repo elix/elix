@@ -149,7 +149,9 @@ class ComboBox extends Base {
     return this[state].placeholder;
   }
   set placeholder(placeholder) {
-    this[setState]({ placeholder });
+    this[setState]({
+      placeholder: String(placeholder),
+    });
   }
 
   [render](/** @type {ChangedFlags} */ changed) {

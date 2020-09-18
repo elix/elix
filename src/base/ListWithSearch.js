@@ -79,11 +79,23 @@ class ListWithSearch extends Base {
     });
   }
 
+  /**
+   * A text filter applied to the list's items. Only content elements whose
+   * text contains the indicated filter text will be included in the list's
+   * `items` property. The text search is case insensitive.
+   *
+   * By default, the filter is empty, so all substantive content elements
+   * are included in `items`.
+   *
+   * @type {string}
+   */
   get filter() {
     return this[state].filter;
   }
   set filter(filter) {
-    this[setState]({ filter });
+    this[setState]({
+      filter: String(filter),
+    });
   }
 
   /**
@@ -181,7 +193,9 @@ class ListWithSearch extends Base {
     return this[state].placeholder;
   }
   set placeholder(placeholder) {
-    this[setState]({ placeholder });
+    this[setState]({
+      placeholder: String(placeholder),
+    });
   }
 
   [render](/** @type {ChangedFlags} */ changed) {

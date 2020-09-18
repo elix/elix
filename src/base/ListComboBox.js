@@ -189,8 +189,9 @@ class ListComboBox extends Base {
   }
   set selectedItemValue(selectedItemValue) {
     const { items } = this[state];
+    const s = String(selectedItemValue);
     const selectedIndex = items.findIndex(
-      (item) => item.getAttribute("value") === selectedItemValue
+      (item) => item.getAttribute("value") === s
     );
     this[setState]({ selectedIndex });
   }

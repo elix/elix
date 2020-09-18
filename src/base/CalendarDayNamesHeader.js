@@ -62,7 +62,9 @@ class CalendarDayNamesHeader extends ReactiveElement {
     return this[state].locale;
   }
   set locale(locale) {
-    this[setState]({ locale });
+    this[setState]({
+      locale: String(locale),
+    });
   }
 
   [render](/** @type {ChangedFlags} */ changed) {

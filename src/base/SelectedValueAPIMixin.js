@@ -47,7 +47,9 @@ export default function SelectedValueAPIMixin(Base) {
     set value(value) {
       // Find index of item with desired value.
       const { items } = this[state];
-      const selectedIndex = items ? indexOfItemWithValue(items, value) : -1;
+      const selectedIndex = items
+        ? indexOfItemWithValue(items, String(value))
+        : -1;
       this[setState]({ selectedIndex });
     }
   }

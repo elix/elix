@@ -79,7 +79,9 @@ export default function CalendarElementMixin(Base) {
       return this[state].locale;
     }
     set locale(locale) {
-      this[setState]({ locale });
+      this[setState]({
+        locale: String(locale),
+      });
     }
 
     [rendered](/** @type {ChangedFlags} */ changed) {

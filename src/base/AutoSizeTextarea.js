@@ -278,7 +278,7 @@ class AutoSizeTextarea extends Base {
   }
   set value(value) {
     this[setState]({
-      value,
+      value: String(value),
       valueTracksContent: false,
     });
   }

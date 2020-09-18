@@ -86,7 +86,7 @@ export default function SelectedTextAPIMixin(Base) {
       // Find index of item with desired text.
       const { items } = this[state];
       const selectedIndex = items
-        ? indexOfItemWithText(items, this[getItemText], selectedText)
+        ? indexOfItemWithText(items, this[getItemText], String(selectedText))
         : -1;
       this[setState]({ selectedIndex });
     }

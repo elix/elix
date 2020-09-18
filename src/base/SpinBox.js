@@ -217,7 +217,9 @@ export class SpinBox extends Base {
     return this[state].value;
   }
   set value(value) {
-    this[setState]({ value });
+    this[setState]({
+      value: String(value),
+    });
   }
 }
 

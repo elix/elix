@@ -52,9 +52,10 @@ export default function AriaRoleMixin(Base) {
       return super.role;
     }
     set role(role) {
-      super.role = role;
+      const s = String(role);
+      super.role = s;
       if (!this[rendering]) {
-        this[setState]({ role });
+        this[setState]({ s });
       }
     }
   }

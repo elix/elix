@@ -49,7 +49,7 @@ export default function MultiSelectValueAPIMixin(Base) {
     set value(value) {
       // Find set of items with the desired values.
       const { items } = this[state];
-      const values = value.split("\n");
+      const values = String(value).split("\n");
       const selectedItemFlags = items.map((item) =>
         values.includes(item.getAttribute("value"))
       );

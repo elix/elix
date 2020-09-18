@@ -33,7 +33,9 @@ export default function DelegateInputLabelMixin(Base) {
     }
     set ariaLabel(ariaLabel) {
       if (!this[state].removingAriaAttribute) {
-        this[setState]({ ariaLabel });
+        this[setState]({
+          ariaLabel: String(ariaLabel),
+        });
       }
     }
 
@@ -45,7 +47,9 @@ export default function DelegateInputLabelMixin(Base) {
     }
     set ariaLabelledby(ariaLabelledby) {
       if (!this[state].removingAriaAttribute) {
-        this[setState]({ ariaLabelledby });
+        this[setState]({
+          ariaLabelledby: String(ariaLabelledby),
+        });
       }
     }
 
