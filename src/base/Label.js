@@ -1,15 +1,5 @@
 import { fragmentFrom } from '../core/htmlLiterals.js';
-import {
-    defaultState,
-    // firstRender,
-    // ids,
-    // inputDelegate,
-    // raiseChangeEvents,
-    // render,
-    state,
-    setState,
-    template
-} from './internal.js';
+import { firstRender, ids, render, template } from './internal.js';
 import WrappedStandardElement from './WrappedStandardElement.js';
 
 const Base = WrappedStandardElement.wrap('label');
@@ -17,23 +7,23 @@ const Base = WrappedStandardElement.wrap('label');
 /**
  * Base class for custom label elements
  *
- * `Label` wraps a standard HTML `label` element, allowing for custom styling
- * and behavior while ensuring all users, regardless of assistive technology, get the same information.
+ * `Label` wraps a standard HTML `label` element, allowing for custom styling.
+ * This component is mainly a workaround for the fact that AOM doesn't work yet,
+ * so we need to add aria-hidden to labels so screen readers don't have information
+ * duplicated.
  *
  * @inherits WrappedStandardElement
  * @part label - the inner standard HTML label
  */
 
 class Label extends Base {
-    get [defaultState]() {
-        return Object.assign(super[defaultState], {
-            label: ''
-        });
-    }
+    [render](/** @type {ChangedFlags} */ changed) {
+        super[render](changed);
 
-    // [render](/** @type {ChangedFlags} */ changed) {
-    //   super[render](changed);
-    // }
+        if (this[firstRender]) {
+            this[ids].inner.setAttribute('aria-hidden', 'true');
+        }
+    }
 
     get [template]() {
         const result = super[template];
@@ -46,13 +36,6 @@ class Label extends Base {
         </style>
       `);
         return result;
-    }
-
-    get label() {
-        return this[state].label;
-    }
-    set label(label) {
-        this[setState]({ label: label });
     }
 }
 
