@@ -1,44 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Elix Input with labels</title>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Elix Input with labels</title>
 
-    <link rel="stylesheet" href="demos.css" />
-    <script type="module" src="../define/Input.js"></script>
-  </head>
+        <link rel="stylesheet" href="demos.css" />
+        <script type="module" src="../define/Input.js"></script>
+        <script type="module" src="../define/Label.js"></script>
+    </head>
 
-  <body role="main">
-    <div class="demo">
-      <p>
-        This demo tests various ways of assigning an ARIA label to an Elix
-        element. In each case, the assigned label should be delegated to an
-        <code>&lt;input&gt;</code> in the element's shadow.
-      </p>
-      <div>
-        <p>Using <code>aria-label</code>:</p>
-        Name <elix-input aria-label="Name"></elix-input>
-      </div>
-      <div>
-        <p>Using <code>aria-labelledby:</code></p>
-        <span id="label-1">Phone</span>
-        <elix-input aria-labelledby="label-1"></elix-input>
-      </div>
-      <div>
-        <p>
-          Using a <code>&lt;label&gt;</code> with a <code>for</code> attribute:
-        </p>
-        <label for="input-0">Email</label>
-        <elix-input id="input-0"></elix-input>
-      </div>
-      <div>
-        <p>Using a wrapping <code>&lt;label&gt;</code>:</p>
-        <label>
-          Nickname
-          <elix-input></elix-input>
-        </label>
-      </div>
-    </div>
-  </body>
+    <body role="main">
+        <div class="demo">
+            <p>
+                This demo tests various ways of assigning an ARIA label to an
+                Elix element. In each case, the assigned label should be
+                delegated to an
+                <code>&lt;input&gt;</code> in the element's shadow.
+            </p>
+            <div>
+                <p>Using <code>aria-label</code>:</p>
+                Name <elix-input aria-label="Name"></elix-input>
+            </div>
+            <div>
+                <p>Using <code>aria-labelledby</code>:</p>
+                <span id="label-1">Phone</span>
+                <elix-input aria-labelledby="label-1"></elix-input>
+            </div>
+            <div>
+                <p>
+                    Using a <code>&lt;label&gt;</code> with a
+                    <code>for</code> attribute:
+                </p>
+                <label for="input-0">Email</label>
+                <elix-input id="input-0"></elix-input>
+            </div>
+            <div>
+                <p>Using a wrapping <code>&lt;label&gt;</code>:</p>
+                <label>
+                    Nickname
+                    <elix-input></elix-input>
+                </label>
+            </div>
+
+            <div>
+                <p>Using <code>&lt;elix-label&gt;</code>:</p>
+                <elix-label for="input-1">Favorite Color</elix-label>
+                <elix-input id="input-1"></elix-input>
+            </div>
+        </div>
+    </body>
 </html>
