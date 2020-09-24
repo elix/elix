@@ -50,7 +50,20 @@ class Label extends Base {
 
         if (this[firstRender]) {
             this[ids].inner.setAttribute('aria-hidden', 'true');
-            this[ids].inner.addEventListener('click', () => {});
+            this[ids].inner.addEventListener('click', () => {
+                const HTMLFor = this[state].for;
+                /** @type {any} */ const rootNode = this.isConnected
+                    ? this.getRootNode()
+                    : null;
+                if (rootNode) {
+                    const associatedInput = rootNode.querySelector(
+                        `#${HTMLFor}`
+                    );
+                    if (associatedInput) {
+                        associatedInput.focus();
+                    }
+                }
+            });
         }
 
         if (changed.for) {
