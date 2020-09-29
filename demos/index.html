@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix components</title>
+    <link rel="stylesheet" href="demos.css" />
+    <link rel="stylesheet" href="storyIndex.css" />
+    <script type="module">
+      import StoryPage from "./src/StoryPage.js";
+      customElements.define("story-page", StoryPage);
+    </script>
+    <script>
+      const defaultStoryPath = "about:blank"; // "intro.html";
+
+      // Simple router
+      function handleRoute() {
+        // Get #path=<path> from URL, make that path the current story.
+        const match = /#path=(?<path>.+)/.exec(location.hash);
+        const path = match ? match.groups.path : defaultStoryPath;
+        const storyPage = document.getElementById("storyPage");
+        storyPage.path = path;
+
+        // Highlight any navigation links that point to this page.
+        const links = [...document.querySelectorAll("nav a")];
+        const href = window.location.href;
+        links.forEach((link) => {
+          const current = link.href === href;
+          link.classList.toggle("current", current);
+        });
+      }
+
+      window.addEventListener("load", (event) => {
+        const storyPage = document.getElementById("storyPage");
+        storyPage.addEventListener("load", (event) => {
+          const { title } = event.detail;
+          document.title = title;
+        });
+        handleRoute();
+      });
+
+      window.addEventListener("hashchange", () => {
+        handleRoute();
+      });
+    </script>
+  </head>
+  <body>
+    <nav>
+      <h1><a href=".">Elix</a></h1>
+      <ul>
+        <!-- <li id="intro">
+          <a href=".">Introduction</a>
+        </li> -->
+        <li>
+          <a href="#path=alertDialog.html">AlertDialog</a>
+        </li>
+        <li>
+          <a href="#path=autoCompleteComboBox.html">AutoCompleteComboBox</a>
+        </li>
+        <li>
+          <a href="#path=autoSizeTextarea.html">AutoSizeTextarea</a>
+        </li>
+        <li><a href="#path=autoCompleteInput.html">AutoCompleteInput</a></li>
+        <li><a href="#path=autoSizeTextarea.html">AutoSizeTextarea</a></li>
+        <li>
+          <a href="#path=autoSizeTextareaCustomName.html"
+            >AutoSizeTextarea: CustomName</a
+          >
+        </li>
+        <li><a href="#path=button.html">Button</a></li>
+        <li><a href="#path=calendarDay.html">CalendarDay</a></li>
+        <li>
+          <a href="#path=calendarDayNamesHeader.html">CalendarDayNamesHeader</a>
+        </li>
+        <li><a href="#path=calendarDays.html">CalendarDays</a></li>
+        <li><a href="#path=calendarLocale.html">CalendarLocale</a></li>
+        <li><a href="#path=calendarMonth-ar-KW.html">CalendarMonth</a></li>
+        <li><a href="#path=calendarMonth-en-GB.html">CalendarMonth</a></li>
+        <li><a href="#path=calendarMonth-en-US.html">CalendarMonth</a></li>
+        <li><a href="#path=calendarMonth-fr-FR.html">CalendarMonth</a></li>
+        <li><a href="#path=calendarMonth-hi-IN.html">CalendarMonth</a></li>
+        <li><a href="#path=calendarMonth-ja-JP.html">CalendarMonth</a></li>
+        <li><a href="#path=calendarMonth.html">CalendarMonth</a></li>
+        <li>
+          <a href="#path=calendarMonthNavigator.html">CalendarMonthNavigator</a>
+        </li>
+        <li>
+          <a href="#path=calendarMonthYearHeader.html"
+            >CalendarMonthYearHeader</a
+          >
+        </li>
+        <li><a href="#path=calendarMoonPhase.html">CalendarMoonPhase</a></li>
+        <li><a href="#path=carousel.html">Carousel</a></li>
+        <li><a href="#path=carouselDarkMode.html">CarouselDarkMode</a></li>
+        <li><a href="#path=carouselSlideshow.html">CarouselSlideshow</a></li>
+        <li>
+          <a href="#path=carouselWithProxies.html">CarouselWithProxies</a>
+        </li>
+        <li>
+          <a href="#path=carouselWithThumbnails.html">CarouselWithThumbnails</a>
+        </li>
+        <li>
+          <a href="#path=centeredStripHighlight.html">CenteredStripHighlight</a>
+        </li>
+        <li>
+          <a href="#path=centeredStripOpacity.html">CenteredStripOpacity</a>
+        </li>
+        <li><a href="#path=colorDropdownList.html">ColorDropdownList</a></li>
+        <li><a href="#path=countryListBox.html">CountryListBox</a></li>
+        <li><a href="#path=darkMode.html">DarkMode</a></li>
+        <li><a href="#path=dateComboBox.html">DateComboBox</a></li>
+        <li>
+          <a href="#path=dateComboBoxTimeBias.html">DateComboBoxTimeBias</a>
+        </li>
+        <li><a href="#path=dateInput.html">DateInput</a></li>
+        <li><a href="#path=dialog.html">Dialog</a></li>
+        <li><a href="#path=disabled.html">Disabled</a></li>
+        <li><a href="#path=drawer.html">Drawer</a></li>
+        <li><a href="#path=drawerWithGrip.html">DrawerWithGrip</a></li>
+        <li><a href="#path=dropdownList.html">DropdownList</a></li>
+        <li>
+          <a href="#path=dynamicTemplateExample.html">DynamicTemplateExample</a>
+        </li>
+        <li><a href="#path=expandablePanel.html">ExpandablePanel</a></li>
+        <li><a href="#path=expandableSection.html">ExpandableSection</a></li>
+        <li><a href="#path=filterComboBox.html">FilterComboBox</a></li>
+        <li><a href="#path=filterListBox.html">FilterListBox</a></li>
+        <li><a href="#path=focusVisible.html">FocusVisible</a></li>
+        <li><a href="#path=formElement.html">FormElement</a></li>
+        <li>
+          <a href="#path=hamburgerMenuButton.html">HamburgerMenuButton</a>
+        </li>
+        <li><a href="#path=horizontalList.html">HorizontalList</a></li>
+        <li><a href="#path=index.html">Index</a></li>
+        <li><a href="#path=input.html">Input</a></li>
+        <li><a href="#path=inputLabels.html">InputLabels</a></li>
+        <li><a href="#path=listAndCarousel.html">ListAndCarousel</a></li>
+        <li>
+          <a href="#path=listAndCarousel.production.html">ListAndCarousel</a>
+        </li>
+        <li><a href="#path=listBox.html">ListBox</a></li>
+        <li><a href="#path=listBoxWithOptions.html">ListBoxWithOptions</a></li>
+        <li><a href="#path=listExplorer.html">ListExplorer</a></li>
+        <li><a href="#path=listWithSearch.html">ListWithSearch</a></li>
+        <li><a href="#path=menu.html">Menu</a></li>
+        <li><a href="#path=menuButton.html">MenuButton</a></li>
+        <li><a href="#path=modesWithKeyboard.html">ModesWithKeyboard</a></li>
+        <li><a href="#path=multiSelectListBox.html">MultiSelectListBox</a></li>
+        <li><a href="#path=numberSpinBox.html">NumberSpinBox</a></li>
+        <li><a href="#path=pageDot.html">PageDot</a></li>
+        <li><a href="#path=popup.html">Popup</a></li>
+        <li><a href="#path=popupButton.html">PopupButton</a></li>
+        <li><a href="#path=popupPositions.html">PopupPositions</a></li>
+        <li><a href="#path=progressSpinner.html">ProgressSpinner</a></li>
+        <li><a href="#path=pullToRefresh.html">PullToRefresh</a></li>
+        <li>
+          <a href="#path=reactiveElementExample.html">ReactiveElementExample</a>
+        </li>
+        <li>
+          <a href="#path=reactiveMixinExample.html">ReactiveMixinExample</a>
+        </li>
+        <li><a href="#path=responsiveDrawer.html">ResponsiveDrawer</a></li>
+        <li><a href="#path=serene.html">Serene</a></li>
+        <li><a href="#path=singleSelection.html">SingleSelection</a></li>
+        <li><a href="#path=slideshow.html">Slideshow</a></li>
+        <li>
+          <a href="#path=slideshowWithPlayControls.html"
+            >SlideshowWithPlayControls</a
+          >
+        </li>
+        <li><a href="#path=slidingPages.html">SlidingPages</a></li>
+        <li>
+          <a href="#path=slidingPagesWithArrows.html">SlidingPagesWithArrows</a>
+        </li>
+        <li><a href="#path=slidingStage.html">SlidingStage</a></li>
+        <li><a href="#path=subclassExample.html">SubclassExample</a></li>
+        <li><a href="#path=swipeCommandsDemo.html">SwipeCommandsDemo</a></li>
+        <li><a href="#path=swipeDemo.html">SwipeDemo</a></li>
+        <li><a href="#path=swipeDemoVertical.html">SwipeDemoVertical</a></li>
+        <li><a href="#path=tabPositions.html">TabPositions</a></li>
+        <li><a href="#path=tabStrip.html">TabStrip</a></li>
+        <li>
+          <a href="#path=tabStripWithTabButtons.html">TabStripWithTabButtons</a>
+        </li>
+        <li><a href="#path=tabs.html">Tabs</a></li>
+        <li><a href="#path=tabsWithTabButtons.html">TabsWithTabButtons</a></li>
+        <li><a href="#path=toast.html">Toast</a></li>
+        <li><a href="#path=toolbarTabs.html">ToolbarTabs</a></li>
+        <li><a href="#path=tooltipSource.html">TooltipSource</a></li>
+        <li><a href="#path=verticalCarousel.html">VerticalCarousel</a></li>
+        <li><a href="#path=verticalDrawer.html">VerticalDrawer</a></li>
+        <li>
+          <a href="#path=verticalSlidingPages.html">VerticalSlidingPages</a>
+        </li>
+      </ul>
+    </nav>
+    <story-page id="storyPage"></story-page>
+  </body>
+</html>

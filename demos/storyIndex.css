@@ -1,0 +1,72 @@
+html {
+  height: 100%;
+}
+
+body {
+  background: rgb(246, 249, 252);
+  color: rgb(51, 51, 51);
+  display: grid;
+  font-family: "Nunito Sans", -apple-system, ".SFNSText-Regular",
+    "San Francisco", BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica,
+    Arial, sans-serif;
+  font-size: 16px;
+  grid-template-columns: auto 1fr;
+  height: 100%;
+  margin: 0px;
+  overflow: hidden;
+  padding: 0;
+}
+
+nav {
+  overflow: auto;
+}
+
+nav h1 {
+  margin: 0;
+  padding: 20px;
+}
+
+ul {
+  padding-inline-start: 1em;
+}
+nav > ul {
+  margin: 0;
+  padding-inline-start: 0;
+}
+
+li {
+  list-style: none;
+  padding: 2px 0;
+}
+
+nav a {
+  color: inherit;
+  text-decoration: none;
+  user-select: none;
+}
+
+nav ul a {
+  display: block;
+  font-size: 13px;
+  padding: 4px 20px;
+}
+
+nav ul a.current {
+  background: #1ea7fd;
+  color: #ffffff;
+}
+
+#storyPage {
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 5px 0px;
+  border-radius: 4px;
+  margin: 10px 10px 10px 0;
+}
+
+h1 {
+  background: initial;
+}
+
+#intro {
+  margin-bottom: 0.5em;
+}
