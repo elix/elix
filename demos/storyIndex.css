@@ -26,10 +26,7 @@ nav h1 {
   padding: 20px;
 }
 
-ul {
-  padding-inline-start: 1em;
-}
-nav > ul {
+nav ul {
   margin: 0;
   padding-inline-start: 0;
 }
@@ -45,6 +42,16 @@ nav a {
   user-select: none;
 }
 
+nav ul div {
+  color: #888;
+  user-select: none;
+}
+
+/*
+Handle indenting in the anchor/div level, not the list, so that selecting an
+anchor/div selects the whole row.
+*/
+
 nav ul a,
 nav ul div {
   display: block;
@@ -52,9 +59,19 @@ nav ul div {
   padding: 4px 20px;
 }
 
-nav ul div {
-  color: #888;
-  user-select: none;
+nav ul ul a,
+nav ul ul div {
+  padding-left: 40px;
+}
+
+nav ul ul ul a,
+nav ul ul ul div {
+  padding-left: 60px;
+}
+
+nav ul ul ul ul a,
+nav ul ul ul ul div {
+  padding-left: 80px;
 }
 
 nav ul a.current {
