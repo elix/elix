@@ -3,8 +3,8 @@ html {
 }
 
 body {
-  background: rgb(246, 249, 252);
-  color: rgb(51, 51, 51);
+  background: #333;
+  color: #ccc;
   display: grid;
   font-family: "Nunito Sans", -apple-system, ".SFNSText-Regular",
     "San Francisco", BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica,
@@ -81,9 +81,6 @@ nav ul a.current {
 
 #storyPage {
   background: white;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 5px 0px;
-  border-radius: 4px;
-  margin: 10px 10px 10px 0;
 }
 
 h1 {

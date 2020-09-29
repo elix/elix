@@ -95,8 +95,8 @@ export default class StoryPage extends ReactiveElement {
         }
 
         #toolbar {
-          border-bottom: 1px solid currentColor;
-          color: #e5e5e5;
+          background: #333;
+          color: #ccc;
           padding: 5px 20px;
         }
 
