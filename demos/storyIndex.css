@@ -45,10 +45,16 @@ nav a {
   user-select: none;
 }
 
-nav ul a {
+nav ul a,
+nav ul div {
   display: block;
   font-size: 13px;
   padding: 4px 20px;
+}
+
+nav ul div {
+  color: #888;
+  user-select: none;
 }
 
 nav ul a.current {

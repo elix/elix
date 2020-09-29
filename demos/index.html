@@ -11,7 +11,7 @@
       customElements.define("story-page", StoryPage);
     </script>
     <script>
-      const defaultStoryPath = "about:blank"; // "intro.html";
+      const defaultStoryPath = "intro.html";
 
       // Simple router
       function handleRoute() {
@@ -48,109 +48,227 @@
     <nav>
       <h1><a href=".">Elix</a></h1>
       <ul>
-        <!-- <li id="intro">
-          <a href=".">Introduction</a>
-        </li> -->
+        <li id="intro">
+          <a href=".">Overview</a>
+        </li>
         <li>
           <a href="#path=alertDialog.html">AlertDialog</a>
         </li>
+        <ul>
+          <li>
+            <a href="#path=customize/customAlertDialog.html">Custom styling</a>
+          </li>
+        </ul>
         <li>
           <a href="#path=autoCompleteComboBox.html">AutoCompleteComboBox</a>
         </li>
-        <li>
-          <a href="#path=autoSizeTextarea.html">AutoSizeTextarea</a>
-        </li>
         <li><a href="#path=autoCompleteInput.html">AutoCompleteInput</a></li>
         <li><a href="#path=autoSizeTextarea.html">AutoSizeTextarea</a></li>
-        <li>
-          <a href="#path=autoSizeTextareaCustomName.html"
-            >AutoSizeTextarea: CustomName</a
-          >
-        </li>
+        <ul>
+          <li>
+            <a href="#path=autoSizeTextareaCustomName.html"
+              >Custom name attribute</a
+            >
+          </li>
+          <li>
+            <a href="#path=customize/customAutoSizeTextarea.html"
+              >Custom styling</a
+            >
+          </li>
+        </ul>
         <li><a href="#path=button.html">Button</a></li>
         <li><a href="#path=calendarDay.html">CalendarDay</a></li>
         <li>
           <a href="#path=calendarDayNamesHeader.html">CalendarDayNamesHeader</a>
         </li>
         <li><a href="#path=calendarDays.html">CalendarDays</a></li>
-        <li><a href="#path=calendarLocale.html">CalendarLocale</a></li>
-        <li><a href="#path=calendarMonth-ar-KW.html">CalendarMonth</a></li>
-        <li><a href="#path=calendarMonth-en-GB.html">CalendarMonth</a></li>
-        <li><a href="#path=calendarMonth-en-US.html">CalendarMonth</a></li>
-        <li><a href="#path=calendarMonth-fr-FR.html">CalendarMonth</a></li>
-        <li><a href="#path=calendarMonth-hi-IN.html">CalendarMonth</a></li>
-        <li><a href="#path=calendarMonth-ja-JP.html">CalendarMonth</a></li>
         <li><a href="#path=calendarMonth.html">CalendarMonth</a></li>
+        <ul>
+          <li>
+            <a href="#path=calendarMoonPhase.html">Custom day part</a>
+          </li>
+          <li><a href="#path=calendarLocale.html">Locale</a></li>
+          <ul>
+            <li><a href="#path=calendarMonth-ar-KW.html">Arabic/Kuwait</a></li>
+            <li>
+              <a href="#path=calendarMonth-en-GB.html">English/Great Britain</a>
+            </li>
+            <li>
+              <a href="#path=calendarMonth-en-US.html">English/United States</a>
+            </li>
+            <li><a href="#path=calendarMonth-fr-FR.html">French/France</a></li>
+            <li><a href="#path=calendarMonth-hi-IN.html">Hindi/India</a></li>
+            <li><a href="#path=calendarMonth-ja-JP.html">Japanese/Japan</a></li>
+          </ul>
+          <li><a href="#path=customize/calendarMonth.html">Part styling</a></li>
+        </ul>
+
         <li>
           <a href="#path=calendarMonthNavigator.html">CalendarMonthNavigator</a>
         </li>
+        <ul>
+          <a href="#path=rightToLeft/calendarMonthNavigator.html"
+            >Right-to-left</a
+          >
+        </ul>
         <li>
           <a href="#path=calendarMonthYearHeader.html"
             >CalendarMonthYearHeader</a
           >
         </li>
-        <li><a href="#path=calendarMoonPhase.html">CalendarMoonPhase</a></li>
         <li><a href="#path=carousel.html">Carousel</a></li>
-        <li><a href="#path=carouselDarkMode.html">CarouselDarkMode</a></li>
+        <ul>
+          <li>
+            <a href="#path=customize/customCarousel1.html"
+              >Custom arrows and dots</a
+            >
+          </li>
+          <li>
+            <a href="#path=customize/customCarousel7.html"
+              >Custom arrow icons</a
+            >
+          </li>
+          <li>
+            <a href="#path=carouselWithProxies.html">Custom proxies</a>
+          </li>
+          <li><a href="#path=carouselDarkMode.html">Dark background</a></li>
+          <li><a href="#path=darkMode.html">Dark mode preference</a></li>
+          <li>
+            <a href="#path=customize/customCarousel4.html">Page numbers</a>
+          </li>
+          <li><a href="#path=customize/cuteCarousel.html">Part styling</a></li>
+          <li><a href="#path=rightToLeft/carousel.html">Right-to-left</a></li>
+          <li><a href="#path=verticalCarousel.html">Vertical</a></li>
+        </ul>
         <li><a href="#path=carouselSlideshow.html">CarouselSlideshow</a></li>
-        <li>
-          <a href="#path=carouselWithProxies.html">CarouselWithProxies</a>
-        </li>
         <li>
           <a href="#path=carouselWithThumbnails.html">CarouselWithThumbnails</a>
         </li>
+        <ul>
+          <li>
+            <a href="#path=rightToLeft/carouselWithThumbnails.html"
+              >Right-to-left</a
+            >
+          </li>
+        </ul>
         <li>
           <a href="#path=centeredStripHighlight.html">CenteredStripHighlight</a>
         </li>
         <li>
           <a href="#path=centeredStripOpacity.html">CenteredStripOpacity</a>
         </li>
-        <li><a href="#path=colorDropdownList.html">ColorDropdownList</a></li>
+        <li><div>Combinations</div></li>
+        <ul>
+          <li>
+            <a href="#path=customize/carouselComboBox.html"
+              >Carousel combo box</a
+            >
+          </li>
+          <li>
+            <a href="#path=listAndCarousel.html">List synced with Carousel</a>
+          </li>
+        </ul>
         <li><a href="#path=countryListBox.html">CountryListBox</a></li>
-        <li><a href="#path=darkMode.html">DarkMode</a></li>
         <li><a href="#path=dateComboBox.html">DateComboBox</a></li>
-        <li>
-          <a href="#path=dateComboBoxTimeBias.html">DateComboBoxTimeBias</a>
-        </li>
+        <ul>
+          <li>
+            <a href="#path=rightToLeft/dateComboBox.html">Right-to-left</a>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <a href="#path=dateComboBoxTimeBias.html">Time bias</a>
+          </li>
+        </ul>
         <li><a href="#path=dateInput.html">DateInput</a></li>
+        <li><a href="#path=inputLabels.html">DelegateInputLabelMixin</a></li>
+
         <li><a href="#path=dialog.html">Dialog</a></li>
+        <ul>
+          <li>
+            <a href="#path=customize/customDialog.html">Custom styling</a>
+          </li>
+        </ul>
         <li><a href="#path=disabled.html">Disabled</a></li>
         <li><a href="#path=drawer.html">Drawer</a></li>
+        <ul>
+          <li>
+            <a href="#path=customize/customDrawer2.html">Custom styling</a>
+          </li>
+          <li><a href="#path=responsiveDrawer.html">Responsive</a></li>
+          <li>
+            <a href="#path=rightToLeft/drawer.html">Right-to-left</a>
+          </li>
+          <li><a href="#path=verticalDrawer.html">Vertical</a></li>
+        </ul>
         <li><a href="#path=drawerWithGrip.html">DrawerWithGrip</a></li>
+        <ul>
+          <li>
+            <a href="#path=customize/drawerWithGrip.html">Custom styling</a>
+          </li>
+        </ul>
         <li><a href="#path=dropdownList.html">DropdownList</a></li>
+        <ul>
+          <li><a href="#path=colorDropdownList.html">Custom value part</a></li>
+        </ul>
         <li>
           <a href="#path=dynamicTemplateExample.html">DynamicTemplateExample</a>
         </li>
         <li><a href="#path=expandablePanel.html">ExpandablePanel</a></li>
         <li><a href="#path=expandableSection.html">ExpandableSection</a></li>
+        <ul>
+          <li>
+            <a href="#path=customize/expandableSection.html">Custom styling</a>
+          </li>
+        </ul>
         <li><a href="#path=filterComboBox.html">FilterComboBox</a></li>
         <li><a href="#path=filterListBox.html">FilterListBox</a></li>
-        <li><a href="#path=focusVisible.html">FocusVisible</a></li>
-        <li><a href="#path=formElement.html">FormElement</a></li>
+        <li><a href="#path=focusVisible.html">FocusVisibleMixin</a></li>
+        <li><a href="#path=formElement.html">FormElementMixin</a></li>
         <li>
           <a href="#path=hamburgerMenuButton.html">HamburgerMenuButton</a>
         </li>
-        <li><a href="#path=horizontalList.html">HorizontalList</a></li>
         <li><a href="#path=index.html">Index</a></li>
         <li><a href="#path=input.html">Input</a></li>
-        <li><a href="#path=inputLabels.html">InputLabels</a></li>
-        <li><a href="#path=listAndCarousel.html">ListAndCarousel</a></li>
-        <li>
-          <a href="#path=listAndCarousel.production.html">ListAndCarousel</a>
-        </li>
         <li><a href="#path=listBox.html">ListBox</a></li>
-        <li><a href="#path=listBoxWithOptions.html">ListBoxWithOptions</a></li>
+        <ul>
+          <li><a href="#path=customize/listBox.html">Custom styling</a></li>
+          <li><a href="#path=horizontalList.html">Horizontal</a></li>
+          <li>
+            <a href="#path=rightToLeft/horizontalList.html"
+              >Horizontal, right-to-left</a
+            >
+          </li>
+          <li>
+            <a href="#path=listBoxWithOptions.html">Options as children</a>
+          </li>
+        </ul>
         <li><a href="#path=listExplorer.html">ListExplorer</a></li>
         <li><a href="#path=listWithSearch.html">ListWithSearch</a></li>
         <li><a href="#path=menu.html">Menu</a></li>
         <li><a href="#path=menuButton.html">MenuButton</a></li>
-        <li><a href="#path=modesWithKeyboard.html">ModesWithKeyboard</a></li>
+        <li><a href="#path=modesWithKeyboard.html">Modes</a></li>
         <li><a href="#path=multiSelectListBox.html">MultiSelectListBox</a></li>
         <li><a href="#path=numberSpinBox.html">NumberSpinBox</a></li>
+        <ul>
+          <li>
+            <a href="#path=customize/purpleSpinBox.html">Custom styling</a>
+          </li>
+        </ul>
         <li><a href="#path=pageDot.html">PageDot</a></li>
         <li><a href="#path=popup.html">Popup</a></li>
+        <ul>
+          <li>
+            <a href="#path=customize/customPopup.html">Custom styling</a>
+          </li>
+        </ul>
         <li><a href="#path=popupButton.html">PopupButton</a></li>
-        <li><a href="#path=popupPositions.html">PopupPositions</a></li>
+        <ul>
+          <li><a href="#path=popupPositions.html">Positions</a></li>
+          <li>
+            <a href="#path=rightToLeft/popupButton.html">Right-to-left</a>
+          </li>
+        </ul>
         <li><a href="#path=progressSpinner.html">ProgressSpinner</a></li>
         <li><a href="#path=pullToRefresh.html">PullToRefresh</a></li>
         <li>
@@ -159,8 +277,6 @@
         <li>
           <a href="#path=reactiveMixinExample.html">ReactiveMixinExample</a>
         </li>
-        <li><a href="#path=responsiveDrawer.html">ResponsiveDrawer</a></li>
-        <li><a href="#path=serene.html">Serene</a></li>
         <li><a href="#path=singleSelection.html">SingleSelection</a></li>
         <li><a href="#path=slideshow.html">Slideshow</a></li>
         <li>
@@ -169,29 +285,54 @@
           >
         </li>
         <li><a href="#path=slidingPages.html">SlidingPages</a></li>
-        <li>
-          <a href="#path=slidingPagesWithArrows.html">SlidingPagesWithArrows</a>
-        </li>
+        <ul>
+          <li>
+            <a href="#path=slidingPagesWithArrows.html">With arrows</a>
+          </li>
+          <li>
+            <a href="#path=verticalSlidingPages.html">Vertical</a>
+          </li>
+        </ul>
         <li><a href="#path=slidingStage.html">SlidingStage</a></li>
+        <li><div>SpinBox</div></li>
+        <ul>
+          <li>
+            <a href="#path=customize/romanSpinBox.html">Custom number system</a>
+          </li>
+          <li>
+            <a href="#path=customize/unitsSpinBox.html">Units support</a>
+          </li>
+        </ul>
         <li><a href="#path=subclassExample.html">SubclassExample</a></li>
-        <li><a href="#path=swipeCommandsDemo.html">SwipeCommandsDemo</a></li>
-        <li><a href="#path=swipeDemo.html">SwipeDemo</a></li>
-        <li><a href="#path=swipeDemoVertical.html">SwipeDemoVertical</a></li>
+        <li><a href="#path=swipeCommandsDemo.html">SwipeCommandsMixin</a></li>
+        <li><a href="#path=swipeDemo.html">TouchSwipeMixin</a></li>
+        <ul>
+          <li><a href="#path=swipeDemoVertical.html">Vertical</a></li>
+        </ul>
         <li><a href="#path=tabPositions.html">TabPositions</a></li>
         <li><a href="#path=tabStrip.html">TabStrip</a></li>
         <li>
           <a href="#path=tabStripWithTabButtons.html">TabStripWithTabButtons</a>
         </li>
         <li><a href="#path=tabs.html">Tabs</a></li>
-        <li><a href="#path=tabsWithTabButtons.html">TabsWithTabButtons</a></li>
+        <ul>
+          <li><a href="#path=serene.html">Custom transition</a></li>
+          <li>
+            <a href="#path=rightToLeft/tabs.html">Right-to-left</a>
+          </li>
+
+          <li>
+            <a href="#path=tabsWithTabButtons.html">TabButton children</a>
+          </li>
+          <li><a href="#path=toolbarTabs.html">Tabs as toolbar</a></li>
+        </ul>
         <li><a href="#path=toast.html">Toast</a></li>
-        <li><a href="#path=toolbarTabs.html">ToolbarTabs</a></li>
+        <ul>
+          <li>
+            <a href="#path=rightToLeft/toast.html">Right-to-left</a>
+          </li>
+        </ul>
         <li><a href="#path=tooltipSource.html">TooltipSource</a></li>
-        <li><a href="#path=verticalCarousel.html">VerticalCarousel</a></li>
-        <li><a href="#path=verticalDrawer.html">VerticalDrawer</a></li>
-        <li>
-          <a href="#path=verticalSlidingPages.html">VerticalSlidingPages</a>
-        </li>
       </ul>
     </nav>
     <story-page id="storyPage"></story-page>

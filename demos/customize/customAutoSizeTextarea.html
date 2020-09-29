@@ -12,13 +12,14 @@
     <link rel="stylesheet" href="../demos.css" />
 
     <script type="module">
-      import { template } from "../src/base/internal.js";
+      import { template } from "../../src/base/internal.js";
       import {
         createElement,
         replace,
         transmute,
       } from "../../src/core/template.js";
       import AutoSizeTextarea from "../../src/base/AutoSizeTextarea.js";
+      import { templateFrom } from "../../src/core/htmlLiterals.js";
 
       class CustomAutoSizeTextarea extends AutoSizeTextarea {
         get [template]() {
