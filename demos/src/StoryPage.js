@@ -8,8 +8,8 @@ import {
   state,
   template,
 } from "../../src/base/internal.js";
-import { templateFrom } from "../../src/core/htmlLiterals";
-import ReactiveElement from "../../src/core/ReactiveElement";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
+import ReactiveElement from "../../src/core/ReactiveElement.js";
 
 export default class StoryPage extends ReactiveElement {
   get [defaultState]() {
