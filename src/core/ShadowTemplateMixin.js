@@ -164,10 +164,12 @@ function getTemplate(element) {
       if (!(t instanceof HTMLTemplateElement)) {
         throw `Warning: the [template] property for ${element.constructor.name} must return an HTMLTemplateElement.`;
       }
-      if (!element[hasDynamicTemplate]) {
-        // Store prepared template for next creation of same type of element.
-        classTemplateMap.set(element.constructor, t);
-      }
+    }
+    if (!element[hasDynamicTemplate]) {
+      // Store prepared template for next creation of same type of element.
+      // If the component didn't define a temlate, store null so that we skip
+      // the template retrieval next time.
+      classTemplateMap.set(element.constructor, t || null);
     }
   }
   return t;

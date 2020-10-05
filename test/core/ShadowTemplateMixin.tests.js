@@ -95,6 +95,20 @@ class ElementWithClosedRoot extends ShadowTemplateMixin(HTMLElement) {
 }
 customElements.define("element-with-closed-root", ElementWithClosedRoot);
 
+/* Element with no template. */
+let templateCallCount = 0;
+class ElementWithNoTemplate extends ShadowTemplateMixin(HTMLElement) {
+  constructor() {
+    super();
+    this[render]();
+  }
+  get [template]() {
+    templateCallCount++;
+    return undefined;
+  }
+}
+customElements.define("element-with-no-template", ElementWithNoTemplate);
+
 describe("ShadowTemplateMixin", () => {
   let container;
 
@@ -151,5 +165,11 @@ describe("ShadowTemplateMixin", () => {
     container.append(fixture);
     assert.isNull(fixture.shadowRoot);
     assert(fixture[shadowRoot]);
+  });
+
+  it("asks for a template once, even if no template is defined", () => {
+    new ElementWithNoTemplate();
+    new ElementWithNoTemplate();
+    assert.equal(templateCallCount, 1);
   });
 });
