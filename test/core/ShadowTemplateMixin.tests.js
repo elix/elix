@@ -168,6 +168,7 @@ describe("ShadowTemplateMixin", () => {
   });
 
   it("asks for a template once, even if no template is defined", () => {
+    templateCallCount = 0;
     new ElementWithNoTemplate();
     new ElementWithNoTemplate();
     assert.equal(templateCallCount, 1);

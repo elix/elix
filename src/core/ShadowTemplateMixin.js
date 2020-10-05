@@ -1,6 +1,5 @@
 import {
   delegatesFocus,
-  firstRender,
   hasDynamicTemplate,
   ids,
   render,
@@ -101,8 +100,10 @@ export default function ShadowTemplateMixin(Base) {
         super[render](changed);
       }
 
-      // We populate the shadow root the first time the component is rendered.
-      if (this[firstRender] === undefined || this[firstRender]) {
+      // We populate the shadow root if the component doesn't have a shadow;
+      // i.e., the first time the component is rendered. For this check, we use
+      // an internal reference we maintain for the shadow root; see below.
+      if (!this[shadowRoot]) {
         // If this type of element defines a template, prepare it for use.
         const template = getTemplate(this);
 
@@ -121,6 +122,10 @@ export default function ShadowTemplateMixin(Base) {
           // shadow root now so that the component always has a consistent means
           // to reference its own shadow root.
           this[shadowRoot] = root;
+        } else {
+          // No template. Set shadow root to null (instead of undefined) so we
+          // won't try to render shadow on next render.
+          this[shadowRoot] = null;
         }
       }
     }
@@ -167,7 +172,7 @@ function getTemplate(element) {
     }
     if (!element[hasDynamicTemplate]) {
       // Store prepared template for next creation of same type of element.
-      // If the component didn't define a temlate, store null so that we skip
+      // If the component didn't define a template, store null so that we skip
       // the template retrieval next time.
       classTemplateMap.set(element.constructor, t || null);
     }
