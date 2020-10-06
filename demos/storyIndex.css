@@ -10,23 +10,22 @@ body {
     "San Francisco", BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica,
     Arial, sans-serif;
   font-size: 16px;
-  grid-template-columns: auto 1fr;
   height: 100%;
   margin: 0px;
   overflow: hidden;
   padding: 0;
 }
 
-nav {
-  overflow: auto;
+story-browser::part(frame) {
+  background: white;
 }
 
-nav h1 {
+story-browser h1 {
   margin: 0;
   padding: 20px;
 }
 
-nav ul {
+story-browser ul {
   margin: 0;
   padding-inline-start: 0;
 }
@@ -36,13 +35,13 @@ li {
   padding: 2px 0;
 }
 
-nav a {
+story-browser a {
   color: inherit;
   text-decoration: none;
   user-select: none;
 }
 
-nav ul div {
+story-browser ul div {
   color: #888;
   user-select: none;
 }
@@ -52,35 +51,31 @@ Handle indenting in the anchor/div level, not the list, so that selecting an
 anchor/div selects the whole row.
 */
 
-nav ul a,
-nav ul div {
+story-browser ul a,
+story-browser ul div {
   display: block;
   font-size: 13px;
   padding: 4px 20px;
 }
 
-nav ul ul a,
-nav ul ul div {
+story-browser ul ul a,
+story-browser ul ul div {
   padding-left: 40px;
 }
 
-nav ul ul ul a,
-nav ul ul ul div {
+story-browser ul ul ul a,
+story-browser ul ul ul div {
   padding-left: 60px;
 }
 
-nav ul ul ul ul a,
-nav ul ul ul ul div {
+story-browser ul ul ul ul a,
+story-browser ul ul ul ul div {
   padding-left: 80px;
 }
 
-nav ul a.current {
+story-browser ul a.current {
   background: #1ea7fd;
   color: #ffffff;
-}
-
-#storyPage {
-  background: white;
 }
 
 h1 {
