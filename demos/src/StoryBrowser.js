@@ -10,8 +10,8 @@ import {
   template,
 } from "../../src/base/internal.js";
 import SlotContentMixin from "../../src/base/SlotContentMixin.js";
-import { templateFrom } from "../../src/core/htmlLiterals";
-import ReactiveElement from "../../src/core/ReactiveElement";
+import { templateFrom } from "../../src/core/htmlLiterals.js";
+import ReactiveElement from "../../src/core/ReactiveElement.js";
 
 // We use a disconnected anchor to translate relative paths to absolute paths.
 const referenceAnchor = document.createElement("a");
