@@ -169,7 +169,7 @@ function handleMousemove(/** @type {MouseEvent} */ event) {
     const target = event.composedPath ? event.composedPath()[0] : event.target;
 
     if (target && target instanceof Node) {
-      const items = element.items;
+      const items = element[state].items;
       const hoverIndex = indexOfItemContainingTarget(items, target);
       const item = items[hoverIndex];
 
@@ -221,7 +221,7 @@ async function selectCurrentItemAndClose(element) {
   const originalRaiseChangeEvents = element[raiseChangeEvents];
   const cursorDefined = element[state].currentIndex >= 0;
   const closeResult = cursorDefined
-    ? element.items[element[state].currentIndex]
+    ? element[state].items[element[state].currentIndex]
     : undefined;
 
   const list = element[state].popupList;
