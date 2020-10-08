@@ -1,4 +1,10 @@
-import { defaultState, template } from "../../src/base/internal.js";
+import {
+  defaultState,
+  firstRender,
+  ids,
+  render,
+  template,
+} from "../../src/base/internal.js";
 import { templateFrom } from "../../src/core/htmlLiterals.js";
 import AutoCompleteComboBox from "../../src/plain/PlainAutoCompleteComboBox.js";
 import Carousel from "../../src/plain/PlainCarousel.js";
@@ -8,6 +14,19 @@ class CarouselComboBox extends AutoCompleteComboBox {
     return Object.assign(super[defaultState], {
       listPartType: Carousel,
     });
+  }
+
+  [render](changed) {
+    super[render](changed);
+
+    if (this[firstRender]) {
+      // We want to keep the combo box open even if the user is clicking in the
+      // popup. For that reason, we prevent mouseup events on the arrow buttons
+      // or proxies from bubbling up to the combo box.
+      this[ids].list.addEventListener("mouseup", (event) => {
+        event.stopImmediatePropagation();
+      });
+    }
   }
 
   get [template]() {

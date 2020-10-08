@@ -5,19 +5,13 @@ import PlainArrowDirectionButton from "../../src/plain/PlainArrowDirectionButton
 import PlainArrowDirectionMixin from "../../src/plain/PlainArrowDirectionMixin.js";
 import SlidingPages from "../../src/plain/PlainSlidingPages.js";
 
-const Base = PlainArrowDirectionMixin(ArrowDirectionMixin(SlidingPages));
+const Base = ArrowDirectionMixin(SlidingPages);
 
 class SlidingPagesWithArrows extends Base {
   get [defaultState]() {
-    // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
-    // Firefox doesn't support the pointer:fine media query, so we look for the
-    // absence of pointer:coarse. Firefox doesn't support that either, but as of
-    // Aug 2018, Firefox mobile usage is not significant. On desktop, at least,
-    // Firefox will show the arrows.
-    const finePointer = !window.matchMedia("(pointer:coarse)").matches;
     return Object.assign(super[defaultState], {
       arrowButtonPartType: PlainArrowDirectionButton,
-      showArrowButtons: finePointer,
+      showArrowButtons: true,
     });
   }
 
@@ -46,5 +40,11 @@ class SlidingPagesWithArrows extends Base {
   }
 }
 
-customElements.define("sliding-pages-with-arrows", SlidingPagesWithArrows);
+// We need to apply our plain styling in PlainArrowDirectionMixin *after* the
+// class above has invoked ArrowDirectionMixin to wrap the stage with arrows.
+class PlainSlidingPagesWithArrows extends PlainArrowDirectionMixin(
+  SlidingPagesWithArrows
+) {}
+
+customElements.define("sliding-pages-with-arrows", PlainSlidingPagesWithArrows);
 export default SlidingPagesWithArrows;
