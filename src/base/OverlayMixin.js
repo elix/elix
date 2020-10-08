@@ -190,7 +190,7 @@ export default function OverlayMixin(Base) {
       // problem, we use display: none when the overlay is closed.
       result.content.append(fragmentFrom.html`
         <style>
-          :host(:not([opened])) {
+          :host([closed]) {
             display: none;
           }
         </style>

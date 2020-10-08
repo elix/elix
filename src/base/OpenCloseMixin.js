@@ -8,6 +8,7 @@ import {
   setState,
   startEffect,
   state,
+  stateEffects,
 } from "./internal.js";
 
 /** @type {any} */
@@ -77,10 +78,7 @@ export default function OpenCloseMixin(Base) {
      * @type {boolean}
      */
     get closeFinished() {
-      // TODO: Define closeFinished as computed state
-      return this[state].openCloseEffects
-        ? this[state].effect === "close" && this[state].effectPhase === "after"
-        : this.closed;
+      return this[state].closeFinished;
     }
 
     get closeResult() {
@@ -98,6 +96,7 @@ export default function OpenCloseMixin(Base) {
       // after the close effect has completed.
       if (this[startEffect]) {
         Object.assign(defaults, {
+          closeFinished: true,
           effect: "close",
           effectPhase: "after",
           openCloseEffects: true,
@@ -136,9 +135,17 @@ export default function OpenCloseMixin(Base) {
     [render](changed) {
       super[render](changed);
 
+      // Reflect opened state.
       if (changed.opened) {
         const { opened } = this[state];
         setInternalState(this, "opened", opened);
+      }
+
+      // Reflect closed state. To handle asynchronous close effects, we reflect
+      // the inverse of closeFinished instead of reflecting closed.
+      if (changed.closeFinished) {
+        const { closeFinished } = this[state];
+        setInternalState(this, "closed", closeFinished);
       }
     }
 
@@ -215,6 +222,30 @@ export default function OpenCloseMixin(Base) {
         this[closePromiseKey] = null;
         closeResolve(this[state].closeResult);
       }
+    }
+
+    [stateEffects](state, changed) {
+      const effects = super[stateEffects]
+        ? super[stateEffects](state, changed)
+        : {};
+
+      // Update our notion of closeFinished to track the closed state for
+      // components with synchronous open/close effects and components with
+      // asynchronous open/close effects.
+      if (
+        changed.openCloseEffects ||
+        changed.effect ||
+        changed.effectPhase ||
+        changed.opened
+      ) {
+        const { effect, effectPhase, openCloseEffects, opened } = state;
+        const closeFinished = openCloseEffects
+          ? effect === "close" && effectPhase === "after"
+          : !opened;
+        Object.assign(effects, { closeFinished });
+      }
+
+      return effects;
     }
 
     /**

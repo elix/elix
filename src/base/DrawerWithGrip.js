@@ -153,8 +153,16 @@ class DrawerWithGrip extends Drawer {
 
     renderParts(result.content, this[state]);
 
+    // Normally a closed overlay is hidden, but we want to make a closed
+    // DrawerWithGrip visible.
+    // REVIEW: We make the drawer visible by undoing the `display: none` on the
+    // host applied by OverlayMixin. That feels awkward.
     result.content.append(fragmentFrom.html`
       <style>
+        :host([closed]) {
+          display: inline-flex;
+        }
+
         [part~="frame"] {
           display: flex;
           overflow: hidden;
@@ -170,7 +178,7 @@ class DrawerWithGrip extends Drawer {
           overflow: auto;
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
-        :host(:not([opened])) #grippedContent {
+        :host([closed]) #grippedContent {
           overflow: hidden;
         }
 
