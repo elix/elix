@@ -157,12 +157,7 @@ class PopupSource extends Base {
       });
     }
 
-    if (
-      // changed.horizontalAlign ||
-      changed.opened ||
-      changed.popupMeasured
-      // changed.rightToLeft
-    ) {
+    if (changed.opened || changed.popupMeasured) {
       const {
         calculatedFrameMaxHeight,
         calculatedFrameMaxWidth,
@@ -292,8 +287,12 @@ class PopupSource extends Base {
   [stateEffects](state, changed) {
     const effects = super[stateEffects](state, changed);
 
-    // Closing popup resets our popup calculations.
-    if (changed.opened && !state.opened) {
+    // We reset our popup calculations when the popup closes, or if it's open
+    // and state that affects positioning has changed.
+    if (
+      (changed.opened && !state.opened) ||
+      (state.opened && (changed.horizontalAlign || changed.rightToLeft))
+    ) {
       Object.assign(effects, {
         calculatedFrameMaxHeight: null,
         calculatedFrameMaxWidth: null,
