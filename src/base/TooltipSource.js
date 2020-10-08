@@ -129,7 +129,7 @@ class TooltipSource extends Base {
     // https://inclusive-components.design/tooltips-toggletips/
     result.content.append(fragmentFrom.html`
       <style>
-        #popup:not([opened]) {
+        #popup[closed] {
           clip-path: inset(100%);
           clip: rect(1px, 1px, 1px, 1px);
           display: inherit;
