@@ -18,6 +18,7 @@ import {
 } from "./internal.js";
 import ItemsAPIMixin from "./ItemsAPIMixin.js";
 import ItemsCursorMixin from "./ItemsCursorMixin.js";
+import Menu from "./Menu.js";
 import PopupButton from "./PopupButton.js";
 import PopupListMixin from "./PopupListMixin.js";
 import SelectedTextAPIMixin from "./SelectedTextAPIMixin.js";
@@ -58,7 +59,7 @@ const Base = CursorAPIMixin(
  * @mixes SingleSelectAPIMixin
  * @mixes SlotItemsMixin
  *
- * @part {div} list - the list shown in the popup
+ * @part {Menu} list - the list shown in the popup
  * @part down-icon - the icon shown in the toggle if the popup will open or close in the down direction
  * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
  * @part {div} value - region inside the toggle button showing the value of the current selection
@@ -76,7 +77,7 @@ class DropdownList extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       ariaHasPopup: "listbox",
-      listPartType: "div",
+      listPartType: Menu,
       selectedIndex: -1,
       selectedItem: null,
       valuePartType: "div",
