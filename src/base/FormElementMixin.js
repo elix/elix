@@ -90,7 +90,12 @@ export default function FormElementMixin(Base) {
 
       // Reflect name property to attribute so form will pick it up.
       if (changed.name) {
-        this.setAttribute("name", this[state].name);
+        const { name } = this[state];
+        if (name) {
+          this.setAttribute("name", name);
+        } else {
+          this.removeAttribute("name");
+        }
       }
 
       if (this[nativeInternals] && this[nativeInternals].setValidity) {
