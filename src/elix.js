@@ -48,6 +48,7 @@ export { default as KeyboardPrefixCursorMixin } from "./base/KeyboardPrefixCurso
 export { default as LanguageDirectionMixin } from "./base/LanguageDirectionMixin.js";
 export { default as MultiSelectAPIMixin } from "./base/MultiSelectAPIMixin.js";
 export { default as MultiSelectToggleMixin } from "./base/MultiSelectToggleMixin.js";
+export { default as MultiSelectValueAPIMixin } from "./base/MultiSelectValueAPIMixin.js";
 export { default as OpenCloseMixin } from "./base/OpenCloseMixin.js";
 export { default as OverlayMixin } from "./base/OverlayMixin.js";
 export { default as PageNumbersMixin } from "./base/PageNumbersMixin.js";

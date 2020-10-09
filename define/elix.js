@@ -99,6 +99,7 @@ export { default as Modes } from "./Modes.js";
 export { default as MultiSelectAPIMixin } from "../src/base/MultiSelectAPIMixin.js";
 export { default as MultiSelectListBox } from "./MultiSelectListBox.js";
 export { default as MultiSelectToggleMixin } from "../src/base/MultiSelectToggleMixin.js";
+export { default as MultiSelectValueAPIMixin } from "../src/base/MultiSelectValueAPIMixin.js";
 export { default as NumberSpinBox } from "./NumberSpinBox.js";
 export { default as OpenCloseMixin } from "../src/base/OpenCloseMixin.js";
 export { default as OpenCloseToggle } from "./OpenCloseToggle.js";
