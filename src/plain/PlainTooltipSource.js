@@ -1,11 +1,11 @@
 import * as internal from "../base/internal.js";
+import TooltipSource from "../base/TooltipSource.js";
 import PlainPopup from "./PlainPopup.js";
-import TooltipSource from "../base/ToolTipSource.js";
 
 class PlainTooltipSource extends TooltipSource {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      popupPartType: PlainPopup
+      popupPartType: PlainPopup,
     });
   }
 
@@ -17,7 +17,7 @@ class PlainTooltipSource extends TooltipSource {
     // Open on hover, close when hover stops.
     if (changed.hover) {
       Object.assign(effects, {
-        opened: state.hover
+        opened: state.hover,
       });
     }
 
