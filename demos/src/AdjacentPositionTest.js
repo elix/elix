@@ -14,10 +14,18 @@ const Base = ReactiveElement;
 export default class AdjacentPositionTest extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
+      neighborAlign: "start",
       neighborOrigin: null,
       neighborDirection: "row",
       sourceOrigin: null,
     });
+  }
+
+  get neighborAlign() {
+    return this[state].neighborAlign;
+  }
+  set neighborAlign(neighborAlign) {
+    this[setState]({ neighborAlign });
   }
 
   get neighborDirection() {
@@ -30,80 +38,91 @@ export default class AdjacentPositionTest extends Base {
   [render](changed) {
     super[render](changed);
 
-    if (changed.neighborDirection) {
-      const { neighborDirection } = this[state];
+    if (changed.neighborAlign || changed.neighborDirection) {
+      const { neighborAlign, neighborDirection } = this[state];
       /** @type {any} */ const source = this[ids].source;
       /** @type {any} */ const neighbor = this[ids].neighbor;
 
-      const sourceRect = {
-        left: source.offsetLeft,
-        right: source.offsetLeft + source.offsetWidth,
-        top: source.offsetTop,
-        bottom: source.offsetTop + source.offsetHeight,
+      // Work out which axes we're working with.
+      const mainAxis = {
+        column: "vertical",
+        "column-reverse": "vertical",
+        row: "horizontal",
+        "row-reverse": "horizontal",
+      }[neighborDirection];
+      const mapAxisToPerpendicularAxis = {
+        horizontal: "vertical",
+        vertical: "horizontal",
+      };
+      const crossAxis = mapAxisToPerpendicularAxis[mainAxis];
+
+      // Determine how we'll measure things on these axes.
+      const mainAxisPositive = {
+        column: true,
+        "column-reverse": false,
+        row: true,
+        "row-reverse": false,
+      }[neighborDirection];
+      const mapAxisToOffsetStartProperty = {
+        horizontal: "offsetLeft",
+        vertical: "offsetTop",
+      };
+      const mapAxisToOffsetSizeProperty = {
+        horizontal: "offsetWidth",
+        vertical: "offsetHeight",
+      };
+      const mapAxisToStartProperty = {
+        horizontal: "left",
+        vertical: "top",
+      };
+      const mainOffsetSizeProperty = mapAxisToOffsetSizeProperty[mainAxis];
+      const crossOffsetSizeProperty = mapAxisToOffsetSizeProperty[crossAxis];
+
+      // Measure the source and neighbor.
+      const sourceMainSize = source[mainOffsetSizeProperty];
+      const neighborMainSize = neighbor[mainOffsetSizeProperty];
+      const sourceCrossSize = source[crossOffsetSizeProperty];
+      const neighborCrossSize = neighbor[crossOffsetSizeProperty];
+
+      // Determine the offset of the source's end along the main axis.
+      const sourceMainStart = source[mapAxisToOffsetStartProperty[mainAxis]];
+      const sourceMainEnd = mainAxisPositive
+        ? sourceMainStart + sourceMainSize
+        : sourceMainStart;
+
+      // Determine the neighbor's start so it touches the source's end.
+      const neighborMainStart = mainAxisPositive
+        ? sourceMainEnd
+        : sourceMainEnd - neighborMainSize;
+
+      // Determine the source's start on the cross axis.
+      const sourceCrossStartOffsetProperty =
+        mapAxisToOffsetStartProperty[crossAxis];
+      const sourceCrossStartOffset = source[sourceCrossStartOffsetProperty];
+
+      // Determine the neighbor's start on the cross axis which will give the
+      // desired cross-axis alignment with the source.
+      const crossAdjustment = {
+        start: 0,
+        center: (neighborCrossSize - sourceCrossSize) / 2,
+        end: neighborCrossSize - sourceCrossSize,
+      }[neighborAlign];
+      const neighborCrossStart = sourceCrossStartOffset - crossAdjustment;
+
+      // Determine the neighbor's physical (top, left) coordinate from its
+      // logical main- and cross-axis start properties.
+      const mainStartProperty = mapAxisToStartProperty[mainAxis];
+      const crossStartProperty = mapAxisToStartProperty[crossAxis];
+      const neighborOrigin = {
+        [mainStartProperty]: neighborMainStart,
+        [crossStartProperty]: neighborCrossStart,
       };
 
-      const mapDirectionToSourceCorner = {
-        column: {
-          x: "left",
-          y: "bottom",
-        },
-        "column-reverse": {
-          x: "left",
-          y: "top",
-        },
-        row: {
-          x: "right",
-          y: "top",
-        },
-        "row-reverse": {
-          x: "left",
-          y: "top",
-        },
-      };
-      const sourceCorner = mapDirectionToSourceCorner[neighborDirection];
-      const sourceOrigin = {
-        x: sourceRect[sourceCorner.x],
-        y: sourceRect[sourceCorner.y],
-      };
-
-      let neighborOrigin;
-      switch (neighborDirection) {
-        case "column":
-          neighborOrigin = {
-            left: sourceOrigin.x,
-            top: sourceOrigin.y,
-          };
-          break;
-
-        case "column-reverse":
-          neighborOrigin = {
-            left: sourceOrigin.x,
-            top: sourceOrigin.y - neighbor.offsetHeight,
-          };
-          break;
-
-        case "row":
-        default:
-          neighborOrigin = {
-            left: sourceOrigin.x,
-            top: sourceOrigin.y,
-          };
-          break;
-
-        case "row-reverse":
-          neighborOrigin = {
-            left: sourceOrigin.x - neighbor.offsetWidth,
-            top: sourceOrigin.y,
-          };
-          break;
-      }
-
+      // Position the neighbor at that physical coordinate.
       Object.assign(neighbor.style, {
         top: `${neighborOrigin.top}px`,
         left: `${neighborOrigin.left}px`,
       });
-
-      console.log(sourceCorner, sourceOrigin, neighborOrigin);
     }
   }
 
@@ -117,21 +136,20 @@ export default class AdjacentPositionTest extends Base {
 
         #source,
         #neighbor {
-          border: 1px solid gray;
           box-sizing: border-box;
         }
 
         #source {
-          background: #aaa;
+          background: #999;
           height: 30px;
-          width: 30px;
+          width: 50px;
         }
 
         #neighbor {
-          background: #ccc;
+          background: #ddd;
           height: 60px;
           position: absolute;
-          width: 60px;
+          width: 100px;
         }
       </style>
       <div id="source"></div>

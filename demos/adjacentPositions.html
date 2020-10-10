@@ -12,37 +12,122 @@
   <body role="main">
     <div class="demo padded">
       <style>
+        #samples {
+          align-items: center;
+          display: grid;
+          gap: 30px;
+          grid-template-columns: auto repeat(3, 1fr);
+          justify-items: center;
+        }
+
+        .directionLabel {
+          justify-self: start;
+        }
+
         adjacent-position-test {
           display: grid;
           height: 90px;
-          width: 90px;
+          width: 150px;
         }
       </style>
-      <div>
-        <p>column</p>
-        <adjacent-position-test
-          neighbor-direction="column"
-        ></adjacent-position-test>
-      </div>
-      <div>
-        <p>column-reverse</p>
-        <adjacent-position-test
-          neighbor-direction="column-reverse"
-          style="align-items: end"
-        ></adjacent-position-test>
-      </div>
-      <div>
-        <p>row</p>
-        <adjacent-position-test
-          neighbor-direction="row"
-        ></adjacent-position-test>
-      </div>
-      <div>
-        <p>row-reverse</p>
-        <adjacent-position-test
-          neighbor-direction="row-reverse"
-          style="justify-content: end"
-        ></adjacent-position-test>
+      <div id="samples">
+        <div class="directionLabel"></div>
+        <div class="alignLabel">start</div>
+        <div class="alignLabel">center</div>
+        <div class="alignLabel">end</div>
+
+        <div class="directionLabel">column</div>
+        <div>
+          <adjacent-position-test
+            neighbor-align="start"
+            neighbor-direction="column"
+            style="align-items: start; justify-items: center"
+          ></adjacent-position-test>
+        </div>
+        <div>
+          <adjacent-position-test
+            neighbor-direction="column"
+            neighbor-align="center"
+            style="align-items: start; justify-items: center"
+          ></adjacent-position-test>
+        </div>
+        <div>
+          <adjacent-position-test
+            neighbor-align="end"
+            neighbor-direction="column"
+            style="align-items: start; justify-items: center"
+          ></adjacent-position-test>
+        </div>
+
+        <div class="directionLabel">column-reverse</div>
+        <div>
+          <adjacent-position-test
+            neighbor-align="start"
+            neighbor-direction="column-reverse"
+            style="align-items: end; justify-items: center"
+          ></adjacent-position-test>
+        </div>
+        <div>
+          <adjacent-position-test
+            neighbor-align="center"
+            neighbor-direction="column-reverse"
+            style="align-items: end; justify-items: center"
+          ></adjacent-position-test>
+        </div>
+        <div>
+          <adjacent-position-test
+            neighbor-align="end"
+            neighbor-direction="column-reverse"
+            style="align-items: end; justify-items: center"
+          ></adjacent-position-test>
+        </div>
+
+        <div class="directionLabel">row</div>
+        <div>
+          <adjacent-position-test
+            neighbor-align="start"
+            neighbor-direction="row"
+            style="align-items: center; justify-items: start"
+          ></adjacent-position-test>
+        </div>
+        <div>
+          <adjacent-position-test
+            neighbor-direction="row"
+            neighbor-align="center"
+            style="align-items: center; justify-items: start"
+          ></adjacent-position-test>
+        </div>
+        <div>
+          <adjacent-position-test
+            neighbor-align="end"
+            neighbor-direction="row"
+            style="align-items: center; justify-items: start"
+          ></adjacent-position-test>
+        </div>
+
+        <div class="directionLabel">row-reverse</div>
+        <div>
+          <adjacent-position-test
+            neighbor-align="start"
+            neighbor-direction="row-reverse"
+            style="align-items: center; justify-items: end"
+          ></adjacent-position-test>
+        </div>
+        <div>
+          <adjacent-position-test
+            neighbor-align="center"
+            neighbor-direction="row-reverse"
+            style="align-items: center; justify-items: end"
+          ></adjacent-position-test>
+        </div>
+
+        <div>
+          <adjacent-position-test
+            neighbor-align="end"
+            neighbor-direction="row-reverse"
+            style="align-items: center; justify-items: end"
+          ></adjacent-position-test>
+        </div>
       </div>
     </div>
   </body>
