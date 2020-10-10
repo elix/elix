@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Adjacent positions</title>
+
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="./src/AdjacentPositionTest.js"></script>
+  </head>
+
+  <body role="main">
+    <div class="demo padded">
+      <style>
+        adjacent-position-test {
+          display: grid;
+          height: 90px;
+          width: 90px;
+        }
+      </style>
+      <div>
+        <p>column</p>
+        <adjacent-position-test
+          neighbor-direction="column"
+        ></adjacent-position-test>
+      </div>
+      <div>
+        <p>column-reverse</p>
+        <adjacent-position-test
+          neighbor-direction="column-reverse"
+          style="align-items: end"
+        ></adjacent-position-test>
+      </div>
+      <div>
+        <p>row</p>
+        <adjacent-position-test
+          neighbor-direction="row"
+        ></adjacent-position-test>
+      </div>
+      <div>
+        <p>row-reverse</p>
+        <adjacent-position-test
+          neighbor-direction="row-reverse"
+          style="justify-content: end"
+        ></adjacent-position-test>
+      </div>
+    </div>
+  </body>
+</html>
