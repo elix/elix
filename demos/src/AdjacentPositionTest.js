@@ -6,12 +6,13 @@ import {
   state,
   template,
 } from "../../src/base/internal.js";
+import LanguageDirectionMixin from "../../src/base/LanguageDirectionMixin.js";
 import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
 
 const Base = ReactiveElement;
 
-export default class AdjacentPositionTest extends Base {
+export default class AdjacentPositionTest extends LanguageDirectionMixin(Base) {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       neighborAlign: "start",
@@ -38,8 +39,12 @@ export default class AdjacentPositionTest extends Base {
   [render](changed) {
     super[render](changed);
 
-    if (changed.neighborAlign || changed.neighborDirection) {
-      const { neighborAlign, neighborDirection } = this[state];
+    if (
+      changed.neighborAlign ||
+      changed.neighborDirection ||
+      changed.rightToLeft
+    ) {
+      const { neighborAlign, neighborDirection, rightToLeft } = this[state];
       /** @type {any} */ const source = this[ids].source;
       /** @type {any} */ const neighbor = this[ids].neighbor;
 
@@ -56,17 +61,19 @@ export default class AdjacentPositionTest extends Base {
       };
       const crossAxis = mapAxisToPerpendicularAxis[mainAxis];
 
+      // We'll need to flip certain parts of the logic for right-to-left;
+      const flipMainAxis = rightToLeft && mainAxis === "horizontal";
+      const flipCrossAxis = rightToLeft && crossAxis === "horizontal";
+
       // Determine how we'll measure things on these axes.
-      const mainAxisPositive = {
-        column: true,
-        "column-reverse": false,
-        row: true,
-        "row-reverse": false,
-      }[neighborDirection];
       const mapAxisToOffsetStartProperty = {
         horizontal: "offsetLeft",
         vertical: "offsetTop",
       };
+      const mainAxisOffsetStartProperty =
+        mapAxisToOffsetStartProperty[mainAxis];
+      const crossAxisOffsetStartProperty =
+        mapAxisToOffsetStartProperty[crossAxis];
       const mapAxisToOffsetSizeProperty = {
         horizontal: "offsetWidth",
         vertical: "offsetHeight",
@@ -78,6 +85,15 @@ export default class AdjacentPositionTest extends Base {
       const mainOffsetSizeProperty = mapAxisToOffsetSizeProperty[mainAxis];
       const crossOffsetSizeProperty = mapAxisToOffsetSizeProperty[crossAxis];
 
+      // Determine whether physical coordinates increase along the main axis.
+      const directionPositive = {
+        column: true,
+        "column-reverse": false,
+        row: true,
+        "row-reverse": false,
+      }[neighborDirection];
+      const mainAxisPositive = flipMainAxis !== directionPositive;
+
       // Measure the source and neighbor.
       const sourceMainSize = source[mainOffsetSizeProperty];
       const neighborMainSize = neighbor[mainOffsetSizeProperty];
@@ -85,7 +101,7 @@ export default class AdjacentPositionTest extends Base {
       const neighborCrossSize = neighbor[crossOffsetSizeProperty];
 
       // Determine the offset of the source's end along the main axis.
-      const sourceMainStart = source[mapAxisToOffsetStartProperty[mainAxis]];
+      const sourceMainStart = source[mainAxisOffsetStartProperty];
       const sourceMainEnd = mainAxisPositive
         ? sourceMainStart + sourceMainSize
         : sourceMainStart;
@@ -96,17 +112,18 @@ export default class AdjacentPositionTest extends Base {
         : sourceMainEnd - neighborMainSize;
 
       // Determine the source's start on the cross axis.
-      const sourceCrossStartOffsetProperty =
-        mapAxisToOffsetStartProperty[crossAxis];
-      const sourceCrossStartOffset = source[sourceCrossStartOffsetProperty];
+      const sourceCrossStartOffset = source[crossAxisOffsetStartProperty];
 
       // Determine the neighbor's start on the cross axis which will give the
       // desired cross-axis alignment with the source.
+      const normalizedAlign = flipCrossAxis
+        ? { start: "end", center: "center", end: "start" }[neighborAlign]
+        : neighborAlign;
       const crossAdjustment = {
         start: 0,
         center: (neighborCrossSize - sourceCrossSize) / 2,
         end: neighborCrossSize - sourceCrossSize,
-      }[neighborAlign];
+      }[normalizedAlign];
       const neighborCrossStart = sourceCrossStartOffset - crossAdjustment;
 
       // Determine the neighbor's physical (top, left) coordinate from its
