@@ -42,8 +42,14 @@ export default class PopupPositionTest extends LanguageDirectionMixin(Base) {
       const { popupAlign, popupDirection, rightToLeft } = this[state];
       /** @type {any} */ const source = this[ids].source;
       /** @type {any} */ const popup = this[ids].popup;
+      const bounds = {
+        top: this.offsetTop,
+        left: this.offsetLeft,
+        right: this.offsetLeft + this.offsetWidth,
+        bottom: this.offsetTop + this.offsetHeight,
+      };
 
-      const popupOrigin = positionPopup(source, popup, {
+      const popupOrigin = positionPopup(source, popup, bounds, {
         popupAlign,
         popupDirection,
         rightToLeft,
@@ -61,6 +67,7 @@ export default class PopupPositionTest extends LanguageDirectionMixin(Base) {
     return templateFrom.html`
       <style>
         :host {
+          border: 1px dotted #ddd;
           display: inline-block;
           position: relative;
         }

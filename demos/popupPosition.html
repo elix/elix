@@ -16,11 +16,10 @@
           align-items: center;
           display: grid;
           gap: 30px;
-          grid-template-columns: auto repeat(3, 1fr);
           justify-items: center;
         }
 
-        .directionLabel {
+        .rowLabel {
           justify-self: start;
         }
 
@@ -31,14 +30,53 @@
         }
       </style>
 
-      <h2>Default</h2>
-      <div class="samples">
-        <div class="directionLabel"></div>
-        <div class="alignLabel">start</div>
-        <div class="alignLabel">center</div>
-        <div class="alignLabel">end</div>
+      <h2>Flipping strategy</h2>
+      <div class="samples" style="grid-template-columns: repeat(5, 1fr)">
+        <div class="rowLabel"></div>
+        <div class="columnLabel">room available</div>
+        <div class="columnLabel">flip inline</div>
+        <div class="columnLabel">flip block</div>
+        <div class="columnLabel">flip both</div>
 
-        <div class="directionLabel">column</div>
+        <div class="rowLabel">column / start</div>
+        <div>
+          <popup-position-test
+            popup-align="start"
+            popup-direction="column"
+            style="align-items: start; justify-items: start"
+          ></popup-position-test>
+        </div>
+        <div>
+          <popup-position-test
+            popup-align="start"
+            popup-direction="column"
+            style="align-items: start; justify-items: end"
+          ></popup-position-test>
+        </div>
+        <div>
+          <popup-position-test
+            popup-align="start"
+            popup-direction="column"
+            style="align-items: end; justify-items: start"
+          ></popup-position-test>
+        </div>
+        <div>
+          <popup-position-test
+            popup-align="end"
+            popup-direction="column"
+            style="align-items: end; justify-items: end"
+          ></popup-position-test>
+        </div>
+      </div>
+
+      <h2>Logical positions (left-to-right, room available)</h2>
+      <div class="samples" style="grid-template-columns: repeat(4, 1fr)">
+        <div class="rowLabel"></div>
+        <div class="columnLabel">start</div>
+        <div class="columnLabel">center</div>
+        <div class="columnLabel">end</div>
+
+        <div class="rowLabel">column</div>
         <div>
           <popup-position-test
             popup-align="start"
@@ -61,7 +99,7 @@
           ></popup-position-test>
         </div>
 
-        <div class="directionLabel">column-reverse</div>
+        <div class="rowLabel">column-reverse</div>
         <div>
           <popup-position-test
             popup-align="start"
@@ -84,7 +122,7 @@
           ></popup-position-test>
         </div>
 
-        <div class="directionLabel">row</div>
+        <div class="rowLabel">row</div>
         <div>
           <popup-position-test
             popup-align="start"
@@ -107,7 +145,7 @@
           ></popup-position-test>
         </div>
 
-        <div class="directionLabel">row-reverse</div>
+        <div class="rowLabel">row-reverse</div>
         <div>
           <popup-position-test
             popup-align="start"
@@ -132,14 +170,115 @@
         </div>
       </div>
 
+      <h2>Physical positions (left-to-right, room available)</h2>
+      <div class="samples" style="grid-template-columns: repeat(4, 1fr)">
+        <div class="rowLabel"></div>
+        <div class="columnLabel">left or top</div>
+        <div class="columnLabel">center</div>
+        <div class="columnLabel">right or end</div>
+
+        <div class="rowLabel">above</div>
+        <div>
+          <popup-position-test
+            popup-align="left"
+            popup-direction="above"
+            style="align-items: end; justify-items: center"
+          ></popup-position-test>
+        </div>
+        <div>
+          <popup-position-test
+            popup-align="center"
+            popup-direction="above"
+            style="align-items: end; justify-items: center"
+          ></popup-position-test>
+        </div>
+        <div>
+          <popup-position-test
+            popup-align="right"
+            popup-direction="above"
+            style="align-items: end; justify-items: center"
+          ></popup-position-test>
+        </div>
+
+        <div class="rowLabel">below</div>
+        <div>
+          <popup-position-test
+            popup-align="left"
+            popup-direction="below"
+            style="align-items: start; justify-items: center"
+          ></popup-position-test>
+        </div>
+        <div>
+          <popup-position-test
+            popup-direction="below"
+            popup-align="center"
+            style="align-items: start; justify-items: center"
+          ></popup-position-test>
+        </div>
+        <div>
+          <popup-position-test
+            popup-align="right"
+            popup-direction="below"
+            style="align-items: start; justify-items: center"
+          ></popup-position-test>
+        </div>
+
+        <div class="rowLabel">left</div>
+        <div>
+          <popup-position-test
+            popup-align="top"
+            popup-direction="left"
+            style="align-items: center; justify-items: end"
+          ></popup-position-test>
+        </div>
+        <div>
+          <popup-position-test
+            popup-align="center"
+            popup-direction="left"
+            style="align-items: center; justify-items: end"
+          ></popup-position-test>
+        </div>
+
+        <div>
+          <popup-position-test
+            popup-align="bottom"
+            popup-direction="left"
+            style="align-items: center; justify-items: end"
+          ></popup-position-test>
+        </div>
+
+        <div class="rowLabel">right</div>
+        <div>
+          <popup-position-test
+            popup-align="top"
+            popup-direction="right"
+            style="align-items: center; justify-items: start"
+          ></popup-position-test>
+        </div>
+        <div>
+          <popup-position-test
+            popup-direction="right"
+            popup-align="center"
+            style="align-items: center; justify-items: start"
+          ></popup-position-test>
+        </div>
+        <div>
+          <popup-position-test
+            popup-align="bottom"
+            popup-direction="right"
+            style="align-items: center; justify-items: start"
+          ></popup-position-test>
+        </div>
+      </div>
+
       <h2>Right-to-left</h2>
-      <div class="samples">
-        <div class="directionLabel"></div>
-        <div class="alignLabel">start</div>
-        <div class="alignLabel">center</div>
-        <div class="alignLabel">end</div>
+      <div class="samples" style="grid-template-columns: repeat(4, 1fr)">
+        <div class="rowLabel"></div>
+        <div class="columnLabel">start</div>
+        <div class="columnLabel">center</div>
+        <div class="columnLabel">end</div>
 
-        <div class="directionLabel">column</div>
+        <div class="rowLabel">column</div>
         <div>
           <popup-position-test
             dir="rtl"
@@ -165,7 +304,7 @@
           ></popup-position-test>
         </div>
 
-        <div class="directionLabel">column-reverse</div>
+        <div class="rowLabel">column-reverse</div>
         <div>
           <popup-position-test
             dir="rtl"
@@ -191,7 +330,7 @@
           ></popup-position-test>
         </div>
 
-        <div class="directionLabel">row</div>
+        <div class="rowLabel">row</div>
         <div>
           <popup-position-test
             dir="rtl"
@@ -217,7 +356,7 @@
           ></popup-position-test>
         </div>
 
-        <div class="directionLabel">row-reverse</div>
+        <div class="rowLabel">row-reverse</div>
         <div>
           <popup-position-test
             dir="rtl"
