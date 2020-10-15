@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Adjacent positions</title>
+    <title>Popup position</title>
 
     <link rel="stylesheet" href="demos.css" />
-    <script type="module" src="./src/AdjacentPositionTest.js"></script>
+    <script type="module" src="./src/PopupPositionTest.js"></script>
   </head>
 
   <body role="main">
@@ -24,7 +24,7 @@
           justify-self: start;
         }
 
-        adjacent-position-test {
+        popup-position-test {
           display: grid;
           height: 90px;
           width: 150px;
@@ -40,95 +40,95 @@
 
         <div class="directionLabel">column</div>
         <div>
-          <adjacent-position-test
-            neighbor-align="start"
-            neighbor-direction="column"
+          <popup-position-test
+            popup-align="start"
+            popup-direction="column"
             style="align-items: start; justify-items: center"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
         <div>
-          <adjacent-position-test
-            neighbor-direction="column"
-            neighbor-align="center"
+          <popup-position-test
+            popup-direction="column"
+            popup-align="center"
             style="align-items: start; justify-items: center"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
         <div>
-          <adjacent-position-test
-            neighbor-align="end"
-            neighbor-direction="column"
+          <popup-position-test
+            popup-align="end"
+            popup-direction="column"
             style="align-items: start; justify-items: center"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
 
         <div class="directionLabel">column-reverse</div>
         <div>
-          <adjacent-position-test
-            neighbor-align="start"
-            neighbor-direction="column-reverse"
+          <popup-position-test
+            popup-align="start"
+            popup-direction="column-reverse"
             style="align-items: end; justify-items: center"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
         <div>
-          <adjacent-position-test
-            neighbor-align="center"
-            neighbor-direction="column-reverse"
+          <popup-position-test
+            popup-align="center"
+            popup-direction="column-reverse"
             style="align-items: end; justify-items: center"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
         <div>
-          <adjacent-position-test
-            neighbor-align="end"
-            neighbor-direction="column-reverse"
+          <popup-position-test
+            popup-align="end"
+            popup-direction="column-reverse"
             style="align-items: end; justify-items: center"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
 
         <div class="directionLabel">row</div>
         <div>
-          <adjacent-position-test
-            neighbor-align="start"
-            neighbor-direction="row"
+          <popup-position-test
+            popup-align="start"
+            popup-direction="row"
             style="align-items: center; justify-items: start"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
         <div>
-          <adjacent-position-test
-            neighbor-direction="row"
-            neighbor-align="center"
+          <popup-position-test
+            popup-direction="row"
+            popup-align="center"
             style="align-items: center; justify-items: start"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
         <div>
-          <adjacent-position-test
-            neighbor-align="end"
-            neighbor-direction="row"
+          <popup-position-test
+            popup-align="end"
+            popup-direction="row"
             style="align-items: center; justify-items: start"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
 
         <div class="directionLabel">row-reverse</div>
         <div>
-          <adjacent-position-test
-            neighbor-align="start"
-            neighbor-direction="row-reverse"
+          <popup-position-test
+            popup-align="start"
+            popup-direction="row-reverse"
             style="align-items: center; justify-items: end"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
         <div>
-          <adjacent-position-test
-            neighbor-align="center"
-            neighbor-direction="row-reverse"
+          <popup-position-test
+            popup-align="center"
+            popup-direction="row-reverse"
             style="align-items: center; justify-items: end"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
 
         <div>
-          <adjacent-position-test
-            neighbor-align="end"
-            neighbor-direction="row-reverse"
+          <popup-position-test
+            popup-align="end"
+            popup-direction="row-reverse"
             style="align-items: center; justify-items: end"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
       </div>
 
@@ -141,107 +141,107 @@
 
         <div class="directionLabel">column</div>
         <div>
-          <adjacent-position-test
+          <popup-position-test
             dir="rtl"
-            neighbor-align="start"
-            neighbor-direction="column"
+            popup-align="start"
+            popup-direction="column"
             style="align-items: start; justify-items: center"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
         <div>
-          <adjacent-position-test
+          <popup-position-test
             dir="rtl"
-            neighbor-direction="column"
-            neighbor-align="center"
+            popup-direction="column"
+            popup-align="center"
             style="align-items: start; justify-items: center"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
         <div>
-          <adjacent-position-test
+          <popup-position-test
             dir="rtl"
-            neighbor-align="end"
-            neighbor-direction="column"
+            popup-align="end"
+            popup-direction="column"
             style="align-items: start; justify-items: center"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
 
         <div class="directionLabel">column-reverse</div>
         <div>
-          <adjacent-position-test
+          <popup-position-test
             dir="rtl"
-            neighbor-align="start"
-            neighbor-direction="column-reverse"
+            popup-align="start"
+            popup-direction="column-reverse"
             style="align-items: end; justify-items: center"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
         <div>
-          <adjacent-position-test
+          <popup-position-test
             dir="rtl"
-            neighbor-align="center"
-            neighbor-direction="column-reverse"
+            popup-align="center"
+            popup-direction="column-reverse"
             style="align-items: end; justify-items: center"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
         <div>
-          <adjacent-position-test
+          <popup-position-test
             dir="rtl"
-            neighbor-align="end"
-            neighbor-direction="column-reverse"
+            popup-align="end"
+            popup-direction="column-reverse"
             style="align-items: end; justify-items: center"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
 
         <div class="directionLabel">row</div>
         <div>
-          <adjacent-position-test
+          <popup-position-test
             dir="rtl"
-            neighbor-align="start"
-            neighbor-direction="row"
+            popup-align="start"
+            popup-direction="row"
             style="align-items: center; justify-items: start"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
         <div>
-          <adjacent-position-test
+          <popup-position-test
             dir="rtl"
-            neighbor-direction="row"
-            neighbor-align="center"
+            popup-direction="row"
+            popup-align="center"
             style="align-items: center; justify-items: start"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
         <div>
-          <adjacent-position-test
+          <popup-position-test
             dir="rtl"
-            neighbor-align="end"
-            neighbor-direction="row"
+            popup-align="end"
+            popup-direction="row"
             style="align-items: center; justify-items: start"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
 
         <div class="directionLabel">row-reverse</div>
         <div>
-          <adjacent-position-test
+          <popup-position-test
             dir="rtl"
-            neighbor-align="start"
-            neighbor-direction="row-reverse"
+            popup-align="start"
+            popup-direction="row-reverse"
             style="align-items: center; justify-items: end"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
         <div>
-          <adjacent-position-test
+          <popup-position-test
             dir="rtl"
-            neighbor-align="center"
-            neighbor-direction="row-reverse"
+            popup-align="center"
+            popup-direction="row-reverse"
             style="align-items: center; justify-items: end"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
 
         <div>
-          <adjacent-position-test
+          <popup-position-test
             dir="rtl"
-            neighbor-align="end"
-            neighbor-direction="row-reverse"
+            popup-align="end"
+            popup-direction="row-reverse"
             style="align-items: center; justify-items: end"
-          ></adjacent-position-test>
+          ></popup-position-test>
         </div>
       </div>
     </div>
