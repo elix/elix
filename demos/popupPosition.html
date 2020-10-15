@@ -34,9 +34,9 @@
       <div class="samples" style="grid-template-columns: repeat(5, 1fr)">
         <div class="rowLabel"></div>
         <div class="columnLabel">room available</div>
-        <div class="columnLabel">flip inline</div>
-        <div class="columnLabel">flip block</div>
-        <div class="columnLabel">flip both</div>
+        <div class="columnLabel">no horizontal room</div>
+        <div class="columnLabel">no vertical room</div>
+        <div class="columnLabel">no room either way</div>
 
         <div class="rowLabel">column / start</div>
         <div>
@@ -62,13 +62,14 @@
         </div>
         <div>
           <popup-position-test
-            popup-align="end"
+            popup-align="start"
             popup-direction="column"
             style="align-items: end; justify-items: end"
           ></popup-position-test>
         </div>
       </div>
 
+      <!--
       <h2>Logical positions (left-to-right, room available)</h2>
       <div class="samples" style="grid-template-columns: repeat(4, 1fr)">
         <div class="rowLabel"></div>
@@ -175,7 +176,7 @@
         <div class="rowLabel"></div>
         <div class="columnLabel">left or top</div>
         <div class="columnLabel">center</div>
-        <div class="columnLabel">right or end</div>
+        <div class="columnLabel">right or bottom</div>
 
         <div class="rowLabel">above</div>
         <div>
@@ -383,6 +384,7 @@
           ></popup-position-test>
         </div>
       </div>
+      -->
     </div>
   </body>
 </html>

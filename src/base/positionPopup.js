@@ -10,6 +10,10 @@
 export default function positionPopup(source, popup, bounds, options) {
   const { popupAlign, popupDirection } = normalizeOptions(options);
 
+  const origin = sourceOrigin(source, popupDirection, popupAlign);
+  const space = availableSpace(origin, bounds, popupDirection, popupAlign);
+  console.log(source, origin, space);
+
   // Work out which axes we're working with.
   const mainAxis = {
     above: "vertical",
@@ -17,11 +21,10 @@ export default function positionPopup(source, popup, bounds, options) {
     left: "horizontal",
     right: "horizontal",
   }[popupDirection];
-  const mapAxisToPerpendicularAxis = {
+  const crossAxis = {
     horizontal: "vertical",
     vertical: "horizontal",
-  };
-  const crossAxis = mapAxisToPerpendicularAxis[mainAxis];
+  }[mainAxis];
 
   // Determine how we'll measure things on these axes.
   const mapAxisToOffsetStartProperty = {
@@ -95,6 +98,133 @@ export default function positionPopup(source, popup, bounds, options) {
   };
 
   return popupOrigin;
+}
+
+function layoutPossibilities(direction, align) {
+  const possibilties = [{ direction, align }];
+  const flipDirection = {
+    above: "below",
+    below: "above",
+    left: "right",
+    right: "left",
+  };
+  const flipAlign = {
+    top: "bottom",
+    bottom: "top",
+    left: "right",
+    right: "left",
+  };
+  if (align === "center") {
+    // Only need to consider possibility of flipping over main axis
+    possibilties.push({
+      align,
+      direction: flipDirection[direction],
+    });
+  } else {
+    // Need to consider possibilities of flipping on either axis or both
+    possibilties.push({
+      align: flipAlign[align],
+      direction: direction,
+    });
+    possibilties.push({
+      align,
+      direction: flipDirection[direction],
+    });
+    possibilties.push({
+      align: flipAlign[align],
+      direction: flipDirection[direction],
+    });
+  }
+  return possibilties;
+}
+
+/**
+ * @private
+ * @param {HTMLElement} source
+ * @param {*} direction
+ * @param {*} align
+ */
+function sourceOrigin(source, direction, align) {
+  let x;
+  let y;
+  switch (direction) {
+    case "above":
+      y = source.offsetTop;
+      break;
+    case "below":
+      y = source.offsetTop + source.offsetHeight;
+      break;
+    case "left":
+      x = source.offsetLeft;
+      break;
+    case "right":
+      x = source.offsetLeft + source.offsetWidth;
+      break;
+  }
+  switch (align) {
+    case "bottom":
+      y = source.offsetTop + source.offsetHeight;
+      break;
+    case "left":
+      x = source.offsetLeft;
+      break;
+    case "center":
+      if (direction === "above" || direction === "below") {
+        x = source.offsetLeft + source.offsetWidth / 2;
+      } else {
+        y = source.offsetTop + source.offsetHeight / 2;
+      }
+      break;
+    case "right":
+      x = source.offsetLeft + source.offsetWidth;
+      break;
+    case "top":
+      y = source.offsetTop;
+      break;
+  }
+  return { x, y };
+}
+
+function availableSpace(origin, bounds, direction, align) {
+  let height = 0;
+  let width = 0;
+  switch (direction) {
+    case "above":
+      height = bounds.top - origin.y;
+      break;
+    case "below":
+      height = bounds.bottom - origin.y;
+      break;
+    case "left":
+      width = origin.x - bounds.left;
+      break;
+    case "right":
+      width = bounds.right - origin.x;
+      break;
+  }
+  switch (align) {
+    case "left":
+      width = bounds.right - origin.x;
+      break;
+    case "center":
+      width =
+        direction === "above" || direction === "below"
+          ? bounds.right - bounds.left
+          : bounds.bottom - bounds.top;
+      break;
+    case "right":
+      width = origin.y - bounds.left;
+      break;
+    case "top":
+      height = bounds.bottom - origin.y;
+      break;
+    case "bottom":
+      height = origin.y - bounds.top;
+      break;
+  }
+  height = Math.max(0, height);
+  width = Math.max(0, width);
+  return { height, width };
 }
 
 // Normalize the popup options. Convert any logical options (start, end) to

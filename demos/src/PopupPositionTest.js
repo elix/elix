@@ -1,7 +1,7 @@
 import {
   defaultState,
   ids,
-  render,
+  rendered,
   setState,
   state,
   template,
@@ -35,18 +35,24 @@ export default class PopupPositionTest extends LanguageDirectionMixin(Base) {
     this[setState]({ popupDirection });
   }
 
-  [render](changed) {
-    super[render](changed);
+  [rendered](changed) {
+    super[rendered](changed);
 
     if (changed.popupAlign || changed.popupDirection || changed.rightToLeft) {
       const { popupAlign, popupDirection, rightToLeft } = this[state];
       /** @type {any} */ const source = this[ids].source;
       /** @type {any} */ const popup = this[ids].popup;
+      // const bounds = {
+      //   top: this.offsetTop,
+      //   left: this.offsetLeft,
+      //   right: this.offsetLeft + this.offsetWidth,
+      //   bottom: this.offsetTop + this.offsetHeight,
+      // };
       const bounds = {
-        top: this.offsetTop,
-        left: this.offsetLeft,
-        right: this.offsetLeft + this.offsetWidth,
-        bottom: this.offsetTop + this.offsetHeight,
+        top: 0,
+        left: 0,
+        right: this.offsetWidth,
+        bottom: this.offsetHeight,
       };
 
       const popupOrigin = positionPopup(source, popup, bounds, {
