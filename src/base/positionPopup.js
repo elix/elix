@@ -10,9 +10,23 @@
 export default function positionPopup(source, popup, bounds, options) {
   const { popupAlign, popupDirection } = normalizeOptions(options);
 
-  const origin = sourceOrigin(source, popupDirection, popupAlign);
-  const space = availableSpace(origin, bounds, popupDirection, popupAlign);
-  console.log(source, origin, space);
+  const possibilities = layoutPossibilities(popupDirection, popupAlign);
+  const bestLayout = possibilities.find(({ align, direction }) => {
+    const origin = sourceOrigin(source, direction, align);
+    const { height, width } = availableSpace(origin, bounds, direction, align);
+    // console.log(direction, align, height, width);
+    return popup.offsetHeight <= height && popup.offsetWidth <= width;
+  });
+  const layoutChoice = bestLayout
+    ? {
+        align: bestLayout.align,
+        direction: bestLayout.direction,
+      }
+    : {
+        align: popupAlign,
+        direction: popupDirection,
+      };
+  const { align, direction } = layoutChoice;
 
   // Work out which axes we're working with.
   const mainAxis = {
@@ -20,7 +34,7 @@ export default function positionPopup(source, popup, bounds, options) {
     below: "vertical",
     left: "horizontal",
     right: "horizontal",
-  }[popupDirection];
+  }[direction];
   const crossAxis = {
     horizontal: "vertical",
     vertical: "horizontal",
@@ -50,7 +64,7 @@ export default function positionPopup(source, popup, bounds, options) {
     above: false,
     right: true,
     left: false,
-  }[popupDirection];
+  }[direction];
 
   // Measure the source and popup.
   const sourceMainSize = source[mainOffsetSizeProperty];
@@ -80,7 +94,7 @@ export default function positionPopup(source, popup, bounds, options) {
     left: "start",
     right: "end",
     top: "start",
-  }[popupAlign];
+  }[align];
   const crossAdjustment = {
     start: 0,
     center: (popupCrossSize - sourceCrossSize) / 2,
@@ -101,7 +115,7 @@ export default function positionPopup(source, popup, bounds, options) {
 }
 
 function layoutPossibilities(direction, align) {
-  const possibilties = [{ direction, align }];
+  const possibilties = [{ align, direction }];
   const flipDirection = {
     above: "below",
     below: "above",
@@ -190,7 +204,7 @@ function availableSpace(origin, bounds, direction, align) {
   let width = 0;
   switch (direction) {
     case "above":
-      height = bounds.top - origin.y;
+      height = origin.y - bounds.top;
       break;
     case "below":
       height = bounds.bottom - origin.y;
@@ -213,7 +227,7 @@ function availableSpace(origin, bounds, direction, align) {
           : bounds.bottom - bounds.top;
       break;
     case "right":
-      width = origin.y - bounds.left;
+      width = origin.x - bounds.left;
       break;
     case "top":
       height = bounds.bottom - origin.y;
