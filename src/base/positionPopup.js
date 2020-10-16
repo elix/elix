@@ -17,16 +17,8 @@ export default function positionPopup(source, popup, bounds, options) {
     // console.log(direction, align, height, width);
     return popup.offsetHeight <= height && popup.offsetWidth <= width;
   });
-  const layoutChoice = bestLayout
-    ? {
-        align: bestLayout.align,
-        direction: bestLayout.direction,
-      }
-    : {
-        align: popupAlign,
-        direction: popupDirection,
-      };
-  const { align, direction } = layoutChoice;
+  const layout = bestLayout || possibilities[0];
+  const { align, direction } = layout;
 
   // Work out which axes we're working with.
   const mainAxis = {
@@ -221,10 +213,11 @@ function availableSpace(origin, bounds, direction, align) {
       width = bounds.right - origin.x;
       break;
     case "center":
-      width =
-        direction === "above" || direction === "below"
-          ? bounds.right - bounds.left
-          : bounds.bottom - bounds.top;
+      if (direction === "above" || direction === "below") {
+        width = bounds.right - bounds.left;
+      } else {
+        height = bounds.bottom - bounds.top;
+      }
       break;
     case "right":
       width = origin.x - bounds.left;
