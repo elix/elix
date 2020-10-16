@@ -10,103 +10,76 @@
 export default function positionPopup(source, popup, bounds, options) {
   const { popupAlign, popupDirection } = normalizeOptions(options);
 
-  const possibilities = layoutPossibilities(popupDirection, popupAlign);
-  const bestLayout = possibilities.find(({ align, direction }) => {
-    const origin = sourceOrigin(source, direction, align);
-    const { height, width } = availableSpace(origin, bounds, direction, align);
-    // console.log(direction, align, height, width);
+  // Given the direction and alignment, which layouts do we want to consider?
+  const layouts = prioritizedLayouts(popupDirection, popupAlign);
+  // Find the first layout that lets the popup fit in the bounds.
+  const bestLayout = layouts.find(({ align, direction }) => {
+    const sourceOrigin = getSourceOrigin(source, direction, align);
+    const { height, width } = availableSpace(
+      sourceOrigin,
+      bounds,
+      direction,
+      align
+    );
     return popup.offsetHeight <= height && popup.offsetWidth <= width;
   });
-  const layout = bestLayout || possibilities[0];
+  // If we didn't find any layout that works, take the first one.
+  const layout = bestLayout || layouts[0];
   const { align, direction } = layout;
 
-  // Work out which axes we're working with.
-  const mainAxis = {
-    above: "vertical",
-    below: "vertical",
-    left: "horizontal",
-    right: "horizontal",
-  }[direction];
-  const crossAxis = {
-    horizontal: "vertical",
-    vertical: "horizontal",
-  }[mainAxis];
+  // With respect to which point on the source will we position the popup?
+  const sourceOrigin = getSourceOrigin(source, direction, align);
 
-  // Determine how we'll measure things on these axes.
-  const mapAxisToOffsetStartProperty = {
-    horizontal: "offsetLeft",
-    vertical: "offsetTop",
+  // Find the popup origin with respect to the source origin.
+  const { x, y } = getPopupOrigin(popup, sourceOrigin, direction, align);
+
+  // Return the (x, y) popup origin in (left, top) terms.
+  return {
+    left: x,
+    top: y,
   };
-  const mainAxisOffsetStartProperty = mapAxisToOffsetStartProperty[mainAxis];
-  const crossAxisOffsetStartProperty = mapAxisToOffsetStartProperty[crossAxis];
-  const mapAxisToOffsetSizeProperty = {
-    horizontal: "offsetWidth",
-    vertical: "offsetHeight",
-  };
-  const mapAxisToStartProperty = {
-    horizontal: "left",
-    vertical: "top",
-  };
-  const mainOffsetSizeProperty = mapAxisToOffsetSizeProperty[mainAxis];
-  const crossOffsetSizeProperty = mapAxisToOffsetSizeProperty[crossAxis];
-
-  // Determine whether physical coordinates increase along the main axis.
-  const mainAxisPositive = {
-    below: true,
-    above: false,
-    right: true,
-    left: false,
-  }[direction];
-
-  // Measure the source and popup.
-  const sourceMainSize = source[mainOffsetSizeProperty];
-  const popupMainSize = popup[mainOffsetSizeProperty];
-  const sourceCrossSize = source[crossOffsetSizeProperty];
-  const popupCrossSize = popup[crossOffsetSizeProperty];
-
-  // Determine the offset of the source's end along the main axis.
-  const sourceMainStart = source[mainAxisOffsetStartProperty];
-  const sourceMainEnd = mainAxisPositive
-    ? sourceMainStart + sourceMainSize
-    : sourceMainStart;
-
-  // Determine the popup's start so it touches the source's end.
-  const popupMainStart = mainAxisPositive
-    ? sourceMainEnd
-    : sourceMainEnd - popupMainSize;
-
-  // Determine the source's start on the cross axis.
-  const sourceCrossStartOffset = source[crossAxisOffsetStartProperty];
-
-  // Determine the popup's start on the cross axis which will give the
-  // desired cross-axis alignment with the source.
-  const crossAlign = {
-    bottom: "end",
-    center: "center",
-    left: "start",
-    right: "end",
-    top: "start",
-  }[align];
-  const crossAdjustment = {
-    start: 0,
-    center: (popupCrossSize - sourceCrossSize) / 2,
-    end: popupCrossSize - sourceCrossSize,
-  }[crossAlign];
-  const popupCrossStart = sourceCrossStartOffset - crossAdjustment;
-
-  // Determine the popup's physical (top, left) coordinate from its
-  // logical main- and cross-axis start properties.
-  const mainStartProperty = mapAxisToStartProperty[mainAxis];
-  const crossStartProperty = mapAxisToStartProperty[crossAxis];
-  const popupOrigin = {
-    [mainStartProperty]: popupMainStart,
-    [crossStartProperty]: popupCrossStart,
-  };
-
-  return popupOrigin;
 }
 
-function layoutPossibilities(direction, align) {
+function getPopupOrigin(popup, sourceOrigin, direction, align) {
+  // In the desired layout, which "corner" on the popup (could a real corner, or
+  // could be a midpoint) touches the source origin?
+  const layout = `${direction} ${align}`;
+  const mapLayoutToPopupCorner = {
+    "above left": "left bottom",
+    "above center": "center bottom",
+    "above right": "right bottom",
+    "below left": "left top",
+    "below center": "center top",
+    "below right": "right top",
+    "left top": "right top",
+    "left center": "right center",
+    "left bottom": "right bottom",
+    "right top": "left top",
+    "right center": "left center",
+    "right bottom": "left bottom",
+  };
+  const corner = mapLayoutToPopupCorner[layout];
+  const [cornerHorizontal, cornerVertical] = corner.split(" ");
+
+  // Starting at the source origin, and taking into account the popup's size,
+  // find the (x, y) position of the desired corner on the popup.
+  const height = popup.offsetHeight;
+  const width = popup.offsetWidth;
+  const x = {
+    center: sourceOrigin.x - width / 2,
+    left: sourceOrigin.x,
+    right: sourceOrigin.x - width,
+  }[cornerHorizontal];
+  const y = {
+    bottom: sourceOrigin.y - height,
+    center: sourceOrigin.y - height / 2,
+    top: sourceOrigin.y,
+  }[cornerVertical];
+
+  return { x, y };
+}
+
+function prioritizedLayouts(direction, align) {
   const possibilties = [{ align, direction }];
   const flipDirection = {
     above: "below",
@@ -150,7 +123,7 @@ function layoutPossibilities(direction, align) {
  * @param {*} direction
  * @param {*} align
  */
-function sourceOrigin(source, direction, align) {
+function getSourceOrigin(source, direction, align) {
   let x;
   let y;
   switch (direction) {
