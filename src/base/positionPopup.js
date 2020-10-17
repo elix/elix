@@ -187,7 +187,6 @@ function normalizeOptions(options) {
 /**
  * Position the popup element with respect to a source element.
  *
- * @private
  * @param {HTMLElement} source
  * @param {HTMLElement} popup
  * @param {any} bounds
@@ -226,12 +225,8 @@ export default function positionPopup(source, popup, bounds, options) {
   };
 }
 
-/**
- * Given a preferred direction and alignment, determine the set of 2 or 4 layout
- * alternatives that should be considered, in priority order.
- *
- * @private
- */
+// Given a preferred direction and alignment, determine the set of 2 or 4 layout
+// alternatives that should be considered, in priority order.
 function prioritizedLayouts(preferredDirection, preferredAlign) {
   const flipDirection = {
     above: "below",
