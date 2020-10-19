@@ -23,6 +23,7 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       defaultPath: null,
+      links: [],
       path: getPathFromHash(),
     });
   }
