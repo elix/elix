@@ -32,10 +32,18 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
     super[render](changed);
 
     if (this[firstRender]) {
+      // Clicking close button navigates to current page (without frame).
+      this[ids].closeButton.addEventListener("click", () => {
+        this[raiseChangeEvents] = true;
+        window.location = this[state].path;
+        this[raiseChangeEvents] = false;
+      });
+
       // Translate clicks on navigation links into changes to the hash. Changing
       // the hash will update the path state member, which will tell the frame
       // to load the page at that path.
       this[ids].navigation.addEventListener("click", (event) => {
+        this[raiseChangeEvents] = true;
         // Only handle clicks on links made without modifier keys.
         if (
           event.target instanceof HTMLAnchorElement &&
@@ -52,6 +60,7 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
             event.stopPropagation();
           }
         }
+        this[raiseChangeEvents] = false;
       });
 
       // Refresh title on page load.
@@ -138,7 +147,17 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
         }
 
         [part~="navigation"] {
+          position: relative;
           overflow: auto;
+        }
+
+        #closeButton {
+          background: none;
+          border: none;
+          color: inherit;
+          position: absolute;
+          top: 0.5em;
+          right: 0.5em;
         }
 
         [part~="frame"] {
@@ -149,6 +168,7 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
         }
       </style>
       <nav id="navigation" part="navigation">
+        <button id="closeButton">⨉</button>
         <slot></slot>
       </nav>
       <iframe id="frame" part="frame"></iframe>
