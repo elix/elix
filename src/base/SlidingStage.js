@@ -162,10 +162,6 @@ class SlidingStage extends Base {
           flex: 0 0 100%;
           max-width: 100%; /* For Firefox */
         }
-
-        ::slotted(:not([selected])) {
-          visibility: hidden;
-        }
       </style>
       <div id="slidingStageContent" role="none">
         <slot></slot>
