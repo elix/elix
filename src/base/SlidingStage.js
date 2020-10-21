@@ -76,7 +76,7 @@ class SlidingStage extends Base {
   [render](/** @type {ChangedFlags} */ changed) {
     super[render](changed);
 
-    // Apply `selected` style to the selected item only.
+    // Apply `selected` attribute to the selected item only.
     if (changed.items || changed.currentIndex) {
       const { currentIndex, items } = this[state];
       if (items) {
