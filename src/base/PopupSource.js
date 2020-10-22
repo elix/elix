@@ -20,6 +20,7 @@ import {
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import Popup from "./Popup.js";
+import positionPopup from "./positionPopup.js";
 
 const resizeListenerKey = Symbol("resizeListener");
 
@@ -44,6 +45,7 @@ class PopupSource extends Base {
       horizontalAlign: "start",
       popupHeight: null,
       popupMeasured: false,
+      positionedRect: null,
       popupPosition: "below",
       popupPartType: Popup,
       popupWidth: null,
@@ -158,75 +160,36 @@ class PopupSource extends Base {
     }
 
     if (changed.opened || changed.popupMeasured) {
-      const {
-        calculatedFrameMaxHeight,
-        calculatedFrameMaxWidth,
-        calculatedPopupLeft,
-        calculatedPopupPosition,
-        calculatedPopupRight,
-        opened,
-        popupMeasured,
-      } = this[state];
+      const { opened, popupMeasured, positionedRect } = this[state];
 
       if (!opened) {
-        // If the popup's closed, we reset the styles used to position it.
+        // Popup closed. Reset the styles used to position it.
         if (!opened) {
-          Object.assign(this[ids].popupContainer.style, {
-            overflow: "",
-          });
           Object.assign(this[ids].popup.style, {
-            bottom: "",
+            height: "",
             left: "",
-            opacity: "",
-            position: "",
-            right: "",
+            top: "",
+            width: "",
           });
         }
       } else if (!popupMeasured) {
-        // If the popup is opened but has not yet been measured, we want to
-        // render the component invisibly so we can measure it before showing
-        // it. We hide it by giving it zero opacity. If we use `visibility:
-        // hidden` for this purpose, the popup won't be able to receive the
-        // focus, which would complicate our overlay focus handling.
-        //
-        // We also need to avoid affecting page layout or triggering page
-        // scrolling in this phase. One way we can do that is to hide the
-        // overflow on the zero-height popupContainer element, clipping the
-        // popup and preventing it from affecting layout. (Another method would
-        // be applying `position: fixed` to the popup in this phase, but as of
-        // September 2020, a Chrome bug prevents that from working inside a
-        // scrollable page region with a transform.)
-        Object.assign(this[ids].popupContainer.style, {
-          overflow: "hidden",
-        });
+        // Popup opened but not yet measured. Render the component invisibly
+        // so we can measure it before showing it. We hide it by giving it zero
+        // opacity. If we use `visibility: hidden` for this purpose, the popup
+        // won't be able to receive the focus, which would complicate our
+        // overlay focus handling.
         Object.assign(this[ids].popup.style, {
           opacity: 0,
         });
       } else {
-        // We can now show the open and measured popup in position.
-        const positionBelow = calculatedPopupPosition === "below";
-
+        // Popup opened and measured. Show popup in position.
         const popup = this[ids].popup;
         Object.assign(popup.style, {
-          bottom: positionBelow ? "" : 0,
-          left: calculatedPopupLeft,
+          height: `${positionedRect.height}px`,
+          left: `${positionedRect.x}px`,
           opacity: "",
-          right: calculatedPopupRight,
-        });
-
-        const frame = /** @type {any} */ (popup).frame;
-        Object.assign(frame.style, {
-          maxHeight: calculatedFrameMaxHeight
-            ? `${calculatedFrameMaxHeight}px`
-            : "",
-          maxWidth: calculatedFrameMaxWidth
-            ? `${calculatedFrameMaxWidth}px`
-            : "",
-        });
-
-        Object.assign(this[ids].popupContainer.style, {
-          overflow: "",
-          top: positionBelow ? "" : "0",
+          top: `${positionedRect.y}px`,
+          width: `${positionedRect.width}px`,
         });
       }
     }
@@ -294,12 +257,8 @@ class PopupSource extends Base {
       (state.opened && (changed.horizontalAlign || changed.rightToLeft))
     ) {
       Object.assign(effects, {
-        calculatedFrameMaxHeight: null,
-        calculatedFrameMaxWidth: null,
-        calculatedPopupLeft: null,
-        calculatedPopupPosition: null,
-        calculatedPopupRight: null,
         popupMeasured: false,
+        popupOrigin: null,
       });
     }
 
@@ -323,21 +282,12 @@ class PopupSource extends Base {
         }
 
         #popupContainer {
-          height: 0;
-          outline: none;
           position: absolute;
-          width: 100%;
         }
 
         [part~="popup"] {
-          align-items: initial;
-          height: initial;
-          justify-content: initial;
-          left: initial;
           outline: none;
-          position: absolute;
-          top: initial;
-          width: initial;
+          position: fixed;
         }
       </style>
       <div id="source" part="source">
@@ -372,82 +322,21 @@ function addEventListeners(/** @type {PopupSource} */ element) {
  * @param {PopupSource} element
  */
 function measurePopup(element) {
-  const windowHeight = window.innerHeight;
-  const windowWidth = window.innerWidth;
+  const sourceRect = element[ids].source.getBoundingClientRect();
   const popupRect = element[ids].popup.getBoundingClientRect();
-  const sourceRect = element.getBoundingClientRect();
-
-  const popupHeight = popupRect.height;
-  const popupWidth = popupRect.width;
+  const boundsRect = new DOMRect(0, 0, window.innerWidth, window.innerHeight);
 
   const { horizontalAlign, popupPosition, rightToLeft } = element[state];
 
-  // Calculate the best vertical popup position relative to the source.
-  const roomAbove = sourceRect.top;
-  const roomBelow = Math.ceil(windowHeight - sourceRect.bottom);
-  const roomLeft = sourceRect.right;
-  const roomRight = Math.ceil(windowWidth - sourceRect.left);
-
-  const fitsAbove = popupHeight <= roomAbove;
-  const fitsBelow = popupHeight <= roomBelow;
-
-  const preferPositionBelow = popupPosition === "below";
-
-  // We respect each position popup preference (above/below/right/right) if
-  // there's room in that direction. Otherwise, we use the horizontal/vertical
-  // position that maximizes the popup width/height.
-  const positionBelow =
-    (preferPositionBelow && (fitsBelow || roomBelow >= roomAbove)) ||
-    (!preferPositionBelow && !fitsAbove && roomBelow >= roomAbove);
-  const fitsVertically =
-    (positionBelow && fitsBelow) || (!positionBelow && fitsAbove);
-  const calculatedFrameMaxHeight = fitsVertically
-    ? null
-    : positionBelow
-    ? roomBelow
-    : roomAbove;
-
-  // The popup should be positioned below the source.
-  const calculatedPopupPosition = positionBelow ? "below" : "above";
-
-  // Calculate the best horizontal popup alignment relative to the source.
-  const canLeftAlign = popupWidth <= roomRight;
-  const canRightAlign = popupWidth <= roomLeft;
-
-  let calculatedPopupLeft;
-  let calculatedPopupRight;
-  let calculatedFrameMaxWidth;
-  if (horizontalAlign === "stretch") {
-    calculatedPopupLeft = 0;
-    calculatedPopupRight = 0;
-    calculatedFrameMaxWidth = null;
-  } else {
-    const preferLeftAlign =
-      horizontalAlign === "left" ||
-      (rightToLeft ? horizontalAlign === "end" : horizontalAlign === "start");
-    // The above/below preference rules also apply to left/right alignment.
-    const alignLeft =
-      (preferLeftAlign && (canLeftAlign || roomRight >= roomLeft)) ||
-      (!preferLeftAlign && !canRightAlign && roomRight >= roomLeft);
-    calculatedPopupLeft = alignLeft ? 0 : null;
-    calculatedPopupRight = !alignLeft ? 0 : null;
-
-    const fitsHorizontally =
-      (alignLeft && roomRight) || (!alignLeft && roomLeft);
-    calculatedFrameMaxWidth = fitsHorizontally
-      ? null
-      : alignLeft
-      ? roomRight
-      : roomLeft;
-  }
+  const positionedRect = positionPopup(sourceRect, popupRect, boundsRect, {
+    align: horizontalAlign,
+    direction: popupPosition,
+    rightToLeft,
+  });
 
   element[setState]({
-    calculatedFrameMaxHeight,
-    calculatedFrameMaxWidth,
-    calculatedPopupLeft,
-    calculatedPopupPosition,
-    calculatedPopupRight,
     popupMeasured: true,
+    positionedRect,
   });
 }
 

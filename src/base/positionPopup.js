@@ -60,10 +60,19 @@ function availableSpace(origin, boundsRect, direction, align) {
  *
  * @private
  * @param {DOMRect} popupRect
+ * @param {DOMRect} boundsRect
  */
-function getPopupOrigin(popupRect, sourceOrigin, direction, align) {
+function getPositionedRect(
+  sourceOrigin,
+  popupRect,
+  boundsRect,
+  direction,
+  align
+) {
   let x;
   let y;
+  let height;
+  let width;
   switch (direction) {
     case "above":
       y = sourceOrigin.y - popupRect.height;
@@ -99,7 +108,14 @@ function getPopupOrigin(popupRect, sourceOrigin, direction, align) {
       y = sourceOrigin.y;
       break;
   }
-  return { x, y };
+  // If we positioned the popup at the desired (x, y) origin with its current
+  // height/width, that rectangle may not lie completely in the boundsRect.
+  // Force the rectangle to fit by taking its intersection with the boundsRect.
+  x = Math.max(x, boundsRect.left);
+  y = Math.max(y, boundsRect.top);
+  width = Math.min(popupRect.width, boundsRect.right - x);
+  height = Math.min(popupRect.height, boundsRect.bottom - y);
+  return new DOMRect(x, y, width, height);
 }
 
 /**
@@ -114,37 +130,31 @@ function getSourceOrigin(sourceRect, direction, align) {
   let y = 0;
   switch (direction) {
     case "above":
-      y = sourceRect.y;
+      y = sourceRect.top;
       break;
     case "below":
-      y = sourceRect.y + sourceRect.height;
+      y = sourceRect.bottom;
       break;
     case "left":
-      x = sourceRect.x;
-      break;
     case "right":
-      x = sourceRect.x + sourceRect.width;
+      x = sourceRect[direction];
       break;
   }
   switch (align) {
     case "bottom":
-      y = sourceRect.y + sourceRect.height;
+    case "top":
+      y = sourceRect[align];
       break;
     case "left":
-      x = sourceRect.x;
+    case "right":
+      x = sourceRect[align];
       break;
     case "center":
       if (direction === "above" || direction === "below") {
-        x = sourceRect.x + sourceRect.width / 2;
+        x = sourceRect.left + sourceRect.width / 2;
       } else {
-        y = sourceRect.y + sourceRect.height / 2;
+        y = sourceRect.top + sourceRect.height / 2;
       }
-      break;
-    case "right":
-      x = sourceRect.x + sourceRect.width;
-      break;
-    case "top":
-      y = sourceRect.y;
       break;
   }
   return { x, y };
@@ -155,8 +165,8 @@ function getSourceOrigin(sourceRect, direction, align) {
 // with defaults.
 function normalizeOptions(options) {
   const {
-    popupAlign: logicalAlign,
-    popupDirection: logicalDirection,
+    align: logicalAlign,
+    direction: logicalDirection,
     rightToLeft,
   } = options;
   const defaultDirection = "below";
@@ -180,7 +190,7 @@ function normalizeOptions(options) {
   const defaultAlign = {
     horizontal: "left",
     vertical: "top",
-  };
+  }[crossAxis];
   const physicalAlign =
     {
       horizontal: {
@@ -199,8 +209,8 @@ function normalizeOptions(options) {
       },
     }[crossAxis][logicalAlign] || defaultAlign;
   return {
-    popupAlign: physicalAlign,
-    popupDirection: physicalDirection,
+    align: physicalAlign,
+    direction: physicalDirection,
     rightToLeft,
   };
 }
@@ -219,10 +229,10 @@ export default function positionPopup(
   boundsRect,
   options
 ) {
-  const { popupAlign, popupDirection } = normalizeOptions(options);
+  const normalized = normalizeOptions(options);
 
   // Given the direction and alignment, which layouts do we want to consider?
-  const layouts = prioritizedLayouts(popupDirection, popupAlign);
+  const layouts = prioritizedLayouts(normalized.direction, normalized.align);
   // Find the first layout that lets the popup fit in the bounds.
   const bestLayout = layouts.find(({ align, direction }) => {
     const sourceOrigin = getSourceOrigin(sourceRect, direction, align);
@@ -241,14 +251,14 @@ export default function positionPopup(
   // With respect to which point on the source will we position the popup?
   const sourceOrigin = getSourceOrigin(sourceRect, direction, align);
 
-  // Find the popup origin with respect to the source origin.
-  const { x, y } = getPopupOrigin(popupRect, sourceOrigin, direction, align);
-
-  // Return the (x, y) popup origin in (left, top) terms.
-  return {
-    left: x,
-    top: y,
-  };
+  // Find the positioned rect with respect to the source origin.
+  return getPositionedRect(
+    sourceOrigin,
+    popupRect,
+    boundsRect,
+    direction,
+    align
+  );
 }
 
 // Given a preferred direction and alignment, determine the set of 2 or 4 layout
