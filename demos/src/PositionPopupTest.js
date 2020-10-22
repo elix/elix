@@ -42,20 +42,21 @@ export default class PositionPopupTest extends LanguageDirectionMixin(Base) {
       const { popupAlign, popupDirection, rightToLeft } = this[state];
       /** @type {any} */ const source = this[ids].source;
       /** @type {any} */ const popup = this[ids].popup;
-      // const bounds = {
-      //   top: this.offsetTop,
-      //   left: this.offsetLeft,
-      //   right: this.offsetLeft + this.offsetWidth,
-      //   bottom: this.offsetTop + this.offsetHeight,
-      // };
-      const bounds = {
-        top: 0,
-        left: 0,
-        right: this.offsetWidth,
-        bottom: this.offsetHeight,
-      };
+      const sourceRect = new DOMRect(
+        source.offsetLeft,
+        source.offsetTop,
+        source.offsetWidth,
+        source.offsetHeight
+      );
+      const popupRect = new DOMRect(
+        popup.offsetLeft,
+        popup.offsetTop,
+        popup.offsetWidth,
+        popup.offsetHeight
+      );
+      const boundsRect = new DOMRect(0, 0, this.offsetWidth, this.offsetHeight);
 
-      const popupOrigin = positionPopup(source, popup, bounds, {
+      const popupOrigin = positionPopup(sourceRect, popupRect, boundsRect, {
         popupAlign,
         popupDirection,
         rightToLeft,
