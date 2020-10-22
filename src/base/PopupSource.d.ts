@@ -11,8 +11,8 @@ export default class PopupSource extends DisabledMixin(
   FocusVisibleMixin(LanguageDirectionMixin(OpenCloseMixin(ReactiveElement)))
 ) {
   framePartType: PartDescriptor;
-  horizontalAlign: "start" | "end" | "left" | "right" | "stretch";
-  popupPosition: "above" | "below";
+  popupAlign: "bottom" | "end" | "left" | "right" | "stretch" | "start" | "top";
   popupPartType: PartDescriptor;
+  popupPosition: "above" | "below";
   sourcePartType: PartDescriptor;
 }

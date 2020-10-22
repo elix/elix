@@ -21,7 +21,7 @@
   </head>
 
   <body role="main">
-    <div class="demo fullScreen" style="overflow: auto;" dir="rtl">
+    <div class="demo fullScreen" style="overflow: auto" dir="rtl">
       <style>
         .buttonRow {
           align-items: start;
@@ -49,44 +49,32 @@
           width: 200px;
         }
       </style>
-      <div class="buttonRow" style="flex: 1;">
+      <div class="buttonRow" style="flex: 1">
         <elix-popup-button>
           <span slot="source">Below start</span>
-          <div class="popup">
-            Popup
-          </div>
+          <div class="popup">Popup</div>
         </elix-popup-button>
-        <elix-popup-button horizontal-align="stretch">
+        <elix-popup-button popup-align="stretch">
           <span slot="source">Below stretch</span>
-          <div class="popup">
-            Popup
-          </div>
+          <div class="popup">Popup</div>
         </elix-popup-button>
-        <elix-popup-button horizontal-align="end">
+        <elix-popup-button popup-align="end">
           <span slot="source">Below end</span>
-          <div class="popup">
-            Popup
-          </div>
+          <div class="popup">Popup</div>
         </elix-popup-button>
       </div>
       <div class="buttonRow">
         <elix-popup-button popup-position="above">
           <span slot="source">Above start</span>
-          <div class="popup">
-            Popup
-          </div>
+          <div class="popup">Popup</div>
         </elix-popup-button>
-        <elix-popup-button popup-position="above" horizontal-align="stretch">
+        <elix-popup-button popup-position="above" popup-align="stretch">
           <span slot="source">Above stretch</span>
-          <div class="popup">
-            Popup
-          </div>
+          <div class="popup">Popup</div>
         </elix-popup-button>
-        <elix-popup-button popup-position="above" horizontal-align="end">
+        <elix-popup-button popup-position="above" popup-align="end">
           <span slot="source">Above end</span>
-          <div class="popup">
-            Popup
-          </div>
+          <div class="popup">Popup</div>
         </elix-popup-button>
       </div>
     </div>

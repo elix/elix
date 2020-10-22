@@ -42,16 +42,12 @@ class PopupSource extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       ariaHasPopup: "true",
-      horizontalAlign: "start",
+      popupAlign: "start",
       popupHeight: null,
-      positionedRect: null,
-      popupPosition: "below",
       popupPartType: Popup,
+      popupPosition: "column",
       popupWidth: null,
-      roomAbove: null,
-      roomBelow: null,
-      roomLeft: null,
-      roomRight: null,
+      positionedRect: null,
       sourcePartType: "div",
     });
   }
@@ -66,25 +62,38 @@ class PopupSource extends Base {
     return /** @type {any} */ (this[ids].popup).frame;
   }
 
+  // TODO: Remove this deprecated property.
+  get horizontalAlign() {
+    return this[state].popupAlign;
+  }
+  set horizontalAlign(horizontalAlign) {
+    console.warn(
+      `The "horizontalAlign" property has been renamed to "popupAlign"; the "horizontal-align" attribute is now "popup-align".`
+    );
+    this[setState]({ popupAlign: horizontalAlign });
+  }
+
   /**
    * The alignment of the popup with respect to the source button.
    *
-   * * `start`: popup and source are aligned on the leading edge according to
-   *   the text direction
+   * * `bottom`: popup and source are bottom-aligned
    * * `end`: popup and source are aligned on the trailing edge according to the
    *   text direction
    * * `left`: popup and source are left-aligned
    * * `right`: popup and source are right-aligned
-   * * `stretch: both left and right edges are aligned
+   * * `start`: popup and source are aligned on the leading edge according to
+   *   the text direction
+   * * `stretch`: both left and right edges are aligned
+   * * `top`: popup and source are top-aligned
    *
-   * @type {('start'|'end'|'left'|'right'|'stretch')}
+   * @type {('bottom'|'end'|'left'|'right'|'start'|'stretch'|'top')}
    * @default 'start'
    */
-  get horizontalAlign() {
-    return this[state].horizontalAlign;
+  get popupAlign() {
+    return this[state].popupAlign;
   }
-  set horizontalAlign(horizontalAlign) {
-    this[setState]({ horizontalAlign });
+  set popupAlign(popupAlign) {
+    this[setState]({ popupAlign });
   }
 
   /**
@@ -253,7 +262,7 @@ class PopupSource extends Base {
     // and state that affects positioning has changed.
     if (
       (changed.opened && !state.opened) ||
-      (state.opened && (changed.horizontalAlign || changed.rightToLeft))
+      (state.opened && (changed.popupAlign || changed.rightToLeft))
     ) {
       Object.assign(effects, {
         positionedRect: null,
@@ -320,7 +329,7 @@ function addEventListeners(/** @type {PopupSource} */ element) {
  * @param {PopupSource} element
  */
 function measurePopup(element) {
-  const { horizontalAlign, popupPosition, rightToLeft } = element[state];
+  const { popupAlign, popupPosition, rightToLeft } = element[state];
   const sourceRect = element[ids].source.getBoundingClientRect();
   const popupRect = element[ids].popup.getBoundingClientRect();
 
@@ -339,7 +348,7 @@ function measurePopup(element) {
     : new DOMRect(0, 0, window.innerWidth, window.innerHeight);
 
   const positionedRect = positionPopup(sourceRect, popupRect, boundsRect, {
-    align: horizontalAlign,
+    align: popupAlign,
     direction: popupPosition,
     rightToLeft,
   });
