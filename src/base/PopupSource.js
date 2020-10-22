@@ -232,14 +232,24 @@ class PopupSource extends Base {
       }
     }
 
-    // Let the popup know it's position relative to the popup.
-    // if (changed.calculatedPopupPosition) {
-    //   const { calculatedPopupPosition } = this[state];
-    //   /** @type {any} */ const popup = this[ids].popup;
-    //   if ("position" in popup) {
-    //     popup.position = calculatedPopupPosition;
-    //   }
-    // }
+    // Let the popup know its position relative to the source.
+    if (changed.popupLayout) {
+      const { popupLayout } = this[state];
+      const { align, direction } = popupLayout;
+      /** @type {any} */ const popup = this[ids].popup;
+      if ("position" in popup) {
+        const position = {
+          above: "below",
+          below: "above",
+          right: "left",
+          left: "right",
+        }[direction];
+        popup.position = position;
+      }
+      if ("align" in popup) {
+        popup.align = align;
+      }
+    }
   }
 
   [rendered](/** @type {ChangedFlags} */ changed) {
