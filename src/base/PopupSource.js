@@ -45,7 +45,7 @@ class PopupSource extends Base {
       popupAlign: "start",
       popupHeight: null,
       popupPartType: Popup,
-      popupPosition: "column",
+      popupDirection: "column",
       popupWidth: null,
       positionedRect: null,
       sourcePartType: "div",
@@ -99,16 +99,33 @@ class PopupSource extends Base {
   /**
    * The preferred direction for the popup.
    *
-   * * `above`: popup should appear above the source
-   * * `below`: popup should appear below the source
+   * * `above`: popup appears above the source
+   * * `below`: popup appears below the source
+   * * `column-reverse`: popup appears before the source in the block axis
+   * * `column`: popup appears after the source in the block axis
+   * * `left`: popup appears to the left of the source
+   * * `right`: popup appears to the right of the source
+   * * `row-reverse`: popup appears before the source in the inline axis
+   * * `row`: popup appears after the source in the inline axis
    *
-   * @type {('above'|'below')}
-   * @default 'below'
+   * @type {('above'|'below'|'column-reverse'|'column'|'left'|'right'|'row-reverse'|'row')}
+   * @default 'column'
    */
+  get popupDirection() {
+    return this[state].popupDirection;
+  }
+  set popupDirection(popupDirection) {
+    this[setState]({ popupDirection });
+  }
+
+  // TODO: Remove this deprecated property.
   get popupPosition() {
     return this[state].popupPosition;
   }
   set popupPosition(popupPosition) {
+    console.warn(
+      `The "popupPosition" property has been renamed to "popupDirection"; the "popup-position" attribute is now "popup-direction".`
+    );
     this[setState]({ popupPosition });
   }
 
@@ -329,7 +346,7 @@ function addEventListeners(/** @type {PopupSource} */ element) {
  * @param {PopupSource} element
  */
 function measurePopup(element) {
-  const { popupAlign, popupPosition, rightToLeft } = element[state];
+  const { popupAlign, popupDirection, rightToLeft } = element[state];
   const sourceRect = element[ids].source.getBoundingClientRect();
   const popupRect = element[ids].popup.getBoundingClientRect();
 
@@ -349,7 +366,7 @@ function measurePopup(element) {
 
   const positionedRect = positionPopup(sourceRect, popupRect, boundsRect, {
     align: popupAlign,
-    direction: popupPosition,
+    direction: popupDirection,
     rightToLeft,
   });
 

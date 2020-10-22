@@ -13,6 +13,14 @@ export default class PopupSource extends DisabledMixin(
   framePartType: PartDescriptor;
   popupAlign: "bottom" | "end" | "left" | "right" | "stretch" | "start" | "top";
   popupPartType: PartDescriptor;
-  popupPosition: "above" | "below";
+  popupDirection:
+    | "above"
+    | "below"
+    | "column-reverse"
+    | "column"
+    | "left"
+    | "right"
+    | "row-reverse"
+    | "row";
   sourcePartType: PartDescriptor;
 }

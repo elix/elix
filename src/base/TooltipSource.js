@@ -35,7 +35,7 @@ class TooltipSource extends Base {
     // popup, we don't need `aria-haspopup`.
     return Object.assign(super[defaultState], {
       ariaHasPopup: null,
-      popupPosition: "above",
+      popupDirection: "above",
       role: "none",
     });
   }

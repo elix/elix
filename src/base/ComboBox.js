@@ -296,9 +296,9 @@ class ComboBox extends Base {
 
     // Tell the toggle which direction it should point to depending on which
     // direction the popup will open.
-    if (changed.popupPosition || changed.popupTogglePartType) {
-      const { popupPosition } = this[state];
-      const direction = popupPosition === "below" ? "down" : "up";
+    if (changed.popupDirection || changed.popupTogglePartType) {
+      const { popupDirection } = this[state];
+      const direction = popupDirection === "below" ? "down" : "up";
       /** @type {any} */ const popupToggle = this[ids].popupToggle;
       if ("direction" in popupToggle) {
         popupToggle.direction = direction;
