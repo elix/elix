@@ -50,13 +50,17 @@ export default function PopupToggleMixin(Base) {
       renderParts(this[shadowRoot], this[state], changed);
 
       // Tell the toggle which direction it should point to depending on which
-      // direction the popup will open.
+      // direction the popup will open. Since we assume this is used for up/down
+      // popup directions, we don't handle left/right directions.
       if (changed.popupDirection || changed.popupTogglePartType) {
         const { popupDirection } = this[state];
-        const direction = popupDirection === "below" ? "down" : "up";
+        const toggleDirection =
+          popupDirection === "above" || popupDirection === "column-reverse"
+            ? "up"
+            : "down";
         /** @type {any} */ const popupToggle = this[ids].popupToggle;
         if ("direction" in popupToggle) {
-          popupToggle.direction = direction;
+          popupToggle.direction = toggleDirection;
         }
       }
 

@@ -279,9 +279,6 @@ class ComboBox extends Base {
         cast.closeOnWindowResize = false;
       }
     }
-    // if (changed.popupPartType) {
-    //   this[ids].popup.tabIndex = -1;
-    // }
 
     if (changed.disabled) {
       const { disabled } = this[state];
@@ -292,17 +289,6 @@ class ComboBox extends Base {
     if (changed.placeholder) {
       const { placeholder } = this[state];
       /** @type {any} */ (this[ids].input).placeholder = placeholder;
-    }
-
-    // Tell the toggle which direction it should point to depending on which
-    // direction the popup will open.
-    if (changed.popupDirection || changed.popupTogglePartType) {
-      const { popupDirection } = this[state];
-      const direction = popupDirection === "below" ? "down" : "up";
-      /** @type {any} */ const popupToggle = this[ids].popupToggle;
-      if ("direction" in popupToggle) {
-        popupToggle.direction = direction;
-      }
     }
 
     if (changed.value) {
