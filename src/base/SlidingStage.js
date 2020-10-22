@@ -75,6 +75,18 @@ class SlidingStage extends Base {
 
   [render](/** @type {ChangedFlags} */ changed) {
     super[render](changed);
+
+    // Apply `selected` attribute to the selected item only.
+    if (changed.items || changed.currentIndex) {
+      const { currentIndex, items } = this[state];
+      if (items) {
+        items.forEach((item, index) => {
+          item.toggleAttribute("selected", index === currentIndex);
+        });
+      }
+    }
+
+    // Translate the container to show the selected item.
     if (
       changed.currentIndex ||
       changed.enableEffects ||

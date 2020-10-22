@@ -273,7 +273,7 @@ class WrappedStandardElement extends Base {
   }
 
   /**
-   * Returns a reference to the inner standard HTML element!
+   * Returns a reference to the inner standard HTML element.
    *
    * @type {HTMLElement}
    */
@@ -287,34 +287,6 @@ class WrappedStandardElement extends Base {
       );
     }
     return result;
-  }
-
-  /**
-   * Return the value of the named property on the inner standard element.
-   *
-   * @param {string} name
-   * @returns {any}
-   */
-  getInnerProperty(name) {
-    // If we haven't rendered yet, use internal state value. Once we've
-    // rendered, we get the value from the wrapped element itself. Return our
-    // concept of the current property value from state. If the property hasn't
-    // been defined, however, get the current value of the property from the
-    // inner element.
-    //
-    // This is intended to support cases like an anchor element. If someone sets
-    // `href` on a wrapped anchor, we'll know the value of `href` from state,
-    // but we won't know the value of href-dependent calculated properties like
-    // `protocol`. Using two sources of truth (state and the inner element)
-    // seems fragile, but it's unclear how else to handle this without
-    // reimplementing all HTML property interactions ourselves.
-    //
-    // This arrangement also means that, if an inner element property can change
-    // in response to user interaction (e.g., an input element's value changes
-    // as the user types), the component must listen to suitable events on the
-    // inner element and update its state accordingly.
-    const value = this[state][name];
-    return value || (this[shadowRoot] && this.inner[name]);
   }
 
   static get observedAttributes() {
@@ -398,28 +370,6 @@ class WrappedStandardElement extends Base {
       if (disabled !== undefined) {
         setInternalState(this, "disabled", disabled);
       }
-    }
-  }
-
-  /**
-   * Set the named property on the inner standard element.
-   *
-   * @param {string} name
-   * @param {any} value
-   */
-  setInnerProperty(name, value) {
-    // We normally don't check an existing state value before calling[setState],
-    // relying instead on[setState] to do that check for us. However, we have
-    // dangers in this particular component of creating infinite loops.
-    //
-    // E.g., setting the tabindex attibute will call attributeChangedCallback,
-    // which will set the tabIndex property, which will want to set state, which
-    // will cause a render, which will try to reflect the current value of the
-    // tabIndex property to the tabindex attribute, causing a loop.
-    //
-    // To avoid this, we check the existing value before updating our state.
-    if (this[state][name] !== value) {
-      this[setState]({ [name]: value });
     }
   }
 
@@ -591,12 +541,12 @@ function createPropertyDelegate(name, descriptor) {
   };
   if (descriptor.get) {
     delegate.get = function () {
-      return this.getInnerProperty(name);
+      return getInnerProperty(this, name);
     };
   }
   if (descriptor.set) {
     delegate.set = function (/** @type {any} */ value) {
-      this.setInnerProperty(name, value);
+      setInnerProperty(this, name, value);
     };
   }
   if (descriptor.writable) {
@@ -629,6 +579,59 @@ function defineDelegates(cls, prototype) {
       }
     }
   });
+}
+
+/**
+ * Return the value of the named property on the inner standard element.
+ *
+ * @private
+ * @param {ReactiveElement} element
+ * @param {string} name
+ */
+function getInnerProperty(element, name) {
+  // If we haven't rendered yet, use internal state value. Once we've
+  // rendered, we get the value from the wrapped element itself. Return our
+  // concept of the current property value from state. If the property hasn't
+  // been defined, however, get the current value of the property from the
+  // inner element.
+  //
+  // This is intended to support cases like an anchor element. If someone sets
+  // `href` on a wrapped anchor, we'll know the value of `href` from state,
+  // but we won't know the value of href-dependent calculated properties like
+  // `protocol`. Using two sources of truth (state and the inner element)
+  // seems fragile, but it's unclear how else to handle this without
+  // reimplementing all HTML property interactions ourselves.
+  //
+  // This arrangement also means that, if an inner element property can change
+  // in response to user interaction (e.g., an input element's value changes
+  // as the user types), the component must listen to suitable events on the
+  // inner element and update its state accordingly.
+  const value = element[state][name];
+  return value || (element[shadowRoot] && element.inner[name]);
+}
+
+/**
+ * Set the named property on the inner standard element.
+ *
+ * @private
+ * @param {ReactiveElement} element
+ * @param {string} name
+ * @param {any} value
+ */
+function setInnerProperty(element, name, value) {
+  // We normally don't check an existing state value before calling[setState],
+  // relying instead on[setState] to do that check for us. However, we have
+  // dangers in this particular component of creating infinite loops.
+  //
+  // E.g., setting the tabindex attibute will call attributeChangedCallback,
+  // which will set the tabIndex property, which will want to set state, which
+  // will cause a render, which will try to reflect the current value of the
+  // tabIndex property to the tabindex attribute, causing a loop.
+  //
+  // To avoid this, we check the existing value before updating our state.
+  if (element[state][name] !== value) {
+    element[setState]({ [name]: value });
+  }
 }
 
 export default WrappedStandardElement;

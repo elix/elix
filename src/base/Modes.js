@@ -44,12 +44,16 @@ class Modes extends Base {
 
   [render](/** @type {ChangedFlags} */ changed) {
     super[render](changed);
+
+    // Show the selected item only. Also, apply `selected` attribute to the
+    // selected item only.
     if (changed.items || changed.currentIndex) {
       const { currentIndex, items } = this[state];
       if (items) {
         items.forEach((item, index) => {
           const selected = index === currentIndex;
           item.style.display = selected ? "" : "none";
+          item.toggleAttribute("selected", selected);
         });
       }
     }
