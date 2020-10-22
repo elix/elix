@@ -23,17 +23,25 @@
   <body role="main">
     <div class="demo fullScreen" style="overflow: auto" dir="rtl">
       <style>
-        .buttonRow {
-          align-items: start;
-          display: flex;
-          justify-content: center;
+        .buttonGrid {
+          align-items: center;
+          display: grid;
+          grid-template-areas:
+            "a a a"
+            "b . c"
+            "d d d";
+          grid-template-rows: auto 1fr auto;
+          grid-template-columns: auto 1fr auto;
+          height: 100%;
+          justify-items: center;
+        }
+
+        .vertical {
+          display: grid;
         }
 
         elix-popup-button {
           margin: 1em;
-        }
-        elix-popup-button + elix-popup-button {
-          margin-left: 0;
         }
 
         .popup {
@@ -49,33 +57,66 @@
           width: 200px;
         }
       </style>
-      <div class="buttonRow" style="flex: 1">
-        <elix-popup-button>
-          <span slot="source">Below start</span>
-          <div class="popup">Popup</div>
-        </elix-popup-button>
-        <elix-popup-button popup-align="stretch">
-          <span slot="source">Below stretch</span>
-          <div class="popup">Popup</div>
-        </elix-popup-button>
-        <elix-popup-button popup-align="end">
-          <span slot="source">Below end</span>
-          <div class="popup">Popup</div>
-        </elix-popup-button>
-      </div>
-      <div class="buttonRow">
-        <elix-popup-button popup-direction="above">
-          <span slot="source">Above start</span>
-          <div class="popup">Popup</div>
-        </elix-popup-button>
-        <elix-popup-button popup-direction="above" popup-align="stretch">
-          <span slot="source">Above stretch</span>
-          <div class="popup">Popup</div>
-        </elix-popup-button>
-        <elix-popup-button popup-direction="above" popup-align="end">
-          <span slot="source">Above end</span>
-          <div class="popup">Popup</div>
-        </elix-popup-button>
+      <div class="buttonGrid">
+        <div style="grid-area: a">
+          <elix-popup-button popup-align="start" popup-direction="below">
+            <span slot="source">Below start</span>
+            <div class="popup">Popup</div>
+          </elix-popup-button>
+          <elix-popup-button popup-align="stretch" popup-direction="below">
+            <span slot="source">Below stretch</span>
+            <div class="popup">Popup</div>
+          </elix-popup-button>
+          <elix-popup-button popup-align="end" popup-direction="below">
+            <span slot="source">Below end</span>
+            <div class="popup">Popup</div>
+          </elix-popup-button>
+        </div>
+        <div class="vertical" style="grid-area: b">
+          <elix-popup-button popup-align="top" popup-direction="row">
+            <span slot="source">Row top</span>
+            <div class="popup">Popup</div>
+          </elix-popup-button>
+          <elix-popup-button popup-align="stretch" popup-direction="row">
+            <span slot="source">Row stretch</span>
+            <div class="popup">Popup</div>
+          </elix-popup-button>
+          <elix-popup-button popup-align="bottom" popup-direction="row">
+            <span slot="source">Row bottom</span>
+            <div class="popup">Popup</div>
+          </elix-popup-button>
+        </div>
+        <div class="vertical" style="grid-area: c">
+          <elix-popup-button popup-align="top" popup-direction="row-reverse">
+            <span slot="source">Reverse top</span>
+            <div class="popup">Popup</div>
+          </elix-popup-button>
+          <elix-popup-button
+            popup-align="stretch"
+            popup-direction="row-reverse"
+          >
+            <span slot="source">Reverse stretch</span>
+            <div class="popup">Popup</div>
+          </elix-popup-button>
+          <elix-popup-button popup-align="bottom" popup-direction="row-reverse">
+            <span slot="source">Reverse bottom</span>
+            <div class="popup">Popup</div>
+          </elix-popup-button>
+        </div>
+        <div style="grid-area: d">
+          <elix-popup-button popup-align="start" popup-direction="above">
+            <span slot="source">Above start</span>
+            <div class="popup">Popup</div>
+          </elix-popup-button>
+          <elix-popup-button popup-align="stretch" popup-direction="above">
+            <span slot="source">Above stretch</span>
+            <div class="popup">Popup</div>
+          </elix-popup-button>
+          <elix-popup-button popup-align="end" popup-direction="above">
+            <span slot="source">Above end</span>
+            <div class="popup">Popup</div>
+          </elix-popup-button>
+        </div>
       </div>
     </div>
   </body>
