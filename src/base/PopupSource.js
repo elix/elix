@@ -44,7 +44,6 @@ class PopupSource extends Base {
       ariaHasPopup: "true",
       horizontalAlign: "start",
       popupHeight: null,
-      popupMeasured: false,
       positionedRect: null,
       popupPosition: "below",
       popupPartType: Popup,
@@ -159,8 +158,8 @@ class PopupSource extends Base {
       });
     }
 
-    if (changed.opened || changed.popupMeasured) {
-      const { opened, popupMeasured, positionedRect } = this[state];
+    if (changed.opened || changed.positionedRect) {
+      const { opened, positionedRect } = this[state];
 
       if (!opened) {
         // Popup closed. Reset the styles used to position it.
@@ -172,8 +171,8 @@ class PopupSource extends Base {
             width: "",
           });
         }
-      } else if (!popupMeasured) {
-        // Popup opened but not yet measured. Render the component invisibly
+      } else if (!positionedRect) {
+        // Popup opened but not yet laid out. Render the component invisibly
         // so we can measure it before showing it. We hide it by giving it zero
         // opacity. If we use `visibility: hidden` for this purpose, the popup
         // won't be able to receive the focus, which would complicate our
@@ -182,7 +181,7 @@ class PopupSource extends Base {
           opacity: 0,
         });
       } else {
-        // Popup opened and measured. Show popup in position.
+        // Popup opened and laid out. Position popup.
         const popup = this[ids].popup;
         Object.assign(popup.style, {
           height: `${positionedRect.height}px`,
@@ -207,13 +206,13 @@ class PopupSource extends Base {
     }
 
     // Let the popup know it's position relative to the popup.
-    if (changed.calculatedPopupPosition) {
-      const { calculatedPopupPosition } = this[state];
-      /** @type {any} */ const popup = this[ids].popup;
-      if ("position" in popup) {
-        popup.position = calculatedPopupPosition;
-      }
-    }
+    // if (changed.calculatedPopupPosition) {
+    //   const { calculatedPopupPosition } = this[state];
+    //   /** @type {any} */ const popup = this[ids].popup;
+    //   if ("position" in popup) {
+    //     popup.position = calculatedPopupPosition;
+    //   }
+    // }
   }
 
   [rendered](/** @type {ChangedFlags} */ changed) {
@@ -227,8 +226,8 @@ class PopupSource extends Base {
       } else {
         removeEventListeners(this);
       }
-    } else if (opened && !this[state].popupMeasured) {
-      // Need to recalculate popup measurements.
+    } else if (opened && !this[state].positionedRect) {
+      // Need to lay out popup.
       measurePopup(this);
     }
   }
@@ -257,8 +256,7 @@ class PopupSource extends Base {
       (state.opened && (changed.horizontalAlign || changed.rightToLeft))
     ) {
       Object.assign(effects, {
-        popupMeasured: false,
-        popupOrigin: null,
+        positionedRect: null,
       });
     }
 
@@ -322,11 +320,23 @@ function addEventListeners(/** @type {PopupSource} */ element) {
  * @param {PopupSource} element
  */
 function measurePopup(element) {
+  const { horizontalAlign, popupPosition, rightToLeft } = element[state];
   const sourceRect = element[ids].source.getBoundingClientRect();
   const popupRect = element[ids].popup.getBoundingClientRect();
-  const boundsRect = new DOMRect(0, 0, window.innerWidth, window.innerHeight);
 
-  const { horizontalAlign, popupPosition, rightToLeft } = element[state];
+  // Determine the bounding rectangle of the viewport. We prefer the
+  // VisualViewport API where that's available, as that handles a pinch-zoomed
+  // viewport on mobile. If not availble (as of October 2020, Firefox), we fall
+  // back to using the window as the viewport.
+  const viewport = window.visualViewport;
+  const boundsRect = viewport
+    ? new DOMRect(
+        viewport.offsetLeft,
+        viewport.offsetTop,
+        viewport.width,
+        viewport.height
+      )
+    : new DOMRect(0, 0, window.innerWidth, window.innerHeight);
 
   const positionedRect = positionPopup(sourceRect, popupRect, boundsRect, {
     align: horizontalAlign,
@@ -334,10 +344,7 @@ function measurePopup(element) {
     rightToLeft,
   });
 
-  element[setState]({
-    popupMeasured: true,
-    positionedRect,
-  });
+  element[setState]({ positionedRect });
 }
 
 function removeEventListeners(/** @type {PopupSource} */ element) {
