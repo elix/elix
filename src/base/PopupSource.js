@@ -20,7 +20,7 @@ import {
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import Popup from "./Popup.js";
-import positionPopup from "./positionPopup.js";
+import layoutPopup from "./positionPopup.js";
 
 const resizeListenerKey = Symbol("resizeListener");
 
@@ -43,11 +43,11 @@ class PopupSource extends Base {
     return Object.assign(super[defaultState], {
       ariaHasPopup: "true",
       popupAlign: "start",
-      popupHeight: null,
-      popupPartType: Popup,
       popupDirection: "column",
+      popupHeight: null,
+      popupLayout: null,
+      popupPartType: Popup,
       popupWidth: null,
-      positionedRect: null,
       sourcePartType: "div",
     });
   }
@@ -184,8 +184,8 @@ class PopupSource extends Base {
       });
     }
 
-    if (changed.opened || changed.positionedRect) {
-      const { opened, positionedRect } = this[state];
+    if (changed.opened || changed.popupLayout) {
+      const { opened, popupLayout } = this[state];
 
       if (!opened) {
         // Popup closed. Reset the styles used to position it.
@@ -197,7 +197,7 @@ class PopupSource extends Base {
             width: "",
           });
         }
-      } else if (!positionedRect) {
+      } else if (!popupLayout) {
         // Popup opened but not yet laid out. Render the component invisibly
         // so we can measure it before showing it. We hide it by giving it zero
         // opacity. If we use `visibility: hidden` for this purpose, the popup
@@ -209,12 +209,13 @@ class PopupSource extends Base {
       } else {
         // Popup opened and laid out. Position popup.
         const popup = this[ids].popup;
+        const { rect } = popupLayout;
         Object.assign(popup.style, {
-          height: `${positionedRect.height}px`,
-          left: `${positionedRect.x}px`,
+          height: `${rect.height}px`,
+          left: `${rect.x}px`,
           opacity: "",
-          top: `${positionedRect.y}px`,
-          width: `${positionedRect.width}px`,
+          top: `${rect.y}px`,
+          width: `${rect.width}px`,
         });
       }
     }
@@ -252,7 +253,7 @@ class PopupSource extends Base {
       } else {
         removeEventListeners(this);
       }
-    } else if (opened && !this[state].positionedRect) {
+    } else if (opened && !this[state].popupLayout) {
       // Need to lay out popup.
       measurePopup(this);
     }
@@ -282,7 +283,7 @@ class PopupSource extends Base {
       (state.opened && (changed.popupAlign || changed.rightToLeft))
     ) {
       Object.assign(effects, {
-        positionedRect: null,
+        popupLayout: null,
       });
     }
 
@@ -364,13 +365,13 @@ function measurePopup(element) {
       )
     : new DOMRect(0, 0, window.innerWidth, window.innerHeight);
 
-  const positionedRect = positionPopup(sourceRect, popupRect, boundsRect, {
+  const popupLayout = layoutPopup(sourceRect, popupRect, boundsRect, {
     align: popupAlign,
     direction: popupDirection,
     rightToLeft,
   });
 
-  element[setState]({ positionedRect });
+  element[setState]({ popupLayout });
 }
 
 function removeEventListeners(/** @type {PopupSource} */ element) {

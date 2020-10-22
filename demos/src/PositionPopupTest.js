@@ -7,7 +7,7 @@ import {
   template,
 } from "../../src/base/internal.js";
 import LanguageDirectionMixin from "../../src/base/LanguageDirectionMixin.js";
-import positionPopup from "../../src/base/positionPopup.js";
+import layoutPopup from "../../src/base/positionPopup.js";
 import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
 
@@ -56,18 +56,19 @@ export default class PositionPopupTest extends LanguageDirectionMixin(Base) {
       );
       const boundsRect = new DOMRect(0, 0, this.offsetWidth, this.offsetHeight);
 
-      const positionedRect = positionPopup(sourceRect, popupRect, boundsRect, {
+      const layout = layoutPopup(sourceRect, popupRect, boundsRect, {
         align: popupAlign,
         direction: popupDirection,
         rightToLeft,
       });
 
-      // Position the popup at that physical coordinate.
+      // Position the popup in the layout rectangle.
+      const { rect } = layout;
       Object.assign(popup.style, {
-        height: `${positionedRect.height}px`,
-        left: `${positionedRect.x}px`,
-        top: `${positionedRect.y}px`,
-        width: `${positionedRect.width}px`,
+        height: `${rect.height}px`,
+        left: `${rect.x}px`,
+        top: `${rect.y}px`,
+        width: `${rect.width}px`,
       });
     }
   }

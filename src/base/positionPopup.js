@@ -216,14 +216,15 @@ function normalizeOptions(options) {
 }
 
 /**
- * Position the popup element with respect to a source element.
+ * Return the optimum layout for the popup element with respect to a source
+ * element that fits in the given bounds.
  *
  * @param {DOMRect} sourceRect
  * @param {DOMRect} popupRect
  * @param {DOMRect} boundsRect
  * @param {any} options
  */
-export default function positionPopup(
+export default function layoutPopup(
   sourceRect,
   popupRect,
   boundsRect,
@@ -246,19 +247,24 @@ export default function positionPopup(
   });
   // If we didn't find any layout that works, take the first one.
   const layout = bestLayout || layouts[0];
-  const { align, direction } = layout;
 
   // With respect to which point on the source will we position the popup?
-  const sourceOrigin = getSourceOrigin(sourceRect, direction, align);
+  const sourceOrigin = getSourceOrigin(
+    sourceRect,
+    layout.direction,
+    layout.align
+  );
 
   // Find the positioned rect with respect to the source origin.
-  return getPositionedRect(
+  layout.rect = getPositionedRect(
     sourceOrigin,
     popupRect,
     boundsRect,
-    direction,
-    align
+    layout.direction,
+    layout.align
   );
+
+  return layout;
 }
 
 // Given a preferred direction and alignment, determine the set of 2 or 4 layout
