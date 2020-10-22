@@ -160,6 +160,58 @@ function getSourceOrigin(sourceRect, direction, align) {
   return { x, y };
 }
 
+/**
+ * Return the optimum layout for the popup element with respect to a source
+ * element that fits in the given bounds.
+ *
+ * @param {DOMRect} sourceRect
+ * @param {DOMRect} popupRect
+ * @param {DOMRect} boundsRect
+ * @param {any} options
+ */
+export default function layoutPopup(
+  sourceRect,
+  popupRect,
+  boundsRect,
+  options
+) {
+  const normalized = normalizeOptions(options);
+
+  // Given the direction and alignment, which layouts do we want to consider?
+  const layouts = prioritizedLayouts(normalized.direction, normalized.align);
+  // Find the first layout that lets the popup fit in the bounds.
+  const bestLayout = layouts.find(({ align, direction }) => {
+    const sourceOrigin = getSourceOrigin(sourceRect, direction, align);
+    const { height, width } = availableSpace(
+      sourceOrigin,
+      boundsRect,
+      direction,
+      align
+    );
+    return popupRect.height <= height && popupRect.width <= width;
+  });
+  // If we didn't find any layout that works, take the first one.
+  const layout = bestLayout || layouts[0];
+
+  // With respect to which point on the source will we position the popup?
+  const sourceOrigin = getSourceOrigin(
+    sourceRect,
+    layout.direction,
+    layout.align
+  );
+
+  // Find the positioned rect with respect to the source origin.
+  layout.rect = getPositionedRect(
+    sourceOrigin,
+    popupRect,
+    boundsRect,
+    layout.direction,
+    layout.align
+  );
+
+  return layout;
+}
+
 // Normalize the popup options. Convert any logical layout options (start, end)
 // to physical options (e.g., left, right). Replace any unknown option values
 // with defaults.
@@ -213,58 +265,6 @@ function normalizeOptions(options) {
     direction: physicalDirection,
     rightToLeft,
   };
-}
-
-/**
- * Return the optimum layout for the popup element with respect to a source
- * element that fits in the given bounds.
- *
- * @param {DOMRect} sourceRect
- * @param {DOMRect} popupRect
- * @param {DOMRect} boundsRect
- * @param {any} options
- */
-export default function layoutPopup(
-  sourceRect,
-  popupRect,
-  boundsRect,
-  options
-) {
-  const normalized = normalizeOptions(options);
-
-  // Given the direction and alignment, which layouts do we want to consider?
-  const layouts = prioritizedLayouts(normalized.direction, normalized.align);
-  // Find the first layout that lets the popup fit in the bounds.
-  const bestLayout = layouts.find(({ align, direction }) => {
-    const sourceOrigin = getSourceOrigin(sourceRect, direction, align);
-    const { height, width } = availableSpace(
-      sourceOrigin,
-      boundsRect,
-      direction,
-      align
-    );
-    return popupRect.height <= height && popupRect.width <= width;
-  });
-  // If we didn't find any layout that works, take the first one.
-  const layout = bestLayout || layouts[0];
-
-  // With respect to which point on the source will we position the popup?
-  const sourceOrigin = getSourceOrigin(
-    sourceRect,
-    layout.direction,
-    layout.align
-  );
-
-  // Find the positioned rect with respect to the source origin.
-  layout.rect = getPositionedRect(
-    sourceOrigin,
-    popupRect,
-    boundsRect,
-    layout.direction,
-    layout.align
-  );
-
-  return layout;
 }
 
 // Given a preferred direction and alignment, determine the set of 2 or 4 layout

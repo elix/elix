@@ -7,13 +7,13 @@ import {
   template,
 } from "../../src/base/internal.js";
 import LanguageDirectionMixin from "../../src/base/LanguageDirectionMixin.js";
-import layoutPopup from "../../src/base/positionPopup.js";
+import layoutPopup from "../../src/base/layoutPopup.js";
 import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
 
 const Base = ReactiveElement;
 
-export default class PositionPopupTest extends LanguageDirectionMixin(Base) {
+export default class PopupLayoutTest extends LanguageDirectionMixin(Base) {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       popupAlign: "start",
@@ -106,4 +106,4 @@ export default class PositionPopupTest extends LanguageDirectionMixin(Base) {
   }
 }
 
-customElements.define("position-popup-test", PositionPopupTest);
+customElements.define("popup-layout-test", PopupLayoutTest);

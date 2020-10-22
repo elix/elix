@@ -18,9 +18,9 @@ import {
   template,
 } from "./internal.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
+import layoutPopup from "./layoutPopup.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import Popup from "./Popup.js";
-import layoutPopup from "./positionPopup.js";
 
 const resizeListenerKey = Symbol("resizeListener");
 
@@ -44,10 +44,8 @@ class PopupSource extends Base {
       ariaHasPopup: "true",
       popupAlign: "start",
       popupDirection: "column",
-      popupHeight: null,
       popupLayout: null,
       popupPartType: Popup,
-      popupWidth: null,
       sourcePartType: "div",
     });
   }
@@ -235,19 +233,21 @@ class PopupSource extends Base {
     // Let the popup know its position relative to the source.
     if (changed.popupLayout) {
       const { popupLayout } = this[state];
-      const { align, direction } = popupLayout;
-      /** @type {any} */ const popup = this[ids].popup;
-      if ("position" in popup) {
-        const position = {
-          above: "below",
-          below: "above",
-          right: "left",
-          left: "right",
-        }[direction];
-        popup.position = position;
-      }
-      if ("align" in popup) {
-        popup.align = align;
+      if (popupLayout) {
+        const { align, direction } = popupLayout;
+        /** @type {any} */ const popup = this[ids].popup;
+        if ("position" in popup) {
+          const position = {
+            above: "below",
+            below: "above",
+            right: "left",
+            left: "right",
+          }[direction];
+          popup.position = position;
+        }
+        if ("align" in popup) {
+          popup.align = align;
+        }
       }
     }
   }
