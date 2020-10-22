@@ -13,7 +13,7 @@ import ReactiveElement from "../../src/core/ReactiveElement.js";
 
 const Base = ReactiveElement;
 
-export default class PopupPositionTest extends LanguageDirectionMixin(Base) {
+export default class PositionPopupTest extends LanguageDirectionMixin(Base) {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       popupAlign: "start",
@@ -102,4 +102,4 @@ export default class PopupPositionTest extends LanguageDirectionMixin(Base) {
   }
 }
 
-customElements.define("popup-position-test", PopupPositionTest);
+customElements.define("position-popup-test", PositionPopupTest);

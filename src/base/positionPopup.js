@@ -1,3 +1,9 @@
+/**
+ * Function for positioning a popup relative to a source element.
+ *
+ * @module positionPopup
+ */
+
 // Given an (x, y) origin point, a bounding rectangle, and a layout, return the
 // height and width of the available space in the quadrant used by that layout.
 function availableSpace(origin, bounds, direction, align) {
