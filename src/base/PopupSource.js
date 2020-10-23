@@ -343,20 +343,22 @@ class PopupSource extends Base {
 function addEventListeners(/** @type {PopupSource} */ element) {
   /** @type {any} */ const cast = element;
   cast[resizeListenerKey] = () => {
-    measurePopup(element);
+    // If viewport resizes while the popup is open, we may want to change which
+    // layout we're using for the popup.
+    choosePopupLayout(element);
   };
   const viewport = window.visualViewport || window;
   viewport.addEventListener("resize", cast[resizeListenerKey]);
 }
 
 /**
- * If we haven't already measured the popup since it was opened, measure its
- * dimensions and the relevant distances in which the popup might be opened.
+ * Based on the current size of the source, popup, and viewport, determine which
+ * layout we'll use for the popup.
  *
  * @private
  * @param {PopupSource} element
  */
-function measurePopup(element) {
+function choosePopupLayout(element) {
   const { popupAlign, popupDirection, rightToLeft } = element[state];
   const sourceRect = element[ids].source.getBoundingClientRect();
   const popupRect = element[ids].popup.getBoundingClientRect();
@@ -382,15 +384,6 @@ function measurePopup(element) {
   });
 
   element[setState]({ popupLayout });
-}
-
-function removeEventListeners(/** @type {PopupSource} */ element) {
-  /** @type {any} */ const cast = element;
-  if (cast[resizeListenerKey]) {
-    const viewport = window.visualViewport || window;
-    viewport.removeEventListener("resize", cast[resizeListenerKey]);
-    cast[resizeListenerKey] = null;
-  }
 }
 
 /**
@@ -446,10 +439,19 @@ function waitThenRenderOpened(element) {
     // It's conceivable the popup was closed before the timeout completed,
     // so double-check that it's still opened before listening to events.
     if (element[state].opened) {
-      measurePopup(element);
+      choosePopupLayout(element);
       addEventListeners(element);
     }
   });
+}
+
+function removeEventListeners(/** @type {PopupSource} */ element) {
+  /** @type {any} */ const cast = element;
+  if (cast[resizeListenerKey]) {
+    const viewport = window.visualViewport || window;
+    viewport.removeEventListener("resize", cast[resizeListenerKey]);
+    cast[resizeListenerKey] = null;
+  }
 }
 
 export default PopupSource;
