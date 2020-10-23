@@ -14,6 +14,7 @@
 function availableSpace(origin, boundsRect, direction, align) {
   let height = 0;
   let width = 0;
+  const vertical = direction === "above" || direction === "below";
   switch (direction) {
     case "above":
       height = origin.y - boundsRect.top;
@@ -29,24 +30,25 @@ function availableSpace(origin, boundsRect, direction, align) {
       break;
   }
   switch (align) {
-    case "left":
-      width = boundsRect.right - origin.x;
+    case "bottom":
+      height = origin.y - boundsRect.top;
       break;
     case "center":
-      if (direction === "above" || direction === "below") {
+    case "stretch":
+      if (vertical) {
         width = boundsRect.width;
       } else {
         height = boundsRect.height;
       }
+      break;
+    case "left":
+      width = boundsRect.right - origin.x;
       break;
     case "right":
       width = origin.x - boundsRect.left;
       break;
     case "top":
       height = boundsRect.bottom - origin.y;
-      break;
-    case "bottom":
-      height = origin.y - boundsRect.top;
       break;
   }
   height = Math.max(0, height);
@@ -59,20 +61,25 @@ function availableSpace(origin, boundsRect, direction, align) {
  * touch the indicated source origin point.
  *
  * @private
+ * @param {DOMRect} sourceRect
  * @param {DOMRect} popupRect
  * @param {DOMRect} boundsRect
  */
 function getPositionedRect(
-  sourceOrigin,
+  sourceRect,
   popupRect,
   boundsRect,
   direction,
   align
 ) {
+  // With respect to which point on the source will we position the popup?
+  const sourceOrigin = getSourceOrigin(sourceRect, direction, align);
+
   let x;
   let y;
-  let height;
-  let width;
+  let height = popupRect.height;
+  let width = popupRect.width;
+  const vertical = direction === "above" || direction === "below";
   switch (direction) {
     case "above":
       y = sourceOrigin.y - popupRect.height;
@@ -95,7 +102,7 @@ function getPositionedRect(
       x = sourceOrigin.x;
       break;
     case "center":
-      if (direction === "above" || direction === "below") {
+      if (vertical) {
         x = sourceOrigin.x - popupRect.width / 2;
       } else {
         y = sourceOrigin.y - popupRect.height / 2;
@@ -103,6 +110,15 @@ function getPositionedRect(
       break;
     case "right":
       x = sourceOrigin.x - popupRect.width;
+      break;
+    case "stretch":
+      if (vertical) {
+        x = sourceOrigin.x;
+        width = sourceRect.width;
+      } else {
+        y = sourceOrigin.y;
+        height = sourceRect.height;
+      }
       break;
     case "top":
       y = sourceOrigin.y;
@@ -113,8 +129,8 @@ function getPositionedRect(
   // Force the rectangle to fit by taking its intersection with the boundsRect.
   x = Math.max(x, boundsRect.left);
   y = Math.max(y, boundsRect.top);
-  width = Math.min(popupRect.width, boundsRect.right - x);
-  height = Math.min(popupRect.height, boundsRect.bottom - y);
+  width = Math.min(width, boundsRect.right - x);
+  height = Math.min(height, boundsRect.bottom - y);
   return new DOMRect(x, y, width, height);
 }
 
@@ -128,6 +144,7 @@ function getPositionedRect(
 function getSourceOrigin(sourceRect, direction, align) {
   let x = 0;
   let y = 0;
+  const vertical = direction === "above" || direction === "below";
   switch (direction) {
     case "above":
       y = sourceRect.top;
@@ -150,10 +167,17 @@ function getSourceOrigin(sourceRect, direction, align) {
       x = sourceRect[align];
       break;
     case "center":
-      if (direction === "above" || direction === "below") {
+      if (vertical) {
         x = sourceRect.left + sourceRect.width / 2;
       } else {
         y = sourceRect.top + sourceRect.height / 2;
+      }
+      break;
+    case "stretch":
+      if (vertical) {
+        x = sourceRect.left;
+      } else {
+        y = sourceRect.top;
       }
       break;
   }
@@ -193,16 +217,9 @@ export default function layoutPopup(
   // If we didn't find any layout that works, take the first one.
   const layout = bestLayout || layouts[0];
 
-  // With respect to which point on the source will we position the popup?
-  const sourceOrigin = getSourceOrigin(
-    sourceRect,
-    layout.direction,
-    layout.align
-  );
-
   // Find the positioned rect with respect to the source origin.
   layout.rect = getPositionedRect(
-    sourceOrigin,
+    sourceRect,
     popupRect,
     boundsRect,
     layout.direction,
@@ -251,12 +268,14 @@ function normalizeOptions(options) {
         left: "left",
         right: "right",
         start: rightToLeft ? "right" : "left",
+        stretch: "stretch",
       },
       vertical: {
         bottom: "bottom",
         center: "center",
         end: "bottom",
         start: "top",
+        stretch: "stretch",
         top: "top",
       },
     }[crossAxis][logicalAlign] || defaultAlign;
@@ -288,8 +307,8 @@ function prioritizedLayouts(preferredDirection, preferredAlign) {
     { align: preferredAlign, direction: preferredDirection },
   ];
 
-  if (preferredAlign === "center") {
-    // Center align only needs to consider flipping over main axis.
+  if (preferredAlign === "center" || preferredAlign === "stretch") {
+    // Center/stretch align only needs to consider flipping over main axis.
     possibilties.push({
       align: preferredAlign,
       direction: flipDirection[preferredDirection],

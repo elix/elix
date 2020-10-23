@@ -12,6 +12,7 @@
         align-items: center;
         display: grid;
         gap: 30px;
+        grid-template-columns: repeat(5, 1fr);
         justify-items: center;
       }
 
@@ -29,10 +30,11 @@
 
   <body role="main">
     <h2>Logical positions (left-to-right, room available)</h2>
-    <div class="samples" style="grid-template-columns: repeat(4, 1fr)">
+    <div class="samples">
       <div class="rowLabel"></div>
       <div class="columnLabel">start</div>
       <div class="columnLabel">center</div>
+      <div class="columnLabel">stretch</div>
       <div class="columnLabel">end</div>
 
       <div class="rowLabel">column</div>
@@ -48,6 +50,13 @@
           popup-direction="column"
           popup-align="center"
           style="align-items: start; justify-items: center"
+        ></popup-layout-test>
+      </div>
+      <div>
+        <popup-layout-test
+          popup-align="stretch"
+          popup-direction="column"
+          style="align-items: stretch; justify-items: center"
         ></popup-layout-test>
       </div>
       <div>
@@ -75,6 +84,13 @@
       </div>
       <div>
         <popup-layout-test
+          popup-align="stretch"
+          popup-direction="column-reverse"
+          style="align-items: stretch; justify-items: center"
+        ></popup-layout-test>
+      </div>
+      <div>
+        <popup-layout-test
           popup-align="end"
           popup-direction="column-reverse"
           style="align-items: end; justify-items: center"
@@ -93,6 +109,13 @@
         <popup-layout-test
           popup-direction="row"
           popup-align="center"
+          style="align-items: center; justify-items: start"
+        ></popup-layout-test>
+      </div>
+      <div>
+        <popup-layout-test
+          popup-align="stretch"
+          popup-direction="row"
           style="align-items: center; justify-items: start"
         ></popup-layout-test>
       </div>
@@ -122,6 +145,13 @@
 
       <div>
         <popup-layout-test
+          popup-align="stretch"
+          popup-direction="row-reverse"
+          style="align-items: center; justify-items: end"
+        ></popup-layout-test>
+      </div>
+      <div>
+        <popup-layout-test
           popup-align="end"
           popup-direction="row-reverse"
           style="align-items: center; justify-items: end"
@@ -130,10 +160,11 @@
     </div>
 
     <h2>Physical positions (left-to-right, room available)</h2>
-    <div class="samples" style="grid-template-columns: repeat(4, 1fr)">
+    <div class="samples">
       <div class="rowLabel"></div>
       <div class="columnLabel">left or top</div>
       <div class="columnLabel">center</div>
+      <div class="columnLabel">stretch</div>
       <div class="columnLabel">right or bottom</div>
 
       <div class="rowLabel">above</div>
@@ -147,6 +178,13 @@
       <div>
         <popup-layout-test
           popup-align="center"
+          popup-direction="above"
+          style="align-items: end; justify-items: center"
+        ></popup-layout-test>
+      </div>
+      <div>
+        <popup-layout-test
+          popup-align="stretch"
           popup-direction="above"
           style="align-items: end; justify-items: center"
         ></popup-layout-test>
@@ -176,6 +214,13 @@
       </div>
       <div>
         <popup-layout-test
+          popup-align="stretch"
+          popup-direction="below"
+          style="align-items: start; justify-items: center"
+        ></popup-layout-test>
+      </div>
+      <div>
+        <popup-layout-test
           popup-align="right"
           popup-direction="below"
           style="align-items: start; justify-items: center"
@@ -197,7 +242,13 @@
           style="align-items: center; justify-items: end"
         ></popup-layout-test>
       </div>
-
+      <div>
+        <popup-layout-test
+          popup-align="stretch"
+          popup-direction="left"
+          style="align-items: center; justify-items: end"
+        ></popup-layout-test>
+      </div>
       <div>
         <popup-layout-test
           popup-align="bottom"
@@ -223,6 +274,13 @@
       </div>
       <div>
         <popup-layout-test
+          popup-align="stretch"
+          popup-direction="right"
+          style="align-items: center; justify-items: start"
+        ></popup-layout-test>
+      </div>
+      <div>
+        <popup-layout-test
           popup-align="bottom"
           popup-direction="right"
           style="align-items: center; justify-items: start"
@@ -231,10 +289,11 @@
     </div>
 
     <h2>Logical positions (right-to-left)</h2>
-    <div class="samples" style="grid-template-columns: repeat(4, 1fr)">
+    <div class="samples">
       <div class="rowLabel"></div>
       <div class="columnLabel">start</div>
       <div class="columnLabel">center</div>
+      <div class="columnLabel">stretch</div>
       <div class="columnLabel">end</div>
 
       <div class="rowLabel">column</div>
@@ -251,6 +310,14 @@
           dir="rtl"
           popup-direction="column"
           popup-align="center"
+          style="align-items: start; justify-items: center"
+        ></popup-layout-test>
+      </div>
+      <div>
+        <popup-layout-test
+          dir="rtl"
+          popup-align="stretch"
+          popup-direction="column"
           style="align-items: start; justify-items: center"
         ></popup-layout-test>
       </div>
@@ -276,6 +343,14 @@
         <popup-layout-test
           dir="rtl"
           popup-align="center"
+          popup-direction="column-reverse"
+          style="align-items: end; justify-items: center"
+        ></popup-layout-test>
+      </div>
+      <div>
+        <popup-layout-test
+          dir="rtl"
+          popup-align="stretch"
           popup-direction="column-reverse"
           style="align-items: end; justify-items: center"
         ></popup-layout-test>
@@ -309,6 +384,14 @@
       <div>
         <popup-layout-test
           dir="rtl"
+          popup-align="stretch"
+          popup-direction="row"
+          style="align-items: center; justify-items: start"
+        ></popup-layout-test>
+      </div>
+      <div>
+        <popup-layout-test
+          dir="rtl"
           popup-align="end"
           popup-direction="row"
           style="align-items: center; justify-items: start"
@@ -332,7 +415,14 @@
           style="align-items: center; justify-items: end"
         ></popup-layout-test>
       </div>
-
+      <div>
+        <popup-layout-test
+          dir="rtl"
+          popup-align="stretch"
+          popup-direction="row-reverse"
+          style="align-items: center; justify-items: end"
+        ></popup-layout-test>
+      </div>
       <div>
         <popup-layout-test
           dir="rtl"
@@ -344,7 +434,7 @@
     </div>
 
     <h2>Flipping strategy</h2>
-    <div class="samples" style="grid-template-columns: repeat(5, 1fr)">
+    <div class="samples">
       <div class="rowLabel"></div>
       <div class="columnLabel">room available</div>
       <div class="columnLabel">flip horizontal to fit</div>
@@ -400,6 +490,24 @@
       </div>
       <div></div>
 
+      <div class="rowLabel">column / stretch</div>
+      <div>
+        <popup-layout-test
+          popup-align="stretch"
+          popup-direction="column"
+          style="align-items: start; justify-items: center"
+        ></popup-layout-test>
+      </div>
+      <div></div>
+      <div>
+        <popup-layout-test
+          popup-align="stretch"
+          popup-direction="column"
+          style="align-items: end; justify-items: center"
+        ></popup-layout-test>
+      </div>
+      <div></div>
+
       <div class="rowLabel">row / start</div>
       <div>
         <popup-layout-test
@@ -442,6 +550,25 @@
         <popup-layout-test
           id="fixture"
           popup-align="center"
+          popup-direction="row"
+          style="align-items: center; justify-items: end"
+        ></popup-layout-test>
+      </div>
+      <div></div>
+      <div></div>
+
+      <div class="rowLabel">row / stretch</div>
+      <div>
+        <popup-layout-test
+          popup-align="stretch"
+          popup-direction="row"
+          style="align-items: center; justify-items: start"
+        ></popup-layout-test>
+      </div>
+      <div>
+        <popup-layout-test
+          id="fixture"
+          popup-align="stretch"
           popup-direction="row"
           style="align-items: center; justify-items: end"
         ></popup-layout-test>
