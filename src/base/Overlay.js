@@ -128,8 +128,7 @@ class Overlay extends Base {
       <style>
         :host {
           align-items: center;
-          display: inline-flex;
-          flex-direction: column;
+          display: inline-grid;
           justify-content: center;
           max-height: 100vh;
           max-width: 100vw;
@@ -139,23 +138,20 @@ class Overlay extends Base {
         }
 
         [part~="frame"] {
+          align-items: center;
           box-sizing: border-box;
-          display: flex;
-          flex-direction: column;
-          max-height: 100%;
-          max-width: 100%;
+          display: grid;
+          justify-content: center;
           overscroll-behavior: contain;
           pointer-events: initial;
           position: relative;
         }
 
         #frameContent {
-          display: flex;
-          flex: 1;
-          flex-direction: column;
-          height: 100%;
+          align-items: center;
+          display: grid;
+          justify-content: center;
           overflow: hidden;
-          width: 100%;
         }
       </style>
       <div id="backdrop" part="backdrop" tabindex="-1"></div>

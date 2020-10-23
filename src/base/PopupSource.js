@@ -321,6 +321,8 @@ class PopupSource extends Base {
         }
 
         [part~="popup"] {
+          align-items: stretch;
+          justify-content: stretch;
           outline: none;
           position: fixed;
         }

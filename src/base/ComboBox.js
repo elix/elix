@@ -385,12 +385,6 @@ class ComboBox extends Base {
           [part~="input"] {
             outline: none;
           }
-
-          [part~="popup"] {
-            flex-direction: column;
-            max-height: 100vh;
-            max-width: 100vh;
-          }
         </style>
       `
     );
