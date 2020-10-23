@@ -257,15 +257,12 @@ class PopupSource extends Base {
     const { opened } = this[state];
     if (changed.opened) {
       if (opened) {
-        // Worth noting that's possible (but unusual) for a popup to render opened
-        // on first render.
+        // Worth noting that's possible (but unusual) for a popup to render
+        // opened on first render.
         waitThenRenderOpened(this);
       } else {
         removeEventListeners(this);
       }
-    } else if (opened && !this[state].popupLayout) {
-      // Need to lay out popup.
-      measurePopup(this);
     }
   }
 
@@ -348,7 +345,8 @@ function addEventListeners(/** @type {PopupSource} */ element) {
   cast[resizeListenerKey] = () => {
     measurePopup(element);
   };
-  window.addEventListener("resize", cast[resizeListenerKey]);
+  const viewport = window.visualViewport || window;
+  viewport.addEventListener("resize", cast[resizeListenerKey]);
 }
 
 /**
@@ -389,7 +387,8 @@ function measurePopup(element) {
 function removeEventListeners(/** @type {PopupSource} */ element) {
   /** @type {any} */ const cast = element;
   if (cast[resizeListenerKey]) {
-    window.removeEventListener("resize", cast[resizeListenerKey]);
+    const viewport = window.visualViewport || window;
+    viewport.removeEventListener("resize", cast[resizeListenerKey]);
     cast[resizeListenerKey] = null;
   }
 }
