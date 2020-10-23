@@ -127,9 +127,9 @@ class Overlay extends Base {
     result.content.append(fragmentFrom.html`
       <style>
         :host {
-          align-items: center;
           display: inline-grid;
-          justify-content: center;
+          /* Constrain content if overlay's height is constrained. */
+          grid-template: minmax(0, 1fr) / minmax(0, 1fr);
           max-height: 100vh;
           max-width: 100vw;
           outline: none;
@@ -138,19 +138,15 @@ class Overlay extends Base {
         }
 
         [part~="frame"] {
-          align-items: center;
           box-sizing: border-box;
           display: grid;
-          justify-content: center;
           overscroll-behavior: contain;
           pointer-events: initial;
           position: relative;
         }
 
         #frameContent {
-          align-items: center;
           display: grid;
-          justify-content: center;
           overflow: hidden;
         }
       </style>
