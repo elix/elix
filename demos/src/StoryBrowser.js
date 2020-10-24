@@ -53,7 +53,6 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
 
     if (changed.path) {
       const { path } = this[state];
-
       // Show the indicated story in the frame.
       if (this[ids].frame.contentDocument.location.pathname !== path) {
         // Use `replace` to avoid affecting browser history.
@@ -64,13 +63,21 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
     // Highlight any navigation links that point to this page.
     if (changed.links || changed.path) {
       const { links, path } = this[state];
+      let currentLink;
       if (links && path) {
         // Mark any links which are current.
         const expectedHash = `#path=${path}`;
         links.forEach((link) => {
           const current = link.hash === expectedHash;
           link.classList.toggle("current", current);
+          if (current && !currentLink) {
+            currentLink = link;
+          }
         });
+        // Scroll the (first) current link into view.
+        if (currentLink) {
+          currentLink.scrollIntoView({ block: "nearest" });
+        }
       }
     }
   }
