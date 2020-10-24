@@ -133,13 +133,20 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
           overflow: auto;
         }
 
+        #toolbar {
+          display: grid;
+          position: sticky;
+          top: 0;
+          width: 100%;
+        }
+
         #closeButton {
           background: none;
           border: none;
           color: inherit;
+          margin: 0.5em;
           position: absolute;
-          top: 0.5em;
-          right: 0.5em;
+          right: 0;
         }
 
         [part~="frame"] {
@@ -150,7 +157,9 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
         }
       </style>
       <nav id="navigation" part="navigation">
-        <button id="closeButton">⨉</button>
+        <div id="toolbar">
+          <button id="closeButton">⨉</button>
+        </div>
         <slot></slot>
       </nav>
       <iframe id="frame" part="frame"></iframe>
