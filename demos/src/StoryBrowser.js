@@ -7,7 +7,7 @@ import {
   setState,
   state,
   stateEffects,
-  template,
+  template
 } from "../../src/base/internal.js";
 import SlotContentMixin from "../../src/base/SlotContentMixin.js";
 import { templateFrom } from "../../src/core/htmlLiterals.js";
@@ -101,19 +101,19 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
         }
       });
       Object.assign(effects, { links });
-    }
 
-    // Use first link as default path.
-    if (changed.links && state.links.length > 0) {
-      const defaultPath = getPathFromHash(state.links[0].hash);
-      Object.assign(effects, { defaultPath });
-    }
+      // Use first link as default path.
+      if (links.length > 0) {
+        const defaultPath = getPathFromHash(links[0].hash);
+        Object.assign(effects, { defaultPath });
 
-    // Use the default path as a path if we don't have a path already.
-    if (changed.defaultPath && state.defaultPath && !state.path) {
-      Object.assign(effects, {
-        path: state.defaultPath,
-      });
+        // Use the default path as a path if we don't have a path already.
+        if (defaultPath && !state.path) {
+          Object.assign(effects, {
+            path: defaultPath,
+          });
+        }
+      }
     }
 
     return effects;
