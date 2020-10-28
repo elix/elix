@@ -4,4 +4,4 @@
 import FocusVisibleMixin from "./FocusVisibleMixin";
 import PopupButton from "./PopupButton";
 
-export default class TooltipSource extends FocusVisibleMixin(PopupButton) {}
+export default class TooltipButton extends FocusVisibleMixin(PopupButton) {}

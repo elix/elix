@@ -135,7 +135,7 @@ export { default as Tabs } from "./Tabs.js";
 export { default as TapCursorMixin } from "../src/base/TapCursorMixin.js";
 export { default as TimerCursorMixin } from "../src/base/TimerCursorMixin.js";
 export { default as Toast } from "./Toast.js";
-export { default as TooltipSource } from "./TooltipSource.js";
+export { default as TooltipButton } from "./TooltipButton.js";
 export { default as TouchSwipeMixin } from "../src/base/TouchSwipeMixin.js";
 export { default as TrackTextSelectionMixin } from "../src/base/TrackTextSelectionMixin.js";
 export { default as TrackpadSwipeMixin } from "../src/base/TrackpadSwipeMixin.js";

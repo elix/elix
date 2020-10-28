@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Elix TooltipSource</title>
+    <title>Elix TooltipButton</title>
 
     <link rel="stylesheet" href="demos.css" />
-    <script type="module" src="../define/TooltipSource.js"></script>
+    <script type="module" src="../define/TooltipButton.js"></script>
   </head>
 
   <body role="main">
@@ -18,21 +18,21 @@
         }
       </style>
       <p>
-        These buttons have tooltips that appear when you hover over the button
-        or move keyboard focus to the button.
+        These buttons have tooltips that appear when you hover over them, tap or
+        click on them, or give them the keyboard focus.
       </p>
-      <elix-tooltip-source>
+      <elix-tooltip-button>
         <span slot="source">1</span>
         <span class="tooltip">One</span>
-      </elix-tooltip-source>
-      <elix-tooltip-source>
+      </elix-tooltip-button>
+      <elix-tooltip-button>
         <span slot="source">2</span>
         <span class="tooltip">Two</span>
-      </elix-tooltip-source>
-      <elix-tooltip-source>
+      </elix-tooltip-button>
+      <elix-tooltip-button>
         <span slot="source">3</span>
         <span class="tooltip">Three</span>
-      </elix-tooltip-source>
+      </elix-tooltip-button>
     </div>
   </body>
 </html>

@@ -124,7 +124,7 @@ export { default as TabButton } from "./plain/PlainTabButton.js";
 export { default as TabStrip } from "./plain/PlainTabStrip.js";
 export { default as Tabs } from "./plain/PlainTabs.js";
 export { default as Toast } from "./plain/PlainToast.js";
-export { default as TooltipSource } from "./plain/PlainTooltipSource.js";
+export { default as TooltipButton } from "./plain/PlainTooltipButton.js";
 export { default as PopupDragSelectMixin } from "./base/PopupDragSelectMixin.js";
 export { default as PopupListMixin } from "./base/PopupListMixin.js";
 export { default as PopupModalityMixin } from "./base/PopupModalityMixin.js";

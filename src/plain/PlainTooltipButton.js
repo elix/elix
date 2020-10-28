@@ -1,8 +1,8 @@
 import * as internal from "../base/internal.js";
-import TooltipSource from "../base/TooltipSource.js";
+import TooltipButton from "../base/TooltipButton.js";
 import PlainPopup from "./PlainPopup.js";
 
-class PlainTooltipSource extends TooltipSource {
+class PlainTooltipButton extends TooltipButton {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       popupPartType: PlainPopup,
@@ -25,4 +25,4 @@ class PlainTooltipSource extends TooltipSource {
   }
 }
 
-export default PlainTooltipSource;
+export default PlainTooltipButton;
