@@ -3,7 +3,7 @@ import {
   ids,
   render,
   state,
-  template,
+  template
 } from "../base/internal.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
@@ -59,13 +59,19 @@ export default function PlainComboBoxMixin(Base) {
       // horizontal alignment of "stretch". For combo boxes with start/end or
       // left/right, we should adjust the position and width of the cut-out to
       // match the input.
-      if (changed.calculatedPopupPosition) {
-        const { calculatedPopupPosition, opened } = this[state];
+      if (changed.opened || changed.popupLayout) {
+        const { opened, popupLayout } = this[state];
+        const direction = popupLayout ? popupLayout.direction : null;
         const w = `10px`; // Width of box shadow
+        const popupBelow = direction === "column" || direction === "below";
+        const popupAbove = direction === "column-reverse" || direction === "above";
         const clipPath =
-          calculatedPopupPosition === "below"
+          popupBelow
             ? `polygon(0px 0px, 100% 0px, 100% -${w}, calc(100% + ${w}) -${w}, calc(100% + ${w}) calc(100% + ${w}), -${w} calc(100% + ${w}), -${w} -${w}, 0px -${w})`
-            : `polygon(-${w} -${w}, calc(100% + ${w}) -${w}, calc(100% + ${w}) calc(100% + ${w}), 100% calc(100% + ${w}), 100% 100%, 0px 100%, 0px calc(100% + ${w}), -${w} calc(100% + ${w}))`;
+            : 
+            popupAbove ? 
+            `polygon(-${w} -${w}, calc(100% + ${w}) -${w}, calc(100% + ${w}) calc(100% + ${w}), 100% calc(100% + ${w}), 100% 100%, 0px 100%, 0px calc(100% + ${w}), -${w} calc(100% + ${w}))`
+            : "";
         this[ids].popup.style.clipPath = opened ? clipPath : "";
       }
     }
