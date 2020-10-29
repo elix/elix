@@ -17,6 +17,7 @@ import ReactiveElement from "../../src/core/ReactiveElement.js";
  * Lightweight demo/story browser
  */
 export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       defaultPath: null,
@@ -38,7 +39,7 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
 
       // Refresh title on page load.
       this[ids].frame.addEventListener("load", () => {
-        document.title = this[ids].frame.contentDocument.title;
+        document.title = /** @type {any} */ (this[ids].frame).contentDocument.title;
       });
 
       // When hash changes, load the indicated page.
@@ -54,19 +55,20 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
     if (changed.path) {
       const { path } = this[state];
       // Show the indicated story in the frame.
-      if (this[ids].frame.contentDocument.location.pathname !== path) {
+      /** @type {any} */ const frame = this[ids].frame;
+      if (frame.contentDocument.location.pathname !== path) {
         // Use `replace` to avoid affecting browser history.
-        this[ids].frame.contentWindow.location.replace(path);
+        frame.contentWindow.location.replace(path);
       }
     }
 
     // Highlight any navigation links that point to this page.
     if (changed.links || changed.path) {
-      const { links, path } = this[state];
-      let currentLink;
+      const {links, path } = this[state];
       if (links && path) {
         // Mark any links which are current.
         const expectedHash = `#path=${path}`;
+        let currentLink;
         links.forEach((link) => {
           const current = link.hash === expectedHash;
           link.classList.toggle("current", current);
@@ -76,6 +78,7 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
         });
         // Scroll the (first) current link into view.
         if (currentLink) {
+          // @ts-ignore
           currentLink.scrollIntoView({ block: "nearest" });
         }
       }

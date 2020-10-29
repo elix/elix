@@ -13,7 +13,7 @@ import {
   setState,
   shadowRoot,
   state,
-  template,
+  template
 } from "./internal.js";
 
 const extendsKey = Symbol("extends");
@@ -541,12 +541,12 @@ function createPropertyDelegate(name, descriptor) {
   };
   if (descriptor.get) {
     delegate.get = function () {
-      return getInnerProperty(this, name);
+      return getInnerProperty(/** @type {any} */ (this), name);
     };
   }
   if (descriptor.set) {
     delegate.set = function (/** @type {any} */ value) {
-      setInnerProperty(this, name, value);
+      setInnerProperty(/** @type {any} */ (this), name, value);
     };
   }
   if (descriptor.writable) {
