@@ -7,24 +7,22 @@ import {
   setState,
   state,
   stateEffects,
-  template,
+  template
 } from "../../src/base/internal.js";
 import SlotContentMixin from "../../src/base/SlotContentMixin.js";
 import { templateFrom } from "../../src/core/htmlLiterals.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
 
-// We use a disconnected anchor to translate relative paths to absolute paths.
-const referenceAnchor = document.createElement("a");
-
 /**
  * Lightweight demo/story browser
  */
 export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       defaultPath: null,
       links: [],
-      path: getPathFromHash(),
+      path: getPathFromHash(window.location.hash),
     });
   }
 
@@ -39,39 +37,16 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
         this[raiseChangeEvents] = false;
       });
 
-      // Translate clicks on navigation links into changes to the hash. Changing
-      // the hash will update the path state member, which will tell the frame
-      // to load the page at that path.
-      this[ids].navigation.addEventListener("click", (event) => {
-        this[raiseChangeEvents] = true;
-        // Only handle clicks on links made without modifier keys.
-        if (
-          event.target instanceof HTMLAnchorElement &&
-          !(event.ctrlKey || event.metaKey || event.shiftKey)
-        ) {
-          const pathname = event.target.pathname;
-          const storyPath = getStoryPath(pathname);
-          if (storyPath) {
-            // A link to a story -- handle this ourselves.
-            const location =
-              pathname === this[state].defaultPath ? "" : `#path=${storyPath}`;
-            window.location = location;
-            event.preventDefault();
-            event.stopPropagation();
-          }
-        }
-        this[raiseChangeEvents] = false;
-      });
-
       // Refresh title on page load.
       this[ids].frame.addEventListener("load", () => {
-        document.title = this[ids].frame.contentDocument.title;
+        document.title = /** @type {any} */ (this[ids].frame).contentDocument.title;
       });
 
       // When hash changes, load the indicated page.
       window.addEventListener("hashchange", () => {
         this[raiseChangeEvents] = true;
-        const path = getPathFromHash() || this[state].defaultPath;
+        const path =
+          getPathFromHash(window.location.hash) || this[state].defaultPath;
         this[setState]({ path });
         this[raiseChangeEvents] = false;
       });
@@ -79,23 +54,33 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
 
     if (changed.path) {
       const { path } = this[state];
-
       // Show the indicated story in the frame.
-      if (this[ids].frame.contentDocument.location.pathname !== path) {
+      /** @type {any} */ const frame = this[ids].frame;
+      if (frame.contentDocument.location.pathname !== path) {
         // Use `replace` to avoid affecting browser history.
-        this[ids].frame.contentWindow.location.replace(path);
+        frame.contentWindow.location.replace(path);
       }
     }
 
     // Highlight any navigation links that point to this page.
     if (changed.links || changed.path) {
-      const { links, path } = this[state];
+      const {links, path } = this[state];
       if (links && path) {
         // Mark any links which are current.
+        const expectedHash = `#path=${path}`;
+        let currentLink;
         links.forEach((link) => {
-          const current = link.pathname === path;
+          const current = link.hash === expectedHash;
           link.classList.toggle("current", current);
+          if (current && !currentLink) {
+            currentLink = link;
+          }
         });
+        // Scroll the (first) current link into view.
+        if (currentLink) {
+          // @ts-ignore
+          currentLink.scrollIntoView({ block: "nearest" });
+        }
       }
     }
   }
@@ -119,19 +104,19 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
         }
       });
       Object.assign(effects, { links });
-    }
 
-    // Use first link as default path.
-    if (changed.links && state.links.length > 0) {
-      const defaultPath = state.links[0].pathname;
-      Object.assign(effects, { defaultPath });
-    }
+      // Use first link as default path.
+      if (links.length > 0) {
+        const defaultPath = getPathFromHash(links[0].hash);
+        Object.assign(effects, { defaultPath });
 
-    // Use the default path as a path if we don't have a path already.
-    if (changed.defaultPath && state.defaultPath && !state.path) {
-      Object.assign(effects, {
-        path: state.defaultPath,
-      });
+        // Use the default path as a path if we don't have a path already.
+        if (defaultPath && !state.path) {
+          Object.assign(effects, {
+            path: defaultPath,
+          });
+        }
+      }
     }
 
     return effects;
@@ -151,13 +136,20 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
           overflow: auto;
         }
 
+        #toolbar {
+          display: grid;
+          position: sticky;
+          top: 0;
+          width: 100%;
+        }
+
         #closeButton {
           background: none;
           border: none;
           color: inherit;
+          margin: 0.5em;
           position: absolute;
-          top: 0.5em;
-          right: 0.5em;
+          right: 0;
         }
 
         [part~="frame"] {
@@ -168,7 +160,9 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
         }
       </style>
       <nav id="navigation" part="navigation">
-        <button id="closeButton">⨉</button>
+        <div id="toolbar">
+          <button id="closeButton">⨉</button>
+        </div>
         <slot></slot>
       </nav>
       <iframe id="frame" part="frame"></iframe>
@@ -176,25 +170,8 @@ export default class StoryBrowser extends SlotContentMixin(ReactiveElement) {
   }
 }
 
-// If the given path is at or below the window location, return the relative
-// path; otherwise return null.
-function getStoryPath(absolutePath) {
-  const windowPath = window.location.pathname;
-  const storyPath = absolutePath.startsWith(windowPath)
-    ? absolutePath.replace(windowPath, "")
-    : null;
-  return storyPath;
-}
-
-// Get #path=<path> from URL, return the path.
-function getPathFromHash() {
-  const match = /#path=(?<path>.+)/.exec(location.hash);
-  if (match) {
-    const path = match.groups.path;
-    // Set the path on our reference anchor, then read it out again.
-    referenceAnchor.href = path;
-    return referenceAnchor.pathname;
-  } else {
-    return null;
-  }
+// Get a URL hash, return the path.
+function getPathFromHash(hash) {
+  const match = /#.*path=(?<path>[^&]+)/.exec(hash);
+  return match?.groups?.path;
 }

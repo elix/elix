@@ -9,12 +9,12 @@ import {
   render,
   rendered,
   state,
-  template,
+  template
 } from "./internal.js";
 import PopupButton from "./PopupButton.js";
 
 // A reference to the most recently opened tooltip source.
-let mostRecentTooltipSource = null;
+let mostRecentTooltipButton = null;
 
 const documentKeydownListenerKey = Symbol("documentKeydownListener");
 
@@ -22,8 +22,11 @@ const Base = FocusVisibleMixin(PopupButton);
 
 /**
  * Button with a non-interactive tooltip that appears on hover
+ * 
+ * @inherits PopupButton
+ * @mixes FocusVisibleMixin
  */
-class TooltipSource extends Base {
+class TooltipButton extends Base {
   connectedCallback() {
     super.connectedCallback();
     // Handle edge case where component is opened, removed, then added back.
@@ -109,15 +112,15 @@ class TooltipSource extends Base {
 
       if (this[state].opened) {
         // If some other tooltip source is open, close it.
-        if (mostRecentTooltipSource && mostRecentTooltipSource.close) {
-          mostRecentTooltipSource.close();
+        if (mostRecentTooltipButton && mostRecentTooltipButton.close) {
+          mostRecentTooltipButton.close();
         }
 
         // Make this the most recently-opened tooltip source.
-        mostRecentTooltipSource = this;
-      } else if (this === mostRecentTooltipSource && !this[state].opened) {
+        mostRecentTooltipButton = this;
+      } else if (this === mostRecentTooltipButton && !this[state].opened) {
         // This tooltip source was the most recent, but is now closed.
-        mostRecentTooltipSource = null;
+        mostRecentTooltipButton = null;
       }
     }
   }
@@ -196,4 +199,4 @@ function listenIfOpenAndConnected(element) {
   }
 }
 
-export default TooltipSource;
+export default TooltipButton;
