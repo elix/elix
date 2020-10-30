@@ -4,7 +4,7 @@ import {
   rendered,
   setState,
   state,
-  template,
+  template
 } from "../../src/base/internal.js";
 import LanguageDirectionMixin from "../../src/base/LanguageDirectionMixin.js";
 import layoutPopup from "../../src/base/layoutPopup.js";
@@ -94,14 +94,19 @@ export default class PopupLayoutTest extends LanguageDirectionMixin(Base) {
         }
 
         #popup {
-          background: #ddd;
+          background: #eee;
+          border: 1px solid #ccc;
+          box-sizing: border-box;
           height: 60px;
+          overflow: hidden;
           position: absolute;
           width: 100px;
         }
       </style>
-      <div id="source"></div>
-      <div id="popup"></div>
+      <div id="source" part="source"></div>
+      <div id="popup" part="popup">
+        <slot></slot>
+      </div>
     `;
   }
 }
