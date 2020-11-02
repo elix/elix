@@ -36,39 +36,6 @@
   </head>
 
   <body role="main">
-    <h2>Constrain to bounds</h2>
-    <div class="samples">
-      <div class="rowLabel"></div>
-      <div class="columnLabel">column</div>
-      <div class="columnLabel">column-reverse</div>
-      <div class="columnLabel"></div>
-      <div class="columnLabel"></div>
-
-      <div class="rowLabel">too big</div>
-      <div>
-        <popup-layout-test
-          class="tooLarge"
-          popup-align="start"
-          popup-direction="column"
-          style="align-items: start; justify-items: center"
-        >
-          <div class="largeBlock"></div>
-        </popup-layout-test>
-      </div>
-      <div>
-        <popup-layout-test
-          class="tooLarge"
-          popup-align="start"
-          popup-direction="column-reverse"
-          style="align-items: end; justify-items: center"
-        >
-          <div class="largeBlock"></div>
-        </popup-layout-test>
-      </div>
-      <div></div>
-      <div></div>
-    </div>
-
     <h2>Logical positions (left-to-right, room available)</h2>
     <div class="samples">
       <div class="rowLabel"></div>
@@ -126,7 +93,7 @@
         <popup-layout-test
           popup-align="stretch"
           popup-direction="column-reverse"
-          style="align-items: stretch; justify-items: center"
+          style="align-items: end; justify-items: center"
         ></popup-layout-test>
       </div>
       <div>
@@ -612,6 +579,39 @@
           popup-direction="row"
           style="align-items: center; justify-items: end"
         ></popup-layout-test>
+      </div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <h2>Constrain to bounds</h2>
+    <div class="samples">
+      <div class="rowLabel"></div>
+      <div class="columnLabel">column</div>
+      <div class="columnLabel">column-reverse</div>
+      <div class="columnLabel"></div>
+      <div class="columnLabel"></div>
+
+      <div class="rowLabel">too big</div>
+      <div>
+        <popup-layout-test
+          class="tooLarge"
+          popup-align="start"
+          popup-direction="column"
+          style="align-items: start; justify-items: center"
+        >
+          <div class="largeBlock"></div>
+        </popup-layout-test>
+      </div>
+      <div>
+        <popup-layout-test
+          class="tooLarge"
+          popup-align="start"
+          popup-direction="column-reverse"
+          style="align-items: end; justify-items: center"
+        >
+          <div class="largeBlock"></div>
+        </popup-layout-test>
       </div>
       <div></div>
       <div></div>
