@@ -98,6 +98,21 @@ class PopupButton extends Base {
     super[render](changed);
 
     if (this[firstRender]) {
+      if (this[firstRender]) {
+        // Close the popup if we're opened and lose focus. A typical popup using
+        // PopupModalityMixin will have its own logic to close on blur -- but in
+        // cases where the popup itself doesn't get focus (e.g., TooltipButton),
+        // that logic won't apply.
+        this.addEventListener("blur", () => {
+          this[raiseChangeEvents] = true;
+          // If we're open and lose focus, then close.
+          if (this.opened) {
+            this.close();
+          }
+          this[raiseChangeEvents] = false;
+        });
+      }
+
       // If the source element gets the focus while the popup is open, the
       // most likely expanation is that the user hit Shift+Tab to back up out of
       // the popup. In that case, we should close.

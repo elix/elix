@@ -3,7 +3,6 @@ import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import Hidden from "./Hidden.js";
 import {
   defaultState,
-  firstRender,
   ids,
   raiseChangeEvents,
   render,
@@ -53,17 +52,6 @@ class TooltipButton extends Base {
 
   [render](changed) {
     super[render](changed);
-
-    if (this[firstRender]) {
-      // Close the tooltip if we lose focus. A typical popup using
-      // PopupModalityMixin will have its own logic to close on blur -- but here
-      // we're not giving focus to the popup, so that logic won't apply.
-      this.addEventListener("blur", () => {
-        this[raiseChangeEvents] = true;
-        this.close();
-        this[raiseChangeEvents] = false;
-      });
-    }
 
     // Open tooltip on focus/mouseenter, close on mouseleave.
     // PopupButton will already close the tooltip on blur.
