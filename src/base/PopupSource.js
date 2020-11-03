@@ -410,6 +410,7 @@ function choosePopupLayout(element) {
   // VisualViewport API where that's available, as that handles a pinch-zoomed
   // viewport on mobile. If not availble (as of October 2020, Firefox), we fall
   // back to using the window as the viewport.
+  // @ts-ignore
   const viewport = window.visualViewport;
   const boundsRect = viewport
     ? new DOMRect(
