@@ -76,7 +76,12 @@ function getPositionedRect(
   const sourceOrigin = getSourceOrigin(sourceRect, direction, align);
 
   // We'll adjust our bounds depending upon the layout.
-  let { x: boundsLeft, y: boundsTop, bottom: boundsBottom, right: boundsRight } = boundsRect;
+  let {
+    x: boundsLeft,
+    y: boundsTop,
+    bottom: boundsBottom,
+    right: boundsRight,
+  } = boundsRect;
 
   let x = 0;
   let y = 0;
@@ -86,7 +91,7 @@ function getPositionedRect(
   switch (direction) {
     case "above":
       y = sourceOrigin.y - popupRect.height;
-      boundsBottom = sourceOrigin.y; 
+      boundsBottom = sourceOrigin.y;
       break;
     case "below":
       y = sourceOrigin.y;
@@ -230,20 +235,23 @@ export default function layoutPopup(
       align
     );
 
-    if (!firstFitLayout && popupRect.height <= height && popupRect.width <= width) {
+    // See if the layout fits in the direction of interest.
+    const vertical = direction === "above" || direction === "below";
+    if (
+      !firstFitLayout &&
+      ((vertical && popupRect.height <= height) ||
+        (!vertical && popupRect.width <= width))
+    ) {
       // Found a layout that fits.
       firstFitLayout = layout;
     }
 
     const area = height * width;
-    if (
-      area > biggestArea
-    ) {
+    if (area > biggestArea) {
       // Found a layout that makes the popup bigger than any we've seen so far.
       biggestArea = area;
       biggestLayout = layout;
     }
-    
   });
 
   // Prefer the first layout that fits, otherwise the layout with the biggest area,

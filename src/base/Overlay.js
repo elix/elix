@@ -11,7 +11,7 @@ import {
   setState,
   shadowRoot,
   state,
-  template,
+  template
 } from "./internal.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import OverlayFrame from "./OverlayFrame.js";
@@ -147,6 +147,7 @@ class Overlay extends Base {
 
         #frameContent {
           display: grid;
+          grid-template: minmax(0, 1fr) / minmax(0, 1fr);
           overflow: hidden;
         }
       </style>

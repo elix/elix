@@ -187,29 +187,57 @@ class PopupSource extends Base {
 
       if (!opened) {
         // Popup closed. Reset the styles used to position it.
-        if (!opened) {
-          Object.assign(this[ids].popup.style, {
-            height: "",
-            left: "",
-            top: "",
-            width: "",
-          });
-        }
+        Object.assign(this[ids].popupContainer.style, {
+          alignItems: "",
+          height: "",
+          justifyItems: "",
+          left: "",
+          top: "",
+          width: "",
+        });
       } else if (!popupLayout) {
-        // Popup opened but not yet laid out. Render the component invisibly
-        // so we can measure it before showing it. We hide it by giving it zero
-        // opacity. If we use `visibility: hidden` for this purpose, the popup
-        // won't be able to receive the focus, which would complicate our
-        // overlay focus handling.
-        Object.assign(this[ids].popup.style, {
+        // Popup opened but not yet laid out.
+        //
+        // Render the component invisibly so we can measure it before showing
+        // it. We hide it by giving it zero opacity. If we use `visibility:
+        // hidden` for this purpose, the popup won't be able to receive the
+        // focus, which would complicate our overlay focus handling.
+        //
+        // In case the popup is being relayed out because a layout-affecting
+        // property changed while the popup is open, we reset the positiong
+        // styles too.
+        Object.assign(this[ids].popupContainer.style, {
+          alignItems: "",
+          height: "",
+          justifyItems: "",
+          left: "",
           opacity: 0,
+          top: "",
+          width: "",
         });
       } else {
-        // Popup opened and laid out. Position popup.
-        const popup = this[ids].popup;
-        const { rect } = popupLayout;
-        Object.assign(popup.style, {
+        // Popup opened and laid out. Position the popup (actually, the popup
+        // container).
+        const popupContainer = this[ids].popupContainer;
+        const { align, direction, rect } = popupLayout;
+        const alignItems =
+          direction === "above"
+            ? "end"
+            : (direction === "left" || direction === "right") &&
+              align === "stretch"
+            ? "stretch"
+            : "";
+        const justifyItems =
+          direction === "left"
+            ? "end"
+            : (direction === "above" || direction === "below") &&
+              align === "stretch"
+            ? "stretch"
+            : "";
+        Object.assign(popupContainer.style, {
+          alignItems,
           height: `${rect.height}px`,
+          justifyItems,
           left: `${rect.x}px`,
           opacity: "",
           top: `${rect.y}px`,
@@ -263,6 +291,14 @@ class PopupSource extends Base {
       } else {
         removeEventListeners(this);
       }
+    } else if (
+      changed.popupLayout &&
+      this[state].opened &&
+      !this[state].popupLayout
+    ) {
+      // A layout-affecting property changed while the popup is open; do layout
+      // again.
+      choosePopupLayout(this);
     }
   }
 
@@ -287,7 +323,8 @@ class PopupSource extends Base {
     // and state that affects positioning has changed.
     if (
       (changed.opened && !state.opened) ||
-      (state.opened && (changed.popupAlign || changed.rightToLeft))
+      (state.opened &&
+        (changed.popupAlign || changed.popupDirection || changed.rightToLeft))
     ) {
       Object.assign(effects, {
         popupLayout: null,
@@ -314,14 +351,20 @@ class PopupSource extends Base {
         }
 
         #popupContainer {
-          position: absolute;
+          align-items: start;
+          display: grid;
+          grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+          justify-items: start;
+          position: fixed;
         }
 
         [part~="popup"] {
           align-items: stretch;
           justify-content: stretch;
+          max-height: 100%;
+          max-width: 100%;
           outline: none;
-          position: fixed;
+          position: relative;
         }
       </style>
       <div id="source" part="source">
