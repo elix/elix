@@ -220,19 +220,22 @@ class PopupSource extends Base {
         // container).
         const popupContainer = this[ids].popupContainer;
         const { align, direction, rect } = popupLayout;
+        const vertical = direction === "above" || direction === "below";
         const alignItems =
           direction === "above"
             ? "end"
-            : (direction === "left" || direction === "right") &&
-              align === "stretch"
+            : !vertical && align === "stretch"
             ? "stretch"
+            : !vertical && align === "center"
+            ? "center"
             : "";
         const justifyItems =
           direction === "left"
             ? "end"
-            : (direction === "above" || direction === "below") &&
-              align === "stretch"
+            : vertical && align === "stretch"
             ? "stretch"
+            : vertical && align === "center"
+            ? "center"
             : "";
         Object.assign(popupContainer.style, {
           alignItems,

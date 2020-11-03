@@ -9,7 +9,7 @@ import {
   render,
   rendered,
   state,
-  template
+  template,
 } from "./internal.js";
 import PopupButton from "./PopupButton.js";
 
@@ -22,7 +22,7 @@ const Base = FocusVisibleMixin(PopupButton);
 
 /**
  * Button with a non-interactive tooltip that appears on hover
- * 
+ *
  * @inherits PopupButton
  * @mixes FocusVisibleMixin
  */
@@ -38,6 +38,7 @@ class TooltipButton extends Base {
     // popup, we don't need `aria-haspopup`.
     return Object.assign(super[defaultState], {
       ariaHasPopup: null,
+      popupAlign: "center",
       popupDirection: "above",
       role: "none",
     });
