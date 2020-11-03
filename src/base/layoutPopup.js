@@ -75,31 +75,40 @@ function getPositionedRect(
   // With respect to which point on the source will we position the popup?
   const sourceOrigin = getSourceOrigin(sourceRect, direction, align);
 
-  let x;
-  let y;
+  // We'll adjust our bounds depending upon the layout.
+  let { x: boundsLeft, y: boundsTop, bottom: boundsBottom, right: boundsRight } = boundsRect;
+
+  let x = 0;
+  let y = 0;
   let height = popupRect.height;
   let width = popupRect.width;
   const vertical = direction === "above" || direction === "below";
   switch (direction) {
     case "above":
       y = sourceOrigin.y - popupRect.height;
+      boundsBottom = sourceOrigin.y; 
       break;
     case "below":
       y = sourceOrigin.y;
+      boundsTop = sourceOrigin.y;
       break;
     case "left":
       x = sourceOrigin.x - popupRect.width;
+      boundsRight = sourceOrigin.x;
       break;
     case "right":
       x = sourceOrigin.x;
+      boundsLeft = sourceOrigin.x;
       break;
   }
   switch (align) {
     case "bottom":
       y = sourceOrigin.y - popupRect.height;
+      boundsBottom = sourceOrigin.y;
       break;
     case "left":
       x = sourceOrigin.x;
+      boundsLeft = sourceOrigin.x;
       break;
     case "center":
       if (vertical) {
@@ -110,6 +119,7 @@ function getPositionedRect(
       break;
     case "right":
       x = sourceOrigin.x - popupRect.width;
+      boundsRight = sourceOrigin.x;
       break;
     case "stretch":
       if (vertical) {
@@ -122,15 +132,16 @@ function getPositionedRect(
       break;
     case "top":
       y = sourceOrigin.y;
+      boundsTop = sourceOrigin.y;
       break;
   }
-  // If we positioned the popup at the desired (x, y) origin with its current
-  // height/width, that rectangle may not lie completely in the boundsRect.
-  // Force the rectangle to fit by taking its intersection with the boundsRect.
-  x = Math.max(x, boundsRect.left);
-  y = Math.max(y, boundsRect.top);
-  width = Math.min(width, boundsRect.right - x);
-  height = Math.min(height, boundsRect.bottom - y);
+
+  // Force the desired rectangle to fit within the bounds.
+  x = Math.max(x, boundsLeft);
+  y = Math.max(y, boundsTop);
+  width = Math.min(width, boundsRight - x);
+  height = Math.min(height, boundsBottom - y);
+
   return new DOMRect(x, y, width, height);
 }
 
@@ -203,8 +214,14 @@ export default function layoutPopup(
 
   // Given the direction and alignment, which layouts do we want to consider?
   const layouts = prioritizedLayouts(normalized.direction, normalized.align);
-  // Find the first layout that lets the popup fit in the bounds.
-  const bestLayout = layouts.find(({ align, direction }) => {
+
+  // Find the first layout that lets the popup fit in the bounds, as well
+  // as the layout that gives the popup the biggest area.
+  let firstFitLayout;
+  let biggestArea = 0;
+  let biggestLayout;
+  layouts.forEach((layout) => {
+    const { align, direction } = layout;
     const sourceOrigin = getSourceOrigin(sourceRect, direction, align);
     const { height, width } = availableSpace(
       sourceOrigin,
@@ -212,10 +229,26 @@ export default function layoutPopup(
       direction,
       align
     );
-    return popupRect.height <= height && popupRect.width <= width;
+
+    if (!firstFitLayout && popupRect.height <= height && popupRect.width <= width) {
+      // Found a layout that fits.
+      firstFitLayout = layout;
+    }
+
+    const area = height * width;
+    if (
+      area > biggestArea
+    ) {
+      // Found a layout that makes the popup bigger than any we've seen so far.
+      biggestArea = area;
+      biggestLayout = layout;
+    }
+    
   });
-  // If we didn't find any layout that works, take the first one.
-  const layout = bestLayout || layouts[0];
+
+  // Prefer the first layout that fits, otherwise the layout with the biggest area,
+  // otherwise the first layout.
+  const layout = firstFitLayout || biggestLayout || layouts[0];
 
   // Find the positioned rect with respect to the source origin.
   layout.rect = getPositionedRect(
