@@ -190,6 +190,10 @@ import * as internalImport from "./base/internal.js";
 // @ts-ignore
 export const internal = internalImport;
 
+import * as layoutPopupImport from "./base/layoutPopup.js";
+// @ts-ignore
+export const layoutPopup = layoutPopupImport;
+
 import * as scrollingImport from "./base/scrolling.js";
 // @ts-ignore
 export const scrolling = scrollingImport;

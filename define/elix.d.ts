@@ -171,6 +171,10 @@ import * as internalImport from "../src/base/internal.js";
 // @ts-ignore
 export const internal = internalImport;
 
+import * as layoutPopupImport from "../src/base/layoutPopup.js";
+// @ts-ignore
+export const layoutPopup = layoutPopupImport;
+
 import * as scrollingImport from "../src/base/scrolling.js";
 // @ts-ignore
 export const scrolling = scrollingImport;
