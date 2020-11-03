@@ -4,7 +4,7 @@ import {
   rendered,
   setState,
   state,
-  template
+  template,
 } from "../../src/base/internal.js";
 import LanguageDirectionMixin from "../../src/base/LanguageDirectionMixin.js";
 import layoutPopup from "../../src/base/layoutPopup.js";
@@ -54,7 +54,7 @@ export default class PopupLayoutTest extends LanguageDirectionMixin(Base) {
         popup.offsetWidth,
         popup.offsetHeight
       );
-      const boundsRect = new DOMRect(0, 0, this.offsetWidth, this.offsetHeight);
+      const boundsRect = new DOMRect(0, 0, this.clientWidth, this.clientHeight);
 
       const layout = layoutPopup(sourceRect, popupRect, boundsRect, {
         align: popupAlign,
@@ -78,6 +78,7 @@ export default class PopupLayoutTest extends LanguageDirectionMixin(Base) {
       <style>
         :host {
           border: 1px dotted #ddd;
+          box-sizing: border-box;
           display: inline-block;
           position: relative;
         }
