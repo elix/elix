@@ -9,51 +9,130 @@
  * height and width of the available space in the quadrant used by that layout.
  *
  * @private
+ * @param {DOMRect} sourceRect
  * @param {DOMRect} boundsRect
  */
-function availableSpace(origin, boundsRect, direction, align) {
+function availableSpace(sourceRect, boundsRect, direction, align) {
+  const sourceOrigin = getSourceOrigin(sourceRect, direction, align);
+
   let height = 0;
   let width = 0;
   const vertical = direction === "above" || direction === "below";
   switch (direction) {
     case "above":
-      height = origin.y - boundsRect.top;
+      height = sourceOrigin.y - boundsRect.top;
       break;
     case "below":
-      height = boundsRect.bottom - origin.y;
+      height = boundsRect.bottom - sourceOrigin.y;
       break;
     case "left":
-      width = origin.x - boundsRect.left;
+      width = sourceOrigin.x - boundsRect.left;
       break;
     case "right":
-      width = boundsRect.right - origin.x;
+      width = boundsRect.right - sourceOrigin.x;
       break;
   }
   switch (align) {
     case "bottom":
-      height = origin.y - boundsRect.top;
+      height = sourceOrigin.y - boundsRect.top;
       break;
     case "center":
-    case "stretch":
       if (vertical) {
         width = boundsRect.width;
       } else {
         height = boundsRect.height;
       }
       break;
+    case "stretch":
+      if (vertical) {
+        width = sourceRect.width;
+      } else {
+        height = sourceRect.height;
+      }
+      break;
     case "left":
-      width = boundsRect.right - origin.x;
+      width = boundsRect.right - sourceOrigin.x;
       break;
     case "right":
-      width = origin.x - boundsRect.left;
+      width = sourceOrigin.x - boundsRect.left;
       break;
     case "top":
-      height = boundsRect.bottom - origin.y;
+      height = boundsRect.bottom - sourceOrigin.y;
       break;
   }
   height = Math.max(0, height);
   width = Math.max(0, width);
   return { height, width };
+}
+
+/**
+ * Given two layouts, return -1 if the first is better, 1 if the second is
+ * better, and 0 if they're equally good.
+ *
+ * Our comparison uses a heuristic that looks to see whether a layout can fit
+ * the popup in height, width, or both. A layout is best if it fits both height
+ * and width. If each layout only fits one dimension, then the layout that gives
+ * the popup more space is preferred.
+ *
+ * @private
+ * @param {DOMRect} sourceRect
+ * @param {DOMRect} popupRect
+ * @param {DOMRect} boundsRect
+ */
+function compareLayouts(layout1, layout2, sourceRect, popupRect, boundsRect) {
+  const space1 = availableSpace(
+    sourceRect,
+    boundsRect,
+    layout1.direction,
+    layout1.align
+  );
+  const space2 = availableSpace(
+    sourceRect,
+    boundsRect,
+    layout2.direction,
+    layout2.align
+  );
+  const fitsWidth1 = popupRect.width <= space1.width;
+  const fitsHeight1 = popupRect.height <= space1.height;
+  const fitsEither1 = fitsWidth1 || fitsHeight1;
+  const fitsBoth1 = fitsWidth1 && fitsHeight1;
+  const fitsWidth2 = popupRect.width <= space2.width;
+  const fitsHeight2 = popupRect.height <= space2.height;
+  const fitsEither2 = fitsWidth2 || fitsHeight2;
+  const fitsBoth2 = fitsWidth2 && fitsHeight2;
+  const area1 = space1.width * space1.height;
+  const area2 = space2.width * space2.height;
+  if (fitsBoth1 && fitsBoth2) {
+    // Both layouts can fit in both dimensions; they're equally good.
+    return 0;
+  } else if (fitsBoth1) {
+    // Layout 1 has space for popup in both dimensions.
+    return -1;
+  } else if (fitsBoth2) {
+    // Layout 2 has space for popup in both dimensions.
+    return 1;
+  } else if (fitsEither1 && !fitsEither2) {
+    // Layout 1 fits in one dimension, layout 2 doesn't fit either.
+    return -1;
+  } else if (fitsEither2 && !fitsEither1) {
+    // Layout 2 fits in one dimensions, layout 1 doesn't fit either.
+    return 1;
+  } else if (fitsEither1 && area1 > area2) {
+    // Layout 1 fits in one dimension and gives popup more space.
+    return -1;
+  } else if (fitsEither2 && area2 > area1) {
+    // Layout 2 fits in one dimension and gives popup more space.
+    return 1;
+  } else if (area1 > area2) {
+    // Layout 1 gives popup more space.
+    return -1;
+  } else if (area2 > area1) {
+    // Layout 2 gives popup more space.
+    return 1;
+  } else {
+    // Layouts equally good or bad.
+    return 0;
+  }
 }
 
 /**
@@ -220,43 +299,13 @@ export default function layoutPopup(
   // Given the direction and alignment, which layouts do we want to consider?
   const layouts = prioritizedLayouts(normalized.direction, normalized.align);
 
-  // Find the first layout that lets the popup fit in the bounds, as well
-  // as the layout that gives the popup the biggest area.
-  let firstFitLayout;
-  let biggestArea = 0;
-  let biggestLayout;
-  layouts.forEach((layout) => {
-    const { align, direction } = layout;
-    const sourceOrigin = getSourceOrigin(sourceRect, direction, align);
-    const { height, width } = availableSpace(
-      sourceOrigin,
-      boundsRect,
-      direction,
-      align
-    );
+  // Sort layouts by our heuristic.
+  layouts.sort((layout1, layout2) =>
+    compareLayouts(layout1, layout2, sourceRect, popupRect, boundsRect)
+  );
 
-    // See if the layout fits in the direction of interest.
-    const vertical = direction === "above" || direction === "below";
-    if (
-      !firstFitLayout &&
-      ((vertical && popupRect.height <= height) ||
-        (!vertical && popupRect.width <= width))
-    ) {
-      // Found a layout that fits.
-      firstFitLayout = layout;
-    }
-
-    const area = height * width;
-    if (area > biggestArea) {
-      // Found a layout that makes the popup bigger than any we've seen so far.
-      biggestArea = area;
-      biggestLayout = layout;
-    }
-  });
-
-  // Prefer the first layout that fits, otherwise the layout with the biggest area,
-  // otherwise the first layout.
-  const layout = firstFitLayout || biggestLayout || layouts[0];
+  // Take the best layout.
+  const layout = layouts[0];
 
   // Find the positioned rect with respect to the source origin.
   layout.rect = getPositionedRect(

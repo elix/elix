@@ -25,6 +25,7 @@ import "./base/KeyboardMixin.tests.js";
 import "./base/KeyboardPagedCursorMixin.tests.js";
 import "./base/KeyboardPrefixCursorMixin.tests.js";
 import "./base/LanguageDirectionMixin.tests.js";
+import "./base/layoutPopup.tests.js";
 import "./base/ListBox.tests.js";
 import "./base/Menu.tests.js";
 import "./base/MultiSelectAPIMixin.tests.js";

@@ -22,8 +22,8 @@
 
       popup-layout-test {
         display: grid;
-        height: 90px;
-        width: 150px;
+        height: 92px;
+        width: 152px;
       }
 
       .largeBlock {
@@ -46,6 +46,10 @@
 
       <div class="rowLabel">column</div>
       <div>
+        <!--
+          This layout is the same as the one covered by the unit test
+          "column/start layout, room available" in layoutPopup.tests.js
+        -->
         <popup-layout-test
           popup-align="start"
           popup-direction="column"
@@ -465,13 +469,16 @@
       </div>
       <div>
         <popup-layout-test
-          id="fixture"
           popup-align="start"
           popup-direction="column"
           style="align-items: end; justify-items: start"
         ></popup-layout-test>
       </div>
       <div>
+        <!--
+          This layout is the same as the one covered by the unit test
+          "column/start layout, flip both to fit" in layoutPopup.tests.js
+        -->
         <popup-layout-test
           popup-align="start"
           popup-direction="column"
@@ -555,7 +562,6 @@
       </div>
       <div>
         <popup-layout-test
-          id="fixture"
           popup-align="center"
           popup-direction="row"
           style="align-items: center; justify-items: end"
@@ -574,7 +580,6 @@
       </div>
       <div>
         <popup-layout-test
-          id="fixture"
           popup-align="stretch"
           popup-direction="row"
           style="align-items: center; justify-items: end"
