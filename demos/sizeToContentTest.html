@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix size to content test</title>
+
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="./src/SizeToContentTest.js"></script>
+
+    <style>
+      .content {
+        align-items: center;
+        border: 4px solid pink;
+        box-sizing: border-box;
+        display: grid;
+        justify-items: center;
+        padding: 0.5em;
+      }
+
+      size-to-content-test {
+        margin: 1em 0;
+      }
+    </style>
+  </head>
+
+  <body role="main">
+    <p>
+      This page doesn't test an Elix component directly, but exercises grid
+      styling used in Elix components to deliver the
+      <a
+        href="https://github.com/webcomponents/gold-standard/wiki/Size-to-Content"
+      >
+        Size to Content</a
+      >
+      criteria on the Gold Standard Checklist for Web Components.
+    </p>
+    <p>
+      Below, the dotted gray border shows the bounds of a sample component,
+      while the pink solid border shows the bounds of the content inside that
+      component. These two borders let us confirm whether the outer element and
+      its inner content are resizing as expected.
+    </p>
+    <div>
+      <size-to-content-test>
+        <div class="content">
+          This content has a natural size, and the outer element tightly fits
+          it.
+        </div>
+      </size-to-content-test>
+    </div>
+    <div>
+      <size-to-content-test>
+        <div class="content" style="height: 150px; width: 150px">
+          This content defines a size, and again the outer element fits it.
+        </div>
+      </size-to-content-test>
+    </div>
+    <div>
+      <size-to-content-test style="height: 200px; width: 400px">
+        <div class="content">
+          Here the outer element defines a size, which stretches the content
+          inside to match.
+        </div>
+      </size-to-content-test>
+    </div>
+    <div>
+      <size-to-content-test style="height: 200px; width: 200px">
+        <div class="content" style="height: 300px; width: 300px">
+          Here both the outer element defines a fixed size, and the content
+          defines a size that's bigger than that. The outer element must provide
+          the user some way (like scrolling) to see the complete content.
+        </div>
+      </size-to-content-test>
+    </div>
+  </body>
+</html>
