@@ -190,6 +190,7 @@ class PopupSource extends Base {
         Object.assign(this[ids].popup.style, {
           bottom: "",
           left: "",
+          opacity: "",
           right: "",
           top: "",
         });
@@ -241,13 +242,7 @@ class PopupSource extends Base {
         const { align, direction } = popupLayout;
         /** @type {any} */ const popup = this[ids].popup;
         if ("position" in popup) {
-          const position = {
-            above: "below",
-            below: "above",
-            right: "left",
-            left: "right",
-          }[direction];
-          popup.position = position;
+          popup.position = direction;
         }
         if ("align" in popup) {
           popup.align = align;
