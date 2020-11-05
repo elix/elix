@@ -1,4 +1,4 @@
-import { ownEvent } from "../core/dom.js";
+import { deepContains, ownEvent } from "../core/dom.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import {
@@ -98,20 +98,11 @@ class PopupButton extends Base {
     super[render](changed);
 
     if (this[firstRender]) {
-      if (this[firstRender]) {
-        // Close the popup if we're opened and lose focus. A typical popup using
-        // PopupModalityMixin will have its own logic to close on blur -- but in
-        // cases where the popup itself doesn't get focus (e.g., TooltipButton),
-        // that logic won't apply.
-        this.addEventListener("blur", () => {
-          this[raiseChangeEvents] = true;
-          // If we're open and lose focus, then close.
-          if (this.opened) {
-            this.close();
-          }
-          this[raiseChangeEvents] = false;
-        });
-      }
+      // Close the popup if we're opened and lose focus. A typical popup using
+      // PopupModalityMixin will have its own logic to close on blur -- but in
+      // cases where the popup itself doesn't get focus (e.g., TooltipButton),
+      // that logic won't apply.
+      this.addEventListener("blur", blurHandler.bind(this));
 
       // If the source element gets the focus while the popup is open, the
       // most likely expanation is that the user hit Shift+Tab to back up out of
@@ -204,6 +195,26 @@ class PopupButton extends Base {
       `
     );
     return result;
+  }
+}
+
+// Note: This routine also exists in PopupModalityMixin, may want to eventually
+// share that. Note that PopupModalityMixin handles blur on the *popup*; here
+// we're dealing with the source button.
+async function blurHandler(/** @type {Event} */ event) {
+  // @ts-ignore
+  /** @type {any} */ const element = this;
+  // What has the focus now?
+  const newFocusedElement =
+    /** @type {any} */ (event).relatedTarget || document.activeElement;
+  /** @type {any} */
+  if (
+    newFocusedElement instanceof Element &&
+    !deepContains(element, newFocusedElement)
+  ) {
+    element[raiseChangeEvents] = true;
+    await element.close({ canceled: "blur" });
+    element[raiseChangeEvents] = false;
   }
 }
 

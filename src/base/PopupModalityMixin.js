@@ -2,6 +2,7 @@ import { deepContains, ownEvent } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import {
   defaultState,
+  firstRender,
   keydown,
   raiseChangeEvents,
   render,
@@ -37,14 +38,6 @@ const implicitCloseListenerKey = Symbol("implicitCloseListener");
 export default function PopupModalityMixin(Base) {
   // The class prototype added by the mixin.
   class PopupModality extends Base {
-    constructor() {
-      // @ts-ignore
-      super();
-
-      // If we lose focus, and the new focus isn't inside us, then close.
-      this.addEventListener("blur", blurHandler.bind(this));
-    }
-
     /**
      * True if the popup should close if the user resizes the window.
      *
@@ -86,6 +79,12 @@ export default function PopupModalityMixin(Base) {
       if (super[render]) {
         super[render](changed);
       }
+
+      if (this[firstRender]) {
+        // If we lose focus, and the new focus isn't inside us, then close.
+        this.addEventListener("blur", blurHandler.bind(this));
+      }
+
       if (changed.role) {
         // Apply top-level role.
         const { role } = this[state];
@@ -158,6 +157,9 @@ function removeEventListeners(/** @type {ReactiveElement} */ element) {
   }
 }
 
+// Note: This routine also exists in PopupButton, may want to eventually
+// share that. Note that PopupButton handles blur on the *button*; here
+// we're dealing with the popup.
 async function blurHandler(/** @type {Event} */ event) {
   // @ts-ignore
   /** @type {any} */ const element = this;
