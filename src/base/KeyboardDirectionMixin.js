@@ -98,45 +98,56 @@ export default function KeyboardDirectionMixin(Base) {
     [keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
 
-      // Respect orientation state if defined, otherwise assume "both".
-      const orientation = this[state].orientation || "both";
-      const horizontal = orientation === "horizontal" || orientation === "both";
-      const vertical = orientation === "vertical" || orientation === "both";
+      // Direction keys generally are low-priority keys: if a shadow element
+      // like an input has focus, we want to let that focused element handle
+      // direction keys. So we only handle the event if we're the target.
+      //
+      // (We'd really like to be able to provide direction key handling as a
+      // default — i.e., if the focused element doesn't handle a key, then we
+      // would handle it here. Unfortunately, there doesn't seem to be any
+      // general way for us to do that.)
+      if (event.target === this) {
+        // Respect orientation state if defined, otherwise assume "both".
+        const orientation = this[state].orientation || "both";
+        const horizontal =
+          orientation === "horizontal" || orientation === "both";
+        const vertical = orientation === "vertical" || orientation === "both";
 
-      // Ignore Left/Right keys when metaKey or altKey modifier is also pressed,
-      // as the user may be trying to navigate back or forward in the browser.
-      switch (event.key) {
-        case "ArrowDown":
-          if (vertical) {
-            handled = event.altKey ? this[goEnd]() : this[goDown]();
-          }
-          break;
+        // Ignore Left/Right keys when metaKey or altKey modifier is also pressed,
+        // as the user may be trying to navigate back or forward in the browser.
+        switch (event.key) {
+          case "ArrowDown":
+            if (vertical) {
+              handled = event.altKey ? this[goEnd]() : this[goDown]();
+            }
+            break;
 
-        case "ArrowLeft":
-          if (horizontal && !event.metaKey && !event.altKey) {
-            handled = this[goLeft]();
-          }
-          break;
+          case "ArrowLeft":
+            if (horizontal && !event.metaKey && !event.altKey) {
+              handled = this[goLeft]();
+            }
+            break;
 
-        case "ArrowRight":
-          if (horizontal && !event.metaKey && !event.altKey) {
-            handled = this[goRight]();
-          }
-          break;
+          case "ArrowRight":
+            if (horizontal && !event.metaKey && !event.altKey) {
+              handled = this[goRight]();
+            }
+            break;
 
-        case "ArrowUp":
-          if (vertical) {
-            handled = event.altKey ? this[goStart]() : this[goUp]();
-          }
-          break;
+          case "ArrowUp":
+            if (vertical) {
+              handled = event.altKey ? this[goStart]() : this[goUp]();
+            }
+            break;
 
-        case "End":
-          handled = this[goEnd]();
-          break;
+          case "End":
+            handled = this[goEnd]();
+            break;
 
-        case "Home":
-          handled = this[goStart]();
-          break;
+          case "Home":
+            handled = this[goStart]();
+            break;
+        }
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.

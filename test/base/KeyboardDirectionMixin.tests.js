@@ -23,6 +23,7 @@ describe("KeyboardDirectionMixin", () => {
     const spy = sinon.spy(fixture, goRight);
     const result = fixture[keydown]({
       key: "ArrowRight",
+      target: fixture,
     });
     assert(spy.calledOnce);
     assert(result);
