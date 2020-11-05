@@ -53,6 +53,12 @@ export default class CustomDrawer extends DrawerWithGrip {
             width: 100%;
           }
 
+          /* Get the framed content to fill the drawer. Feels hacky. */
+          #frameContent {
+            align-self: stretch;
+            flex: 1;
+          }
+
           #plusIcon {
             color: #00c8aa;
             font-family: "Varela Round", sans-serif;

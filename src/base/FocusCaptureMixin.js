@@ -89,14 +89,18 @@ function FocusCaptureMixin(Base) {
       const focusCapture = fragmentFrom.html`
         <style>
           #focusCapture {
-            display: grid;
+            display: flex;
             height: 100%;
             overflow: hidden;
             width: 100%;
           }
 
           #focusCaptureContainer {
-            display: grid;
+            align-items: center;
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            justify-content: center;
             position: relative;
           }
         </style>
