@@ -90,7 +90,6 @@ function FocusCaptureMixin(Base) {
         <style>
           #focusCapture {
             display: grid;
-            grid-template: minmax(0, 1fr) / minmax(0, 1fr);
             height: 100%;
             overflow: hidden;
             width: 100%;

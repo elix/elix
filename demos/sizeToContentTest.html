@@ -27,7 +27,7 @@
   <body role="main">
     <p>
       This page doesn't test an Elix component directly, but exercises grid
-      styling used in Elix components to deliver the
+      styling used in some Elix components to deliver the
       <a
         href="https://github.com/webcomponents/gold-standard/wiki/Size-to-Content"
       >
@@ -38,8 +38,8 @@
     <p>
       Below, the dotted gray border shows the bounds of a sample component,
       while the pink solid border shows the bounds of the content inside that
-      component. These two borders let us confirm whether the outer element and
-      its inner content are resizing as expected.
+      component. We want these borders to touch, confirming that the outer
+      element and its inner content are resizing as expected.
     </p>
     <div>
       <size-to-content-test>
@@ -71,6 +71,25 @@
           defines a size that's bigger than that. The outer element must provide
           the user some way (like scrolling) to see the complete content.
         </div>
+      </size-to-content-test>
+    </div>
+    <div>
+      <size-to-content-test style="height: 200px; width: 200px">
+        <div class="content">
+          This element has a fixed size, and two children: this one…
+        </div>
+        <div class="content">
+          …and this one. The children split the available space.
+        </div>
+      </size-to-content-test>
+    </div>
+    <div>
+      <size-to-content-test style="height: 200px; width: 200px">
+        <div class="content" style="height: 300px">
+          This also has children. This first child is tall enough to force
+          scrolling.
+        </div>
+        <div class="content">This is the second child.</div>
       </size-to-content-test>
     </div>
   </body>

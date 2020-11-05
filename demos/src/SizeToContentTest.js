@@ -8,7 +8,6 @@ class SizeToContentTest extends ReactiveElement {
       <style>
         :host {
           display: inline-grid;
-          grid-template: minmax(0, 1fr) / minmax(0, 1fr);
         }
 
         div {
