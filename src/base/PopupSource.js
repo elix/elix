@@ -187,13 +187,11 @@ class PopupSource extends Base {
 
       if (!opened) {
         // Popup closed. Reset the styles used to position it.
-        Object.assign(this[ids].popupContainer.style, {
-          alignItems: "",
-          height: "",
-          justifyItems: "",
+        Object.assign(this[ids].popup.style, {
+          bottom: "",
           left: "",
+          right: "",
           top: "",
-          width: "",
         });
       } else if (!popupLayout) {
         // Popup opened but not yet laid out.
@@ -206,45 +204,20 @@ class PopupSource extends Base {
         // In case the popup is being relayed out because a layout-affecting
         // property changed while the popup is open, we reset the positiong
         // styles too.
-        Object.assign(this[ids].popupContainer.style, {
-          alignItems: "",
-          height: "",
-          justifyItems: "",
+        Object.assign(this[ids].popup.style, {
+          bottom: "",
           left: "",
           opacity: 0,
+          right: "",
           top: "",
-          width: "",
         });
       } else {
-        // Popup opened and laid out. Position the popup (actually, the popup
-        // container).
-        const popupContainer = this[ids].popupContainer;
-        const { align, direction, rect } = popupLayout;
-        const vertical = direction === "above" || direction === "below";
-        const alignItems =
-          direction === "above"
-            ? "end"
-            : !vertical && align === "stretch"
-            ? "stretch"
-            : !vertical && align === "center"
-            ? "center"
-            : "";
-        const justifyItems =
-          direction === "left"
-            ? "end"
-            : vertical && align === "stretch"
-            ? "stretch"
-            : vertical && align === "center"
-            ? "center"
-            : "";
-        Object.assign(popupContainer.style, {
-          alignItems,
-          height: `${rect.height}px`,
-          justifyItems,
-          left: `${rect.x}px`,
+        // Popup opened and laid out. Position the popup using only the edges
+        // implicated in the layout.
+        const popup = this[ids].popup;
+        const positionStyling = getPositiongStylingForLayout(popupLayout);
+        Object.assign(popup.style, positionStyling, {
           opacity: "",
-          top: `${rect.y}px`,
-          width: `${rect.width}px`,
         });
       }
     }
@@ -353,30 +326,18 @@ class PopupSource extends Base {
           width: 100%;
         }
 
-        #popupContainer {
-          align-items: start;
-          display: grid;
-          grid-template: minmax(0, 1fr) / minmax(0, 1fr);
-          justify-items: start;
-          position: fixed;
-        }
-
         [part~="popup"] {
-          align-items: stretch;
-          justify-content: stretch;
           max-height: 100%;
           max-width: 100%;
           outline: none;
-          position: relative;
+          position: fixed;
         }
       </style>
       <div id="source" part="source">
         <slot name="source"></slot>
       </div>
-      <div id="popupContainer" role="none">
-        <div id="popup" part="popup" exportparts="backdrop, frame" role="none">
-          <slot></slot>
-        </div>
+      <div id="popup" part="popup" exportparts="backdrop, frame" role="none">
+        <slot></slot>
       </div>
     `);
 
@@ -408,21 +369,7 @@ function choosePopupLayout(element) {
   const { popupAlign, popupDirection, rightToLeft } = element[state];
   const sourceRect = element[ids].source.getBoundingClientRect();
   const popupRect = element[ids].popup.getBoundingClientRect();
-
-  // Determine the bounding rectangle of the viewport. We prefer the
-  // VisualViewport API where that's available, as that handles a pinch-zoomed
-  // viewport on mobile. If not availble (as of October 2020, Firefox), we fall
-  // back to using the window as the viewport.
-  // @ts-ignore
-  const viewport = window.visualViewport;
-  const boundsRect = viewport
-    ? new DOMRect(
-        viewport.offsetLeft,
-        viewport.offsetTop,
-        viewport.width,
-        viewport.height
-      )
-    : new DOMRect(0, 0, window.innerWidth, window.innerHeight);
+  const boundsRect = viewportBounds();
 
   const popupLayout = layoutPopup(sourceRect, popupRect, boundsRect, {
     align: popupAlign,
@@ -431,6 +378,63 @@ function choosePopupLayout(element) {
   });
 
   element[setState]({ popupLayout });
+}
+
+// Given a complete layout for a popup (including the rect), determine the
+// styling that should be applied to the popup.
+function getPositiongStylingForLayout(layout) {
+  const { align, direction, rect } = layout;
+  const bounds = viewportBounds();
+  const styling = {};
+  const vertical = direction === "above" || direction === "below";
+  switch (direction) {
+    case "above":
+      styling.bottom = `${bounds.bottom - rect.bottom}px`;
+      break;
+    case "below":
+      styling.top = `${rect.top}px`;
+      break;
+    case "left":
+      styling.right = `${bounds.right - rect.right}px`;
+      break;
+    case "right":
+      styling.left = `${rect.left}px`;
+      break;
+  }
+  switch (align) {
+    case "bottom":
+      styling.bottom = `${bounds.bottom - rect.bottom}px`;
+      break;
+    case "center":
+    case "stretch":
+      if (vertical) {
+        styling.left = `${rect.left}px`;
+        styling.right = `${bounds.right - rect.right}px`;
+      } else {
+        styling.bottom = `${bounds.bottom - rect.bottom}px`;
+        styling.top = `${rect.top}px`;
+      }
+      break;
+    case "left":
+      styling.left = `${rect.left}px`;
+      break;
+    case "right":
+      styling.right = `${bounds.right - rect.right}px`;
+      break;
+    case "top":
+      styling.top = `${rect.top}px`;
+      break;
+  }
+  return styling;
+}
+
+function removeEventListeners(/** @type {PopupSource} */ element) {
+  /** @type {any} */ const cast = element;
+  if (cast[resizeListenerKey]) {
+    const viewport = window.visualViewport || window;
+    viewport.removeEventListener("resize", cast[resizeListenerKey]);
+    cast[resizeListenerKey] = null;
+  }
 }
 
 /**
@@ -456,6 +460,24 @@ function renderParts(root, state, changed) {
       transmute(source, sourcePartType);
     }
   }
+}
+
+// Determine the bounding rectangle of the viewport. We prefer the
+// VisualViewport API where that's available, as that handles a pinch-zoomed
+// viewport on mobile. If not availble (as of October 2020, Firefox), we fall
+// back to using the window as the viewport.
+function viewportBounds() {
+  // @ts-ignore
+  const viewport = window.visualViewport;
+  const boundsRect = viewport
+    ? new DOMRect(
+        viewport.offsetLeft,
+        viewport.offsetTop,
+        viewport.width,
+        viewport.height
+      )
+    : new DOMRect(0, 0, window.innerWidth, window.innerHeight);
+  return boundsRect;
 }
 
 /**
@@ -490,15 +512,6 @@ function waitThenRenderOpened(element) {
       addEventListeners(element);
     }
   });
-}
-
-function removeEventListeners(/** @type {PopupSource} */ element) {
-  /** @type {any} */ const cast = element;
-  if (cast[resizeListenerKey]) {
-    const viewport = window.visualViewport || window;
-    viewport.removeEventListener("resize", cast[resizeListenerKey]);
-    cast[resizeListenerKey] = null;
-  }
 }
 
 export default PopupSource;
