@@ -34,7 +34,7 @@
   "devDependencies": {
     "@types/chai": "4.2.12",
     "@types/mocha": "8.0.1",
-    "@types/sinon": "9.0.4",
+    "@types/sinon": "9.0.8",
     "chai": "4.2.0",
     "eslint": "7.6.0",
     "express": "4.17.1",
