@@ -43,7 +43,7 @@
     "node-fetch": "2.6.0",
     "puppeteer": "5.2.1",
     "sauce-test-runner": "componentkitchen/sauce-test-runner",
-    "sinon": "9.0.2",
+    "sinon": "9.2.1",
     "typescript": "3.9.7"
   },
   "scripts": {
