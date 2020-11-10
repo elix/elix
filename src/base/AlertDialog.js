@@ -63,6 +63,7 @@ class AlertDialog extends Dialog {
     this[setState]({ choices });
   }
 
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       choiceButtonPartType: "button",

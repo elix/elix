@@ -14,6 +14,7 @@ import ReactiveElement from "../../src/core/ReactiveElement.js";
 const Base = TouchSwipeMixin(TrackpadSwipeMixin(ReactiveElement));
 
 class SwipeDemo extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       swipeAxis: "horizontal",

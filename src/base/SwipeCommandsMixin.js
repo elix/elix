@@ -29,6 +29,7 @@ import {
 export default function SwipeCommandsMixin(Base) {
   // The class prototype added by the mixin.
   return class SwipeCommands extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         swipeLeftCommitted: false,

@@ -56,6 +56,7 @@ const Base = CursorAPIMixin(
  * @mixes TapCursorMixin
  */
 class CenteredStrip extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       currentItemRequired: true,

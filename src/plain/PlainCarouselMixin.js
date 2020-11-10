@@ -12,6 +12,7 @@ import PlainCenteredStripOpacity from "./PlainCenteredStripOpacity.js";
  */
 export default function PlainCarouselMixin(Base) {
   return class PlainCarousel extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         proxyListPartType: PlainCenteredStripOpacity,

@@ -11,6 +11,7 @@ import PlainFilterListBox from "./PlainFilterListBox.js";
  * @part {PlainFilterListBox} list
  */
 class PlainFilterComboBox extends PlainComboBoxMixin(FilterComboBox) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       inputPartType: PlainAutoCompleteInput,

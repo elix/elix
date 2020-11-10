@@ -24,6 +24,7 @@ import UpDownToggle from "./UpDownToggle.js";
 export default function PopupToggleMixin(Base) {
   // The class prototype added by the mixin.
   class PopupToggle extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         popupTogglePartType: UpDownToggle,

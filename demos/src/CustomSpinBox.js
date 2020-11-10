@@ -9,6 +9,7 @@ import {
 } from "../../src/core/internal.js";
 
 export default class CustomSpinBox extends NumberSpinBox {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       buttonPartType: RepeatButton,

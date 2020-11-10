@@ -12,6 +12,7 @@ import PlainPopup from "./PlainPopup.js";
  * @part {PlainBorderButton} source
  */
 class PlainPopupButton extends PopupToggleMixin(PopupButton) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       popupPartType: PlainPopup,

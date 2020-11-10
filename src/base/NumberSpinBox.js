@@ -19,6 +19,7 @@ class NumberSpinBox extends SpinBox {
     }
   }
 
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       max: null,

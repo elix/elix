@@ -22,6 +22,7 @@ const Base = DisabledMixin(ReactiveElement);
  * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
  */
 class UpDownToggle extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       direction: "down",

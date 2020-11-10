@@ -90,6 +90,7 @@ class CalendarDays extends Base {
     return this[state].days;
   }
 
+  // @ts-ignore
   get [defaultState]() {
     const today = calendar.today();
     return Object.assign(super[defaultState], {

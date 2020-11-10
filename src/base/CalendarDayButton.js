@@ -23,6 +23,7 @@ const Base = CalendarElementMixin(SelectableButton);
  * @part {CalendarDay} day - the day shown in the button
  */
 class CalendarDayButton extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       date: calendar.today(),

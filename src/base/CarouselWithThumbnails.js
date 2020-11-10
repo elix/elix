@@ -8,6 +8,7 @@ import { defaultState, render, state } from "./internal.js";
  * @part {img} proxy
  */
 class CarouselWithThumbnails extends Carousel {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       proxyListOverlap: false,

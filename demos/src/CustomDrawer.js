@@ -9,6 +9,7 @@ import {
 import { templateFrom } from "../../src/core/htmlLiterals.js";
 
 export default class CustomDrawer extends DrawerWithGrip {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       fromEdge: "right",

@@ -13,7 +13,7 @@ import {
   setState,
   shadowRoot,
   state,
-  template
+  template,
 } from "./internal.js";
 
 const extendsKey = Symbol("extends");
@@ -253,6 +253,7 @@ class WrappedStandardElement extends Base {
   //
   // click() {}
 
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       innerAttributes: {},

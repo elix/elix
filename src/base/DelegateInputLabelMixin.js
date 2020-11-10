@@ -53,6 +53,7 @@ export default function DelegateInputLabelMixin(Base) {
       }
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         ariaLabel: null,
@@ -103,6 +104,7 @@ export default function DelegateInputLabelMixin(Base) {
         // testing tools can confirm that the input delegate does have a label.
         // Because this refresh can entail multiple searches of the tree, we
         // defer the refresh to idle time.
+        // @ts-ignore
         const idleCallback = window.requestIdleCallback || setTimeout;
         idleCallback(() => {
           const inputLabel = refreshInputLabel(this, this[state]);

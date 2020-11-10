@@ -7,6 +7,7 @@ import ItemsAPIMixin from "../../src/base/ItemsAPIMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 
 class ItemsAPITest extends ItemsAPIMixin(ReactiveMixin(HTMLElement)) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       items: null,

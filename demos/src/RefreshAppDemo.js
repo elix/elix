@@ -26,6 +26,7 @@ const texts = [
 ];
 
 class RefreshAppDemo extends ReactiveElement {
+  // @ts-ignore
   get [defaultState]() {
     const paragraphs = createParagraphs(texts);
     return Object.assign(super[defaultState], {

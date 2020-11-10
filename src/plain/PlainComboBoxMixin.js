@@ -3,7 +3,7 @@ import {
   ids,
   render,
   state,
-  template
+  template,
 } from "../base/internal.js";
 import { fragmentFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
@@ -21,6 +21,7 @@ import PlainPopup from "./PlainPopup.js";
  */
 export default function PlainComboBoxMixin(Base) {
   return class PlainComboBox extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         inputPartType: PlainInput,
@@ -64,14 +65,13 @@ export default function PlainComboBoxMixin(Base) {
         const direction = popupLayout ? popupLayout.direction : null;
         const w = `10px`; // Width of box shadow
         const popupBelow = direction === "column" || direction === "below";
-        const popupAbove = direction === "column-reverse" || direction === "above";
-        const clipPath =
-          popupBelow
-            ? `polygon(0px 0px, 100% 0px, 100% -${w}, calc(100% + ${w}) -${w}, calc(100% + ${w}) calc(100% + ${w}), -${w} calc(100% + ${w}), -${w} -${w}, 0px -${w})`
-            : 
-            popupAbove ? 
-            `polygon(-${w} -${w}, calc(100% + ${w}) -${w}, calc(100% + ${w}) calc(100% + ${w}), 100% calc(100% + ${w}), 100% 100%, 0px 100%, 0px calc(100% + ${w}), -${w} calc(100% + ${w}))`
-            : "";
+        const popupAbove =
+          direction === "column-reverse" || direction === "above";
+        const clipPath = popupBelow
+          ? `polygon(0px 0px, 100% 0px, 100% -${w}, calc(100% + ${w}) -${w}, calc(100% + ${w}) calc(100% + ${w}), -${w} calc(100% + ${w}), -${w} -${w}, 0px -${w})`
+          : popupAbove
+          ? `polygon(-${w} -${w}, calc(100% + ${w}) -${w}, calc(100% + ${w}) calc(100% + ${w}), 100% calc(100% + ${w}), 100% 100%, 0px 100%, 0px calc(100% + ${w}), -${w} calc(100% + ${w}))`
+          : "";
         this[ids].popup.style.clipPath = opened ? clipPath : "";
       }
     }

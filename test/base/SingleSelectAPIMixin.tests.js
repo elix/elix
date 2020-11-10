@@ -13,6 +13,7 @@ import { assert } from "../testHelpers.js";
 class SingleSelectAPITest extends CursorSelectMixin(
   ItemsCursorMixin(SingleSelectAPIMixin(ReactiveMixin(HTMLElement)))
 ) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       items: ["Zero", "One", "Two"],

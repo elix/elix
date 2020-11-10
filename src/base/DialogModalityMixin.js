@@ -32,6 +32,7 @@ const previousDocumentMarginRightKey = Symbol("previousDocumentMarginRight");
  */
 export default function DialogModalityMixin(Base) {
   return class DialogModality extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         role: "dialog",

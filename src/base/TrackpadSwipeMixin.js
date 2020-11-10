@@ -56,6 +56,7 @@ export default function TrackpadSwipeMixin(Base) {
       resetWheelTracking(this);
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         swipeAxis: "horizontal",

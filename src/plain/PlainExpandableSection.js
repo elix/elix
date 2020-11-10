@@ -12,6 +12,7 @@ import PlainExpandCollapseToggle from "./PlainExpandCollapseToggle.js";
  * @part {PlainExpandCollapseToggle} toggle
  */
 class PlainExpandableSection extends ExpandableSection {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       headerPartType: PlainButton,

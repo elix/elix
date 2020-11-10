@@ -113,6 +113,7 @@ class CalendarMonth extends Base {
     this[setState]({ daysOfWeekFormat });
   }
 
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       date: calendar.today(),

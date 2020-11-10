@@ -13,6 +13,7 @@ import PlainCalendarMonthYearHeader from "./PlainCalendarMonthYearHeader.js";
  * @part {PlainCalendarMonthYearHeader} month-year-header
  */
 class PlainCalendarMonth extends CalendarMonth {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       dayNamesHeaderPartType: PlainCalendarDayNamesHeader,

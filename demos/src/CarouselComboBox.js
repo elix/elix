@@ -10,6 +10,7 @@ import AutoCompleteComboBox from "../../src/plain/PlainAutoCompleteComboBox.js";
 import Carousel from "../../src/plain/PlainCarousel.js";
 
 class CarouselComboBox extends AutoCompleteComboBox {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       listPartType: Carousel,

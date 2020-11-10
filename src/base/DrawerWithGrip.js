@@ -29,6 +29,7 @@ import {
  * @part {Button} grip - the handle the user can tap, click, or swipe to open or close the drawer
  */
 class DrawerWithGrip extends Drawer {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       gripPartType: Button,

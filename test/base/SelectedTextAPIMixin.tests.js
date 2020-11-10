@@ -8,6 +8,7 @@ import { assert } from "../testHelpers.js";
 class SelectedTextAPITest extends ReactiveMixin(
   SelectedTextAPIMixin(ItemsCursorMixin(HTMLElement))
 ) {
+  // @ts-ignore
   get [defaultState]() {
     const items = ["Zero", "One", "Two"].map((string) => {
       const item = document.createElement("div");

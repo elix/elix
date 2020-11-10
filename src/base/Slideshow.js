@@ -23,6 +23,7 @@ const Base = TimerCursorMixin(CrossfadeStage);
  * @mixes TimerCursorMixin
  */
 class Slideshow extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       cursorOperationsWrap: true,

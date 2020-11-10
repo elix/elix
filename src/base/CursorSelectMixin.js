@@ -13,6 +13,7 @@ import { defaultState, stateEffects } from "./internal.js";
 export default function CursorSelectMixin(Base) {
   // The class prototype added by the mixin.
   return class CursorSelect extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         selectedIndex: -1,

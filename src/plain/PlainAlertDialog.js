@@ -12,6 +12,7 @@ import PlainModalOverlayMixin from "./PlainModalOverlayMixin.js";
  * @part {PlainBorderButton} choice-button
  */
 class PlainAlertDialog extends PlainModalOverlayMixin(AlertDialog) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       choiceButtonPartType: PlainBorderButton,

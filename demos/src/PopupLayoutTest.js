@@ -14,6 +14,7 @@ import ReactiveElement from "../../src/core/ReactiveElement.js";
 const Base = ReactiveElement;
 
 export default class PopupLayoutTest extends LanguageDirectionMixin(Base) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       popupAlign: "start",

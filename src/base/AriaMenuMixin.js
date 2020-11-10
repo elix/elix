@@ -17,6 +17,7 @@ import {
 export default function AriaMenuMixin(Base) {
   // The class prototype added by the mixin.
   class AriaMenu extends Base {
+    // @ts-ignore
     get [defaultState]() {
       const base = super[defaultState];
       return Object.assign(base, {

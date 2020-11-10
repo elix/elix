@@ -83,6 +83,7 @@ const Base = AriaMenuMixin(
  * @mixes TapCursorMixin
  */
 class Menu extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       availableItemFlags: null,
@@ -218,6 +219,7 @@ class Menu extends Base {
     }
   }
 
+  // @ts-ignore
   get [scrollTarget]() {
     return this[ids].content;
   }

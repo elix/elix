@@ -31,6 +31,7 @@ export default function PopupDragSelectMixin(Base) {
       listenIfOpenAndConnected(this);
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         dragSelect: true,

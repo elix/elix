@@ -74,6 +74,7 @@ class DropdownList extends Base {
     updateChildNodes(target, clones);
   }
 
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       ariaHasPopup: "listbox",
@@ -84,6 +85,7 @@ class DropdownList extends Base {
     });
   }
 
+  // @ts-ignore
   get items() {
     /** @type {any} */
     const list = this[ids] && this[ids].list;

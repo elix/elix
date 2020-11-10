@@ -32,6 +32,7 @@ export default function PopupListMixin(Base) {
       listenIfOpenAndConnected(this);
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         currentIndex: -1,

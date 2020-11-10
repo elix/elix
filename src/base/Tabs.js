@@ -17,6 +17,7 @@ import TabStrip from "./TabStrip.js";
  * @part {TabStrip} proxy-list
  */
 class Tabs extends Explorer {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       itemRole: "tabpanel",

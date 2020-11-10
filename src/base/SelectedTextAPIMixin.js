@@ -30,6 +30,7 @@ import {
 export default function SelectedTextAPIMixin(Base) {
   // The class prototype added by the mixin.
   class SelectedTextAPI extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         selectedText: "",

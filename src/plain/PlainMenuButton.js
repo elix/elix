@@ -18,6 +18,7 @@ import PlainPopup from "./PlainPopup.js";
  * @mixes PopupToggleMixin
  */
 class PlainMenuButton extends PopupToggleMixin(MenuButton) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       menuPartType: PlainMenu,

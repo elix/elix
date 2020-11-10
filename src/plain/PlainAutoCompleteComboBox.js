@@ -14,6 +14,7 @@ import PlainListBox from "./PlainListBox.js";
 class PlainAutoCompleteComboBox extends PlainComboBoxMixin(
   AutoCompleteComboBox
 ) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       inputPartType: PlainAutoCompleteInput,

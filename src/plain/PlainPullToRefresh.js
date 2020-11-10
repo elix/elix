@@ -13,6 +13,7 @@ import PlainProgressSpinner from "./PlainProgressSpinner.js";
  * @part {PlainProgressSpinner} refreshing-indicator
  */
 class PlainPullToRefresh extends PullToRefresh {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       refreshingIndicatorPartType: PlainProgressSpinner,

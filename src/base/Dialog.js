@@ -22,6 +22,7 @@ const Base = DialogModalityMixin(FocusCaptureMixin(KeyboardMixin(Overlay)));
  * @part {ModalBackdrop} backdrop
  */
 class Dialog extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       backdropPartType: ModalBackdrop,

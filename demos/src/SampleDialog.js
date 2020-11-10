@@ -4,6 +4,7 @@ import CustomBackdrop from "./CustomBackdrop.js";
 import CustomOverlayFrame from "./CustomOverlayFrame.js";
 
 class SampleDialog extends Dialog {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       backdropPartType: CustomBackdrop,

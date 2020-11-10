@@ -12,6 +12,7 @@ import PlainTabStrip from "./PlainTabStrip.js";
  * @part {PlainTabStrip} proxy-list
  */
 class PlainTabs extends Tabs {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       itemRole: "tabpanel",

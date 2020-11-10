@@ -30,6 +30,7 @@ import {
 export default function TrackTextSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class TrackTextSelection extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         selectionEnd: null,

@@ -16,6 +16,7 @@ import {
 export default function ItemsMultiSelectMixin(Base) {
   // The class prototype added by the mixin.
   class ItemsMultiSelect extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         selectedItemFlags: null,

@@ -31,6 +31,7 @@ const Base = AriaRoleMixin(OpenCloseMixin(ReactiveElement));
  * @part {ExpandablePanel} panel - contains the component's expandable/collapsible content
  */
 class ExpandableSection extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       headerPartType: Button,

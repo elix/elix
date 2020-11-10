@@ -33,6 +33,7 @@ const nativeDelegatesFocus = focusTestShadowRoot.delegatesFocus;
 export default function ComposedFocusMixin(Base) {
   // The class prototype added by the mixin.
   class ComposedFocus extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         composeFocus: !nativeDelegatesFocus,

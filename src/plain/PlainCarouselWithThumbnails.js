@@ -19,6 +19,7 @@ import PlainCarouselMixin from "./PlainCarouselMixin.js";
 class PlainCarouselWithThumbnails extends DarkModeMixin(
   PlainArrowDirectionMixin(PlainCarouselMixin(CarouselWithThumbnails))
 ) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       arrowButtonPartType: PlainArrowDirectionButton,

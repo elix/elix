@@ -10,6 +10,7 @@ import { defaultState, setState, state, stateEffects } from "./internal.js";
 export default function MultiSelectValueAPIMixin(Base) {
   // The class prototype added by the mixin.
   class MultiSelectValueAPI extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         value: "",

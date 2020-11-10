@@ -300,6 +300,7 @@ const locales = {
 };
 
 class LocaleSelector extends ReactiveElement {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       value: navigator.language,

@@ -46,6 +46,7 @@ export default function PlayControlsMixin(Base) {
       this[setState]({ controlButtonPartType });
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         controlButtonPartType: Button,

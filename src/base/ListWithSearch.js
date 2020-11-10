@@ -70,6 +70,7 @@ const Base = ComposedFocusMixin(
  * @part {FilterListBox} list - the searchable list of items
  */
 class ListWithSearch extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       filter: "",

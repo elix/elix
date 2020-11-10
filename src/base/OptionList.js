@@ -102,6 +102,7 @@ const Base = AriaRoleMixin(
  * @mixes TapCursorMixin
  */
 class OptionList extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       highlightCurrentItem: true,
@@ -151,6 +152,7 @@ class OptionList extends Base {
     }
   }
 
+  // @ts-ignore
   get [scrollTarget]() {
     return this[ids].container;
   }

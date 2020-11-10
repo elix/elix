@@ -39,6 +39,7 @@ const Base = DisabledMixin(
  * @part {button} source - the element used as the reference point for positioning the popup, generally the element that invokes the popup
  */
 class PopupSource extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       ariaHasPopup: "true",

@@ -16,6 +16,7 @@ import ReactiveElement from "../../src/core/ReactiveElement.js";
 const Base = SlotContentMixin(ReactiveElement);
 
 class RenderState extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       fixture: null,
@@ -23,6 +24,7 @@ class RenderState extends Base {
     });
   }
 
+  // @ts-ignore
   get [contentSlot]() {
     const slot = this[ids].fixtureSlot;
     return slot instanceof HTMLSlotElement ? slot : null;

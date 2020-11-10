@@ -48,6 +48,7 @@ export default function ResizeMixin(Base) {
       }
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         clientHeight: this.clientHeight,

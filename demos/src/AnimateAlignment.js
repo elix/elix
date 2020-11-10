@@ -29,12 +29,14 @@ export default class AnimateAlignment extends Base {
     }
   }
 
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       align: "left",
     });
   }
 
+  // @ts-ignore
   get [effectEndTarget]() {
     return this[ids].container;
   }

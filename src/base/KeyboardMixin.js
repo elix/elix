@@ -93,6 +93,7 @@ export default function KeyboardMixin(Base) {
       }
     }
 
+    // @ts-ignore
     get [defaultState]() {
       // If we're using DelegateFocusMixin, we don't need or want to set a
       // tabindex on the host; we'll rely on the inner shadow elements to take

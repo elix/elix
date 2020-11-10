@@ -12,6 +12,7 @@ import { assert } from "../testHelpers.js";
 const formElementsSupported = "ElementInternals" in window;
 
 class FormElementTest extends FormElementMixin(ReactiveElement) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       value: null,

@@ -40,6 +40,7 @@ const Base = DelegateFocusMixin(
  * @part {Button} menu-button - toggles display of the menu
  */
 class HamburgerMenuButton extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       fromEdge: "start",

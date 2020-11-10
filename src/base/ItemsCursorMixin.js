@@ -83,6 +83,7 @@ export default function ItemsCursorMixin(Base) {
       return -1; // No item found
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         currentIndex: -1,

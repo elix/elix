@@ -8,6 +8,7 @@ import SlidingPages from "../../src/plain/PlainSlidingPages.js";
 const Base = ArrowDirectionMixin(SlidingPages);
 
 class SlidingPagesWithArrows extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       arrowButtonPartType: PlainArrowDirectionButton,

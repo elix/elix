@@ -12,6 +12,7 @@ import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import { assert } from "../testHelpers.js";
 
 class ItemsCursorTest extends ItemsCursorMixin(ReactiveMixin(HTMLElement)) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       items: ["Zero", "One", "Two"],

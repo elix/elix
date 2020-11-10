@@ -7,6 +7,7 @@ import { assert } from "../testHelpers.js";
 class MultiSelectionTest extends ItemsCursorMixin(
   ItemsMultiSelectMixin(ReactiveMixin(HTMLElement))
 ) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       items: ["Zero", "One", "Two"],

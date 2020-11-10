@@ -85,6 +85,7 @@ export default function OpenCloseMixin(Base) {
       return this[state].closeResult;
     }
 
+    // @ts-ignore
     get [defaultState]() {
       const defaults = {
         closeResult: null,

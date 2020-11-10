@@ -25,6 +25,7 @@ export default class MessageSummary extends ReactiveElement {
     this[setState]({ date });
   }
 
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       date: null,

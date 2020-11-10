@@ -55,6 +55,7 @@ const Base = DelegateFocusMixin(
  * @part {div} source
  */
 class ComboBox extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       ariaHasPopup: null,

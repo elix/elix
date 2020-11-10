@@ -27,6 +27,7 @@ export default function SelectableMixin(Base) {
       }
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         selected: false,

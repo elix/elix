@@ -13,6 +13,7 @@ import PlainOverlayFrame from "./PlainOverlayFrame.js";
  */
 export default function PlainModalOverlayMixin(Base) {
   return class PlainModalOverlay extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         backdropPartType: PlainModalBackdrop,

@@ -19,6 +19,7 @@ const Base = TimerCursorMixin(Carousel);
  * @part {CrossfadeStage} stage
  */
 class CarouselSlideshow extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       cursorOperationsWrap: true,

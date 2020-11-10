@@ -17,6 +17,7 @@ customElements.define("template-test", TemplateTest);
 
 // A component with a template with a single part.
 class DynamicSingle extends ReactiveElement {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       dynamicPartType: "button",

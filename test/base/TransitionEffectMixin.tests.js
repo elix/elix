@@ -16,6 +16,7 @@ const Base = TransitionEffectMixin(ReactiveElement);
 // is hidden. We test both effects because we can encounter different conditions
 // when showing or hiding an element during an effect.
 class TransitionEffectTest extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       effect: "close",

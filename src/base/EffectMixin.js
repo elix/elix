@@ -13,6 +13,7 @@ import { defaultState, firstRender, rendered, setState } from "./internal.js";
 export default function EffectMixin(Base) {
   // The class prototype added by the mixin.
   class Transition extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         enableEffects: false,

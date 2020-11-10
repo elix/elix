@@ -11,6 +11,7 @@ import { assert } from "../testHelpers.js";
 class MultiSelectAPITest extends ItemsMultiSelectMixin(
   MultiSelectAPIMixin(ReactiveMixin(HTMLElement))
 ) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       items: ["Zero", "One", "Two"],

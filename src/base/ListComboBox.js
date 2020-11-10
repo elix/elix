@@ -46,6 +46,7 @@ const Base = CursorAPIMixin(
  * @part {ListBox} list - the list of choices
  */
 class ListComboBox extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       currentIndex: -1,

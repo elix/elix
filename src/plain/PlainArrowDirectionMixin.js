@@ -21,6 +21,7 @@ import PlainArrowDirectionButton from "./PlainArrowDirectionButton.js";
  */
 export default function PlainArrowDirectionMixin(Base) {
   return class PlainArrowDirection extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         arrowButtonPartType: PlainArrowDirectionButton,

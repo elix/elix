@@ -21,6 +21,7 @@ const Base = CalendarElementMixin(Input);
  * @mixes CalendarElementMixin
  */
 class DateInput extends Base {
+  // @ts-ignore
   get date() {
     return super.date;
   }
@@ -38,6 +39,7 @@ class DateInput extends Base {
     this[setState]({ dateTimeFormatOptions });
   }
 
+  // @ts-ignore
   get [defaultState]() {
     const dateTimeFormatOptions = {
       day: "numeric",
@@ -65,6 +67,7 @@ class DateInput extends Base {
     return dateTimeFormat.format(date);
   }
 
+  // @ts-ignore
   get locale() {
     return super.locale;
   }
@@ -197,6 +200,7 @@ class DateInput extends Base {
     this[setState]({ timeBias });
   }
 
+  // @ts-ignore
   get value() {
     return super.value;
   }

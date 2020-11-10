@@ -19,6 +19,7 @@ import PlainCalendarMonthYearHeader from "./PlainCalendarMonthYearHeader.js";
 class PlainCalendarMonthNavigator extends DarkModeMixin(
   PlainArrowDirectionMixin(CalendarMonthNavigator)
 ) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       dayNamesHeaderPartType: PlainCalendarDayNamesHeader,

@@ -13,6 +13,7 @@ const Base = ItemsTextMixin(ListComboBox);
  * @part {AutoCompleteInput} input
  */
 class AutoCompleteComboBox extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       inputPartType: AutoCompleteInput,

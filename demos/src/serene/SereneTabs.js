@@ -5,6 +5,7 @@ import { templateFrom } from "../../../src/core/htmlLiterals.js";
 import SereneTabButton from "./SereneTabButton.js";
 
 class SereneTabs extends Tabs {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       generic: false,

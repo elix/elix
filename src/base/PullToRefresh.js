@@ -38,6 +38,7 @@ const Base = EffectMixin(TouchSwipeMixin(ReactiveElement));
  * @part {div} refreshing-indicator - the element shown during a refresh of the content
  */
 class PullToRefresh extends Base {
+  // @ts-ignore
   get [defaultState]() {
     // Suppress transition effects on page load.
     return Object.assign(super[defaultState], {

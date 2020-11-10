@@ -29,6 +29,7 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
 customElements.define("reactive-test", ReactiveTest);
 
 class ReactiveWithDefaultsTest extends ReactiveTest {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       message: "aardvark",
@@ -39,6 +40,7 @@ customElements.define("reactive-with-defaults-test", ReactiveWithDefaultsTest);
 
 // Simple class, copies state member `a` to `b`.
 class ReactiveStateChangeTest extends ReactiveMixin(HTMLElement) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       a: 0,
@@ -56,6 +58,7 @@ customElements.define("reactive-state-change-test", ReactiveStateChangeTest);
 
 // State machine that updates a counter up to 10.
 class ReactiveStateLoopTest extends ReactiveMixin(HTMLElement) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       value: 0,

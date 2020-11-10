@@ -27,6 +27,7 @@ const Base = PopupListMixin(PopupButton);
  * @part {Menu} menu - the menu shown in the popup
  */
 class MenuButton extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       menuPartType: Menu,

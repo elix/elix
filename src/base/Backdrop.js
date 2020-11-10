@@ -16,6 +16,7 @@ const Base = AriaRoleMixin(ReactiveElement);
  * @mixes AriaRoleMixin
  */
 class Backdrop extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       role: "none",

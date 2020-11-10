@@ -85,7 +85,7 @@ class ElementWithClosedRoot extends ShadowTemplateMixin(HTMLElement) {
     super();
     this[render]();
   }
-  /** @type {'closed'|'open'} */
+  // @ts-ignore
   get [shadowRootMode]() {
     return "closed";
   }

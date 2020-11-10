@@ -24,6 +24,7 @@ const Base = ComposedFocusMixin(
  * @part button - the inner standard HTML button
  */
 class Button extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       role: "button",

@@ -26,6 +26,7 @@ const Base = EffectMixin(
  * items for Mark Read/Unread (swipe right) and Delete (swipe left).
  */
 export default class MessageListBox extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       // The Delete command removes an item, and we also want a swipe to Delete to

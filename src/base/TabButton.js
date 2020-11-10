@@ -22,6 +22,7 @@ const Base = FocusVisibleMixin(
  * @mixes SlotContentMixin
  */
 class TabButton extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       position: "top",

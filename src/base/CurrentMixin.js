@@ -38,6 +38,7 @@ export default function CurrentMixin(Base) {
       }
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         current: false,

@@ -52,6 +52,7 @@ const Base = CalendarElementMixin(SelectableMixin(ReactiveElement));
  * @state weekend
  */
 class CalendarDay extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       date: calendar.today(),

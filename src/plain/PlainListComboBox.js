@@ -11,6 +11,7 @@ import PlainPopup from "./PlainPopup.js";
  * @part {PlainOpenCloseToggle} popup-toggle
  */
 class PlainListComboBox extends ListComboBox {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       popupPartType: PlainPopup,

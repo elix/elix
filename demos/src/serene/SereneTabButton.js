@@ -3,6 +3,7 @@ import TabButton from "../../../src/base/TabButton.js";
 import { templateFrom } from "../../../src/core/htmlLiterals.js";
 
 class SereneTabButton extends TabButton {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       generic: false,

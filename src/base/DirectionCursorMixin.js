@@ -32,6 +32,7 @@ import {
 export default function DirectionCursorMixin(Base) {
   // The class prototype added by the mixin.
   class DirectionCursor extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         canGoDown: null,

@@ -29,6 +29,7 @@ import { defaultState, stateEffects } from "./internal.js";
  */
 export default function ContentItemsMixin(Base) {
   return class ContentItems extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         items: null,

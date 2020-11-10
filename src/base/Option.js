@@ -23,6 +23,7 @@ import SelectableMixin from "./SelectableMixin.js";
 class Option extends AriaRoleMixin(
   CurrentMixin(DisabledMixin(SelectableMixin(ReactiveElement)))
 ) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       role: "option",

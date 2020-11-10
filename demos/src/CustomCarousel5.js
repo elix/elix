@@ -9,6 +9,7 @@ const Base = PageNumbersMixin(PlainCarousel);
 
 // Customize everything.
 class CustomCarousel extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       arrowButtonPartType: CustomArrowButton,

@@ -13,6 +13,7 @@ import PlainComboBoxMixin from "./PlainComboBoxMixin.js";
  * @part {PlainButton} today-button
  */
 class PlainDateComboBox extends PlainComboBoxMixin(DateComboBox) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       calendarPartType: PlainCalendarMonthNavigator,

@@ -14,6 +14,7 @@ const Base = ItemsTextMixin(
 );
 
 class KeyboardPagedCursorTest extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       currentIndex: -1,

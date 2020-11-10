@@ -23,6 +23,7 @@ const opacityMaximum = 1.0;
  * @inherits CenteredStrip
  */
 class PlainCenteredStripOpacity extends CenteredStrip {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       transitionDuration: 250,

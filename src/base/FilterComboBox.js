@@ -21,6 +21,7 @@ const Base = SlotContentMixin(AutoCompleteComboBox);
  * @part {FilterListBox} list
  */
 class FilterComboBox extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       filter: "",

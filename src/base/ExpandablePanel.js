@@ -36,11 +36,14 @@ const Base = OpenCloseMixin(
  * @mixes TransitionEffectMixin
  */
 class ExpandablePanel extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       transitionDuration: 250,
     });
   }
+
+  // @ts-ignore
   get [effectEndTarget]() {
     return this[ids].outerContainer;
   }

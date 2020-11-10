@@ -17,6 +17,7 @@ import PlainPageDot from "./PlainPageDot.js";
 class PlainCarousel extends DarkModeMixin(
   PlainArrowDirectionMixin(PlainCarouselMixin(Carousel))
 ) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       proxyPartType: PlainPageDot,

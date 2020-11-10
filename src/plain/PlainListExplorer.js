@@ -9,6 +9,7 @@ import PlainListBox from "./PlainListBox.js";
  * @part {PlainListBox} proxy-list
  */
 class PlainListExplorer extends ListExplorer {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       proxyListPartType: PlainListBox,

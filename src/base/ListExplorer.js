@@ -8,6 +8,7 @@ import { defaultState, getItemText, render, state } from "./internal.js";
  * @inherits Explorer
  */
 class ListExplorer extends Explorer {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       proxyListPosition: "start",

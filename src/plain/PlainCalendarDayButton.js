@@ -10,6 +10,7 @@ import PlainCalendarDay from "./PlainCalendarDay.js";
  * @part {PlainCalendarDay} day
  */
 class PlainCalendarDayButton extends CalendarDayButton {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       dayPartType: PlainCalendarDay,

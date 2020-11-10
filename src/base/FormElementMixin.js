@@ -32,6 +32,7 @@ export default function FormElementMixin(Base) {
       return this[nativeInternals].checkValidity();
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         name: "",

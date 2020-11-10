@@ -11,6 +11,7 @@ import PlainOverlayFrame from "./PlainOverlayFrame.js";
  * @part {PlainOverlayFrame} frame
  */
 class PlainPopup extends Popup {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       backdropPartType: PlainBackdrop,

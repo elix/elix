@@ -16,6 +16,7 @@ import {
 export default function DisabledMixin(Base) {
   // The class prototype added by the mixin.
   class Disabled extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         disabled: false,

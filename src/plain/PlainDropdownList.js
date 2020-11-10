@@ -17,6 +17,7 @@ import PlainPopup from "./PlainPopup.js";
  * @mixes PopupToggleMixin
  */
 class PlainDropdownList extends PopupToggleMixin(DropdownList) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       listPartType: PlainOptionList,

@@ -17,6 +17,7 @@ import {
  * @inherits ReactiveElement
  */
 class ProgressSpinner extends ReactiveElement {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       count: -1,

@@ -105,6 +105,7 @@ const Base = AriaListMixin(
  * @mixes TapCursorMixin
  */
 class ListBox extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       orientation: "vertical",
@@ -149,6 +150,7 @@ class ListBox extends Base {
     }
   }
 
+  // @ts-ignore
   get [scrollTarget]() {
     return this[ids].container;
   }

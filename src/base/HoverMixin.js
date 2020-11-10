@@ -37,6 +37,7 @@ export default function HoverMixin(Base) {
       });
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         hover: false,

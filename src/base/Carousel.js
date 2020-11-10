@@ -56,6 +56,7 @@ const Base = AriaListMixin(
  * @part {SlidingStage} stage
  */
 class Carousel extends Base {
+  // @ts-ignore
   get [defaultState]() {
     // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
     // As of Mar 14 2018, Firefox does not yet support pointer queries, in which
@@ -129,6 +130,7 @@ class Carousel extends Base {
     }
   }
 
+  // @ts-ignore
   get [swipeTarget]() {
     const base = super[swipeTarget];
     const stage = this[ids].stage;

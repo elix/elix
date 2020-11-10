@@ -49,6 +49,7 @@ export default function SlotContentMixin(Base) {
       return slot;
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         content: null,

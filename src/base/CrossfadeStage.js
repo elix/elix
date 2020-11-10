@@ -49,6 +49,7 @@ const Base = CursorAPIMixin(
  * @mixes TransitionEffectMixin
  */
 class CrossfadeStage extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       currentItemRequired: true,

@@ -179,6 +179,7 @@ export default function TouchSwipeMixin(Base) {
       }
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         swipeAxis: "horizontal",

@@ -8,6 +8,7 @@ import PlainOverlayFrame from "./PlainOverlayFrame.js";
  * @part {PlainOverlayFrame} frame
  */
 class PlainToast extends Toast {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       framePartType: PlainOverlayFrame,

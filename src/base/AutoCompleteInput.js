@@ -25,6 +25,7 @@ import ListBox from "./ListBox.js";
  * @inherits Input
  */
 class AutoCompleteInput extends Input {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       autoCompleteSelect: false,
@@ -241,6 +242,7 @@ class AutoCompleteInput extends Input {
   // Setting the value from the outside is treated as if the user had typed the
   // value. This way the component's value can be prepopulated, and the user can
   // start typing at the end of it to get AutoComplete.
+  // @ts-ignore
   get value() {
     return super.value;
   }

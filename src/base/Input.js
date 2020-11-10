@@ -37,6 +37,7 @@ const Base = DelegateInputLabelMixin(
  * @part input - the inner standard HTML input
  */
 class Input extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       valueCopy: "",

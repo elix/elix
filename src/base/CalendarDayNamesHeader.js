@@ -31,6 +31,7 @@ import {
  * @part day-name - any of the names for the days of the week
  */
 class CalendarDayNamesHeader extends ReactiveElement {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       format: "short",

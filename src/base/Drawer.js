@@ -60,6 +60,7 @@ const Base = DialogModalityMixin(
  * @mixes TransitionEffectMixin
  */
 class Drawer extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       backdropPartType: ModalBackdrop,
@@ -75,6 +76,7 @@ class Drawer extends Base {
     });
   }
 
+  // @ts-ignore
   get [effectEndTarget]() {
     // As long as both the frame and the overlay complete their transition
     // at the same time, we can use either one to signal the completion of
@@ -412,6 +414,7 @@ class Drawer extends Base {
     return this[ids].frame;
   }
 
+  // @ts-ignore
   get [swipeTarget]() {
     return /** @type {any} */ (this[ids].frame);
   }

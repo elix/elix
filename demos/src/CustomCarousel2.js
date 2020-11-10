@@ -6,6 +6,7 @@ import CustomPageDot from "./CustomPageDot.js";
 // Shows how a carousel subclass can define custom part types for the arrows and
 // dots.
 class CustomCarousel extends PlainCarousel {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       arrowButtonPartType: CustomArrowButton,

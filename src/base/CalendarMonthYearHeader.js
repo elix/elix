@@ -33,6 +33,7 @@ const Base = CalendarElementMixin(ReactiveElement);
  * @mixes CalendarElementMixin
  */
 class CalendarMonthYearHeader extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       date: calendar.today(),

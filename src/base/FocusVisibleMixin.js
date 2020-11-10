@@ -83,6 +83,7 @@ export default function FocusVisibleMixin(Base) {
       });
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         focusVisible: false,

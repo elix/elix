@@ -64,6 +64,7 @@ class DateComboBox extends Base {
     this[setState]({ dateTimeFormatOptions });
   }
 
+  // @ts-ignore
   get date() {
     return super.date;
   }
@@ -104,6 +105,7 @@ class DateComboBox extends Base {
     this[setState]({ daysOfWeekFormat });
   }
 
+  // @ts-ignore
   get [defaultState]() {
     const dateTimeFormatOptions = {
       day: "numeric",
@@ -243,6 +245,7 @@ class DateComboBox extends Base {
     return handled || (super[keydown] && super[keydown](event));
   }
 
+  // @ts-ignore
   get locale() {
     return super.locale;
   }
@@ -514,6 +517,7 @@ class DateComboBox extends Base {
     this[setState]({ todayButtonPartType });
   }
 
+  // @ts-ignore
   get value() {
     return super.value;
   }

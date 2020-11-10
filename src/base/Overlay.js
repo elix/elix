@@ -11,7 +11,7 @@ import {
   setState,
   shadowRoot,
   state,
-  template
+  template,
 } from "./internal.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import OverlayFrame from "./OverlayFrame.js";
@@ -73,6 +73,7 @@ class Overlay extends Base {
     this[setState]({ backdropPartType });
   }
 
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       backdropPartType: Backdrop,

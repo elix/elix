@@ -39,6 +39,7 @@ export default function OverlayMixin(Base) {
       this[setState]({ autoFocus });
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         autoFocus: true,

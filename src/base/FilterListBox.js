@@ -17,6 +17,7 @@ import ListBox from "./ListBox.js";
  * @inherits ListBox
  */
 class FilterListBox extends ListBox {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       availableItemFlags: null,

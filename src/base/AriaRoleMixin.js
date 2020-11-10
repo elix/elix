@@ -25,6 +25,7 @@ import {
 export default function AriaRoleMixin(Base) {
   // The class prototype added by the mixin.
   class AriaRole extends Base {
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         role: null,

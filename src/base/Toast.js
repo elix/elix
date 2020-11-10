@@ -44,6 +44,7 @@ class Toast extends Base {
     }
   }
 
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       duration: null,
@@ -70,6 +71,7 @@ class Toast extends Base {
     }
   }
 
+  // @ts-ignore
   get [effectEndTarget]() {
     return this[ids].frame;
   }

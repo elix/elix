@@ -14,6 +14,7 @@ import { fragmentFrom } from "../core/htmlLiterals.js";
  * @inherits ProgressSpinner
  */
 class PlainProgressSpinner extends ProgressSpinner {
+  // @ts-ignore
   get [defaultState]() {
     // The spinner has 12 discrete steps in its rotation.
     return Object.assign(super[defaultState], {

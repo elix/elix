@@ -10,6 +10,7 @@ import PlainInput from "./PlainInput.js";
  * @part {PlainFilterListBox} list
  */
 class PlainListWithSearch extends ListWithSearch {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       inputPartType: PlainInput,

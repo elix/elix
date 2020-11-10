@@ -11,6 +11,7 @@ import PlainDrawer from "./PlainDrawer.js";
  * @part {PlainDrawer} menu
  */
 class PlainHamburgerMenuButton extends HamburgerMenuButton {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       menuPartType: PlainDrawer,

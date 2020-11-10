@@ -50,6 +50,7 @@ export default function DelegateItemsMixin(Base) {
       };
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         items: null,

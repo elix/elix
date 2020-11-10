@@ -12,6 +12,7 @@ import { assert } from "../testHelpers.js";
 class CursorAPITest extends ItemsCursorMixin(
   CursorAPIMixin(ReactiveMixin(HTMLElement))
 ) {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       items: ["Zero", "One", "Two"],

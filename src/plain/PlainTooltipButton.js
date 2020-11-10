@@ -3,6 +3,7 @@ import TooltipButton from "../base/TooltipButton.js";
 import PlainPopup from "./PlainPopup.js";
 
 class PlainTooltipButton extends TooltipButton {
+  // @ts-ignore
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       popupPartType: PlainPopup,

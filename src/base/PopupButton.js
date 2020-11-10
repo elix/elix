@@ -28,6 +28,7 @@ const Base = DelegateFocusMixin(
  * @mixes PopupDragSelectMixin
  */
 class PopupButton extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       sourcePartType: "button",

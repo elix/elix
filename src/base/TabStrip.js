@@ -85,6 +85,7 @@ const Base = AriaListMixin(
  * @mixes TapCursorMixin
  */
 class TabStrip extends Base {
+  // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       currentItemRequired: true,

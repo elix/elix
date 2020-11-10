@@ -51,6 +51,7 @@ export default function PopupModalityMixin(Base) {
       this[setState]({ closeOnWindowResize });
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         closeOnWindowResize: true,

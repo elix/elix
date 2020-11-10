@@ -91,6 +91,7 @@ export default function ReactiveMixin(Base) {
      *
      * @type {PlainObject}
      */
+    // @ts-ignore
     get [defaultState]() {
       // Defer to base implementation if defined.
       return super[defaultState] || {};

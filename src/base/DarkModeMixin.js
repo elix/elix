@@ -53,6 +53,7 @@ export default function DarkModeMixin(Base) {
       this[setState]({ dark });
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         dark: false,

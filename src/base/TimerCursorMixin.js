@@ -46,6 +46,7 @@ export default function TimerCursorMixin(Base) {
       }
     }
 
+    // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
         currentIndexForTimer: null,
