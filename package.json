@@ -41,7 +41,7 @@
     "get-port": "5.1.1",
     "mocha": "8.1.1",
     "node-fetch": "2.6.1",
-    "puppeteer": "5.2.1",
+    "puppeteer": "5.4.1",
     "sauce-test-runner": "componentkitchen/sauce-test-runner",
     "sinon": "9.2.1",
     "typescript": "3.9.7"
