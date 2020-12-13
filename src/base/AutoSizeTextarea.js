@@ -180,6 +180,14 @@ class AutoSizeTextarea extends Base {
     }
   }
 
+  // APIs like setRangeText need to be patched so we know when we need to
+  // updated our state that represents the textarea's value.
+  setRangeText(...args) {
+    super.setRangeText(...args);
+    const inner = /** @type {any} */ (this[ids].inner);
+    this[setState]({ value: inner.value });
+  }
+
   [stateEffects](state, changed) {
     const effects = super[stateEffects](state, changed);
 
