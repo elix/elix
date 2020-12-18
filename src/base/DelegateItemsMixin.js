@@ -107,6 +107,7 @@ export default function DelegateItemsMixin(Base) {
           "currentindexchange",
           this[currentIndexChangedListenerKey]
         );
+        this[previousItemsDelegateKey] = this[itemsDelegate];
       }
     }
   }
