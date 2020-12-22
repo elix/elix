@@ -76,9 +76,7 @@ export default function CursorAPIMixin(Base) {
         return;
       }
       const currentIndex = items.indexOf(currentItem);
-      if (currentIndex >= 0) {
-        this[setState]({ currentIndex });
-      }
+      this[setState]({ currentIndex });
     }
 
     /**
