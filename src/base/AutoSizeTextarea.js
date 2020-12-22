@@ -109,7 +109,10 @@ class AutoSizeTextarea extends Base {
         this[setState]({ valueTracksContent: false });
         /** @type {any} */
         const inner = this[ids].inner;
+        // Setting value implies updating selection state as well.
         this[setState]({
+          selectionEnd: inner.selectionEnd,
+          selectionStart: inner.selectionStart,
           value: inner.value,
         });
         this[raiseChangeEvents] = false;

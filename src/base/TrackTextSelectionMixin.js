@@ -4,10 +4,7 @@ import {
   firstRender,
   raiseChangeEvents,
   render,
-  rendered,
   setState,
-  state,
-  stateEffects,
 } from "./internal.js";
 
 /**
@@ -33,8 +30,8 @@ export default function TrackTextSelectionMixin(Base) {
     // @ts-ignore
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
-        selectionEnd: null,
-        selectionStart: null,
+        selectionEnd: 0,
+        selectionStart: 0,
       });
     }
 
@@ -46,12 +43,12 @@ export default function TrackTextSelectionMixin(Base) {
       if (this[firstRender]) {
         // The user can manually update the selection with the keyboard or
         // mouse. We listen to keydown and mousedown events, wait for the
-        // browser to perform its default action, and then check refresh our
-        // selection state in case it changed.
+        // browser to perform its default action, and then refresh the selection
+        // state in case it changed.
         const refreshListener = (() => {
           // HACK:  If we check too quickly, the default action won't have
           // happened. We wait for an arbitrary amount of time that seems to
-          // work, but that feels gross.
+          // work, although this feels gross.
           const delay = 10; // milliseconds
           setTimeout(() => {
             this[raiseChangeEvents] = true;
@@ -62,42 +59,6 @@ export default function TrackTextSelectionMixin(Base) {
         this.addEventListener("keydown", refreshListener);
         this.addEventListener("mousedown", refreshListener);
       }
-    }
-
-    [rendered](changed) {
-      if (super[rendered]) {
-        super[rendered](changed);
-      }
-
-      // If either selection property is null, pick up its rendered value now.
-      const { selectionEnd, selectionStart } = this[state];
-      if (selectionEnd === null) {
-        this[setState]({
-          selectionEnd: this.inner.selectionEnd,
-        });
-      }
-      if (selectionStart === null) {
-        this[setState]({
-          selectionStart: this.inner.selectionStart,
-        });
-      }
-    }
-
-    [stateEffects](state, changed) {
-      const effects = super[stateEffects]
-        ? super[stateEffects](state, changed)
-        : {};
-
-      // Setting the value will implicitly update the selection. Clear out the
-      // selection state so it'll be refreshed after we render.
-      if (changed.value) {
-        Object.assign(effects, {
-          selectionStart: null,
-          selectionEnd: null,
-        });
-      }
-
-      return effects;
     }
   }
 

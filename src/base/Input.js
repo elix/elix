@@ -65,8 +65,14 @@ class Input extends Base {
        */
       this[ids].inner.addEventListener("input", () => {
         this[raiseChangeEvents] = true;
-        // Invoke the value setter to fix up selectionStart/selectionEnd too.
-        this.value = /** @type {any} */ (this.inner).value;
+        /** @type {any} */
+        const inner = this[ids].inner;
+        this.value = inner.value;
+        // Setting value implies updating selection state as well.
+        this[setState]({
+          selectionEnd: inner.selectionEnd,
+          selectionStart: inner.selectionStart,
+        });
         this[raiseChangeEvents] = false;
       });
     }
