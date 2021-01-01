@@ -43,7 +43,7 @@
     "node-fetch": "2.6.1",
     "puppeteer": "5.5.0",
     "sinon": "9.2.1",
-    "typescript": "4.0.5"
+    "typescript": "4.1.3"
   },
   "scripts": {
     "ci": "npm run lint && npm run test -- --run-in-ci",
