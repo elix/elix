@@ -4,7 +4,7 @@ import {
   firstRender,
   raiseChangeEvents,
   render,
-  setState,
+  setState
 } from "./internal.js";
 
 /**
@@ -58,6 +58,7 @@ export default function TrackTextSelectionMixin(Base) {
         }).bind(this);
         this.addEventListener("keydown", refreshListener);
         this.addEventListener("mousedown", refreshListener);
+        this.addEventListener("touchend", refreshListener);
       }
     }
   }
