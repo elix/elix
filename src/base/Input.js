@@ -10,6 +10,7 @@ import {
   raiseChangeEvents,
   render,
   setState,
+  state,
   template,
 } from "./internal.js";
 import TrackTextSelectionMixin from "./TrackTextSelectionMixin.js";
@@ -40,7 +41,7 @@ class Input extends Base {
   // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
-      valueCopy: "",
+      value: "",
     });
   }
 
@@ -67,12 +68,7 @@ class Input extends Base {
         this[raiseChangeEvents] = true;
         /** @type {any} */
         const inner = this[ids].inner;
-        this.value = inner.value;
-        // Setting value implies updating selection state as well.
-        this[setState]({
-          selectionEnd: inner.selectionEnd,
-          selectionStart: inner.selectionStart,
-        });
+        this[setState]({ value: inner.value });
         this[raiseChangeEvents] = false;
       });
     }
@@ -93,12 +89,12 @@ class Input extends Base {
   }
 
   get value() {
-    return super.value;
+    return this[state].value;
   }
   set value(value) {
-    const s = String(value);
-    super.value = s;
-    this[setState]({ valueCopy: s });
+    this[setState]({
+      value: String(value),
+    });
   }
 }
 

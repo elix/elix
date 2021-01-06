@@ -150,6 +150,14 @@ export default function ReactiveMixin(Base) {
         const saveRaiseChangeEvents = this[raiseChangeEvents];
         this[raiseChangeEvents] = this[raiseChangeEventsInNextRenderKey];
 
+        // From this point on, we'll assume we won't need to raise events in the
+        // next render. If raiseChangeEvents is true right now, however, and the
+        // rendered method calls setState, then this flag will be set to true
+        // for the next render. That's apporopriate because the second-order
+        // setState call in rendered still counts as a user-initiated effect
+        // that should raise change events.
+        this[raiseChangeEventsInNextRenderKey] = false;
+
         // We set a flag to indicate that rendering is happening. The component
         // may use this to avoid triggering other updates during the render.
         this[rendering] = true;
@@ -170,9 +178,8 @@ export default function ReactiveMixin(Base) {
         // We've now rendered for the first time.
         this[firstRender] = false;
 
-        // Restore state of event flags.
+        // Restore state of event flag.
         this[raiseChangeEvents] = saveRaiseChangeEvents;
-        this[raiseChangeEventsInNextRenderKey] = saveRaiseChangeEvents;
       }
     }
 

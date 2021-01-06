@@ -4,7 +4,8 @@ import {
   firstRender,
   raiseChangeEvents,
   render,
-  setState
+  rendered,
+  setState,
 } from "./internal.js";
 
 /**
@@ -14,7 +15,7 @@ import {
  * intended to be used with a wrapped input or textarea. The inner input or
  * textarea will have selection properties `selectionStart` and `selectionEnd`
  * that we would like to track as state members. Doing so is challenging,
- * because the browser provides no standard event tracking a change in
+ * because the browser provides no standard event for tracking a change in
  * selection.
  *
  * To compensate, this mixin listens to keyboard or mouse activity within the
@@ -46,7 +47,7 @@ export default function TrackTextSelectionMixin(Base) {
         // browser to perform its default action, and then refresh the selection
         // state in case it changed.
         const refreshListener = (() => {
-          // HACK:  If we check too quickly, the default action won't have
+          // HACK: If we check too quickly, the default action won't have
           // happened. We wait for an arbitrary amount of time that seems to
           // work, although this feels gross.
           const delay = 10; // milliseconds
@@ -59,6 +60,15 @@ export default function TrackTextSelectionMixin(Base) {
         this.addEventListener("keydown", refreshListener);
         this.addEventListener("mousedown", refreshListener);
         this.addEventListener("touchend", refreshListener);
+      }
+    }
+
+    [rendered](changed) {
+      super[rendered](changed);
+
+      // Setting value implies updating selection state as well.
+      if (changed.value) {
+        refreshSelectionState(this);
       }
     }
   }
