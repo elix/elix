@@ -232,30 +232,38 @@ class ListComboBox extends Base {
       }
     }
 
-    // If user selects a new item, make the item's text the value.
-    if (changed.selectedIndex) {
-      const { items, selectedIndex, value } = state;
-      const currentItem = items ? items[selectedIndex] : null;
-      const currentItemText = currentItem ? this[getItemText](currentItem) : "";
-      // See notes on mobile at ComboBox.defaultState.
-      const probablyMobile = matchMedia("(pointer: coarse)").matches;
-      const selectText = !probablyMobile;
-      if (value !== currentItemText) {
+    const { closeResult, opened } = state;
+    const closing = changed.opened && !opened;
+    const canceled = closeResult && closeResult.canceled;
+    const closingNormally = closing && !canceled;
+
+    // If closing, make current item the selected item.
+    if (closingNormally) {
+      const { currentIndex } = state;
+      if (currentIndex >= 0) {
         Object.assign(effects, {
-          selectText,
-          value: currentItemText,
+          selectedIndex: currentIndex,
         });
       }
     }
 
-    // If closing, make current item the selected item.
-    if (changed.opened) {
-      const { closeResult, currentIndex, opened } = state;
-      const closing = changed.opened && !opened;
-      const canceled = closeResult && closeResult.canceled;
-      if (closing && !canceled && currentIndex >= 0) {
+    // If user selects a new item, make the item's text the value.
+    // We also do this if the popup is closing: the user may have changed the
+    // text but not changed the selectedIndex, and we'll want to restore the text
+    // to be the text of the selected item.
+    if (changed.selectedIndex || closingNormally) {
+      const { items, selectedIndex, value } = state;
+      const selectedItem = items ? items[selectedIndex] : null;
+      const selectedItemText = selectedItem
+        ? this[getItemText](selectedItem)
+        : "";
+      // See notes on mobile at ComboBox.defaultState.
+      const probablyMobile = matchMedia("(pointer: coarse)").matches;
+      const selectText = !probablyMobile;
+      if (value !== selectedItemText) {
         Object.assign(effects, {
-          selectedIndex: currentIndex,
+          selectText,
+          value: selectedItemText,
         });
       }
     }
