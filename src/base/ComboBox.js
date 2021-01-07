@@ -26,6 +26,9 @@ import PopupDragSelectMixin from "./PopupDragSelectMixin.js";
 import PopupSource from "./PopupSource.js";
 import PopupToggleMixin from "./PopupToggleMixin.js";
 
+const elixdebugpopup =
+  new URLSearchParams(location.search).get("elixdebugpopup") === "true";
+
 const Base = DelegateFocusMixin(
   DelegateInputLabelMixin(
     DelegateInputSelectionMixin(
@@ -165,11 +168,14 @@ class ComboBox extends Base {
         this[setState]({
           focused: false,
         });
-        // If we're open and lose focus, then close.
-        if (this.opened) {
-          this[raiseChangeEvents] = true;
-          this.close();
-          this[raiseChangeEvents] = false;
+        // Don't close on blur if we're debugging popups.
+        if (!elixdebugpopup) {
+          // If we're open and lose focus, then close.
+          if (this.opened) {
+            this[raiseChangeEvents] = true;
+            this.close();
+            this[raiseChangeEvents] = false;
+          }
         }
       });
 

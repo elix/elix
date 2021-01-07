@@ -15,6 +15,9 @@ import {
 /** @type {any} */
 const implicitCloseListenerKey = Symbol("implicitCloseListener");
 
+const elixdebugpopup =
+  new URLSearchParams(location.search).get("elixdebugpopup") === "true";
+
 /**
  * Gives an overlay lightweight popup-style behavior.
  *
@@ -82,8 +85,11 @@ export default function PopupModalityMixin(Base) {
       }
 
       if (this[firstRender]) {
-        // If we lose focus, and the new focus isn't inside us, then close.
-        this.addEventListener("blur", blurHandler.bind(this));
+        // Don't wire up popup blur handling if we're debugging popups.
+        if (!elixdebugpopup) {
+          // If we lose focus, and the new focus isn't inside us, then close.
+          this.addEventListener("blur", blurHandler.bind(this));
+        }
       }
 
       if (changed.role) {
@@ -143,15 +149,19 @@ function addEventListeners(/** @type {ReactiveElement} */ element) {
   // Close handlers for window events.
   element[implicitCloseListenerKey] = closeHandler.bind(element);
 
-  // Window blur event tracks loss of focus of *window*, not just element.
-  window.addEventListener("blur", element[implicitCloseListenerKey]);
+  if (!elixdebugpopup) {
+    // Window blur event tracks loss of focus of *window*, not just element.
+    window.addEventListener("blur", element[implicitCloseListenerKey]);
+  }
   window.addEventListener("resize", element[implicitCloseListenerKey]);
   window.addEventListener("scroll", element[implicitCloseListenerKey]);
 }
 
 function removeEventListeners(/** @type {ReactiveElement} */ element) {
   if (element[implicitCloseListenerKey]) {
-    window.removeEventListener("blur", element[implicitCloseListenerKey]);
+    if (!elixdebugpopup) {
+      window.removeEventListener("blur", element[implicitCloseListenerKey]);
+    }
     window.removeEventListener("resize", element[implicitCloseListenerKey]);
     window.removeEventListener("scroll", element[implicitCloseListenerKey]);
     element[implicitCloseListenerKey] = null;
