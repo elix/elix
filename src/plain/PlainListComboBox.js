@@ -1,21 +1,19 @@
 import { defaultState } from "../base/internal.js";
 import ListComboBox from "../base/ListComboBox.js";
-import PlainOpenCloseToggle from "./PlainOpenCloseToggle.js";
-import PlainPopup from "./PlainPopup.js";
+import PlainComboBoxMixin from "./PlainComboBoxMixin.js";
+import PlainListBox from "./PlainListBox.js";
 
 /**
  * ListComboBox component in the Plain reference design system
  *
  * @inherits ListComboBox
- * @part {PlainPopup} popup
- * @part {PlainOpenCloseToggle} popup-toggle
+ * @part {PlainListBox} list
  */
-class PlainListComboBox extends ListComboBox {
+class PlainListComboBox extends PlainComboBoxMixin(ListComboBox) {
   // @ts-ignore
   get [defaultState]() {
     return Object.assign(super[defaultState], {
-      popupPartType: PlainPopup,
-      popupTogglePartType: PlainOpenCloseToggle,
+      listPartType: PlainListBox,
     });
   }
 }
