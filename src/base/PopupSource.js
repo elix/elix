@@ -189,11 +189,8 @@ class PopupSource extends Base {
       if (!opened) {
         // Popup closed. Reset the styles used to position it.
         Object.assign(this[ids].popup.style, {
-          bottom: "",
-          left: "",
+          inset: "",
           opacity: "",
-          right: "",
-          top: "",
         });
       } else if (!popupLayout) {
         // Popup opened but not yet laid out.
@@ -207,11 +204,8 @@ class PopupSource extends Base {
         // property changed while the popup is open, we reset the positiong
         // styles too.
         Object.assign(this[ids].popup.style, {
-          bottom: "",
-          left: "",
+          inset: "",
           opacity: 0,
-          right: "",
-          top: "",
         });
       } else {
         // Popup opened and laid out. Position the popup using only the edges
@@ -323,8 +317,6 @@ class PopupSource extends Base {
         }
 
         [part~="popup"] {
-          max-height: 100%;
-          max-width: 100%;
           outline: none;
           position: fixed;
         }
@@ -385,20 +377,21 @@ function getPositiongStylingForLayout(layout) {
   const vertical = direction === "above" || direction === "below";
   switch (direction) {
     case "above":
-      styling.bottom = `${bounds.bottom - rect.bottom}px`;
-      break;
     case "below":
+      styling.bottom = `${bounds.bottom - rect.bottom}px`;
       styling.top = `${rect.top}px`;
       break;
+
     case "left":
-      styling.right = `${bounds.right - rect.right}px`;
-      break;
     case "right":
       styling.left = `${rect.left}px`;
+      styling.right = `${bounds.right - rect.right}px`;
       break;
   }
   switch (align) {
     case "bottom":
+    case "top":
+      styling.top = `${rect.top}px`;
       styling.bottom = `${bounds.bottom - rect.bottom}px`;
       break;
     case "center":
@@ -412,13 +405,9 @@ function getPositiongStylingForLayout(layout) {
       }
       break;
     case "left":
-      styling.left = `${rect.left}px`;
-      break;
     case "right":
+      styling.left = `${rect.left}px`;
       styling.right = `${bounds.right - rect.right}px`;
-      break;
-    case "top":
-      styling.top = `${rect.top}px`;
       break;
   }
   return styling;
