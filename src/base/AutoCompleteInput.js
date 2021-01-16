@@ -14,7 +14,6 @@ import {
   setState,
   shadowRoot,
   state,
-  stateEffects,
   template,
 } from "./internal.js";
 import ListBox from "./ListBox.js";
@@ -185,20 +184,6 @@ class AutoCompleteInput extends Input {
       });
       this.dispatchEvent(event);
     }
-  }
-
-  [stateEffects](state, changed) {
-    const effects = super[stateEffects]
-      ? super[stateEffects](state, changed)
-      : {};
-
-    if (changed.valueCopy) {
-      const { texts, valueCopy } = state;
-      const textIndex = texts.indexOf(valueCopy);
-      Object.assign(effects, { textIndex });
-    }
-
-    return effects;
   }
 
   get [template]() {
