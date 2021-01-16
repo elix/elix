@@ -186,12 +186,17 @@ class PopupSource extends Base {
     if (changed.opened || changed.popupLayout) {
       const { opened, popupLayout } = this[state];
 
+      // By default, we reset the styles used to position the popup.
+      /** @type {any} */
+      const styling = {
+        height: "",
+        left: "",
+        opacity: "",
+        top: "",
+        width: "",
+      };
       if (!opened) {
-        // Popup closed. Reset the styles used to position it.
-        Object.assign(this[ids].popup.style, {
-          inset: "",
-          opacity: "",
-        });
+        // Popup closed. Use the reset above.
       } else if (!popupLayout) {
         // Popup opened but not yet laid out.
         //
@@ -203,19 +208,19 @@ class PopupSource extends Base {
         // In case the popup is being relayed out because a layout-affecting
         // property changed while the popup is open, we reset the positiong
         // styles too.
-        Object.assign(this[ids].popup.style, {
-          inset: "",
-          opacity: 0,
-        });
+        styling.opacity = 0;
       } else {
         // Popup opened and laid out. Position the popup using only the edges
         // implicated in the layout.
-        const popup = this[ids].popup;
-        const positionStyling = getPositiongStylingForLayout(popupLayout);
-        Object.assign(popup.style, positionStyling, {
-          opacity: "",
+        const { rect } = popupLayout;
+        Object.assign(styling, {
+          height: `${rect.height}px`,
+          left: `${rect.left}px`,
+          top: `${rect.top}px`,
+          width: `${rect.width}px`,
         });
       }
+      Object.assign(this[ids].popup.style, styling);
     }
 
     if (changed.opened) {
@@ -366,51 +371,6 @@ function choosePopupLayout(element) {
   });
 
   element[setState]({ popupLayout });
-}
-
-// Given a complete layout for a popup (including the rect), determine the
-// styling that should be applied to the popup.
-function getPositiongStylingForLayout(layout) {
-  const { align, direction, rect } = layout;
-  const bounds = viewportBounds();
-  const styling = {};
-  const vertical = direction === "above" || direction === "below";
-  switch (direction) {
-    case "above":
-    case "below":
-      styling.bottom = `${bounds.bottom - rect.bottom}px`;
-      styling.top = `${rect.top}px`;
-      break;
-
-    case "left":
-    case "right":
-      styling.left = `${rect.left}px`;
-      styling.right = `${bounds.right - rect.right}px`;
-      break;
-  }
-  switch (align) {
-    case "bottom":
-    case "top":
-      styling.top = `${rect.top}px`;
-      styling.bottom = `${bounds.bottom - rect.bottom}px`;
-      break;
-    case "center":
-    case "stretch":
-      if (vertical) {
-        styling.left = `${rect.left}px`;
-        styling.right = `${bounds.right - rect.right}px`;
-      } else {
-        styling.bottom = `${bounds.bottom - rect.bottom}px`;
-        styling.top = `${rect.top}px`;
-      }
-      break;
-    case "left":
-    case "right":
-      styling.left = `${rect.left}px`;
-      styling.right = `${bounds.right - rect.right}px`;
-      break;
-  }
-  return styling;
 }
 
 function removeEventListeners(/** @type {PopupSource} */ element) {
