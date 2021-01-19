@@ -232,38 +232,38 @@ class ListComboBox extends Base {
       }
     }
 
+    // If closing normally (not canceled), make current item the selected item,
+    // and make its text the value. Leave the text selected.
     const { closeResult, opened } = state;
     const closing = changed.opened && !opened;
     const canceled = closeResult && closeResult.canceled;
     const closingNormally = closing && !canceled;
-
-    // If closing, make current item the selected item.
     if (closingNormally) {
-      const { currentIndex } = state;
-      if (currentIndex >= 0) {
+      const { currentIndex, items } = state;
+      const currentItem = items ? items[currentIndex] : null;
+      const currentItemText = currentItem ? this[getItemText](currentItem) : "";
+      // See notes on mobile at ComboBox.defaultState.
+      const probablyMobile = matchMedia("(pointer: coarse)").matches;
+      const selectText = !probablyMobile;
+      Object.assign(effects, {
+        selectText,
+        selectedIndex: currentIndex,
+      });
+      if (currentItemText !== "") {
         Object.assign(effects, {
-          selectedIndex: currentIndex,
+          value: currentItemText,
         });
       }
     }
 
-    // If user selects a new item, make the item's text the value.
-    // We also do this if the popup is closing: the user may have changed the
-    // text but not changed the selectedIndex, and we'll want to restore the text
-    // to be the text of the selected item.
-    if (changed.selectedIndex || closingNormally) {
-      const { items, selectedIndex, value } = state;
+    // If the selected index is updated while the combo box is closed (i.e., the
+    // value was not changed by the user), then update the text value to match.
+    if (changed.selectedIndex && !state.opened) {
+      const { items, selectedIndex } = state;
       const selectedItem = items ? items[selectedIndex] : null;
-      const selectedItemText = selectedItem
-        ? this[getItemText](selectedItem)
-        : "";
-      // See notes on mobile at ComboBox.defaultState.
-      const probablyMobile = matchMedia("(pointer: coarse)").matches;
-      const selectText = !probablyMobile;
-      if (value !== selectedItemText) {
+      if (selectedItem) {
         Object.assign(effects, {
-          selectText,
-          value: selectedItemText,
+          value: this[getItemText](selectedItem),
         });
       }
     }
