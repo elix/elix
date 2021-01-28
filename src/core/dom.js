@@ -236,11 +236,12 @@ export function* selfAndComposedAncestors(node) {
 }
 
 /**
- * Set an internal state for browsers that support the `:state` selector, as
- * well as an attribute of the same name to permit state-based styling on older
- * browsers.
+ * Set an internal state for browsers that support custom state pseudo classes,
+ * as well as an attribute of the same name to permit state-based styling on
+ * older browsers.
  *
- * When all browsers support that, we'd like to deprecate use of attributes.
+ * When all browsers support custom state pseudo classes, we'd like to deprecate
+ * use of attributes.
  *
  * @param {Element} element
  * @param {string} name
@@ -249,7 +250,13 @@ export function* selfAndComposedAncestors(node) {
 export function setInternalState(element, name, value) {
   element.toggleAttribute(name, value);
   if (element[nativeInternals] && element[nativeInternals].states) {
-    element[nativeInternals].states.toggle(name, value);
+    const states = element[nativeInternals].states;
+    const stateName = `--${name}`;
+    if (value) {
+      states.add(stateName);
+    } else {
+      states.delete(stateName);
+    }
   }
 }
 

@@ -22,7 +22,7 @@
   </head>
 
   <body role="main">
-    <div class="demo fullScreen" style="background: #fef4d2; padding: 20px;">
+    <div class="demo fullScreen" style="background: #fef4d2; padding: 20px">
       <style>
         #customCarousel {
           flex: 1;
@@ -46,11 +46,11 @@
           transition: color 0.5s, -webkit-text-stroke-color 0.5s;
           -webkit-text-stroke: 2px transparent;
         }
-        #customCarousel::part(arrow-button):state(disabled) {
+        #customCarousel::part(arrow-button):--disabled {
           color: transparent;
           -webkit-text-stroke-color: #c8c8a9;
         }
-        #customCarousel::part(arrow-button):hover:not(:state(disabled)) {
+        #customCarousel::part(arrow-button):hover:not(:--disabled) {
           background: linear-gradient(
             rgba(0, 0, 0, 0.1),
             transparent,
@@ -69,7 +69,7 @@
           color: #fe4365;
           opacity: 1;
         }
-        elix-selectable-button:state(selected) {
+        elix-selectable-button:--selected {
           color: #fe4365;
           transform: scale(1.4);
         }
@@ -77,7 +77,7 @@
         .flower::after {
           content: "●";
         }
-        elix-selectable-button:state(selected) .flower::after {
+        elix-selectable-button:--selected .flower::after {
           content: "✿";
         }
       </style>
