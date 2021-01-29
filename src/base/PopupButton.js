@@ -15,6 +15,9 @@ import KeyboardMixin from "./KeyboardMixin.js";
 import PopupDragSelectMixin from "./PopupDragSelectMixin.js";
 import PopupSource from "./PopupSource.js";
 
+const elixdebugpopup =
+  new URLSearchParams(location.search).get("elixdebugpopup") === "true";
+
 const Base = DelegateFocusMixin(
   KeyboardMixin(PopupDragSelectMixin(PopupSource))
 );
@@ -103,7 +106,10 @@ class PopupButton extends Base {
       // PopupModalityMixin will have its own logic to close on blur -- but in
       // cases where the popup itself doesn't get focus (e.g., TooltipButton),
       // that logic won't apply.
-      this.addEventListener("blur", blurHandler.bind(this));
+      // Don't close on blur if we're debugging popups.
+      if (!elixdebugpopup) {
+        this.addEventListener("blur", blurHandler.bind(this));
+      }
 
       // If the source element gets the focus while the popup is open, the
       // most likely expanation is that the user hit Shift+Tab to back up out of
