@@ -28,14 +28,13 @@
 
         .popup {
           align-items: center;
+          border: 4px solid lightgray;
           box-sizing: border-box;
           display: flex;
           height: 200px;
-          max-height: 100%;
-          max-width: 100%;
           justify-content: center;
           padding: 1em;
-          width: 200px;
+          width: 300px;
         }
 
         .nowrap {
@@ -75,6 +74,14 @@
           <span slot="source">Open below right</span>
           <div class="popup nowrap">Here's a popup.</div>
         </elix-popup-button>
+      </div>
+      <div class="buttonRow" style="display: flex; flex-direction: row-reverse">
+        <elix-popup-button>
+          <span slot="source">Open below left</span>
+          <div class="popup nowrap">Here's a popup.</div>
+        </elix-popup-button>
+        This wants to open left-aligned, but there's no room so will flip to
+        right-align.
       </div>
       <div class="buttonRow">
         <p>

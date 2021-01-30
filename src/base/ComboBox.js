@@ -275,13 +275,6 @@ class ComboBox extends Base {
       if ("autoFocus" in popup) {
         cast.autoFocus = false;
       }
-      const frame = cast.frame;
-      if (frame) {
-        Object.assign(frame.style, {
-          display: "flex",
-          flexDirection: "column",
-        });
-      }
       if ("closeOnWindowResize" in popup) {
         cast.closeOnWindowResize = false;
       }

@@ -212,8 +212,14 @@ class PopupSource extends Base {
       } else {
         // Popup opened and laid out. Position the popup using only the edges
         // implicated in the layout.
-        const { rect } = popupLayout;
+        const { align, direction, rect } = popupLayout;
+        const stretch = align === "stretch";
+        const vertical = direction === "above" || direction === "below";
+        const gridTemplateRows = !vertical && stretch ? "minmax(0, 1fr)" : "";
+        const gridTemplateColumns = vertical && stretch ? "minmax(0, 1fr)" : "";
         Object.assign(styling, {
+          gridTemplateColumns,
+          gridTemplateRows,
           height: `${rect.height}px`,
           left: `${rect.left}px`,
           top: `${rect.top}px`,
@@ -362,6 +368,16 @@ function choosePopupLayout(element) {
   const { popupAlign, popupDirection, rightToLeft } = element[state];
   const sourceRect = element[ids].source.getBoundingClientRect();
   const popupRect = element[ids].popup.getBoundingClientRect();
+
+  // If the popup defines a frame, ask the frame for its intrinsic size by
+  // inspecting the scrollHeight/Width properties. These will report the correct
+  // size even if the popup is currently constraining the frame.
+  const frame = /** @type {any} */ (element[ids].popup).frame;
+  if (frame) {
+    popupRect.height = element[ids].popup[ids].frame.scrollHeight;
+    popupRect.width = element[ids].popup[ids].frame.scrollWidth;
+  }
+
   const boundsRect = viewportBounds();
 
   const popupLayout = layoutPopup(sourceRect, popupRect, boundsRect, {

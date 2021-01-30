@@ -124,13 +124,24 @@ class Overlay extends Base {
   get [template]() {
     const result = super[template];
 
-    // TODO: Consider moving frameContent div to Drawer.
+    // Using a grid here is tricky, because we want to deliver size-to-content
+    // and expand-to-container sizing here. We also want to apply `overflow:
+    // hidden` to the frame for use in a popup source like ListComboBox with a
+    // popup that needs to scroll. However, tHe presence of `overflow` will
+    // cause a grid at the viewport's right edge to *not* size to content as
+    // expected, which will throw off our popup layout heuristics because they
+    // can't get the real intrinsic size of the popup by looking at the popup
+    // itself.
+    //
+    // To work around that, PopupSource must have special logic to inspect the
+    // frame's intrinsic size directly. We'd prefer to avoid such entanglements
+    // when we can, but after much experimentation with both grid and block
+    // styling, grid seemed to minimize the amount of trickery needed.
     result.content.append(fragmentFrom.html`
       <style>
         :host {
-          display: inline-grid;
-          /* Constrain content if overlay's height is constrained. */
-          grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+          display: grid;
+          grid-template: minmax(0, max-content) / minmax(0, max-content);
           max-height: 100vh;
           max-width: 100vw;
           outline: none;
@@ -140,23 +151,25 @@ class Overlay extends Base {
 
         [part~="frame"] {
           box-sizing: border-box;
+          display: block;
           display: grid;
+          overflow: hidden;
           overscroll-behavior: contain;
           pointer-events: initial;
           position: relative;
         }
 
-        #frameContent {
-          display: grid;
-          grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+        /* Move to Drawer. */
+        /* #frameContent {
+          display: block;
+          max-height: 100%;
+          max-width: 100%;
           overflow: hidden;
-        }
+        } */
       </style>
       <div id="backdrop" part="backdrop" tabindex="-1"></div>
       <div id="frame" part="frame" role="none">
-        <div id="frameContent">
-          <slot></slot>
-        </div>
+        <slot></slot>
       </div>
     `);
 
