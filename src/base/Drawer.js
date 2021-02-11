@@ -435,13 +435,14 @@ class Drawer extends Base {
       cast[FocusCaptureMixin.wrap](frameContent);
     }
 
+    // We'd prefer to use inline-grid instead of inline-flex; see Dialog.js
     result.content.append(
       fragmentFrom.html`
         <style>
           :host {
             align-items: stretch;
-            display: grid;
-            grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+            display: inline-flex;
+            flex-direction: column;
             -webkit-overflow-scrolling: touch; /* for momentum scrolling */
           }
 

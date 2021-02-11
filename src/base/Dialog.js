@@ -37,12 +37,16 @@ class Dialog extends Base {
     /** @type {any} */ const cast = this;
     cast[FocusCaptureMixin.wrap](frame);
 
+    // We'd prefer to use inline-grid instead of inline-flex, but for grid
+    // styling we'd want the row to be 1fr tall. Unfortunately, as of
+    // 2021-02-11, Safari doesn't seem to handle that basic need correctly.
+    // May be caused by https://bugs.webkit.org/show_bug.cgi?id=202051.
     result.content.append(
       fragmentFrom.html`
         <style>
           :host {
-            display: grid;
-            grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+            display: inline-flex;
+            flex-direction: column;
             height: 100%;
             left: 0;
             pointer-events: initial;
