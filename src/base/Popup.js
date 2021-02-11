@@ -1,4 +1,5 @@
-import { ids, raiseChangeEvents, render } from "./internal.js";
+import { fragmentFrom } from "../core/htmlLiterals.js";
+import { ids, raiseChangeEvents, render, template } from "./internal.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import Overlay from "./Overlay.js";
 import PopupModalityMixin from "./PopupModalityMixin.js";
@@ -30,6 +31,23 @@ class Popup extends Base {
         this[ids].backdrop.addEventListener("touchend", mousedownHandler);
       }
     }
+  }
+
+  get [template]() {
+    const result = super[template];
+
+    result.content.append(
+      fragmentFrom.html`
+        <style>
+          :host {
+            display: grid;
+            grid-template: minmax(0, max-content) / minmax(0, max-content);
+          }
+        </style>
+      `
+    );
+
+    return result;
   }
 }
 

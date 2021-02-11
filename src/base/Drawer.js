@@ -422,16 +422,34 @@ class Drawer extends Base {
   get [template]() {
     const result = super[template];
 
-    const frameContent = result.content.querySelector("#frameContent");
-    /** @type {any} */ const cast = this;
-    cast[FocusCaptureMixin.wrap](frameContent);
+    // Wrap default slot with another container that traps focus.
+    const defaultSlot = result.content.querySelector("slot:not([name])");
+    if (defaultSlot) {
+      defaultSlot.replaceWith(fragmentFrom.html`
+        <div id="frameContent">
+          <slot></slot>
+        </div>
+      `);
+      const frameContent = result.content.querySelector("#frameContent");
+      /** @type {any} */ const cast = this;
+      cast[FocusCaptureMixin.wrap](frameContent);
+    }
 
     result.content.append(
       fragmentFrom.html`
         <style>
           :host {
             align-items: stretch;
+            display: grid;
+            grid-template: minmax(0, 1fr) / minmax(0, 1fr);
             -webkit-overflow-scrolling: touch; /* for momentum scrolling */
+          }
+
+          #frameContent {
+            display: block;
+            max-height: 100%;
+            max-width: 100%;
+            overflow: hidden;
           }
 
           [part~="backdrop"] {

@@ -41,6 +41,8 @@ class Dialog extends Base {
       fragmentFrom.html`
         <style>
           :host {
+            display: grid;
+            grid-template: minmax(0, 1fr) / minmax(0, 1fr);
             height: 100%;
             left: 0;
             pointer-events: initial;
