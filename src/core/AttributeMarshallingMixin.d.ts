@@ -15,3 +15,10 @@ declare const AttributeMarshallingMixin: Mixin<
 >;
 
 export default AttributeMarshallingMixin;
+
+export function booleanAttributeValue(
+  name: string,
+  value: string | boolean | null
+): boolean;
+
+export const standardBooleanAttributes: { [key: string]: boolean };

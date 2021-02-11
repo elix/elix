@@ -1,4 +1,3 @@
-import { booleanAttributeValue, standardBooleanAttributes } from "./dom.js";
 import { rendering } from "./internal.js";
 
 // Memoized maps of attribute to property names and vice versa.
@@ -176,6 +175,29 @@ function attributeToPropertyName(attributeName) {
 }
 
 /**
+ * Given a string value for a named boolean attribute, return `true` if the
+ * value is either: a) the empty string, or b) a case-insensitive match for the
+ * name.
+ *
+ * This is native HTML behavior; see the MDN documentation on [boolean
+ * attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Boolean_Attributes)
+ * for the reasoning.
+ *
+ * Given a null value, this return `false`.
+ * Given a boolean value, this return the value as is.
+ *
+ * @param {string} name
+ * @param {string|boolean|null} value
+ */
+export function booleanAttributeValue(name, value) {
+  return typeof value === "boolean"
+    ? value
+    : typeof value === "string"
+    ? value === "" || name.toLowerCase() === value.toLowerCase()
+    : false;
+}
+
+/**
  * Convert a camel case fooBar property name to a hyphenated foo-bar attribute.
  *
  * @private
@@ -191,3 +213,16 @@ function propertyNameToAttribute(propertyName) {
   }
   return attribute;
 }
+
+/** @type {IndexedObject<boolean>} */
+export const standardBooleanAttributes = {
+  checked: true,
+  defer: true,
+  disabled: true,
+  hidden: true,
+  ismap: true,
+  multiple: true,
+  noresize: true,
+  readonly: true,
+  selected: true,
+};

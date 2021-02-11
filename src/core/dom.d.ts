@@ -1,11 +1,6 @@
 // Elix is a JavaScript project, but we define TypeScript declarations so we can
 // confirm our code is type safe, and to support TypeScript users.
 
-export function booleanAttributeValue(
-  name: string,
-  value: string | boolean
-): boolean;
-
 export function closestFocusableNode(element: Element): HTMLElement | null;
 
 export function composedAncestors(node: Node): Iterable<Node>;
@@ -33,8 +28,6 @@ export function setInternalState(
   state: string,
   value: boolean
 ): void;
-
-export const standardBooleanAttributes: { [key: string]: boolean };
 
 export function updateChildNodes(
   element: Element,

@@ -1,4 +1,5 @@
-import { setInternalState, standardBooleanAttributes } from "../core/dom.js";
+import { standardBooleanAttributes } from "../core/AttributeMarshallingMixin.js";
+import { setInternalState } from "../core/dom.js";
 import { templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";

@@ -1,4 +1,5 @@
-import { booleanAttributeValue, setInternalState } from "../core/dom.js";
+import { booleanAttributeValue } from "../core/AttributeMarshallingMixin.js";
+import { setInternalState } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import { defaultState, render, rendered, setState, state } from "./internal.js";
 

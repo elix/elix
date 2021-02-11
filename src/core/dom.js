@@ -1,3 +1,4 @@
+import * as attributes from "./AttributeMarshallingMixin.js";
 import { focusTarget, nativeInternals } from "./internal.js";
 
 /**
@@ -24,11 +25,10 @@ const mousedownListenerKey = Symbol("mousedownListener");
  * @param {string|boolean|null} value
  */
 export function booleanAttributeValue(name, value) {
-  return typeof value === "boolean"
-    ? value
-    : typeof value === "string"
-    ? value === "" || name.toLowerCase() === value.toLowerCase()
-    : false;
+  console.warn(
+    `booleanAttributes has moved from dom.js to AttributeMarshallingMixin.js. Please update your imports.`
+  );
+  return attributes.booleanAttributeValue(name, value);
 }
 
 /**
@@ -259,19 +259,6 @@ export function setInternalState(element, name, value) {
     }
   }
 }
-
-/** @type {IndexedObject<boolean>} */
-export const standardBooleanAttributes = {
-  checked: true,
-  defer: true,
-  disabled: true,
-  hidden: true,
-  ismap: true,
-  multiple: true,
-  noresize: true,
-  readonly: true,
-  selected: true,
-};
 
 /**
  * Adds or removes the element's `childNodes` as necessary to match the nodes
