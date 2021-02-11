@@ -59,7 +59,7 @@ describe("MultiSelectAPIMixin", () => {
     container.append(fixture);
     await new Promise((resolve) => {
       fixture.addEventListener("selecteditemflagschange", () => {
-        resolve();
+        resolve(undefined);
       });
       // Simulate user interaction.
       fixture[raiseChangeEvents] = true;

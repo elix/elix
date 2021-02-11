@@ -32,7 +32,7 @@ describe("ItemsAPIMixin", () => {
     container.append(fixture);
     await new Promise((resolve) => {
       fixture.addEventListener("itemschange", () => {
-        resolve();
+        resolve(undefined);
       });
       // Arrange for raising of change events.
       fixture[raiseChangeEvents] = true;

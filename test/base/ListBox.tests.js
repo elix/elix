@@ -23,7 +23,7 @@ describe("ListBox", () => {
     const eventPromise = new Promise((resolve) => {
       fixture.addEventListener("selectedindexchange", () => {
         assert.equal(fixture.selectedIndex, 0);
-        resolve();
+        resolve(undefined);
       });
     });
     mockInteractions.dispatchSyntheticMouseEvent(item, "mousedown");
