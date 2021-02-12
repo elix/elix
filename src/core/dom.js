@@ -21,6 +21,7 @@ const mousedownListenerKey = Symbol("mousedownListener");
  * Given a null value, this return `false`.
  * Given a boolean value, this return the value as is.
  *
+ * @private
  * @param {string} name
  * @param {string|boolean|null} value
  */
