@@ -61,17 +61,6 @@ class PopupSource extends Base {
     return /** @type {any} */ (this[ids].popup).frame;
   }
 
-  // TODO: Remove this deprecated property.
-  get horizontalAlign() {
-    return this[state].popupAlign;
-  }
-  set horizontalAlign(horizontalAlign) {
-    console.warn(
-      `The "horizontalAlign" property has been renamed to "popupAlign"; the "horizontal-align" attribute is now "popup-align".`
-    );
-    this[setState]({ popupAlign: horizontalAlign });
-  }
-
   /**
    * The alignment of the popup with respect to the source button.
    *
@@ -115,17 +104,6 @@ class PopupSource extends Base {
   }
   set popupDirection(popupDirection) {
     this[setState]({ popupDirection });
-  }
-
-  // TODO: Remove this deprecated property.
-  get popupPosition() {
-    return this[state].popupPosition;
-  }
-  set popupPosition(popupPosition) {
-    console.warn(
-      `The "popupPosition" property has been renamed to "popupDirection"; the "popup-position" attribute is now "popup-direction".`
-    );
-    this[setState]({ popupPosition });
   }
 
   /**
