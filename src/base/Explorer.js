@@ -173,11 +173,6 @@ class Explorer extends Base {
       );
       this[ids].stage.addEventListener("selectioneffectend", (event) => {
         const { selectedIndex } = /** @type {any} */ (event).detail;
-        const oldEvent = new CustomEvent("selection-effect-finished", {
-          bubbles: true,
-          detail: { selectedIndex },
-        });
-        this.dispatchEvent(oldEvent);
         /**
          * This event is raised if the current `stage` applies a transition
          * effect when changing the selection, and the selection effect has

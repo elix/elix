@@ -64,10 +64,6 @@ export default function DisabledMixin(Base) {
         this.toggleAttribute("disabled", this.disabled);
 
         if (this[raiseChangeEvents]) {
-          const oldEvent = new CustomEvent("disabled-changed", {
-            bubbles: true,
-          });
-          this.dispatchEvent(oldEvent);
           /**
            * Raised when the `disabled` property changes.
            *

@@ -70,14 +70,6 @@ export default function TransitionEffectMixin(Base) {
       }
       if (changed.effect || changed.effectPhase) {
         const { effect, effectPhase } = this[state];
-        const oldEvent = new CustomEvent("effect-phase-changed", {
-          bubbles: true,
-          detail: {
-            effect,
-            effectPhase,
-          },
-        });
-        this.dispatchEvent(oldEvent);
         /**
          * Raised when [state.effect](TransitionEffectMixin#effect-phases) or
          * [state.effectPhase](TransitionEffectMixin#effect-phases) changes.

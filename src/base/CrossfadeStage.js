@@ -68,13 +68,6 @@ class CrossfadeStage extends Base {
         /** @type {any} */ const cast = event;
         if (cast.detail.effectPhase === "after") {
           const { currentIndex } = this[state];
-          const oldEvent = new CustomEvent("selection-effect-finished", {
-            bubbles: true,
-            detail: {
-              selectedIndex: currentIndex,
-            },
-          });
-          this.dispatchEvent(oldEvent);
           /**
            * This event is raised when changing the selection and the selection
            * effect has completed.

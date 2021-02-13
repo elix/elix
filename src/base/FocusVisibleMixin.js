@@ -132,12 +132,6 @@ function refreshFocus(/** @type {ReactiveElement} */ element) {
 function updateKeyboardActive(/** @type {boolean} */ newKeyboardActive) {
   if (keyboardActive !== newKeyboardActive) {
     keyboardActive = newKeyboardActive;
-    const oldEvent = new CustomEvent("focus-visible-changed", {
-      detail: {
-        focusVisible: keyboardActive,
-      },
-    });
-    document.dispatchEvent(oldEvent);
     const event = new CustomEvent("focusvisiblechange", {
       detail: {
         focusVisible: keyboardActive,

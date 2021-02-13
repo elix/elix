@@ -139,13 +139,6 @@ class PullToRefresh extends Base {
       }
     } else if (changed.refreshing) {
       if (this[raiseChangeEvents]) {
-        const oldEvent = new CustomEvent("refreshing-changed", {
-          bubbles: true,
-          detail: {
-            refreshing: this[state].refreshing,
-          },
-        });
-        this.dispatchEvent(oldEvent);
         /**
          * Raised when the `refreshing` state changes.
          *

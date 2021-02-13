@@ -157,14 +157,6 @@ export default function OpenCloseMixin(Base) {
       }
 
       if (changed.opened && this[raiseChangeEvents]) {
-        const oldEvent = new CustomEvent("opened-changed", {
-          bubbles: true,
-          detail: {
-            closeResult: this[state].closeResult,
-            opened: this[state].opened,
-          },
-        });
-        this.dispatchEvent(oldEvent);
         /**
          * Raised when the opened/closed state of the component changes.
          *

@@ -163,11 +163,6 @@ export default function CursorAPIMixin(Base) {
       }
       if (changed.currentIndex && this[raiseChangeEvents]) {
         const { currentIndex } = this[state];
-        const oldEvent = new CustomEvent("current-index-changed", {
-          bubbles: true,
-          detail: { currentIndex },
-        });
-        this.dispatchEvent(oldEvent);
         /**
          * Raised when the `currentIndex` property changes.
          *
