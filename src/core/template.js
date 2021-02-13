@@ -16,8 +16,6 @@
  * @module template
  */
 
-import { templateFrom } from "./htmlLiterals.js";
-
 // Used by registerCustomElement.
 const mapBaseTagToCount = new Map();
 
@@ -57,14 +55,6 @@ export function createElement(descriptor) {
     // String tag name: e.g., 'div'
     return document.createElement(descriptor);
   }
-}
-
-export function html(strings, ...substitutions) {
-  /* eslint-disable no-console */
-  console.warn(
-    `The template.html helper has moved to htmlLiterals.js, and is now called \`templateFrom.html\`. Please update your imports.`
-  );
-  return templateFrom.html(strings, ...substitutions);
 }
 
 /**

@@ -194,10 +194,6 @@ import * as domImport from "../src/core/dom.js";
 // @ts-ignore
 export const dom = domImport;
 
-import * as htmlImport from "../src/core/html.js";
-// @ts-ignore
-export const html = htmlImport;
-
 import * as htmlLiteralsImport from "../src/core/htmlLiterals.js";
 // @ts-ignore
 export const htmlLiterals = htmlLiteralsImport;
