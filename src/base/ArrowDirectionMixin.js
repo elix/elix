@@ -160,6 +160,9 @@ function ArrowDirectionMixin(Base) {
         this[ids].arrowDirection.style.flexDirection = vertical
           ? "column"
           : "row";
+        this[ids].arrowDirectionContainer.style.maxHeight = vertical
+          ? "100%"
+          : "";
 
         const buttonStyle = {
           bottom: null,
@@ -280,7 +283,7 @@ function ArrowDirectionMixin(Base) {
           <div
             id="arrowDirectionContainer"
             role="none"
-            style="flex: 1; overflow: hidden; position: relative;"
+            style="flex: 1; position: relative;"
           ></div>
           <div
             id="arrowButtonNext"
