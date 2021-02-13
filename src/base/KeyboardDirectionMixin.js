@@ -1,5 +1,6 @@
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import {
+  defaultState,
   goDown,
   goEnd,
   goLeft,
@@ -35,6 +36,13 @@ import {
 export default function KeyboardDirectionMixin(Base) {
   // The class prototype added by the mixin.
   class KeyboardDirection extends Base {
+    // @ts-ignore
+    get [defaultState]() {
+      return Object.assign(super[defaultState], {
+        handleBubblingDirectionKeys: false,
+      });
+    }
+
     /**
      * Invoked when the user wants to go/navigate down.
      * The default implementation of this method does nothing.
@@ -106,7 +114,7 @@ export default function KeyboardDirectionMixin(Base) {
       // default — i.e., if the focused element doesn't handle a key, then we
       // would handle it here. Unfortunately, there doesn't seem to be any
       // general way for us to do that.)
-      if (event.target === this) {
+      if (this[state].handleBubblingDirectionKeys || event.target === this) {
         // Respect orientation state if defined, otherwise assume "both".
         const orientation = this[state].orientation || "both";
         const horizontal =

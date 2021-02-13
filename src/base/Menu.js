@@ -87,6 +87,7 @@ class Menu extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       availableItemFlags: null,
+      handleBubblingDirectionKeys: true,
       highlightCurrentItem: true,
       orientation: "vertical",
       currentItemFocused: false,

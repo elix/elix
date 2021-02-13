@@ -89,6 +89,7 @@ class TabStrip extends Base {
   get [defaultState]() {
     return Object.assign(super[defaultState], {
       currentItemRequired: true,
+      handleBubblingDirectionKeys: true,
       orientation: "horizontal",
       position: "top",
       role: "tablist",
