@@ -36,7 +36,7 @@
     "@types/mocha": "8.2.1",
     "@types/sinon": "9.0.10",
     "chai": "4.3.0",
-    "eslint": "7.21.0",
+    "eslint": "7.25.0",
     "express": "4.17.1",
     "get-port": "5.1.1",
     "mocha": "8.3.0",
