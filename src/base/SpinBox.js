@@ -114,7 +114,9 @@ export class SpinBox extends Base {
     if (changed.inputPartType) {
       // Wire up handler on new input.
       this[ids].input.addEventListener("input", () => {
+        this[raiseChangeEvents] = true;
         this.value = /** @type {any} */ (this[ids].input).value;
+        this[raiseChangeEvents] = false;
       });
     }
 
@@ -168,6 +170,19 @@ export class SpinBox extends Base {
       input.selectionStart = length;
       input.selectionEnd = length;
       this[setState]({ stepSelect: false });
+    }
+
+    if (changed.value && this[raiseChangeEvents]) {
+      /**
+       * Raised when the `value` property changes.
+       *
+       * @event change
+       */
+      const event = new CustomEvent("change", {
+        bubbles: true,
+        detail: { value },
+      });
+      this.dispatchEvent(event);
     }
   }
 
