@@ -57,7 +57,7 @@ class Popup extends Base {
  */
 async function mousedownHandler(event) {
   // @ts-ignore
-  const element = this;
+  /** @type {Popup} */ const element = this;
   element[raiseChangeEvents] = true;
   await element.close({
     canceled: "mousedown outside",

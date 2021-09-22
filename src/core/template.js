@@ -37,7 +37,7 @@ export function createElement(descriptor) {
     let element;
     try {
       element = new descriptor();
-    } catch (e) {
+    } catch (/** @type {any} */ e) {
       if (e.name === "TypeError") {
         // Most likely this error results from the fact that the indicated
         // component class hasn't been registered. Register it now with a random
@@ -131,31 +131,34 @@ export function replace(original, replacement) {
   ) {
     // Merge attributes from original to replacement, letting replacement win
     // conflicts. Handle classes and styles separately (below).
-    Array.prototype.forEach.call(original.attributes, (
-      /** @type {Attr} */ attribute
-    ) => {
-      if (
-        !replacement.getAttribute(attribute.name) &&
-        attribute.name !== "class" &&
-        attribute.name !== "style"
-      ) {
-        replacement.setAttribute(attribute.name, attribute.value);
+    Array.prototype.forEach.call(
+      original.attributes,
+      (/** @type {Attr} */ attribute) => {
+        if (
+          !replacement.getAttribute(attribute.name) &&
+          attribute.name !== "class" &&
+          attribute.name !== "style"
+        ) {
+          replacement.setAttribute(attribute.name, attribute.value);
+        }
       }
-    });
+    );
     // Copy classes/styles from original to replacement, letting replacement win
     // conflicts.
-    Array.prototype.forEach.call(original.classList, (
-      /** @type {string} */ className
-    ) => {
-      replacement.classList.add(className);
-    });
-    Array.prototype.forEach.call(original.style, (
-      /** @type {number} */ key
-    ) => {
-      if (!replacement.style[key]) {
-        replacement.style[key] = original.style[key];
+    Array.prototype.forEach.call(
+      original.classList,
+      (/** @type {string} */ className) => {
+        replacement.classList.add(className);
       }
-    });
+    );
+    Array.prototype.forEach.call(
+      original.style,
+      (/** @type {number} */ key) => {
+        if (!replacement.style[key]) {
+          replacement.style[key] = original.style[key];
+        }
+      }
+    );
   }
   // Copy over children.
   // @ts-ignore

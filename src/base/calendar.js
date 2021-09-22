@@ -281,10 +281,8 @@ export function parseWithOptionalYear(text, dateTimeFormat, timeBias) {
   // Try parsing without year. Create an identical DateTimeFormat options, but
   // mark `year` as undefined so it won't be used.
   const { day, locale, month } = dateTimeFormat.resolvedOptions();
-  const abbreviatedFormat = new Intl.DateTimeFormat(locale, {
-    day,
-    month,
-  });
+  // @ts-ignore Puzzling type differences between options vs resolved options.
+  const abbreviatedFormat = new Intl.DateTimeFormat(locale, { day, month });
   const abbreviatedDate = parse(text, abbreviatedFormat);
   if (abbreviatedDate && timeBias) {
     const today = new Date();

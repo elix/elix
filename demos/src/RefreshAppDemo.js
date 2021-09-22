@@ -117,7 +117,7 @@ async function playSound(/** @type {HTMLAudioElement} */ sound) {
   if (sound && sound.play) {
     try {
       await sound.play();
-    } catch (e) {
+    } catch (/** @type {any} */ e) {
       if (e.name === "NotAllowedError") {
         // Webkit doesn't want to play sounds
       } else {

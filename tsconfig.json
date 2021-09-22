@@ -3,6 +3,7 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true, // just needed for sinon
     "checkJs": true,
+    "moduleResolution": "Node",
     "noEmit": true,
     // We'd like to use noImplicitAny: true, but we often need to access
     // arbitrary data on elements, and have not yet worked out an easy way to

@@ -103,7 +103,7 @@ export default function ShadowTemplateMixin(Base) {
       // We populate the shadow root if the component doesn't have a shadow;
       // i.e., the first time the component is rendered. For this check, we use
       // an internal reference we maintain for the shadow root; see below.
-      if (!this[shadowRoot]) {
+      if (this[shadowRoot] === undefined) {
         // If this type of element defines a template, prepare it for use.
         const template = getTemplate(this);
 
@@ -125,6 +125,7 @@ export default function ShadowTemplateMixin(Base) {
         } else {
           // No template. Set shadow root to null (instead of undefined) so we
           // won't try to render shadow on next render.
+          // @ts-ignore Not sure why/how TS has type info on this[shadowRoot].
           this[shadowRoot] = null;
         }
       }
