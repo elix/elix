@@ -32,7 +32,7 @@
     "toast"
   ],
   "devDependencies": {
-    "@types/chai": "4.2.15",
+    "@types/chai": "4.2.22",
     "@types/mocha": "8.2.1",
     "@types/sinon": "9.0.10",
     "chai": "4.3.0",
