@@ -122,7 +122,7 @@ export default function FormElementMixin(Base) {
         super[rendered](changed);
       }
       if (changed.value) {
-        if (this[nativeInternals]) {
+        if (this[nativeInternals] && this[nativeInternals].setFormValue) {
           this[nativeInternals].setFormValue(this[state].value, this[state]);
         }
       }
