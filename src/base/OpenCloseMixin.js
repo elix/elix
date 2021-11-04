@@ -89,7 +89,7 @@ export default function OpenCloseMixin(Base) {
     // @ts-ignore
     get [defaultState]() {
       const defaults = {
-        closeResult: null,
+        closeResult: undefined,
         opened: false,
       };
       // If this component defines a `startEffect` method (e.g., by using
@@ -114,7 +114,6 @@ export default function OpenCloseMixin(Base) {
       if (super.open) {
         await super.open();
       }
-      this[setState]({ closeResult: undefined });
       await this.toggle(true);
     }
 
@@ -222,6 +221,13 @@ export default function OpenCloseMixin(Base) {
       const effects = super[stateEffects]
         ? super[stateEffects](state, changed)
         : {};
+
+      // If the component is being opened, then clear any previous closeResult.
+      if (changed.opened && state.opened) {
+        Object.assign(effects, {
+          closeResult: undefined,
+        });
+      }
 
       // Update our notion of closeFinished to track the closed state for
       // components with synchronous open/close effects and components with
