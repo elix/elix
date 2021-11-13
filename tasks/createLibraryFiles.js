@@ -1,7 +1,7 @@
 // Create the top-level elix.js and elix.d.ts files.
 
-const fs = require("fs").promises;
-const path = require("path");
+import * as fs from "fs/promises";
+import path from "path";
 
 const srcJsHeader = `/*
  * The complete set of Elix components and mixins.
@@ -89,7 +89,7 @@ ${multipleExports}`;
   await fs.writeFile(destination, content);
 }
 
-async function createLibraryFiles(sourceFiles, targetFolder) {
+export default async function createLibraryFiles(sourceFiles, targetFolder) {
   // Write library files to /src folder,
   // and auto-define variations to /define folder.
   const libraryJsPath = path.join(targetFolder, "elix.js");
@@ -115,5 +115,3 @@ function sortByBaseName(files) {
   });
   return result;
 }
-
-module.exports = createLibraryFiles;

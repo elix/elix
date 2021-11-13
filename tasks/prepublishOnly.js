@@ -1,9 +1,8 @@
-const fs = require("fs").promises;
-const path = require("path");
-
-const createDefineModules = require("./createDefineModules.js");
-const createLibraryFiles = require("./createLibraryFiles.js");
-const createWeekData = require("./createWeekData.js");
+import * as fs from "fs/promises";
+import path from "path";
+import createDefineModules from "./createDefineModules.js";
+import createLibraryFiles from "./createLibraryFiles.js";
+import createWeekData from "./createWeekData.js";
 
 function baseModuleName(file) {
   const moduleName = path.basename(file, ".js");
@@ -100,51 +99,37 @@ function mergeFiles(files1, files2) {
   return [...filesIn1NotIn2, ...files2];
 }
 
-(async () => {
-  try {
-    const sourceRootFolder = path.join(__dirname, "../src");
-    const coreFolder = path.join(__dirname, "../src/core");
-    const baseFolder = path.join(__dirname, "../src/base");
-    const plainFolder = path.join(__dirname, "../src/plain");
-    const defineFolder = path.join(__dirname, "../define");
+const dirname = process.cwd();
+const sourceRootFolder = path.join(dirname, "src");
+const coreFolder = path.join(dirname, "src/core");
+const baseFolder = path.join(dirname, "src/base");
+const plainFolder = path.join(dirname, "src/plain");
+const defineFolder = path.join(dirname, "define");
 
-    // Generate week data file.
-    await createWeekData(baseFolder);
+// Generate week data file.
+await createWeekData(baseFolder);
 
-    // Load the source files and categorize them: components/mixins/helpers.
-    const [coreFiles, baseFiles, plainFiles] = await Promise.all([
-      categorizeFiles(coreFolder),
-      categorizeFiles(baseFolder),
-      categorizeFiles(plainFolder),
-    ]);
+// Load the source files and categorize them: components/mixins/helpers.
+const [coreFiles, baseFiles, plainFiles] = await Promise.all([
+  categorizeFiles(coreFolder),
+  categorizeFiles(baseFolder),
+  categorizeFiles(plainFolder),
+]);
 
-    // Generate the define modules based on the plain components.
-    await createEmptyDefineFolder(defineFolder);
-    await createDefineModules(defineFolder, plainFiles.components);
+// Generate the define modules based on the plain components.
+await createEmptyDefineFolder(defineFolder);
+await createDefineModules(defineFolder, plainFiles.components);
 
-    // Get the set of define components we just generated.
-    const defineFiles = await categorizeFiles(defineFolder);
+// Get the set of define components we just generated.
+const defineFiles = await categorizeFiles(defineFolder);
 
-    // Regular library file does *not* register components.
-    const regularFiles = mergeCategorizedFiles(
-      coreFiles,
-      baseFiles,
-      plainFiles
-    );
+// Regular library file does *not* register components.
+const regularFiles = mergeCategorizedFiles(coreFiles, baseFiles, plainFiles);
 
-    // The define library file *does* register components.
-    const registerFiles = mergeCategorizedFiles(
-      coreFiles,
-      baseFiles,
-      defineFiles
-    );
+// The define library file *does* register components.
+const registerFiles = mergeCategorizedFiles(coreFiles, baseFiles, defineFiles);
 
-    await Promise.all([
-      createLibraryFiles(regularFiles, sourceRootFolder),
-      createLibraryFiles(registerFiles, defineFolder),
-    ]);
-  } catch (e) {
-    // We have to deal with top-level exceptions.
-    console.error(e);
-  }
-})();
+await Promise.all([
+  createLibraryFiles(regularFiles, sourceRootFolder),
+  createLibraryFiles(registerFiles, defineFolder),
+]);

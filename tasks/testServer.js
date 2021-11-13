@@ -1,12 +1,12 @@
-const express = require("express");
-const path = require("path");
+import express from "express";
+import path from "path";
 
 /*
  * Simplistic static server using Express.
  */
-async function start(port) {
+export default async function start(port) {
   const app = express();
-  const rootPath = path.join(__dirname, "..");
+  const rootPath = path.join(process.cwd(), "..");
   app.use("/", express.static(rootPath));
   let server;
   await new Promise((resolve) => {
@@ -14,5 +14,3 @@ async function start(port) {
   });
   return server;
 }
-
-module.exports = start;

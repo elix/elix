@@ -1,5 +1,5 @@
-const fs = require("fs").promises;
-const path = require("path");
+import * as fs from "fs/promises";
+import path from "path";
 
 // Create modules that export Elix components *and* define them as custom
 // elements.
@@ -7,7 +7,10 @@ const path = require("path");
 // For each component module PlainFoo.js in the /src/plain folder, create a
 // corresponding Foo.js file in the /define folder that exports the same
 // Foo component, and also defines it as `elix-foo`.
-async function createDefineModules(defineFolder, componentFiles) {
+export default async function createDefineModules(
+  defineFolder,
+  componentFiles
+) {
   const modulePromises = componentFiles.map((componentFile) => {
     // Strip 'Plain' from beginning of class name.
     const plainClassName = path.basename(componentFile, ".js");
@@ -52,5 +55,3 @@ function tagFromClassName(className) {
   const tag = "elix" + className.replace(uppercaseRegEx, "-$1").toLowerCase();
   return tag;
 }
-
-module.exports = createDefineModules;
