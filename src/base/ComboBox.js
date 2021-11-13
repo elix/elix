@@ -252,6 +252,13 @@ class ComboBox extends Base {
           return;
         }
         this[raiseChangeEvents] = true;
+        if (this.opened) {
+          this[setState]({
+            closeResult: {
+              canceled: "toggle",
+            },
+          });
+        }
         this.toggle();
         this[raiseChangeEvents] = false;
       });
