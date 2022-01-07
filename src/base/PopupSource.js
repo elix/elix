@@ -188,16 +188,12 @@ class PopupSource extends Base {
         // styles too.
         styling.opacity = 0;
       } else {
-        // Popup opened and laid out. Position the popup using only the edges
-        // implicated in the layout.
-        const { align, direction, rect } = popupLayout;
-        const stretch = align === "stretch";
-        const vertical = direction === "above" || direction === "below";
-        const gridTemplateRows = !vertical && stretch ? "minmax(0, 1fr)" : "";
-        const gridTemplateColumns = vertical && stretch ? "minmax(0, 1fr)" : "";
+        // Popup opened and laid out. Position the popup.
+        const { direction, rect } = popupLayout;
+        const alignItems =
+          direction === "above" ? "end" : direction === "below" ? "start" : "";
         Object.assign(styling, {
-          gridTemplateColumns,
-          gridTemplateRows,
+          alignItems,
           height: `${rect.height}px`,
           left: `${rect.left}px`,
           top: `${rect.top}px`,
@@ -306,8 +302,14 @@ class PopupSource extends Base {
         }
 
         [part~="popup"] {
+          grid-template: minmax(0px, 1fr) / minmax(0px, 1fr);
           outline: none;
           position: fixed;
+        }
+
+        [part~="popup"]::part(frame) {
+          max-height: 100%;
+          max-width: 100%;
         }
       </style>
       <div id="source" part="source">
