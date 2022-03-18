@@ -150,6 +150,9 @@ export default function FormElementMixin(Base) {
       // Defer to base class value.
       return super.type || this.localName;
     }
+    set type(type) {
+      super.type = type;
+    }
 
     get validationMessage() {
       return this[state].validationMessage;
