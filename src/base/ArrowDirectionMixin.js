@@ -147,8 +147,8 @@ function ArrowDirectionMixin(Base) {
         rightToLeft,
       } = this[state];
       const vertical = orientation === "vertical";
-      /** @type {any} */ const arrowButtonPrevious = this[ids]
-        .arrowButtonPrevious;
+      /** @type {any} */ const arrowButtonPrevious =
+        this[ids].arrowButtonPrevious;
       /** @type {any} */ const arrowButtonNext = this[ids].arrowButtonNext;
 
       // Position the buttons.
@@ -283,7 +283,7 @@ function ArrowDirectionMixin(Base) {
           <div
             id="arrowDirectionContainer"
             role="none"
-            style="flex: 1; position: relative;"
+            style="flex: 1; min-width: 0; position: relative;"
           ></div>
           <div
             id="arrowButtonNext"
