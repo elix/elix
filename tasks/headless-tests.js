@@ -1,9 +1,10 @@
-const getPort = require("get-port");
-const puppeteer = require("puppeteer");
-const runInCi = process.argv.indexOf("--run-in-ci");
-const testServer = require("./testServer.js");
+import getPort from "get-port";
+import puppeteer from "puppeteer";
+import testServer from "./testServer.js";
 
-const runTestsInHeadlessChrome = async (port) => {
+const runInCi = process.argv.indexOf("--run-in-ci");
+
+async function runTestsInHeadlessChrome(port) {
   const argsNeededForTravisToWork = ["--no-sandbox"]; // thx. see https://github.com/GoogleChrome/puppeteer/issues/536#issuecomment-324945531
   const options = {
     headless: true,
@@ -11,7 +12,7 @@ const runTestsInHeadlessChrome = async (port) => {
   };
   const browser = await puppeteer.launch(options);
   const page = await browser.newPage();
-  await page.goto(`http://localhost:${port}/test/`, {
+  await page.goto(`http://localhost:${port}/test/index.html`, {
     waitUntil: "domcontentloaded",
   });
   const consoleMsg = await new Promise((resolve) => {
@@ -19,23 +20,17 @@ const runTestsInHeadlessChrome = async (port) => {
   });
   await browser.close();
   return consoleMsg;
-};
+}
 
-(async () => {
-  try {
-    const port = await getPort();
-    const server = await testServer(port);
-    const testResult = await runTestsInHeadlessChrome(port);
-    if (testResult === "OK") {
-      console.log("Tests passed.");
-    } else {
-      const errors = JSON.parse(testResult);
-      errors.map((e) => console.log(e));
-      console.error(`\n${errors.length} Error(s)`);
-    }
-    server.close();
-  } catch (exception) {
-    // We have to handle the exception, since nothing else will.
-    console.error(`*** EXCEPTION: ${exception}`);
-  }
-})();
+const port = await getPort();
+const server = await testServer(port);
+const testResult = await runTestsInHeadlessChrome(port);
+if (testResult === "OK") {
+  console.log("Tests passed.");
+} else if (testResult.startsWith("[")) {
+  const results = JSON.parse(testResult);
+  results.forEach((result) => console.log(result));
+} else {
+  console.log(testResult);
+}
+server.close();

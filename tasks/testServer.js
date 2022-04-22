@@ -1,16 +1,19 @@
 import express from "express";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+const rootPath = path.join(dirname, "..");
 
 /*
  * Simplistic static server using Express.
  */
 export default async function start(port) {
   const app = express();
-  const rootPath = path.join(process.cwd(), "..");
   app.use("/", express.static(rootPath));
-  let server;
-  await new Promise((resolve) => {
-    server = app.listen(port, resolve);
+  return new Promise((resolve) => {
+    const server = app.listen(port, () => {
+      resolve(server);
+    });
   });
-  return server;
 }
