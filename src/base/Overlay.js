@@ -150,6 +150,7 @@ class Overlay extends Base {
         [part~="frame"] {
           box-sizing: border-box;
           display: grid;
+          grid-template: minmax(0, 1fr) / minmax(0, 1fr);
           overflow: hidden;
           overscroll-behavior: contain;
           pointer-events: initial;
