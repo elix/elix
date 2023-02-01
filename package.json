@@ -42,7 +42,7 @@
     "get-port": "6.1.2",
     "mocha": "9.2.2",
     "node-fetch": "3.2.3",
-    "puppeteer": "13.6.0",
+    "puppeteer": "19.6.3",
     "sinon": "13.0.2",
     "typescript": "4.6.3"
   },
